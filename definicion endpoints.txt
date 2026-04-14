@@ -5,8 +5,10 @@ manda a la pagina principal una vez logueado,
 POST: 
 Sirve para hacer la autenticación por 
     body { user: XXXX , pass: YYYYYY }
+    Envio de respuesta: "Login exitoso/fallido"
+    Status: 200 ok/400 no ok
 __________________________
-
+/*Debe ir toda la información del dashboard(Falta definir con front)*/
 /alumnos
 GET: 
     Lista todos los alumnos ACTUALES ,
@@ -14,7 +16,8 @@ GET:
     body {
         alumnos:  [ alumnoid{} , alumnoid{} ,  alumnoid{} ... ]   
         /* esto hay que mirarlo bien... no me gusta */
-    } 
+    }
+    Status: 200 ok/400 no ok 
 POST:
     Lista los alumnos con el criterio de busqueda que le entra por:
     body {
@@ -34,12 +37,23 @@ POST :
         nombre: ZZZ,
         apellido: XXX ,
         .....
-    } 
+    }
+    Envio de respuesta: "El perfil de alumno ha sido creado con éxito" 
 
 /alumnos/id
 GET: 
-    devuelve html con los datos del alumno con id :id
+    manda al html con los datos del alumno con id :id
+    
 
+PUT: 
+    Recibe por body datos del alumno (:ID)
+    Modifica datos del alumno
+    alumno {
+        nombre: ZZZ,
+        apellido: XXX ,
+        .....
+    }
+    Envio de respuesta: "Los datos han sido modificados con éxito"
 
 ______________________
 
