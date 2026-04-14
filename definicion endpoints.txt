@@ -1,3 +1,69 @@
+/ 
+GET: 
+manda a la pagina principal una vez logueado,
+    sinó, manda a la pagina de login que usa :
+POST: 
+Sirve para hacer la autenticación por 
+    body { user: XXXX , pass: YYYYYY }
+__________________________
+
 /alumnos
+GET: 
+    Lista todos los alumnos ACTUALES ,
+    devuelve:
+    body {
+        alumnos:  [ alumnoid{} , alumnoid{} ,  alumnoid{} ... ]   
+        /* esto hay que mirarlo bien... no me gusta */
+    } 
+POST:
+    Lista los alumnos con el criterio de busqueda que le entra por:
+    body {
+            criterio: [ 
+            nombre: XXXX,
+            dni: YYYY ,
+            email: ZZZZ,
+            .... 
+            ]
+        } 
+
 /alumnos/add
-/alumnos/id 
+
+POST : 
+    añade el alumno con los datos que recibe en body 
+    alumno {
+        nombre: ZZZ,
+        apellido: XXX ,
+        .....
+    } 
+
+/alumnos/id
+GET: 
+    devuelve html con los datos del alumno con id :id
+
+
+______________________
+
+/cursos
+/cursos/add
+/cursos/:id
+
+______________________________
+/UF
+/UF/id
+/UF/add
+
+___________________________
+/prof
+/prof/id
+/prof/add
+________________________________
+/user
+/user/id
+/user/add
+/user/
+
+
+
+
+
+
