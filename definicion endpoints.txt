@@ -1,0 +1,3 @@
+/alumnos
+/alumnos/add
+/alumnos/id 
