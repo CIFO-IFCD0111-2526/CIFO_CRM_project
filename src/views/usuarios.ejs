@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM - Usuarios</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    th { background: #333; color: #fff; }
+    tr:nth-child(even) { background: #f2f2f2; }
+  </style>
+</head>
+<body>
+
+  <h1>Usuarios</h1>
+  <p><%= usuarios.length %> registros</p>
+
+  <% if (usuarios.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Nivel</th>
+          <th>Activo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% usuarios.forEach(u => { %>
+          <tr>
+            <td><%= u.id %></td>
+            <td><%= u.nombre %> <%= u.apellidos %></td>
+            <td><%= u.email %></td>
+            <td><%= u.nivel_acceso %></td>
+            <td><%= u.activo ? 'Sí' : 'No' %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>No hay usuarios registrados.</p>
+  <% } %>
+
+</body>
+</html>
