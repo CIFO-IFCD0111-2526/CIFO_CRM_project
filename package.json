@@ -1,0 +1,16 @@
+{
+  "name": "cifo-crm-sequelize",
+  "version": "1.0.0",
+  "description": "CRM intern d'alumnat - Ejemplo base Sequelize + MySQL",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0",
+    "sequelize": "^6.37.5"
+  }
+}
