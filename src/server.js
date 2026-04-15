@@ -23,19 +23,16 @@ server.use(express.static(path.join(__dirname, "public")));
 server.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: false, // no guarda sessions anònimes
     rolling: true, // para que se amplie la duracion de la cookie/sesson en cada petició
-    cookie: function (req) {
-        var match = req.url.match(/^\/([^/]+)/); // no sé para qué sirve
-        return {
-            path: match ? '/' + match[1] : '/',
+    cookie: {
             httpOnly: true, // si hem de treballar amb https , true, si no, false
-            secure: req.secure || false,
-            maxAge: 600000,
+            secure:  process.env.NODE_ENV === "production" ,// entenent que a production farem servir httpS
+            maxAge: 6000000, // 100 minutos
             
         }
     }
-}))
+))
 /*  la IA me idce que esto es necesario ? ? 
 // Necesario para procesar formularios POST
 server.use(express.urlencoded({ extended: true }));
