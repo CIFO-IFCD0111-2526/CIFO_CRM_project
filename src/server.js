@@ -23,21 +23,23 @@ server.use(express.static(path.join(__dirname, "public")));
 server.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    rolling: true, // para que se amplie la duracion de la cookie/sesson en cada petició
     cookie: function (req) {
         var match = req.url.match(/^\/([^/]+)/); // no sé para qué sirve
         return {
             path: match ? '/' + match[1] : '/',
             httpOnly: true, // si hem de treballar amb https , true, si no, false
             secure: req.secure || false,
-            maxAge: 60000,
-            rolling: true // para que se amplie la duracion de la cookie/sesson en cada petició
+            maxAge: 600000,
+            
         }
     }
 }))
-
-
-
+/*  la IA me idce que esto es necesario ? ? 
+// Necesario para procesar formularios POST
+server.use(express.urlencoded({ extended: true }));
+*/
 const PORT = process.env.PORT || 3000;
 // definim un port defecte o el del .env i comencem a escoltar 
 server.listen(PORT, () => console.log("Servidor activo en http://localhost:" + PORT));
