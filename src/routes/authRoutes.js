@@ -6,4 +6,4 @@ const router = Router();
 // Rutas de autenticación
 
 router.post("/login", controller.login);
-router.post("/login", controller.logout);
+router.post("/logout", controller.logout);
