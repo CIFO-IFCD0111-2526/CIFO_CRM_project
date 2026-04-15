@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Montserrat:wght@200;400;500;600;700;800;900&display=swap');
+
+:root {
+    --color-primario: #6964C8;
+    --color-primario-hover: #5753B0;
+    --color-primario-suave: rgba(105, 100, 200, 0.12);
+    --color-fondo-pagina: #FFFFFF;
+    --color-fondo-tarjeta: #F5F5F5;
+    --color-borde: #d0c8d8;
+    --color-texto-principal: #111111;
+    --color-texto-etiquetas: #555555;
+    --color-texto-placeholder: #888888;
+    --color-texto-blanco: #FFFFFF;
+    --fuente-titulos: 'Inter', sans-serif;
+    --fuente-cuerpo: 'Montserrat', sans-serif;
+    --radio-pequeno: 8px;
+    --radio-grande: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fuente-cuerpo);
+    background-color: var(--color-fondo-pagina);
+    color: var(--color-texto-principal);
+    line-height: 1.6;
+}
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+nav {
+    width: 260px;
+    background-color: var(--color-fondo-tarjeta);
+    border-right: 1px solid var(--color-borde);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    position: fixed;
+    height: 100vh;
+    gap: 1.5rem;
+}
+
+.nav-logo img {
+    width: 150px;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.nav-links a,
+.nav-bottom a {
+    text-decoration: none;
+    color: #333333;
+    padding: 0.6rem 1rem;
+    border-radius: var(--radio-pequeno);
+    font-family: var(--fuente-cuerpo);
+    font-size: 15.5px;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-links a i,
+.nav-bottom a i {
+    color: #9CA3AF;
+    margin-right: 10px;
+}
+
+.nav-links a:hover,
+.nav-bottom a:hover {
+    background-color: var(--color-primario);
+    color: var(--color-texto-blanco);
+}
+
+.nav-links a:hover i,
+.nav-bottom a:hover i {
+    color: var(--color-texto-blanco);
+}
+
+.nav-links a.active {
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario);
+    font-weight: 700;
+}
+
+.nav-links a.active i {
+    color: var(--color-primario);
+}
+
+.nav-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+main {
+    flex: 1;
+    padding: 2rem;
+}
+
+main.with-nav {
+    margin-left: 260px;
+}
