@@ -3,8 +3,8 @@
 // const cookieParser = require("cookie-parser");
 const path = require("path");
 var session = require('express-session'); // per fer servir 
-require('dotenv').config({ path: `${path.join("..",".env")}` }); // per fer servir dades del .env //  habria que usar el path.join
-// require(`${path.join("MONTAR AQUI PARA LLEGAR AL MIDDLEWARE ")}`);  
+require('dotenv').config({ path: `${path.join(__dirname,"..",".env")}` }); // per fer servir dades del .env //  habria que usar el path.join
+// require(`${path.join("MONTAR AQUI PARA LLEGAR A LOS MIDDLEWARE ")}`);  
 
 const express = require("express");
 const server = new express(); // creem el servidor
