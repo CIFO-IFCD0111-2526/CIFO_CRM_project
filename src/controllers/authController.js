@@ -1,7 +1,7 @@
 const { Usuario } = require("..\models\Usuario.js");
 const bcrypt = require("bcrypt");
 
-// Lógica para buscar en DB si el usuario existe y, en caso de que sí, si la contraseña es correcta.
+// LOGIN
 const login = async (req, res) => {
     ({ loginEmail, loginPassword }) = req.body;
     try {
@@ -20,3 +20,5 @@ const login = async (req, res) => {
         res.status(500).json({error: error.message});
     }
 };
+
+// LOGOUT
