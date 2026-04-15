@@ -39,6 +39,8 @@ POST :
         .....
     }
     Envio de respuesta: "El perfil de alumno ha sido creado con éxito" 
+    status: 201 OK created
+
 
 /alumnos/id
 GET: 
@@ -56,10 +58,19 @@ PUT:
     Envio de respuesta: "Los datos han sido modificados con éxito"
 
 ______________________
-
 /cursos
+
+GET: 
+
+POST:
+
+
+
+
 /cursos/add
+
 /cursos/:id
+    devuelve a la pagina 
 
 ______________________________
 /UF
@@ -76,7 +87,9 @@ ________________________________
 /user/add
 /user/
 
-
+___________________________________
+/me/last
+devuelve los ultimos accesos del usuario ( "recientes " )
 
 
 
