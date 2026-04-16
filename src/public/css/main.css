@@ -4,17 +4,31 @@
     --color-primario: #6964C8;
     --color-primario-hover: #5753B0;
     --color-primario-suave: rgba(105, 100, 200, 0.12);
+    --color-danger: #dc2626;
+    --color-danger-hover: #b91c1c;
+    --color-danger-suave: #fee2e2;
     --color-fondo-pagina: #FFFFFF;
     --color-fondo-tarjeta: #F5F5F5;
+    --color-fondo-sidebar: #F0EFFC;
     --color-borde: #d0c8d8;
     --color-texto-principal: #111111;
     --color-texto-etiquetas: #555555;
     --color-texto-placeholder: #888888;
     --color-texto-blanco: #FFFFFF;
+    --color-texto-nav: #272727;
+    --color-icono: #787c83;
     --fuente-titulos: 'Inter', sans-serif;
     --fuente-cuerpo: 'Montserrat', sans-serif;
     --radio-pequeno: 8px;
     --radio-grande: 16px;
+
+    /* Badges */
+    --badge-actual-bg: #dcfce7;
+    --badge-actual-color: #16a34a;
+    --badge-futuro-bg: #ffedd5;
+    --badge-futuro-color: #ea580c;
+    --badge-antiguo-bg: #f3f4f6;
+    --badge-antiguo-color: #6b7280;
 }
 
 * {
@@ -30,14 +44,31 @@ body {
     line-height: 1.6;
 }
 
+/* ---- Layout principal ---- */
 .app-container {
     display: flex;
     min-height: 100vh;
 }
 
+.main-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-wrapper.with-nav {
+    margin-left: 260px;
+}
+
+main {
+    flex: 1;
+    padding: 2rem;
+}
+
+/* ---- Sidebar ---- */
 nav {
     width: 260px;
-    background-color: var(--color-fondo-tarjeta);
+    background-color: var(--color-fondo-sidebar);
     border-right: 1px solid var(--color-borde);
     display: flex;
     flex-direction: column;
@@ -48,7 +79,7 @@ nav {
 }
 
 .nav-logo img {
-    width: 150px;
+    width: 170px;
 }
 
 .nav-links {
@@ -61,18 +92,18 @@ nav {
 .nav-links a,
 .nav-bottom a {
     text-decoration: none;
-    color: #333333;
+    color: var(--color-texto-nav);
     padding: 0.6rem 1rem;
     border-radius: var(--radio-pequeno);
-    font-family: var(--fuente-cuerpo);
-    font-size: 15.5px;
+    font-family: var(--fuente-titulos);
+    font-size: 18px;
     font-weight: 500;
     transition: background-color 0.2s, color 0.2s;
 }
 
 .nav-links a i,
 .nav-bottom a i {
-    color: #9CA3AF;
+    color: var(--color-icono);
     margin-right: 10px;
 }
 
@@ -103,11 +134,276 @@ nav {
     gap: 0.5rem;
 }
 
-main {
-    flex: 1;
-    padding: 2rem;
+.btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-texto-nav);
+    padding: 0.6rem 1rem;
+    border-radius: var(--radio-pequeno);
+    font-family: var(--fuente-titulos);
+    font-size: 18px;
+    font-weight: 500;
+    width: 100%;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-main.with-nav {
-    margin-left: 260px;
+.btn-logout i {
+    color: var(--color-icono);
+}
+
+.btn-logout:hover {
+    background-color: var(--color-danger-suave);
+    color: var(--color-danger);
+}
+
+.btn-logout:hover i {
+    color: var(--color-danger);
+}
+
+/* ---- Topbar ---- */
+.topbar {
+    height: 64px;
+    border-bottom: 1px solid var(--color-borde);
+    background-color: var(--color-fondo-pagina);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 2rem;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.topbar-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-icono);
+    font-size: 18px;
+    padding: 0.4rem;
+    border-radius: var(--radio-pequeno);
+    transition: color 0.2s;
+}
+
+.topbar-icon:hover {
+    color: var(--color-primario);
+}
+
+.topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+}
+
+.topbar-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--color-primario);
+    color: var(--color-texto-blanco);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--fuente-titulos);
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.topbar-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.topbar-nombre {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-texto-principal);
+    font-family: var(--fuente-titulos);
+}
+
+.topbar-rol {
+    font-size: 11px;
+    color: var(--color-texto-placeholder);
+    text-transform: capitalize;
+}
+
+/* ---- Botones globales ---- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.55rem 1.2rem;
+    border-radius: var(--radio-pequeno);
+    font-family: var(--fuente-cuerpo);
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    text-decoration: none;
+}
+
+.btn-primario {
+    background-color: var(--color-primario);
+    color: var(--color-texto-blanco);
+}
+
+.btn-primario:hover {
+    background-color: var(--color-primario-hover);
+}
+
+.btn-secundario {
+    background-color: transparent;
+    color: var(--color-primario);
+    border: 1.5px solid var(--color-primario);
+}
+
+.btn-secundario:hover {
+    background-color: var(--color-primario-suave);
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+    color: var(--color-texto-blanco);
+}
+
+.btn-danger:hover {
+    background-color: var(--color-danger-hover);
+}
+
+/* ---- Badges de estado ---- */
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: var(--radio-pequeno);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--fuente-cuerpo);
+}
+
+.badge-actual {
+    background-color: var(--badge-actual-bg);
+    color: var(--badge-actual-color);
+}
+
+.badge-futuro {
+    background-color: var(--badge-futuro-bg);
+    color: var(--badge-futuro-color);
+}
+
+.badge-antiguo {
+    background-color: var(--badge-antiguo-bg);
+    color: var(--badge-antiguo-color);
+}
+
+/* ---- Tablas ---- */
+.tabla-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radio-grande);
+    border: 1px solid var(--color-borde);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+thead th {
+    background-color: var(--color-fondo-tarjeta);
+    color: var(--color-texto-etiquetas);
+    font-family: var(--fuente-titulos);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+tbody td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-borde);
+    color: var(--color-texto-principal);
+    vertical-align: middle;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: var(--color-fondo-tarjeta);
+}
+
+/* ---- Formularios globales ---- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-texto-etiquetas);
+    font-family: var(--fuente-titulos);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-pequeno);
+    font-family: var(--fuente-cuerpo);
+    font-size: 14px;
+    color: var(--color-texto-principal);
+    background-color: var(--color-fondo-pagina);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--color-texto-placeholder);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px var(--color-primario-suave);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ---- Mensajes de error ---- */
+.error-msg {
+    background-color: var(--color-danger-suave);
+    color: var(--color-danger);
+    padding: 0.6rem 1rem;
+    border-radius: var(--radio-pequeno);
+    font-size: 13px;
+    margin-bottom: 1rem;
 }

@@ -16,30 +16,30 @@
 </head>
 <body>
     <div class="app-container">
-        <% if (usuario) { %>
+        <% if (typeof usuario !== 'undefined' && usuario) { %>
             <nav>
                 <div class="nav-logo">
                     <img src="/images/logo.webp" alt="CIFO La Violeta">
                 </div>
 
                 <div class="nav-links">
-                    <a href="/dashboard" class="<% if (paginaActual === 'dashboard') { %>active<% } %>">
+                    <a href="/dashboard" class="<% if (locals.paginaActual === 'dashboard') { %>active<% } %>">
                         <i class="fa-solid fa-gauge"></i> Dashboard
                     </a>
-                    <a href="/alumnos" class="<% if (paginaActual === 'alumnos') { %>active<% } %>">
+                    <a href="/alumnos" class="<% if (locals.paginaActual === 'alumnos') { %>active<% } %>">
                         <i class="fa-solid fa-user-graduate"></i> Alumnos
                     </a>
-                    <a href="/cursos" class="<% if (paginaActual === 'cursos') { %>active<% } %>">
+                    <a href="/cursos" class="<% if (locals.paginaActual === 'cursos') { %>active<% } %>">
                         <i class="fa-solid fa-book"></i> Cursos
                     </a>
-                    <a href="/ufs" class="<% if (paginaActual === 'ufs') { %>active<% } %>">
+                    <a href="/ufs" class="<% if (locals.paginaActual === 'ufs') { %>active<% } %>">
                         <i class="fa-solid fa-layer-group"></i> UF's
                     </a>
-                    <a href="/profesores" class="<% if (paginaActual === 'profesores') { %>active<% } %>">
+                    <a href="/profesores" class="<% if (locals.paginaActual === 'profesores') { %>active<% } %>">
                         <i class="fa-solid fa-chalkboard-user"></i> Profesores
                     </a>
                     <% if (usuario.nivel_acceso === 'admin') { %>
-                        <a href="/usuarios" class="<% if (paginaActual === 'usuarios') { %>active<% } %>">
+                        <a href="/usuarios" class="<% if (locals.paginaActual === 'usuarios') { %>active<% } %>">
                             <i class="fa-solid fa-gear"></i> Administración
                         </a>
                     <% } %>
@@ -47,14 +47,48 @@
 
                 <div class="nav-bottom">
                     <a href="/ayuda"><i class="fa-solid fa-circle-question"></i> Ayuda</a>
-                    <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a>
+                    <button type="button" class="btn-logout" id="btnLogout">
+                        <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+                    </button>
                 </div>
             </nav>
         <% } %>
 
-        <main class="<% if (usuario) { %>with-nav<% } %>">
-            <%- body %>
-        </main>
+        <div class="main-wrapper <%= (typeof usuario !== 'undefined' && usuario) ? 'with-nav' : '' %>">
+            <% if (typeof usuario !== 'undefined' && usuario) { %>
+                <header class="topbar">
+                    <div class="topbar-right">
+                        <button class="topbar-icon" title="Notificaciones">
+                            <i class="fa-solid fa-bell"></i>
+                        </button>
+                        <div class="topbar-user">
+                            <div class="topbar-avatar">
+                                <%= usuario.nombre.charAt(0) %><%= usuario.apellidos.charAt(0) %>
+                            </div>
+                            <div class="topbar-info">
+                                <span class="topbar-nombre"><%= usuario.nombre %></span>
+                                <span class="topbar-rol"><%= usuario.nivel_acceso %></span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            <% } %>
+
+            <main>
+                <%- body %>
+            </main>
+        </div>
     </div>
+
+    <script>
+        const btnLogout = document.getElementById("btnLogout");
+        if (btnLogout) {
+            btnLogout.addEventListener("click", async () => {
+                const res = await fetch("/logout", { method: "POST" });
+                const data = await res.json();
+                if (data.ok) window.location.href = data.redirect;
+            });
+        }
+    </script>
 </body>
 </html>
