@@ -12,6 +12,6 @@ router.post("/logout", controller.logout);
 module.exports = router;
 
 
-const router = Router();
+
 
 
