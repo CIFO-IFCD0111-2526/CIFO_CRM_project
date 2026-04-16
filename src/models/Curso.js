@@ -1,4 +1,4 @@
-const Curso = sequelize.define(
+const Curso = sequelize.define( // asdasda
     "Curso",
     {
         id: {
