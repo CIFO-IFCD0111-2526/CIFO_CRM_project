@@ -32,9 +32,7 @@ const login = async (req, res) => {
             res.status(400).json({ error: "Contraseña incorrecta." });
         } else if (userLogin.activo === false) {
             res.status(400).json({ error: "Usuario inactivo." });
-        } else {
-            res.status(200).json({ message: "Login correcto!" });
-        }
+        };
 
         // Creamos la cookie de sesión en el req
         req.session.usuario = {
