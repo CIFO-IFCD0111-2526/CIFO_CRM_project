@@ -10,16 +10,20 @@ const { sequelize } = require("../config/database");
 // -------------------------------------------------------
 
 const Usuario = require("./Usuario");
+const Profesor = require("./Profesor");
 
 // -------------------------------------------------------
 // Asociaciones / Relaciones
 // -------------------------------------------------------
 // TODO: definir relaciones cuando los modelos estén completos
 // -------------------------------------------------------
+Profesor.belongsToMany(Curso, { through: "curso_profesor" });
+Curso.belongsToMany(Profesor, { through: "curso_profesor" });
 
 const db = {
   sequelize,
   Usuario,
+  Profesor,
 };
 
 module.exports = db;
