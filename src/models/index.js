@@ -10,7 +10,11 @@ const { sequelize } = require("../config/database");
 // -------------------------------------------------------
 
 const Usuario = require("./Usuario");
+<<<<<<< feat/model-profesor
 const Profesor = require("./Profesor");
+=======
+const Alumno = require("./Alumno");
+>>>>>>> develop
 
 // -------------------------------------------------------
 // Asociaciones / Relaciones
@@ -23,7 +27,11 @@ Curso.belongsToMany(Profesor, { through: "curso_profesor" });
 const db = {
   sequelize,
   Usuario,
+<<<<<<< feat/model-profesor
   Profesor,
+=======
+  Alumno,
+>>>>>>> develop
 };
 
 module.exports = db;
