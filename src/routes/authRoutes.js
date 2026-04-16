@@ -1,11 +1,10 @@
 const { Router } = require("express");
 const controller = require("../controllers/authController");
+const { redirectIfLogged } = require("../middlewares/auth");
 
 const router = Router();
 
-// Rutas de autenticación
-
-router.post("/login", controller.loginForm);
+router.get("/login", redirectIfLogged, controller.loginForm);
 router.post("/login", controller.login);
 router.post("/logout", controller.logout);
 
