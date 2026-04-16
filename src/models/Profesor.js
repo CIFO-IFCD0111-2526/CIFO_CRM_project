@@ -31,9 +31,8 @@ const Profesor = sequelize.define(
     },
     telefono: {
       type: DataTypes.STRING(20),
-      allowNull: false,
+      allowNull: true,
       validate: {
-        notEmpty: {msg: "El teléfono no puede estar vacío"},
         is: {
             args: /^\+?[0-9\s\-()]{7,20}$/,
             msg: "Formato de teléfono inválido"
