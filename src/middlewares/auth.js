@@ -18,7 +18,7 @@ function redirectIfLogged(req, res, next) {
 }
 
 module.exports = {
-    authPage,
+    auth,
     redirectIfLogged
 };
 
