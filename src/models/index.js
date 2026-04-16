@@ -15,6 +15,7 @@ const Curso = require("./Curso");
 Curso.belongsToMany(Uf, {through: 'curso_uf' });
 Uf.belongsToMany(Curso, {through: 'curso_uf' });
 
+const Alumno = require("./Alumno");
 
 // -------------------------------------------------------
 // Asociaciones / Relaciones
@@ -26,6 +27,7 @@ const db = {
   sequelize,
   Usuario,
   Curso,
+  Alumno,
 };
 
 module.exports = db;
