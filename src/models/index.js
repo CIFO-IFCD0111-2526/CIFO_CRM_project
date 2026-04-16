@@ -15,6 +15,7 @@ const Curso = require("./Curso");
 Curso.belongsToMany(Uf, {through: 'curso_uf' });
 Uf.belongsToMany(Curso, {through: 'curso_uf' });
 
+const Profesor = require("./Profesor");
 const Alumno = require("./Alumno");
 
 // -------------------------------------------------------
@@ -22,11 +23,14 @@ const Alumno = require("./Alumno");
 // -------------------------------------------------------
 // TODO: definir relaciones cuando los modelos estén completos
 // -------------------------------------------------------
+Profesor.belongsToMany(Curso, { through: "curso_profesor" });
+Curso.belongsToMany(Profesor, { through: "curso_profesor" });
 
 const db = {
   sequelize,
   Usuario,
   Curso,
+  Profesor,
   Alumno,
 };
 
