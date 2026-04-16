@@ -14,22 +14,12 @@ const Usuario = require("./Usuario");
 // -------------------------------------------------------
 // Asociaciones / Relaciones
 // -------------------------------------------------------
-// Ejemplo para cuando se amplíe:
-//
-// const Alumno = require("./Alumno");
-// const Curso  = require("./Curso");
-//
-// Alumno.belongsToMany(Curso, { through: "alumno_curso" });
-// Curso.belongsToMany(Alumno, { through: "alumno_curso" });
+// TODO: definir relaciones cuando los modelos estén completos
 // -------------------------------------------------------
 
 const db = {
   sequelize,
   Usuario,
-  // Añadir aquí los nuevos modelos:
-  // Alumno,
-  // Curso,
-  // Profesor,
 };
 
 module.exports = db;

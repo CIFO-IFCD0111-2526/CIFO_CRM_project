@@ -1,49 +1,73 @@
+require("dotenv").config();
 
 const path = require("path");
-var session = require('express-session'); // per fer servir 
-require('dotenv').config({ path: `${path.join(__dirname,"..",".env")}` }); // per fer servir dades del .env 
-
-
-// pendiente de que exista el middleware
-// require(`${path.join(__dirname,"src","middlewares", "auth.js")}`); 
-
-
 const express = require("express");
-const server = new express(); // creem el servidor
+const session = require("express-session");
+const expressLayouts = require("express-ejs-layouts");
 
-// li diem que faci servir ejs com a viewer amb les vistes de ./views
-server.set('view engine', 'ejs');
-server.set('views', path.join(__dirname, 'views'));
+const { ensureDatabaseExists } = require("./config/database");
+const { sequelize } = require("./models");
 
+const routes = require("./routes");
+const server = express();
+const PORT = process.env.PORT || 3000;
 
-// servir estáticos desde public
+// -------------------------------------------------------
+// Motor de vistas: EJS + Layout
+// -------------------------------------------------------.
+server.set("view engine", "ejs");
+server.set("views", path.join(__dirname, "views"));
+server.use(expressLayouts);
+server.set("layout", "layout");
+
+// -------------------------------------------------------
+// Middleware
+// -------------------------------------------------------
 server.use(express.static(path.join(__dirname, "public")));
 server.use(express.json());
-server.use(express.urlencoded({ extended: true })); // extended ens permet enviar formularis
+server.use(express.urlencoded({ extended: true })); // para leer formularios
 
+// -------------------------------------------------------
+// Sesiones
+// -------------------------------------------------------
+// express-session guarda datos del usuario en el servidor.
+// El navegador solo recibe una cookie con el ID de la sesión.
+// Así podemos saber si el usuario ha hecho login o no.
 
-// https://www.npmjs.com/package/express-session
-// info sobre el use de session , que s'haurà de llegir bé i 
-// configurar
 server.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,   // no guarda sessions anònimes
-    rolling: true,              // para que se amplie la duracion de la cookie/session en cada petició
-    cookie: {
-            httpOnly: true,    // para que JS de navegador no pueda leer la cookie, podria donar problenmes de seguretat. 
-            secure:  process.env.NODE_ENV === "production" ,    // entenent que a production farem servir httpS
-            maxAge: 120 * 60 * 1000, // 120  minutos en ms ( 2h )            
-        }
-    }
-))
+  secret: process.env.SESSION_SECRET,
+  resave: false,              // no reguardar si no ha cambiado
+  saveUninitialized: false,   // no crear sesión para visitantes anónimos
+  cookie: {
+    httpOnly: true,           // JS del navegador no puede leer la cookie
+    maxAge: 60 * 60 * 1000,  // 1 hora
+  },
+}));
 
+// -------------------------------------------------------
+// Rutas
+// -------------------------------------------------------
+server.use("/", routes);
 
+// -------------------------------------------------------
+// Arrancar
+// -------------------------------------------------------
+async function startServer() {
+  try {
+    await ensureDatabaseExists();
+    await sequelize.authenticate();
+    console.log("Conexión a MySQL OK.");
 
-// pendiente de que exista 
-// server.use("/", require( `${path.join(__dirname,"routes","index.js")}` ));
+    await sequelize.sync({ alter: true });
+    console.log("Modelos sincronizados.");
 
+    server.listen(PORT, () => {
+      console.log(`Servidor en http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Error al iniciar:", error.message);
+    process.exit(1);
+  }
+}
 
-const PORT = process.env.PORT || 3000;
-// definim un port defecte o el del .env i comencem a escoltar 
-server.listen(PORT, () => console.log("Servidor activo en http://localhost:" + PORT));
+startServer();
