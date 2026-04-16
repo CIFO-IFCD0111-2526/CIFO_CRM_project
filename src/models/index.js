@@ -37,6 +37,7 @@ Curso.belongsToMany(Alumno,  { through: "curso_alumno" });
 
 Uf.belongsToMany(Alumno,  { through: "alumno_uf" });
 Alumno.belongsToMany(Uf,  { through: "alumno_uf" });
+// las UF estan en varios cursos y los cursos tiene varias Uf
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// AQUI SE LIA XD
 
 
@@ -44,6 +45,9 @@ Alumno.belongsToMany(Uf,  { through: "alumno_uf" });
 const db = {
   sequelize,
   Usuario,
+  Curso,
+  Alumno,
+  Uf
 };
 
 module.exports = db;
