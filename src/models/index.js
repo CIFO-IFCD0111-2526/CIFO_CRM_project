@@ -10,6 +10,7 @@ const { sequelize } = require("../config/database");
 // -------------------------------------------------------
 
 const Usuario = require("./Usuario");
+const Alumno = require("./Alumno");
 
 // -------------------------------------------------------
 // Asociaciones / Relaciones
@@ -20,6 +21,7 @@ const Usuario = require("./Usuario");
 const db = {
   sequelize,
   Usuario,
+  Alumno,
 };
 
 module.exports = db;
