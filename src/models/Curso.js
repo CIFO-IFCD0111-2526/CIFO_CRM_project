@@ -1,4 +1,4 @@
-const Curso = sequelize.define( // asdasda
+const Curso = sequelize.define( 
     "Curso",
     {
         id: {
@@ -32,5 +32,11 @@ const Curso = sequelize.define( // asdasda
         // timestamps y underscored ya definidos globalmente en config/database.js
     }
 );
+/*
+Curso.belongsToMany(Uf, { 
+    through: 'curso-uf' ,
+    
+ })
 
+*/
 module.exports = Curso;
