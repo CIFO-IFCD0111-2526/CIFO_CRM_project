@@ -11,4 +11,10 @@ router.get("/", (req, res) => {
 
 
 router.use("/", authRoutes);
+
+
+router.get("/", (req, res) => {
+  res.send("CIFO CRM - Servidor OK");
+});
+
 module.exports = router;
