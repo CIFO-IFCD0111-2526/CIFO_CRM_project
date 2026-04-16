@@ -185,21 +185,6 @@ nav {
     gap: 1rem;
 }
 
-.topbar-icon {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--color-icono);
-    font-size: 18px;
-    padding: 0.4rem;
-    border-radius: var(--radio-pequeno);
-    transition: color 0.2s;
-}
-
-.topbar-icon:hover {
-    color: var(--color-primario);
-}
-
 .topbar-user {
     display: flex;
     align-items: center;
@@ -349,53 +334,6 @@ tbody tr:last-child td {
 
 tbody tr:hover {
     background-color: var(--color-fondo-tarjeta);
-}
-
-/* ---- Formularios globales ---- */
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
-}
-
-.form-group label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--color-texto-etiquetas);
-    font-family: var(--fuente-titulos);
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 0.6rem 0.9rem;
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-pequeno);
-    font-family: var(--fuente-cuerpo);
-    font-size: 14px;
-    color: var(--color-texto-principal);
-    background-color: var(--color-fondo-pagina);
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
-}
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-    color: var(--color-texto-placeholder);
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    border-color: var(--color-primario);
-    box-shadow: 0 0 0 3px var(--color-primario-suave);
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 100px;
 }
 
 /* ---- Mensajes de error ---- */

@@ -46,7 +46,6 @@
                 </div>
 
                 <div class="nav-bottom">
-                    <a href="/ayuda"><i class="fa-solid fa-circle-question"></i> Ayuda</a>
                     <button type="button" class="btn-logout" id="btnLogout">
                         <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
                     </button>
@@ -58,9 +57,6 @@
             <% if (typeof usuario !== 'undefined' && usuario) { %>
                 <header class="topbar">
                     <div class="topbar-right">
-                        <button class="topbar-icon" title="Notificaciones">
-                            <i class="fa-solid fa-bell"></i>
-                        </button>
                         <div class="topbar-user">
                             <div class="topbar-avatar">
                                 <%= usuario.nombre.charAt(0) %><%= usuario.apellidos.charAt(0) %>
@@ -79,16 +75,5 @@
             </main>
         </div>
     </div>
-
-    <script>
-        const btnLogout = document.getElementById("btnLogout");
-        if (btnLogout) {
-            btnLogout.addEventListener("click", async () => {
-                const res = await fetch("/logout", { method: "POST" });
-                const data = await res.json();
-                if (data.ok) window.location.href = data.redirect;
-            });
-        }
-    </script>
 </body>
 </html>
