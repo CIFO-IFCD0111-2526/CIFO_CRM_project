@@ -9,3 +9,4 @@ router.get("/", (req, res) => {
 });
 
 module.exports = router;
+router.use("/", authRoutes);
