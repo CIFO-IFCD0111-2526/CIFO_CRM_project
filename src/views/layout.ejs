@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %> | CIFO CRM</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <div class="app">
+        <%# Si hay usuario en sesión, mostrar nav lateral %>
+        <% if (typeof usuario !== 'undefined' && usuario) { %>
+            <nav>
+                <h2>CIFO CRM</h2>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/usuarios">Usuarios</a>
+
+                <div class="nav-bottom">
+                    <div class="nav-user"><%= usuario.nombre %> (<%= usuario.nivel_acceso %>)</div>
+                    <button type="button" class="btn-logout" id="btnLogout">Cerrar sesion</button>
+                </div>
+            </nav>
+        <% } %>
+
+        <main class="<%= (typeof usuario !== 'undefined' && usuario) ? 'with-nav' : '' %>">
+            <%- body %>
+        </main>
+    </div>
+
+    <script>
+      const btnLogout = document.getElementById("btnLogout");
+      if (btnLogout) {
+        btnLogout.addEventListener("click", async () => {
+          const res = await fetch("/logout", { method: "POST" });
+          const data = await res.json();
+          if (data.ok) window.location.href = data.redirect;
+        });
+      }
+    </script>
+</body>
+</html>

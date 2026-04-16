@@ -1,69 +1,83 @@
+// -------------------------------------------------------
+// Server.js — Ejemplo webserver con EJS + Layout + Sesiones
+// -------------------------------------------------------
+
 require("dotenv").config();
 
 const path = require("path");
 const express = require("express");
+const session = require("express-session");
+const expressLayouts = require("express-ejs-layouts");
+
 const { ensureDatabaseExists } = require("./config/database");
 const { sequelize, Usuario } = require("./models");
-const apiRoutes = require("./routes");
+const routes = require("./routes");
 const seedUsuarios = require("./seeders/usuarioSeeder");
 
 const server = express();
 const PORT = process.env.PORT || 3000;
 
 // -------------------------------------------------------
-// Configurar EJS como motor de vistas
+// 1. Motor de vistas: EJS + Layout
 // -------------------------------------------------------
+// express-ejs-layouts nos permite tener UN layout.ejs
+// que se reutiliza en todas las vistas (nav, head, footer).
+// Cada vista solo define su contenido, y el layout lo envuelve.
+
 server.set("view engine", "ejs");
 server.set("views", path.join(__dirname, "views"));
+server.use(expressLayouts);
+server.set("layout", "layout"); // usa views/layout.ejs por defecto
 
+// -------------------------------------------------------
+// 2. Middleware
+// -------------------------------------------------------
+server.use(express.static(path.join(__dirname, "public")));
 server.use(express.json());
+server.use(express.urlencoded({ extended: true })); // para leer formularios
 
 // -------------------------------------------------------
-// Ruta webserver: renderiza HTML con EJS
+// 3. Sesiones
 // -------------------------------------------------------
-server.get("/", async (_req, res) => {
-  try {
-    const usuarios = await Usuario.findAll({
-      attributes: { exclude: ["password"] },
-      order: [["id", "ASC"]],
-    });
-    res.render("usuarios", { usuarios });
-  } catch (error) {
-    res.status(500).send("Error al cargar usuarios: " + error.message);
-  }
-});
+// express-session guarda datos del usuario en el servidor.
+// El navegador solo recibe una cookie con el ID de la sesión.
+// Así podemos saber si el usuario ha hecho login o no.
+
+server.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,              // no reguardar si no ha cambiado
+  saveUninitialized: false,   // no crear sesión para visitantes anónimos
+  cookie: {
+    httpOnly: true,           // JS del navegador no puede leer la cookie
+    maxAge: 60 * 60 * 1000,  // 1 hora
+  },
+}));
 
 // -------------------------------------------------------
-// Rutas API (JSON)
+// 4. Rutas
 // -------------------------------------------------------
-server.use("/api", apiRoutes);
+server.use("/", routes);
 
+// -------------------------------------------------------
+// 5. Arrancar
+// -------------------------------------------------------
 async function startServer() {
   try {
-    // 1. Crear la BD si no existe
     await ensureDatabaseExists();
-
-    // 2. Autenticar conexión con Sequelize
     await sequelize.authenticate();
-    console.log("Conexión a MySQL establecida correctamente.");
+    console.log("Conexión a MySQL OK.");
 
-    // 3. Sincronizar modelos → tablas
-    //    alter: true  → actualiza columnas sin borrar datos
-    //    force: true  → BORRA y recrea tablas (solo desarrollo)
     await sequelize.sync({ alter: true });
-    console.log("Modelos sincronizados con la base de datos.");
+    console.log("Modelos sincronizados.");
 
-    // 4. Seed de datos de ejemplo (solo si la tabla está vacía)
     await seedUsuarios();
 
-    // 5. Levantar servidor
     server.listen(PORT, () => {
-      console.log(`Servidor escuchando en http://localhost:${PORT}`);
-      console.log(`API disponible en http://localhost:${PORT}/api/usuarios`);
+      console.log(`Servidor en http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error("Error al iniciar el servidor:", error.message);
-    process.exit(1); // Salir con error para indicar que el arranque falló
+    console.error("Error al iniciar:", error.message);
+    process.exit(1);
   }
 }
 

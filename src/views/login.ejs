@@ -1,0 +1,55 @@
+<%# Esta vista NO muestra nav (usuario = null en el layout) %>
+
+<div class="login-bg">
+    <div class="login-card">
+        <h1>CIFO CRM</h1>
+        <p>Inicia sesion para continuar</p>
+
+        <div class="error-msg" id="loginMsg" style="display:none;"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="admin@cifo.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Contrasenya</label>
+                <input type="password" id="password" name="password" required placeholder="admin123">
+            </div>
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+  const form = document.getElementById("loginForm");
+  const msg = document.getElementById("loginMsg");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    msg.style.display = "none";
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (data.ok) {
+        window.location.href = data.redirect;
+      } else {
+        msg.textContent = data.error;
+        msg.style.display = "block";
+      }
+    } catch {
+      msg.textContent = "Error de conexion con el servidor.";
+      msg.style.display = "block";
+    }
+  });
+</script>

@@ -1,20 +1,31 @@
+// -------------------------------------------------------
+// Registro central de rutas
+// -------------------------------------------------------
+
 const { Router } = require("express");
+const { isAuthenticated } = require("../middlewares/auth");
+const authRoutes = require("./authRoutes");
 const usuarioRoutes = require("./usuarioRoutes");
 
 const router = Router();
 
-// -------------------------------------------------------
-// Registro central de rutas
-// -------------------------------------------------------
-// Para añadir nuevas rutas:
-//   1. Crea el archivo en /routes (ej: alumnoRoutes.js)
-//   2. Impórtalo aquí
-//   3. Monta con router.use("/ruta", tuRouter)
-// -------------------------------------------------------
+// --- Rutas públicas (no requieren login) ---
+router.use("/", authRoutes);
 
-router.use("/usuarios", usuarioRoutes);
+// --- Rutas protegidas (requieren login) ---
+router.use("/usuarios", isAuthenticated, usuarioRoutes);
 
-// router.use("/alumnos", alumnoRoutes);
-// router.use("/cursos", cursoRoutes);
+// --- Dashboard ---
+router.get("/dashboard", isAuthenticated, (req, res) => {
+  res.render("dashboard", {
+    titulo: "Dashboard",
+    usuario: req.session.usuario,
+  });
+});
+
+// --- Raíz redirige a dashboard ---
+router.get("/", isAuthenticated, (req, res) => {
+  res.redirect("/dashboard");
+});
 
 module.exports = router;
