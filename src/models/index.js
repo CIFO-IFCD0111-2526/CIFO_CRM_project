@@ -12,6 +12,10 @@ const { sequelize } = require("../config/database");
 const Usuario = require("./Usuario");
 const Curso = require("./Curso");
 
+Curso.belongsToMany(Uf, {through: 'curso_uf' });
+Uf.belongsToMany(Curso, {through: 'curso_uf' });
+
+
 // -------------------------------------------------------
 // Asociaciones / Relaciones
 // -------------------------------------------------------

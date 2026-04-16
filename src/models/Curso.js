@@ -32,11 +32,8 @@ const Curso = sequelize.define(
         // timestamps y underscored ya definidos globalmente en config/database.js
     }
 );
-/*
-Curso.belongsToMany(Uf, { 
-    through: 'curso-uf' ,
-    
- })
 
-*/
+
+
+
 module.exports = Curso;
