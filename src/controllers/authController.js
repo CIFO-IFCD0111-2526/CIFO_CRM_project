@@ -18,7 +18,7 @@ const loginForm = async (req, res) => {
 // POST /login
 
 const login = async (req, res) => {
-    const ({ loginEmail, loginPassword }) = req.body;
+    const { loginEmail, loginPassword } = req.body;
 
     try {
         // Buscamos si existe el usuario en la tabla 'usuario' de la DB, y recogemos solamente su email y contraseña.
@@ -31,7 +31,7 @@ const login = async (req, res) => {
         } else if (!bcrypt.compareSync(loginPassword, userLogin.password)) {
             res.status(400).json({ error: "Contraseña incorrecta." });
         } else if (userLogin.activo === false) {
-            res.status(400).json({ error: "Usuario inactivo.". });
+            res.status(400).json({ error: "Usuario inactivo." });
         } else {
             res.status(200).json({ message: "Login correcto!" });
         }
