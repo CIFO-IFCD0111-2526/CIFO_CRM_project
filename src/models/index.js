@@ -11,11 +11,31 @@ const { sequelize } = require("../config/database");
 
 const Usuario = require("./Usuario");
 
+const Curso = require("./Curso");
+
+const Profesor = require("./Profesor");
+const Alumno = require("./Alumno");
+
 // -------------------------------------------------------
 // Asociaciones / Relaciones
 // -------------------------------------------------------
 // TODO: definir relaciones cuando los modelos estén completos
 // -------------------------------------------------------
+
+// los cursos tienen varias Uf, y las Uf pueden estar en mas de un curso
+Curso.belongsToMany(Uf, {through: 'curso_uf' });
+Uf.belongsToMany(Curso, {through: 'curso_uf' });
+
+//  los profesores pueden estar en varios cursos y algunos cursos pueden tener mas de un profe
+Profesor.belongsToMany(Curso, { through: "curso_profesor" });
+Curso.belongsToMany(Profesor, { through: "curso_profesor" });
+
+// las UF estan en varios cursos y los cursos tiene varias Uf
+Uf.belongsToMany(Alumno, {through: "uf_curso"});
+Alumno.belongsToMany(Uf, {through: "uf_curso"});
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////// AQUI SE LIA XD
+
+
 
 const db = {
   sequelize,
