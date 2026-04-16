@@ -16,14 +16,21 @@ const Alumno = sequelize.define(
     },
 
     nombre: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-
-    apellidos: {
-      type: DataTypes.STRING(150),
-      allowNull: true,
-    },
+          type: DataTypes.STRING(100),
+          allowNull: false,
+          validate: {
+            notEmpty: { msg: "El nombre no puede estar vacío" },
+            len: { args: [2, 100], msg: "El nombre debe tener entre 2 y 100 caracteres" },
+          },
+        },
+    
+        apellidos: {
+          type: DataTypes.STRING(150),
+          allowNull: false,
+          validate: {
+            notEmpty: { msg: "Los apellidos no pueden estar vacíos" },
+          },
+        },
 
     dni: {
       type: DataTypes.STRING(20),
