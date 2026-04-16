@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %> | CIFO La Violeta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <% if (locals.css) { %>
+        <link rel="stylesheet" href="/css/<%= css %>">
+    <% } %>
+    <script src="/js/main.js" defer></script>
+    <% if (locals.js) { %>
+        <script src="/js/<%= js %>" defer></script>
+    <% } %>
+</head>
+<body>
+    <div class="app-container">
+        <% if (typeof usuario !== 'undefined' && usuario) { %>
+            <nav>
+                <div class="nav-logo">
+                    <img src="/images/logo.webp" alt="CIFO La Violeta">
+                </div>
+
+                <div class="nav-links">
+                    <a href="/dashboard" class="<% if (locals.paginaActual === 'dashboard') { %>active<% } %>">
+                        <i class="fa-solid fa-gauge"></i> Dashboard
+                    </a>
+                    <a href="/alumnos" class="<% if (locals.paginaActual === 'alumnos') { %>active<% } %>">
+                        <i class="fa-solid fa-user-graduate"></i> Alumnos
+                    </a>
+                    <a href="/cursos" class="<% if (locals.paginaActual === 'cursos') { %>active<% } %>">
+                        <i class="fa-solid fa-book"></i> Cursos
+                    </a>
+                    <a href="/ufs" class="<% if (locals.paginaActual === 'ufs') { %>active<% } %>">
+                        <i class="fa-solid fa-layer-group"></i> UF's
+                    </a>
+                    <a href="/profesores" class="<% if (locals.paginaActual === 'profesores') { %>active<% } %>">
+                        <i class="fa-solid fa-chalkboard-user"></i> Profesores
+                    </a>
+                    <% if (usuario.nivel_acceso === 'admin') { %>
+                        <a href="/usuarios" class="<% if (locals.paginaActual === 'usuarios') { %>active<% } %>">
+                            <i class="fa-solid fa-gear"></i> Administración
+                        </a>
+                    <% } %>
+                </div>
+
+                <div class="nav-bottom">
+                    <button type="button" class="btn-logout" id="btnLogout">
+                        <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+                    </button>
+                </div>
+            </nav>
+        <% } %>
+
+        <div class="main-wrapper <%= (typeof usuario !== 'undefined' && usuario) ? 'with-nav' : '' %>">
+            <% if (typeof usuario !== 'undefined' && usuario) { %>
+                <header class="topbar">
+                    <div class="topbar-right">
+                        <div class="topbar-user">
+                            <div class="topbar-avatar">
+                                <%= usuario.nombre.charAt(0) %><%= usuario.apellidos.charAt(0) %>
+                            </div>
+                            <div class="topbar-info">
+                                <span class="topbar-nombre"><%= usuario.nombre %></span>
+                                <span class="topbar-rol"><%= usuario.nivel_acceso %></span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            <% } %>
+
+            <main>
+                <%- body %>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
