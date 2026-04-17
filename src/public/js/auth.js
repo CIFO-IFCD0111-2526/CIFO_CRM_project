@@ -2,48 +2,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#loginForm");
   const emailInput = document.querySelector("#loginEmail");
   const passwordInput = document.querySelector("#loginPassword");
-  const rememberInput = document.querySelector("#loginRemember");
   const loginMsg = document.querySelector("#loginMsg");
 
-  if (!form) return;
+    const isValidEmail = (email) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
 
-  const isValidEmail = (email) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
+    const setError = (input) => {
+        input.classList.add("error");
+    };
 
-  const setError = (input) => {
-    input.classList.add("error");
-  };
+    const clearError = (input) => {
+        input.classList.remove("error");
+    };
 
-  const clearError = (input) => {
-    input.classList.remove("error");
-  };
-
-  const showMsg = (html, isError = true) => {
-    loginMsg.innerHTML = html;
-    loginMsg.style.display = "block";
-    loginMsg.classList.toggle("error-msg", isError);
-  };
-
-  const clearMsg = () => {
-    loginMsg.innerHTML = "";
-    loginMsg.style.display = "none";
-    loginMsg.classList.remove("error-msg");
-  };
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  form.addEventListener("submit", (e) => {
+    let errors = [];
 
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
-    const remember = rememberInput ? rememberInput.checked : false;
 
+    // Reset visual
     clearError(emailInput);
     clearError(passwordInput);
-    clearMsg();
 
-    const errors = [];
-
+    // Email
     if (!email) {
       errors.push("El email és obligatori.");
       setError(emailInput);
@@ -52,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setError(emailInput);
     }
 
+    // Password
     if (!password) {
       errors.push("La contraseña és obligatòria.");
       setError(passwordInput);
@@ -61,34 +45,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (errors.length > 0) {
-      showMsg(errors.join("<br>"));
-      return;
-    }
-
-    try {
-      const res = await fetch("/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          loginEmail: email,
-          loginPassword: password,
-          loginRemember: remember,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (data.ok) {
-        window.location.href = data.redirect;
-      } else {
-        showMsg(data.error || "No s'ha pogut iniciar sessió.");
-      }
-    } catch (error) {
-      showMsg("No s'ha pogut iniciar sessió. Torna-ho a provar.");
+      e.preventDefault();
+      loginMsg.innerHTML = errors.join("<br>");
+      loginMsg.style.display = "block";
+    } else {
+      loginMsg.innerHTML = "";
+      loginMsg.style.display = "none";
     }
   });
 
-  [emailInput, passwordInput].forEach((input) => {
+  // Limpia error al escribir
+  [emailInput, passwordInput].forEach(input => {
     input.addEventListener("input", () => {
       clearError(input);
     });
