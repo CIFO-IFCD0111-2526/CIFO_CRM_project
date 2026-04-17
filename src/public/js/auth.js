@@ -28,19 +28,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Email
     if (!email) {
-      errors.push("El email es obligatorio.");
+      errors.push("El email és obligatori.");
       setError(emailInput);
     } else if (!isValidEmail(email)) {
-      errors.push("El formato del email no es válido.");
+      errors.push("El format de l'email no és vàlid.");
       setError(emailInput);
     }
 
     // Password
     if (!password) {
-      errors.push("La contraseña es obligatoria.");
+      errors.push("La contraseña és obligatòria.");
       setError(passwordInput);
     } else if (password.length < 6) {
-      errors.push("La contraseña debe tener al menos 6 caracteres.");
+      errors.push("La contraseña deu tenir al menys 6 caràcters.");
       setError(passwordInput);
     }
 
