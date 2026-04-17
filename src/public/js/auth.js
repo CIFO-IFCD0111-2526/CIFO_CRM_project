@@ -1,72 +1,77 @@
-const registerForm = document.getElementById("registerForm");
+document.addEventListener("DOMContentLoaded", () => {
 
-registerForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-});
+    const registerForm = document.getElementById("registerForm");
 
-// Valores de formulario
-const nombre = document.getElementById("registerNombre").value.trim();
-const apellidos = document.getElementById("registerApellidos").value.trim();
-const email = document.getElementById("registerForm.Email").value.trim();
+    registerForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-const password = document.getElementById("registerPassword").value;
-const confirmPassword = document.getElementById("registerConfirmPassword").value;
+        // Valores de formulario
+        const nombre = document.getElementById("registerNombre").value.trim();
+        const apellidos = document.getElementById("registerApellidos").value.trim();
+        const email = document.getElementById("registerEmail").value.trim();
 
-//para el mensaje 
-const msg = document.getElementById("registerMsg");
-msg.innerHTML = "";
+        const password = document.getElementById("registerPassword").value;
+        const confirmPassword = document.getElementById("registerConfirmPassword").value;
 
-// array error
-const error = [];
+        //para el mensaje 
+        const msg = document.getElementById("registerMsg");
+        msg.innerHTML = "";
 
-// validaciones
+        // array error
+        const error = [];
 
-if (!nombre || !apellidos || !email || !password || !confirmPassword) {
-    error.push("Tots els camps són obligatoris");
-}
+        // validaciones
 
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!nombre || !apellidos || !email || !password || !confirmPassword) {
+            error.push("Tots els camps són obligatoris");
+        }
 
-if (!email.match(emailRegex)) {
-    error.push("email no valit");
-}
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-if (password.lengt < 6) {
-    error.push("La contrasenya ha de tenir com a mínim 6 caràcters.")
-}
+        if (!email.match(emailRegex)) {
+            error.push("email no valit");
+        }
 
-if (password !== confirmPassword) {
-    error.push("Les contrasenyes no coincideixen.");
-}
+        if (password.length < 6) {
+            error.push("La contrasenya ha de tenir almenys 6 caràcters")
+        }
 
-if (error.length > 0) {
-    msg.innerHTML = error.join("<br>");
-    msg.style.color = "red";
-    return;
-}
+        if (password !== confirmPassword) {
+            error.push("Les contrasenyes no coincideixen.");
+        }
 
-// if todo ok!
+        if (error.length > 0) {
+            msg.innerHTML = error.join("<br>");
+            msg.style.color = "red";
+            return;
+        }
 
-try {
-    const res = await fetch("/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            nombre,
-            apellidos,
-            email,
-            password
-        })
+        // if todo ok!
+
+        try {
+            const res = await fetch("/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nombre,
+                    apellidos,
+                    email,
+                    password
+                })
+            });
+
+            const data = await res.json();
+
+            msg.innerHTML = data.message;
+            msg.style.color = "green";
+
+        } catch (error) {
+            msg.innerHTML = "Error al registrar";
+            msg.style.color = "red";
+        }
+
     });
 
-    const data = await res.json();
-
-    msg.innerHTML = data.message;
-    msg.style.color = "green";
-
-} catch (error) {
-    msg.innerHTML = "Error al registrar";
-    msg.style.color = "red";
-}
+});
