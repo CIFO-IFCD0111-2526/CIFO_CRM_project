@@ -10,6 +10,7 @@ const { sequelize } = require("../config/database");
 // -------------------------------------------------------
 
 const Usuario = require("./Usuario");
+const Uf = require("./Uf");
 
 // -------------------------------------------------------
 // Asociaciones / Relaciones
@@ -17,9 +18,11 @@ const Usuario = require("./Usuario");
 // TODO: definir relaciones cuando los modelos estén completos
 // -------------------------------------------------------
 
+
 const db = {
   sequelize,
   Usuario,
+  Uf,
 };
 
 module.exports = db;
