@@ -15,7 +15,7 @@ const loginForm = async (req, res) => {
 // POST /login
 
 const login = async (req, res) => {
-  const { loginEmail, loginPassword } = req.body;
+  const { loginEmail, loginPassword, loginRemember } = req.body;
 
   try {
     const userLogin = await Usuario.findOne({
@@ -37,6 +37,12 @@ const login = async (req, res) => {
       email: userLogin.email,
       nivel_acceso: userLogin.nivel_acceso,
     };
+
+    if (loginRemember) {
+      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
+    } else {
+      req.session.cookie.maxAge = 60 * 60 * 1000;
+    }
 
     return res.status(200).json({ ok: true, redirect: "/dashboard" });
 
