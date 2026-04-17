@@ -1,0 +1,74 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-texto-etiquetas);
+  font-family: var(--fuente-titulos);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  font-family: var(--fuente-cuerpo);
+  font-size: 14px;
+  color: var(--color-texto-principal);
+  background-color: var(--color-fondo-pagina);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--color-texto-placeholder);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px var(--color-primario-suave);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-texto-etiquetas);
+}
+
+.form-check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primario);
+  cursor: pointer;
+}
+
+.form-check label {
+  cursor: pointer;
+}
+
+.form-msg {
+  font-size: 0.85rem;
+  min-height: 1.2rem;
+  color: var(--color-danger);
+}
+
+.form-msg.success {
+  color: #16a34a;
+}

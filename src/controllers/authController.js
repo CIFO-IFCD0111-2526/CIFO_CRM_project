@@ -7,6 +7,7 @@ const loginForm = async (req, res) => {
   res.render("login", {
     titulo: "Login",
     usuario: null,
+    css: "login.css",
   });
 };
 
