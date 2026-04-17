@@ -101,4 +101,4 @@ const logout = async (req, res) => {
   });
 };
 
-module.exports = { loginForm, login, logout };
+module.exports = { loginForm, login, registerForm, register, logout };
