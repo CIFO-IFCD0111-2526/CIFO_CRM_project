@@ -1,0 +1,43 @@
+<div class="register-container">
+  <div class="register-card">
+    <h1 class="register-title">Registro</h1>
+    <p class="register-subtitle">Registro en CRM de CIFO La Violeta</p>
+
+    <form id="registerForm" class="register-form" novalidate>
+      <div class="form-group">
+        <label for="registerNombre">Nombre</label>
+        <input type="text" id="registerNombre" name="nombre" placeholder="Nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="registerApellidos">Apellidos</label>
+        <input type="text" id="registerApellidos" name="apellidos" placeholder="Apellidos" required>
+      </div>
+      <div class="form-group">  
+        <label for="registerEmail">Email</label>
+        <input type="email" id="registerEmail" name="email" placeholder="tu@cifo.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="registerPassword">Contraseña</label>
+        <input type="password" id="registerPassword" name="password" placeholder="••••••••" required>
+      </div>
+      <div class="form-group">  
+        <label for="registerConfirmPassword">Contraseña</label>
+        <input type="password" id="registerConfirmPassword" name="confirmPassword" placeholder="••••••••" required>
+      </div>
+
+      <div class="form-check">
+        <input type="checkbox" id="registerRemember" name="remember">
+        <label for="registerRemember">Recuérdame</label>
+      </div>
+
+      <div id="registerMsg" class="form-msg" aria-live="polite"></div>
+
+      <button type="submit" class="btn btn-primario btn-block">Registrarse</button>
+    </form>
+
+    <p class="register-footer">
+      ¿Ya tienes cuenta? <a href="/login">Ingresar</a>
+    </p>
+  </div>
+</div>
