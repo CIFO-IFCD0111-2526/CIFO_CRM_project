@@ -8,6 +8,7 @@ const loginForm = async (req, res) => {
     titulo: "Login",
     usuario: null,
     css: "login.css",
+    js: "auth.js",
   });
 };
 
