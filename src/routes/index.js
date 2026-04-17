@@ -8,5 +8,7 @@ router.get("/", (req, res) => {
   return res.redirect("/login");
 });
 
-
+router.get("/dashboard", (req, res) => { 
+  if ( !req.session.usuario) return res.redirect("/login");
+}) 
 module.exports = router;
