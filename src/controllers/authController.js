@@ -50,7 +50,7 @@ const registerForm = async (req, res) => {
   res.render("register", {
     titulo: "Registro",
     usuario: null,
-    css: "login.css",
+    css: "register.css",
   });
 };
 
