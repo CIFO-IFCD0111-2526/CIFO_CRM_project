@@ -67,8 +67,17 @@
   font-size: 0.85rem;
   min-height: 1.2rem;
   color: var(--color-danger);
+  margin-top: 10px;
+  display: none;
 }
 
 .form-msg.success {
   color: #16a34a;
+}
+
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+  border-color: var(--color-danger);
+  background-color: var(--color-danger-suave);
 }
