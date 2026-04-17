@@ -15,9 +15,7 @@ const Profesor = require("./Profesor");
 const Alumno = require("./Alumno");
 const Uf = require("./Uf");
 
-const Curso = require("./Curso");
-const Profesor = require("./Profesor");
-const Alumno = require("./Alumno");
+
 
 // -------------------------------------------------------
 // Asociaciones / Relaciones
