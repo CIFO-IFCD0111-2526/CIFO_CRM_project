@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 const loginForm = async (req, res) => {
   res.render("login", {
-    titulo: "Login",
+    titulo: "Inici de sessió",
     usuario: null,
     css: "login.css",
     js: "auth.js",
@@ -23,11 +23,11 @@ const login = async (req, res) => {
     });
 
     if (!userLogin) {
-      return res.status(400).json({ error: "El usuario no existe." });
+      return res.status(400).json({ error: "L'usuari no existeix." });
     }
 
     if (!bcrypt.compareSync(loginPassword, userLogin.password)) {
-      return res.status(400).json({ error: "Contraseña incorrecta." });
+      return res.status(400).json({ error: "Contrasenya incorrecta." });
     }
 
     req.session.usuario = {
@@ -41,7 +41,7 @@ const login = async (req, res) => {
     return res.status(200).json({ ok: true, redirect: "/dashboard" });
 
   } catch (error) {
-    res.status(500).json({ error: "Error de servidor." });
+    res.status(500).json({ error: "Error del servidor." });
   }
 };
 
@@ -49,7 +49,7 @@ const login = async (req, res) => {
 // GET /register 
 const registerForm = async (req, res) => {
   res.render("register", {
-    titulo: "Registro",
+    titulo: "Registre",
     usuario: null,
     css: "register.css",
   });
@@ -62,14 +62,14 @@ const register = async (req, res) => {
 
   // Validación básica
   if (!nombre || !apellidos || !email || !password) {
-    return res.status(400).json({ error: "Todos los campos son obligatorios." });
+    return res.status(400).json({ error: "Tots els camps són obligatoris." });
   }
 
   try {
     // Comprobar email único
     const existe = await Usuario.findOne({ where: { email } });
     if (existe) {
-      return res.status(400).json({ error: "El email ya está registrado." });
+      return res.status(400).json({ error: "El correu electrònic ja està registrat." });
     }
 
     // Hashear password
@@ -89,7 +89,7 @@ const register = async (req, res) => {
 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error de servidor." });
+    res.status(500).json({ error: "Error del servidor." });
   }
 };
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +27,7 @@
                         <i class="fa-solid fa-gauge"></i> Dashboard
                     </a>
                     <a href="/alumnos" class="<% if (locals.paginaActual === 'alumnos') { %>active<% } %>">
-                        <i class="fa-solid fa-user-graduate"></i> Alumnos
+                        <i class="fa-solid fa-user-graduate"></i> Alumnes
                     </a>
                     <a href="/cursos" class="<% if (locals.paginaActual === 'cursos') { %>active<% } %>">
                         <i class="fa-solid fa-book"></i> Cursos
@@ -36,18 +36,18 @@
                         <i class="fa-solid fa-layer-group"></i> UF's
                     </a>
                     <a href="/profesores" class="<% if (locals.paginaActual === 'profesores') { %>active<% } %>">
-                        <i class="fa-solid fa-chalkboard-user"></i> Profesores
+                        <i class="fa-solid fa-chalkboard-user"></i> Professors
                     </a>
                     <% if (usuario.nivel_acceso === 'admin') { %>
                         <a href="/usuarios" class="<% if (locals.paginaActual === 'usuarios') { %>active<% } %>">
-                            <i class="fa-solid fa-gear"></i> Administración
+                            <i class="fa-solid fa-gear"></i> Administració
                         </a>
                     <% } %>
                 </div>
 
                 <div class="nav-bottom">
                     <button type="button" class="btn-logout" id="btnLogout">
-                        <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+                        <i class="fa-solid fa-right-from-bracket"></i> Tancar sessió
                     </button>
                 </div>
             </nav>
