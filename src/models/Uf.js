@@ -10,7 +10,7 @@ const Uf = sequelize.define(
             autoIncrement: true,
         },
         codigo: {
-            type: DataTypes.STRING(32),
+            type: DataTypes.STRING(50),
             allowNull: false,
             unique: true,
             validate: {

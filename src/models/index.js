@@ -15,6 +15,10 @@ const Profesor = require("./Profesor");
 const Alumno = require("./Alumno");
 const Uf = require("./Uf");
 
+const Curso = require("./Curso");
+const Profesor = require("./Profesor");
+const Alumno = require("./Alumno");
+
 // -------------------------------------------------------
 // Asociaciones / Relaciones
 // -------------------------------------------------------
@@ -65,6 +69,20 @@ Curso.belongsToMany(Alumno,  { through: CursoAlumno });
 Uf.belongsToMany(Alumno,  { through: AlumnoUf });
 Alumno.belongsToMany(Uf,  { through: AlumnoUf });
 
+Uf.belongsToMany(Alumno, {through: "curso_uf"});
+Alumno.belongsToMany(Uf, {through: "curso_uf"});
+
+
+
+// Cursos tienen varios alumnos, los alumnos pueden estar en varios cursos, 
+// ( aunque no en dos cursos activos simultáneamente en teoria , deberemos verificar en otra parte, quizás )
+Alumno.belongsToMany(Curso,  { through: CursoAlumno });
+Curso.belongsToMany(Alumno,  { through: CursoAlumno });
+
+// las UF estan en varios cursos y los cursos tiene varias Uf
+Uf.belongsToMany(Alumno,  { through: AlumnoUf });
+Alumno.belongsToMany(Uf,  { through: AlumnoUf });
+
 const db = {
   // taules SQL per nom JS ( objeto JS ) 
   sequelize,
@@ -72,6 +90,7 @@ const db = {
   Curso,
   Alumno,
   Uf,
+
   // tablas intermedias ( objeto JS ) 
   CursoAlumno,
   AlumnoUf
