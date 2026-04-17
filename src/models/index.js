@@ -1,3 +1,4 @@
+const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/database");
 
 // -------------------------------------------------------
@@ -67,16 +68,21 @@ Curso.belongsToMany(Alumno,  { through: CursoAlumno });
 Uf.belongsToMany(Alumno,  { through: AlumnoUf });
 Alumno.belongsToMany(Uf,  { through: AlumnoUf });
 
+// Alumno belongsTo Usuario (FK ultimo_id_modif)
+Alumno.belongsTo(Usuario, { foreignKey: "ultimo_id_modif" });
+Usuario.hasMany(Alumno, { foreignKey: "ultimo_id_modif" });
+
 
 const db = {
-  // taules SQL per nom JS ( objeto JS ) 
+  // taules SQL per nom JS ( objeto JS )
   sequelize,
   Usuario,
   Curso,
+  Profesor,
   Alumno,
   Uf,
 
-  // tablas intermedias ( objeto JS ) 
+  // tablas intermedias ( objeto JS )
   CursoAlumno,
   AlumnoUf
 };
