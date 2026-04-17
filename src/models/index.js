@@ -30,9 +30,13 @@ Uf.belongsToMany(Curso, {through: 'curso_uf' });
 Profesor.belongsToMany(Curso, { through: "curso_profesor" });
 Curso.belongsToMany(Profesor, { through: "curso_profesor" });
 
-// las UF estan en varios cursos y los cursos tiene varias Uf
-Uf.belongsToMany(Alumno, {through: "uf_curso"});
-Alumno.belongsToMany(Uf, {through: "uf_curso"});
+Alumno.belongsToMany(Curso,  { through: "curso_alumno" });
+Curso.belongsToMany(Alumno,  { through: "curso_alumno" });
+
+
+
+Uf.belongsToMany(Alumno,  { through: "alumno_uf" });
+Alumno.belongsToMany(Uf,  { through: "alumno_uf" });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// AQUI SE LIA XD
 
 
