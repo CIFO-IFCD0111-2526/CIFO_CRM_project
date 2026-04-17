@@ -75,3 +75,19 @@
     font-size: 1.5rem;
   }
 }
+
+/* Para los mensajes de error a la hora de validar contraseña y email */
+.form-msg {
+  display: none;
+}
+
+.error {
+  border: 2px solid #e74c3c;
+  background-color: #fdecea;
+}
+
+.form-msg {
+  color: #e74c3c;
+  margin-top: 10px;
+  display: none;
+}
