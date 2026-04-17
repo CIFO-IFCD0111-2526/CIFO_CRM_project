@@ -13,6 +13,7 @@ const Usuario = require("./Usuario");
 const Curso = require("./Curso");
 const Profesor = require("./Profesor");
 const Alumno = require("./Alumno");
+const Uf = require("./Uf");
 
 // -------------------------------------------------------
 // Asociaciones / Relaciones
