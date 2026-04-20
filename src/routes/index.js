@@ -9,6 +9,7 @@ const cursoRoutes = require("./cursoRoutes");
 //const usuarioRoutes = require("./usuarioRoutes");
 
 
+
 router.use("/", authRoutes);
 
 // Rutas con sus prefijos
@@ -17,6 +18,7 @@ router.use("/cursos", cursoRoutes);
 //router.use("/ufs", ufRoutes);
 //router.use("/profesores", profesorRoutes);
 //router.use("/usuarios", usuarioRoutes);
+
 
 router.get("/", (req, res) => {
   if (req.session.usuario) return res.redirect("/dashboard");
