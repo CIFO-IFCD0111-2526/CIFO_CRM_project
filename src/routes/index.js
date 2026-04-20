@@ -4,9 +4,9 @@ const authRoutes = require("./authRoutes");
 const dashboardRoutes = require("./dashboardRoutes");
 const alumnoRoutes = require("./alumnoRoutes");
 const cursoRoutes = require("./cursoRoutes");
-const ufRoutes = require("./ufRoutes");
 const profesorRoutes = require("./profesorRoutes");
-// const usuarioRoutes = require("./usuarioRoutes");
+const ufRoutes = require("./ufRoutes");
+const usuarioRoutes = require("./usuarioRoutes");
 
 router.use("/", authRoutes, dashboardRoutes);
 
@@ -22,15 +22,10 @@ router.get("/", (req, res) => {
   return res.redirect("/login");
 });
 
+// ruta dashboard
 router.get("/dashboard", (req, res) => {
-  res.render("dashboard",
-    {
-      titulo: "Inici", /* ¿¿ tauler de control, Pagina principal ?? */
-      usuario: req.session.usuario , 
-      css: "dashboard.css",
-      // js: "dashboard.js",
-    }
-  );
+  if(!req.session.usuario) return res.redirect("/login");
+  res.render("dashboard", {usuario: req.session.usuario});
 });
 
 module.exports = router;
