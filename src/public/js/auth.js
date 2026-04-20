@@ -117,7 +117,10 @@ document.addEventListener("DOMContentLoaded", () => {
       clearError(input);
     });
   });
+
 });
+
+
 
 // Validacio de registre
 document.addEventListener("DOMContentLoaded", () => {

@@ -16,17 +16,28 @@ router.use("/alumnos", alumnoRoutes);
 router.use("/cursos", cursoRoutes);
 router.use("/ufs", ufRoutes);
 router.use("/profesores", profesorRoutes);
-router.use("/usuarios", usuarioRoutes)
+router.use("/usuarios", usuarioRoutes);
 
 router.get("/", (req, res) => {
   if (req.session.usuario) return res.redirect("/dashboard");
   return res.redirect("/login");
 });
-
 // ruta dashboard
-router.get("/dashboard", (req, res) => {
-  if(!req.session.usuario) return res.redirect("/login");
+router.get("/dashboard", authPage, (req, res) => {
   res.render("dashboard", {usuario: req.session.usuario});
+});
+
+
+router.get("/dashboard", (req, res) => {
+  res.render("dashboard",
+    {
+      titulo: "Inici", /* ¿¿ tauler de control, Pagina principal ?? */
+      usuario: req.session.usuario , 
+      css: "dashboard.css",
+      js: "dashboard.js",
+
+    }
+  );
 });
 
 module.exports = router;
