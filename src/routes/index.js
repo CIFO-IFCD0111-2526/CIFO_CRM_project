@@ -21,12 +21,4 @@ router.get("/", (req, res) => {
   if (req.session.usuario) return res.redirect("/dashboard");
   return res.redirect("/login");
 });
-
-// ruta dashboard
-router.get("/dashboard", authPage, (req, res) => {
-  res.render("dashboard", { usuario: req.session.usuario });
-});
-router.get("/dashboard", (req, res) => { 
-  if ( !req.session.usuario) return res.redirect("/login");
-}) 
 module.exports = router;
