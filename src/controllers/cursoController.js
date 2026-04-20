@@ -9,6 +9,7 @@ const getAll = async (req, res) => {
             usuario: null,
             css: "cursos.css",
             js: "cursos.js",
+
             cursos
         });
     } catch (error) {
@@ -32,6 +33,7 @@ const getById = async (req, res) => {
             "titulo": "Busqueda de cursos por ID",
             usuario:"null",
             css: "cursos.css",
+
              curso });
 
     } catch (error) {
