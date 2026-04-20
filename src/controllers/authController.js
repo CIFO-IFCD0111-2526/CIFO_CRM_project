@@ -58,6 +58,7 @@ const registerForm = async (req, res) => {
     titulo: "Registre",
     usuario: null,
     css: "register.css",
+    js:"auth.js"
   });
 };
 
