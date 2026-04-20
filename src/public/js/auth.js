@@ -232,3 +232,4 @@ document.addEventListener("DOMContentLoaded", () => {
   [nombreInput, apellidosInput, emailInput, passwordInput, confirmPasswordInput]
     .forEach((input) => input.addEventListener("input", () => clearError(input)));
 });
+
