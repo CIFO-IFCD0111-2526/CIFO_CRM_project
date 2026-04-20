@@ -14,8 +14,7 @@ router.get("/dashboard", (req, res) => {
       titulo: "Inici", /* ¿¿ tauler de control, Pagina principal ?? */
       usuario: req.session.usuario , 
       css: "dashboard.css",
-      js: "dashboard.js",
-
+      // js: "dashboard.js",
     }
   );
 });
