@@ -1,12 +1,20 @@
 const router = require("express").Router();
 
 const authRoutes = require("./authRoutes");
+<<<<<<< HEAD
 const dashboardRoutes = require("./dashboardRoutes");
 const alumnoRoutes = require("./alumnoRoutes");
 const cursoRoutes = require("./cursoRoutes");
 const profesorRoutes = require("./profesorRoutes");
 const ufRoutes = require("./ufRoutes");
 const usuarioRoutes = require("./usuarioRoutes");
+=======
+// const alumnoRoutes = require("./alumnoRoutes");
+// const cursoRoutes = require("./cursoRoutes");
+// const profesorRoutes = require("./profesorRoutes");
+// const ufRoutes = require("./ufRoutes");
+// const usuarioRoutes = require("./usuarioRoutes");
+>>>>>>> 0a5d9a2 (temporal_fix: comentadas importaciones de routes que apuntan a ficheros vacíos y sus correspondientes '.use'.)
 
 router.use("/", authRoutes, dashboardRoutes);
 
