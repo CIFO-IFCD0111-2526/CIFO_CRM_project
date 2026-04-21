@@ -193,3 +193,88 @@ document.addEventListener("DOMContentLoaded", () => {
   [nombreInput, apellidosInput, emailInput, passwordInput, confirmPasswordInput]
     .forEach((input) => input.addEventListener("input", () => clearError(input)));
 });
+
+// Validacion de forgot password
+document.addEventListener("DOMContentLoaded", () => {
+  const forgotPasswordForm = document.querySelector("#forgotPasswordForm");
+
+  if (!forgotPasswordForm) return;
+
+  const emailInput = document.querySelector("#forgotPasswordEmail");
+  const forgotMsg = document.querySelector("#forgotPasswordMsg");
+  const submitBtn = forgotPasswordForm.querySelector("button");
+
+  const showMsg = (html) => {
+    forgotMsg.innerHTML = html;
+    forgotMsg.style.display = "block";
+  };
+
+  const clearMsg = () => {
+    forgotMsg.innerHTML = "";
+    forgotMsg.style.display = "none";
+  };
+
+  forgotPasswordForm.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const email = emailInput.value.trim();
+
+    clearError(emailInput);
+    clearMsg();
+
+    if (!email) {
+
+      setError(emailInput);
+
+      showMsg("L'email és obligatori.");
+
+      return;
+
+    }
+
+    if (!isValidEmail(email)) {
+
+      setError(emailInput);
+
+      showMsg("El format de l'email no és vàlid.");
+
+      return;
+
+    }
+
+    submitBtn.disabled = true;
+
+    try {
+
+      await fetch("/forgot-password", {
+
+        method: "POST",
+
+        headers: { "Content-Type": "application/json" },
+
+        body: JSON.stringify({ email })
+
+      });
+
+      showMsg("Si l'email està registrat, rebràs un correu amb la nova contrasenya.");
+
+    } catch (error) {
+
+      showMsg("Error de connexió");
+
+    } finally {
+
+      submitBtn.disabled = false;
+
+    }
+
+  });
+
+  emailInput.addEventListener("input", () => {
+
+    clearError(emailInput);
+
+  });
+
+});
