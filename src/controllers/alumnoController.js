@@ -7,9 +7,12 @@ const getAll = async (req, res) => {
         const alumnos = await Alumno.findAll({
             order: [["apellidos", "ASC"]],
         });
-        res.render("alumnos", {"titulo":"Mostrar Alumnos",
-            css: "dashboard.css",
-            alumnos });
+        res.render("alumnos", { "titulo":"Mostrar Alumnos",
+            usuario: null,
+            css: "alumnos.css",
+            js:"alumnos.js",
+            alumnos
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -28,8 +31,10 @@ const getById = async (req, res) => {
         }
 
         res.render("alumno-detalle", { "titulo": "AlumnoId",
-            css:"dashboard.css",
-            alumno });
+            usuario: null,
+            css: "alumnos.css",    /*Hay que hacer el archivo alumno-detalle.css*/
+            alumno       
+        }); 
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
