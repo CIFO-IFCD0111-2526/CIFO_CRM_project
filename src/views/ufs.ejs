@@ -1,0 +1,23 @@
+<h1>UFs</h1>
+
+<% if (ufs && ufs.length > 0) { %>
+  <ul>
+    <% ufs.forEach(uf => { %>
+      <li>
+        <strong><%= uf.codigo %></strong> — <%= uf.nombre %>
+        <% if (uf.horas) { %>(<%= uf.horas %>h)<% } %>
+        <% if (uf.Cursos && uf.Cursos.length > 0) { %>
+          <br>
+          <small>
+            Cursos:
+            <%= uf.Cursos.map(c => c.codigo + " " + c.nombre).join(", ") %>
+          </small>
+        <% } else { %>
+          <br><small>No associada a cap curs.</small>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No hi ha UFs registrades.</p>
+<% } %>
