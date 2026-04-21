@@ -4,11 +4,10 @@ const { authPage } = require("../middlewares/auth.js");
 
 const router = Router();
 
-router.use("/", authPage);
+// Rutas de cursos, todas requieren autenticacion
+router.use(authPage);
 
-// Rutas de cursos deben requerir autenticacion
-
-router.get("/", authPage, controller.getAll);
-router.get("/:id", authPage, controller.getById);
+router.get("/", controller.getAll);
+router.get("/:id", controller.getById);
 
 module.exports = router;

@@ -1,12 +1,15 @@
-<div class="cursos-container">
-    <div class="cursos-card">
-        <h1 class="cursos-title">Cursos</h1>
+<h1>Cursos</h1>
 
-        <form>
-            <div class="curso-group">
-                <label for="loginEmail">Correu electrònic</label>
-                <input type="email" id="loginEmail" name="email" placeholder="tu@cifo.com" required>
-            </div>
-        </form>
-    </div>
-</div>
+<% if (cursos && cursos.length > 0) { %>
+  <ul>
+    <% cursos.forEach(curso => { %>
+      <li>
+        <a href="/cursos/<%= curso.id %>">
+          <%= curso.codigo %> — <%= curso.nombre %>
+        </a>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No hi ha cursos registrats.</p>
+<% } %>

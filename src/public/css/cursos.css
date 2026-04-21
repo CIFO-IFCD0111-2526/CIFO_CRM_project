@@ -1,6 +1,6 @@
 @import url('forms.css');
 
-.Curso-container {
+.cursos-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -9,7 +9,7 @@
   background-color: var(--color-fondo-tarjeta);
 }
 
-.Curso-card {
+.cursos-card {
   background-color: var(--color-fondo-pagina);
   border: 1px solid var(--color-borde);
   border-radius: var(--radio-grande);
@@ -19,7 +19,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.Curso-title {
+.cursos-title {
   font-family: var(--fuente-titulos);
   font-size: 1.75rem;
   font-weight: 700;
@@ -29,11 +29,11 @@
 }
 
 @media (max-width: 480px) {
-  .Curso-card {
+  .cursos-card {
     padding: 1.5rem;
   }
 
-  .Curso-title {
+  .cursos-title {
     font-size: 1.5rem;
   }
 }
