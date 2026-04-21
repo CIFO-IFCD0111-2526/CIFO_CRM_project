@@ -11,7 +11,7 @@ const dashboardRoutes = require("./dashboardRoutes");
 // const alumnoRoutes = require("./alumnoRoutes");
 // const cursoRoutes = require("./cursoRoutes");
 // const profesorRoutes = require("./profesorRoutes");
-// const ufRoutes = require("./ufRoutes");
+const ufRoutes = require("./ufRoutes");
 // const usuarioRoutes = require("./usuarioRoutes");
 
 
