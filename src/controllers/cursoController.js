@@ -6,7 +6,9 @@ const getAll = async (req, res) => {
         const cursos = await Curso.findAll();
         res.render("cursos", {
             "titulo": "Busqueda de cursos",
+            usuario: null,
             css: "cursos.css",
+            js: "cursos.js",
             cursos
         });
     } catch (error) {
@@ -28,6 +30,7 @@ const getById = async (req, res) => {
             return res.redirect("/cursos");
         res.render("cursos-detalle", {
             "titulo": "Busqueda de cursos por ID",
+            usuario:"null",
             css: "cursos.css",
              curso });
 
