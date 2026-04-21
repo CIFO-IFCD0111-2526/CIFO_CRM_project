@@ -5,10 +5,9 @@
 const { Profesor, Curso } = require("../models");
 
 /** GET /profesores — listar todos */
-const getAll = async (req, res) => {
+const listarProfesores = async (req, res) => {
     try {
         const profesores = await Profesor.findAll({
-            attributes: { exclude: ["password"] },
             include: [{
                 model: Curso,
                 attributes: ["nombre"]
@@ -26,4 +25,4 @@ const getAll = async (req, res) => {
     }
 };
 
-module.exports = { getAll };
+module.exports = { listarProfesores };
