@@ -1,14 +1,21 @@
-/* ---- Esto es solo para que funcione alumnoController ---- */
-<div class="alumnos-container">
-  <div class="alumnos-card">
-    <h1 class="alumnos-title">Alumnes</h1>
-    <p class="alumnos-subtitle">Accedeix al CRM de CIFO La Violeta</p>
+<h1><%= alumno.nombre %> <%= alumno.apellidos %></h1>
 
-    <form id="alumnosForm" class="alumnos-form" novalidate>
-      <div class="form-group">
-        <label for="alumnosEmail">Correu electrònic</label>
-        <input type="email" id="alumnosEmail" name="email" placeholder="tu@cifo.com" required>
-      </div>
-    </form>
-  </div>
-</div>
+<p>DNI: <%= alumno.dni %></p>
+<p>Tipus: <%= alumno.tipo %></p>
+<% if (alumno.email) { %><p>Email: <%= alumno.email %></p><% } %>
+<% if (alumno.telefono) { %><p>Telèfon: <%= alumno.telefono %></p><% } %>
+<% if (alumno.nivel_estudios) { %><p>Nivell d'estudis: <%= alumno.nivel_estudios %></p><% } %>
+<% if (alumno.comentarios) { %><p>Comentaris: <%= alumno.comentarios %></p><% } %>
+
+<h2>Cursos</h2>
+<% if (alumno.Cursos && alumno.Cursos.length > 0) { %>
+  <ul>
+    <% alumno.Cursos.forEach(curso => { %>
+      <li><%= curso.codigo %> — <%= curso.nombre %></li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No està matriculat en cap curs.</p>
+<% } %>
+
+<p><a href="/alumnos">← Tornar</a></p>

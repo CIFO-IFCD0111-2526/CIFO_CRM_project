@@ -1,14 +1,15 @@
-/* ---- Esto es solo para que funcione alumnoController ---- */
-<div class="alumnos-container">
-  <div class="alumnos-card">
-    <h1 class="alumnos-title">Alumnes</h1>
-    <p class="alumnos-subtitle">Accedeix al CRM de CIFO La Violeta</p>
+<h1>Alumnes</h1>
 
-    <form id="alumnosForm" class="alumnos-form" novalidate>
-      <div class="form-group">
-        <label for="alumnosEmail">Correu electrònic</label>
-        <input type="email" id="alumnosEmail" name="email" placeholder="tu@cifo.com" required>
-      </div>
-    </form>
-  </div>
-</div>
+<% if (alumnos && alumnos.length > 0) { %>
+  <ul>
+    <% alumnos.forEach(alumno => { %>
+      <li>
+        <a href="/alumnos/<%= alumno.id %>">
+          <%= alumno.apellidos %>, <%= alumno.nombre %> (<%= alumno.tipo %>)
+        </a>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No hi ha alumnes registrats.</p>
+<% } %>

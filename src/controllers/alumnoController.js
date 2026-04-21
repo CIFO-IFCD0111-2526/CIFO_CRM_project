@@ -7,10 +7,11 @@ const getAll = async (req, res) => {
         const alumnos = await Alumno.findAll({
             order: [["apellidos", "ASC"]],
         });
-        res.render("alumnos", { "titulo":"Mostrar Alumnos",
-            usuario: null,
+        res.render("alumnos", {
+            titulo: "Mostrar Alumnos",
+            usuario: req.session.usuario,
             css: "alumnos.css",
-            js:"alumnos.js",
+            js: "alumnos.js",
             alumnos
         });
     } catch (error) {
@@ -30,11 +31,12 @@ const getById = async (req, res) => {
             return res.redirect("/alumnos");
         }
 
-        res.render("alumno-detalle", { "titulo": "AlumnoId",
-            usuario: null,
-            css: "alumnos.css",    /*Hay que hacer el archivo alumno-detalle.css*/
-            alumno       
-        }); 
+        res.render("alumno-detalle", {
+            titulo: "Detall d'alumne",
+            usuario: req.session.usuario,
+            css: "alumnos.css",
+            alumno
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

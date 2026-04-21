@@ -5,10 +5,10 @@ const controller = require("../controllers/alumnoController");
 
 const router = Router();
 
-router.use("/", authPage);
+// Todas las rutas de alumnos requieren autenticación
+router.use(authPage);
 
-// Todas las rutas de alumnos requieren estar autenticadas
-router.get("/", authPage, controller.getAll);
-router.get("/:id", authPage, controller.getById);
+router.get("/", controller.getAll);
+router.get("/:id", controller.getById);
 
 module.exports = router;
