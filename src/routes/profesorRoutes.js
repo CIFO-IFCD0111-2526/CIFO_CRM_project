@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 const profesorController = require("../controllers/profesorController");
-const { authPage } = require("../middlewares/authPage");
+const { authPage } = require("../middlewares/auth");
 
 router.get("/", authPage, profesorController.listarProfesores);
 
