@@ -1,5 +1,6 @@
 const { Usuario } = require("../models");
 const bcrypt = require("bcrypt");
+const { sendMail } = require("./config/mailer.js");
 
 // GET /login
 
@@ -136,21 +137,29 @@ const forgotPassword = async (req, res) => {
     const existe = await Usuario.findOne({ where: { email } });
     if (existe) {
       const nuevoPassword = generaContrasenaAleatoria();
-
       // Hashear nueva contraseña
       const hashedNuevoPassword = bcrypt.hashSync(nuevoPassword, 10);
 
       // Actualizar usuario.password en la base de datos
       await Usuario.update(
-        { password: hashedPassword },
+        { password: hashedNuevoPassword },
         { where: { email } }
       );
 
+      //Llamada a SendMail con los 3 parametros
 
+      await sendMail({
+        to: email,
+        subject: "Recuperació de contrasenya - CIFO CRM",
+        html: `
+          <h2>Has sol·licitat recuperar la teva contrasenya</h2>
+          <p>La teva nova contrasenya temporal és:</p>
+          <h3> ${nuevoPassword}</h3>
+          <p>Et recomanem canviar-la després d'iniciar sessió.</p>
+        `,
+      });
 
     }
-
-
     return res.status(200).json({ ok: true, redirect: "/login" });
 
   } catch (error) {
@@ -163,5 +172,5 @@ const forgotPassword = async (req, res) => {
 
 
 
-module.exports = { loginForm, login, registerForm, register, logout };
+module.exports = { loginForm, login, registerForm, register, logout , forgotPassword };
 
