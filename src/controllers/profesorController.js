@@ -1,5 +1,5 @@
 // -------------------------------------------------------
-// Controller: Usuarios (renderiza vistas)
+// Controller: Profesores (renderiza vistas)
 // -------------------------------------------------------
 
 const { Profesor, Curso } = require("../models");
