@@ -58,7 +58,7 @@ const registerForm = async (req, res) => {
     titulo: "Registre",
     usuario: null,
     css: "register.css",
-    js:"auth.js"
+    js: "auth.js"
   });
 };
 
@@ -109,4 +109,59 @@ const logout = async (req, res) => {
   });
 };
 
+// Función auxiliar para generar contraseña aleatoria
+
+function generaContrasenaAleatoria(length = 10) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let password = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    password += characters[randomIndex];
+  }
+  return password;
+}
+
+// POST /forgot-password
+
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  // Validación básica
+  if (!email) {
+    return res.status(400).json({ error: "El correu electrònic és obligatori." });
+  }
+
+  try {
+    // Comprobar email único
+    const existe = await Usuario.findOne({ where: { email } });
+    if (existe) {
+      const nuevoPassword = generaContrasenaAleatoria();
+
+      // Hashear nueva contraseña
+      const hashedNuevoPassword = bcrypt.hashSync(nuevoPassword, 10);
+
+      // Actualizar usuario.password en la base de datos
+      await Usuario.update(
+        { password: hashedPassword },
+        { where: { email } }
+      );
+
+
+
+    }
+
+
+    return res.status(200).json({ ok: true, redirect: "/login" });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error del servidor." });
+  }
+};
+
+
+
+
+
 module.exports = { loginForm, login, registerForm, register, logout };
+
