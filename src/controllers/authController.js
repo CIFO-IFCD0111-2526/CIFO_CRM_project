@@ -149,7 +149,6 @@ const forgotPassword = async (req, res) => {
     const existe = await Usuario.findOne({ where: { email } });
     if (existe) {
       const nuevoPassword = generaContrasenaAleatoria();
-
       // Hashear nueva contraseña
       const hashedNuevoPassword = bcrypt.hashSync(nuevoPassword, 10);
 
