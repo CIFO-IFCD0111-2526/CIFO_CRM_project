@@ -1,0 +1,39 @@
+<h1><%= curso.nombre %></h1>
+<p>Codi: <%= curso.codigo %></p>
+<p>Inici: <%= curso.fecha_inicio %></p>
+<p>Fi: <%= curso.fecha_fin %></p>
+
+<h2>UFs</h2>
+<% if (curso.Ufs && curso.Ufs.length > 0) { %>
+  <ul>
+    <% curso.Ufs.forEach(uf => { %>
+      <li><%= uf.nombre %></li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No hi ha UFs associades.</p>
+<% } %>
+
+<h2>Professors</h2>
+<% if (curso.Profesors && curso.Profesors.length > 0) { %>
+  <ul>
+    <% curso.Profesors.forEach(prof => { %>
+      <li><%= prof.nombre %> <%= prof.apellidos %></li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No hi ha professors associats.</p>
+<% } %>
+
+<h2>Alumnes</h2>
+<% if (curso.Alumnos && curso.Alumnos.length > 0) { %>
+  <ul>
+    <% curso.Alumnos.forEach(al => { %>
+      <li><%= al.nombre %> <%= al.apellidos %></li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No hi ha alumnes matriculats.</p>
+<% } %>
+
+<p><a href="/cursos">← Tornar</a></p>
