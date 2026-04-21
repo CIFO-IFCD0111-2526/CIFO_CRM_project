@@ -9,7 +9,6 @@ const getAll = async (req, res) => {
             usuario: null,
             css: "cursos.css",
             js: "cursos.js",
-
             cursos
         });
     } catch (error) {
@@ -29,12 +28,12 @@ const getById = async (req, res) => {
         });
         if (!curso)
             return res.redirect("/cursos");
-        res.render("cursos-detalle", {
+        res.render("curso-detalle", {
             "titulo": "Busqueda de cursos por ID",
-            usuario:"null",
+            usuario: "null",
             css: "cursos.css",
-
-             curso });
+            curso
+        });
 
     } catch (error) {
         res.status(500).json({ error: error.message });
