@@ -232,7 +232,3 @@ document.addEventListener("DOMContentLoaded", () => {
   [nombreInput, apellidosInput, emailInput, passwordInput, confirmPasswordInput]
     .forEach((input) => input.addEventListener("input", () => clearError(input)));
 });
-<<<<<<< HEAD
-
-=======
->>>>>>> 32a3b3a (feat: update forgot password form styling and functionality)
