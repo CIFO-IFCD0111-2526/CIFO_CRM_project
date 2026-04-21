@@ -5,7 +5,7 @@ const authRoutes = require("./authRoutes");
 const alumnoRoutes = require("./alumnoRoutes");
 const cursoRoutes = require("./cursoRoutes");
 // const profesorRoutes = require("./profesorRoutes");
-// const ufRoutes = require("./ufRoutes");
+const ufRoutes = require("./ufRoutes");
 // const usuarioRoutes = require("./usuarioRoutes");
 
 router.use("/", authRoutes);
@@ -13,7 +13,7 @@ router.use("/", authRoutes);
 // Rutas con sus prefijos
 router.use("/alumnos", alumnoRoutes);
 router.use("/cursos", cursoRoutes);
-// router.use("/ufs", ufRoutes);
+router.use("/ufs", ufRoutes);
 // router.use("/profesores", profesorRoutes);
 // router.use("/usuarios", usuarioRoutes);
 
