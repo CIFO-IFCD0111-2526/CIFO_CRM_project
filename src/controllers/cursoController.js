@@ -28,6 +28,7 @@ const getById = async (req, res) => {
             return res.redirect("/cursos");
         res.render("cursos-detalle", {
             "titulo": "Busqueda de cursos por ID",
+            css: "cursos.css",
              curso });
 
     } catch (error) {
