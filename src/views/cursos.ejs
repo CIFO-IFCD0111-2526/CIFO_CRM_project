@@ -1,0 +1,15 @@
+<h1>Cursos</h1>
+
+<% if (cursos && cursos.length > 0) { %>
+  <ul>
+    <% cursos.forEach(curso => { %>
+      <li>
+        <a href="/cursos/<%= curso.id %>">
+          <%= curso.codigo %> — <%= curso.nombre %>
+        </a>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No hi ha cursos registrats.</p>
+<% } %>

@@ -1,0 +1,15 @@
+<h1>Alumnes</h1>
+
+<% if (alumnos && alumnos.length > 0) { %>
+  <ul>
+    <% alumnos.forEach(alumno => { %>
+      <li>
+        <a href="/alumnos/<%= alumno.id %>">
+          <%= alumno.apellidos %>, <%= alumno.nombre %> (<%= alumno.tipo %>)
+        </a>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No hi ha alumnes registrats.</p>
+<% } %>
