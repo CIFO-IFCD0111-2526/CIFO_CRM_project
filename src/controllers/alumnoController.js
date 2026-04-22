@@ -42,4 +42,16 @@ const getById = async (req, res) => {
     }
 };
 
-module.exports = { getAll, getById }
+// GET /alumnos/nuevo
+
+const createFormPrint = async (req, res) => {
+    res.render("alumno-form", {
+    titulo: "Nou alumne",
+    css: "alumnos.css",
+    // css: "forms.css",
+    js: "alumnos.js",
+    paginaActual: "alumnos",
+  });
+};
+
+module.exports = { getAll, getById, createFormPrint }
