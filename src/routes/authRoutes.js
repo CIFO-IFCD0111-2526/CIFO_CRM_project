@@ -12,5 +12,8 @@ router.post("/register", controller.register);
 router.post("/logout", controller.logout);
 router.get("/forgot-password", controller.forgotPasswordForm);
 
+<<<<<<< feat/forgot-password-form
 
+=======
+>>>>>>> develop
 module.exports = router;

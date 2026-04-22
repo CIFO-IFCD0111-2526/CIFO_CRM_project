@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const { authPage } = require("../middlewares/auth.js");
 
 const authRoutes = require("./authRoutes");
 const dashboardRoutes = require("./dashboardRoutes");

@@ -19,6 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!form) return;
 
+  if (new URLSearchParams(window.location.search).get("logout") === "1") {
+    window.showModal?.({
+      type: "success",
+      title: "Sessió tancada",
+      message: "Has tancat la sessió correctament.",
+    });
+    window.history.replaceState({}, "", window.location.pathname);
+  }
+
   const showMsg = (html, isError = true) => {
     loginMsg.innerHTML = html;
     loginMsg.style.display = "block";
@@ -79,12 +88,27 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (data.ok) {
-        window.location.href = data.redirect;
+        window.showModal?.({
+          type: "success",
+          title: "Sessió iniciada",
+          message: "Accedint al panell...",
+        });
+        setTimeout(() => { window.location.href = data.redirect; }, 2000);
+      } else if (res.status >= 500) {
+        window.showModal?.({
+          type: "error",
+          title: "Error del servidor",
+          message: "Torna-ho a provar d'aquí uns minuts.",
+        });
       } else {
         showMsg(data.error || "No s'ha pogut iniciar sessió.");
       }
     } catch (error) {
-      showMsg("No s'ha pogut iniciar sessió. Torna-ho a provar.");
+      window.showModal?.({
+        type: "error",
+        title: "Error de connexió",
+        message: "No s'ha pogut contactar amb el servidor.",
+      });
     }
   });
 
@@ -184,12 +208,27 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
 
       if (data.ok) {
-        window.location.href = data.redirect;
+        window.showModal?.({
+          type: "success",
+          title: "Compte creat",
+          message: "Benvingut/da! Entrant al panell...",
+        });
+        setTimeout(() => { window.location.href = data.redirect; }, 2000);
+      } else if (response.status >= 500) {
+        window.showModal?.({
+          type: "error",
+          title: "Error del servidor",
+          message: "Torna-ho a provar d'aquí uns minuts.",
+        });
       } else {
         showMsg(data.error || "Error en el registre.");
       }
     } catch (error) {
-      showMsg("Error de connexió amb el servidor.");
+      window.showModal?.({
+        type: "error",
+        title: "Error de connexió",
+        message: "No s'ha pogut contactar amb el servidor.",
+      });
     }
   });
 
