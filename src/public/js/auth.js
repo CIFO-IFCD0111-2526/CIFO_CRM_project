@@ -117,9 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
       clearError(input);
     });
   });
-<<<<<<< HEAD
-});
-=======
 });
 
 // Validacio de registre
@@ -235,4 +232,3 @@ document.addEventListener("DOMContentLoaded", () => {
   [nombreInput, apellidosInput, emailInput, passwordInput, confirmPasswordInput]
     .forEach((input) => input.addEventListener("input", () => clearError(input)));
 });
->>>>>>> 492afc1 (ref: agregar authPage en ruta de dashboard)
