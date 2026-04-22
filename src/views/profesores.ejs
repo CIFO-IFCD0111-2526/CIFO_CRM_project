@@ -1,37 +1,22 @@
- <%# Vista para mostrar la lista de profesores. %>
+<h1>Professors</h1>
 
-<h1>Listado de Profesores</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Apellidos</th>
-      <th>Email</th>
-      <th>Cursos que imparte</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% if (profesores && profesores.length > 0) { %>
-      <% profesores.forEach(prof => { %>
-        <tr>
-          <td><%= prof.nombre %></td>
-          <td><%= prof.apellidos %></td>
-          <td><%= prof.email %></td>
-          <td>
-            <% if (prof.Cursos && prof.Cursos.length > 0) { %>
-              <%= prof.Cursos.map(curso => curso.nombre).join(", ") %>
-            <% } else { %>
-              No imparte cursos
-            <% } %>
-          </td>
-        </tr>
-      <% }) %>
-    <% } else { %>
-      <tr>
-        <td colspan="4">No hay profesores registrados.</td>
-      </tr>
-    <% } %>
-  </tbody>
-</table>
+<% if (profesores && profesores.length > 0) { %>
+  <ul>
+    <% profesores.forEach(prof => { %>
+      <li>
+        <strong><%= prof.nombre %> <%= prof.apellidos %></strong> — <%= prof.email %>
+        <% if (prof.Cursos && prof.Cursos.length > 0) { %>
+          <br>
+          <small>
+            Cursos:
+            <%= prof.Cursos.map(c => c.nombre).join(", ") %>
+          </small>
+        <% } else { %>
+          <br><small>No imparteix cap curs.</small>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No hi ha professors registrats.</p>
+<% } %>
