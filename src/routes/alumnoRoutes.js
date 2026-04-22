@@ -9,6 +9,7 @@ const router = Router();
 router.use(authPage);
 
 router.get("/", controller.getAll);
+router.get("/nuevo", controller.createFormPrint);
 router.get("/:id", controller.getById);
 
 module.exports = router;
