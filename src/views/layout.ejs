@@ -10,6 +10,10 @@
     <% if (locals.css) { %>
         <link rel="stylesheet" href="/css/<%= css %>">
     <% } %>
+    <link rel="stylesheet" href="/css/main.css">
+    <% if (typeof styles !== 'undefined') { %>
+    <%= styles %>
+<% } %>
     <script src="/js/main.js" defer></script>
     <script src="/js/modal.js" defer></script>
     <% if (locals.js) { %>
