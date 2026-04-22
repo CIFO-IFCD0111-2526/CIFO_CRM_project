@@ -42,3 +42,15 @@
   flex-direction: column;
   gap: 1rem;
 }
+
+.newButton {
+  margin-left: 100;
+  background-color: var(--color-fondo-sidebar);
+  color: var(--color-texto-nav);
+  border: none;
+  border-radius: var(--radio-pequeno);
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+} 
