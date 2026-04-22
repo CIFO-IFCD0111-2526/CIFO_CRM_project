@@ -1,1 +1,35 @@
+<% var styles = '<link rel="stylesheet" href="/css/forms.css">' %>
 <h1>Benvingut, <%= usuario.nombre %> <%= usuario.apellidos %></h1>
+<h2>Nou Alumne</h2>
+
+<form id="alumnoForm">
+  <input name="nombre" placeholder="Nombre" required />
+  <input name="apellidos" placeholder="Apellidos" required />
+  <input name="dni" placeholder="DNI" required />
+  <input name="telefono" placeholder="Teléfono" />
+  <input name="email" placeholder="Email" />
+  <input name="nivel_estudios" placeholder="Nivel estudios" />
+
+  <select name="tipo" required>
+    <option value="">Selecciona tipo</option>
+    <option value="actual">Actual</option>
+    <option value="antiguo">Antiguo</option>
+    <option value="futuro">Futuro</option>
+  </select>
+
+  <label>
+    <input type="checkbox" name="derechos_imagen" />
+    Derechos de imagen
+  </label>
+
+  <label>
+    <input type="checkbox" name="cesion_material" />
+    Cesión material
+  </label>
+
+  <textarea name="comentarios" placeholder="Comentarios"></textarea>
+
+  <button type="submit">Crear</button>
+</form>
+
+<script src="/js/alumnos.js"></script>
