@@ -18,8 +18,8 @@ const forgotPasswordForm = (req, res) => {
   res.render("forgot-password", {
     titulo: "Recuperar contrasenya",
     usuario: null,
-    css: "forgot-password.css",
-    js: null
+    css: "login.css",
+    js: "auth.js",
   });
 };
 
