@@ -16,8 +16,11 @@ const listarProfesores = async (req, res) => {
         });
 
         res.render("profesores", {
-            titulo: "Profesores",
+            titulo: "Professors",
             usuario: req.session.usuario,
+            css: "profesores.css",
+            js: "profesores.js",
+            paginaActual: "profesores",
             profesores,
         });
     } catch (error) {
