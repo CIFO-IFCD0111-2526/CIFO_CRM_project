@@ -1,30 +1,30 @@
-<% var styles = '<link rel="stylesheet" href="/css/forms.css">' %>
+<% var styles = '<link rel="stylesheet" href="../css/forms.css">' %>
 <h1>Benvingut, <%= usuario.nombre %> <%= usuario.apellidos %></h1>
 <h2>Nou Alumne</h2>
 
 <form id="alumnoForm">
-  <input name="nombre" placeholder="Nombre" required />
-  <input name="apellidos" placeholder="Apellidos" required />
+  <input name="nombre" placeholder="Nom" required />
+  <input name="apellidos" placeholder="Cognoms" required />
   <input name="dni" placeholder="DNI" required />
-  <input name="telefono" placeholder="Teléfono" />
+  <input name="telefono" placeholder="Telèfon" />
   <input name="email" placeholder="Email" />
-  <input name="nivel_estudios" placeholder="Nivel estudios" />
+  <input name="nivel_estudios" placeholder="Nivell d'estudis" />
 
   <select name="tipo" required>
-    <option value="">Selecciona tipo</option>
+    <option value="">Selecciona tipus</option>
     <option value="actual">Actual</option>
-    <option value="antiguo">Antiguo</option>
-    <option value="futuro">Futuro</option>
+    <option value="antiguo">Antic</option>
+    <option value="futuro">Futur</option>
   </select>
 
   <label>
     <input type="checkbox" name="derechos_imagen" />
-    Derechos de imagen
+    Drets d'imagen
   </label>
 
   <label>
     <input type="checkbox" name="cesion_material" />
-    Cesión material
+    Cesió material
   </label>
 
   <textarea name="comentarios" placeholder="Comentarios"></textarea>
