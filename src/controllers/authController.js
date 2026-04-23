@@ -1,6 +1,6 @@
 const { Usuario } = require("../models");
 const bcrypt = require("bcrypt");
-const { sendMail } = require("./config/mailer.js");
+const { sendMail } = require("../config/mailer.js");
 
 // GET /login
 
