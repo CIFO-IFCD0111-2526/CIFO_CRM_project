@@ -122,7 +122,7 @@ const logout = async (req, res) => {
   });
 };
 
-// Función auxiliar para generar contraseña aleatoria
+// Función para generar contraseña aleatoria
 
 function generaContrasenaAleatoria(length = 10) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -140,13 +140,13 @@ const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   // Validación básica
-  if (!email) {
-    return res.status(400).json({ error: "El correu electrònic és obligatori." });
+  if (!email || !email.includes("@")) {
+    return res.status(400).json({ error: "El correu electrònic és obligatori i ha de ser vàlid." });
   }
 
   try {
     // Comprobar email único
-    const existe = await Usuario.findOne({ where: { email } });
+    const existe = await Usuario.findOne({ where: { email, activo: true } });
     if (existe) {
       const nuevoPassword = generaContrasenaAleatoria();
       // Hashear nueva contraseña
@@ -155,29 +155,32 @@ const forgotPassword = async (req, res) => {
       // Actualizar usuario.password en la base de datos
       await Usuario.update(
         { password: hashedNuevoPassword },
-        { where: { email } }
+        { where: { email, activo: true } }
       );
 
-      //Llamada a SendMail con los 3 parametros
+      //Llamada a SendMail
 
-      await sendMail({
-        to: email,
-        subject: "Recuperació de contrasenya - CIFO CRM",
-        html: `
+      try {
+        await sendMail({
+          to: email,
+          subject: "Recuperació de contrasenya - CIFO CRM",
+          html: `
           <h2>Has sol·licitat recuperar la teva contrasenya</h2>
           <p>La teva nova contrasenya temporal és:</p>
           <h3> ${nuevoPassword}</h3>
           <p>Et recomanem canviar-la després d'iniciar sessió.</p>
         `,
-      });
-
+        });
+      } catch (mailError) {
+        console.error("Error enviant el correu de recuperació:", mailError);
+      }
     }
-    return res.status(200).json({ ok: true, redirect: "/login" });
-
+    return res.status(200).json({ ok: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error del servidor." });
   }
+
 };
 
 
