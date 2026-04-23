@@ -12,5 +12,5 @@ router.get("/", controller.getAll);
 router.get("/nuevo", controller.createFormPrint);
 router.post("/", controller.newAlumno);
 router.get("/:id", controller.getById);
-
+router.delete("/:id",controller.removeAlumno);
 module.exports = router;

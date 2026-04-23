@@ -26,24 +26,24 @@ const Uf = require("./Uf");
 
 //////////////////////////////////////////////////////////////////////TABLAS INTERMEDIAS ¿ A MOVER ?
 
-      // Aquest fa referència a l'objecte JS ( variable )
+// Aquest fa referència a l'objecte JS ( variable )
 const CursoAlumno = sequelize.define('curso_alumno', {   // És el nom que fa servir JS  ( string )
   estat: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,      // false = pendent, true = aprovada/feta
     allowNull: false
-    }
+  }
 }, {
   tableName: 'curso_alumno',  // És el nom a la base de dades SQL ( string ) 
 })
 
 
-const AlumnoUf = sequelize.define('alumno_uf', {  
+const AlumnoUf = sequelize.define('alumno_uf', {
   estat: {
     type: DataTypes.BOOLEAN,
     defaultValue: false, // false = pendent, true = aprovada/feta
     allowNull: false
-    }
+  }
 }, {
   tableName: 'alumno_uf',
 })
@@ -52,8 +52,8 @@ const AlumnoUf = sequelize.define('alumno_uf', {
 
 
 // los cursos tienen varias Uf, y las mismas Uf pueden estar en mas de un curso
-Curso.belongsToMany(Uf, {through: 'curso_uf' });
-Uf.belongsToMany(Curso, {through: 'curso_uf' });
+Curso.belongsToMany(Uf, { through: 'curso_uf' });
+Uf.belongsToMany(Curso, { through: 'curso_uf' });
 
 // los profesores pueden estar en varios cursos y algunos cursos pueden tener mas de un profe
 Profesor.belongsToMany(Curso, { through: "curso_profesor" });
@@ -61,12 +61,28 @@ Curso.belongsToMany(Profesor, { through: "curso_profesor" });
 
 // Cursos tienen varios alumnos, los alumnos pueden estar en varios cursos, 
 // ( aunque no en dos cursos activos simultáneamente en teoria , deberemos verificar en otra parte, quizás )
-Alumno.belongsToMany(Curso,  { through: CursoAlumno });
-Curso.belongsToMany(Alumno,  { through: CursoAlumno });
+Alumno.belongsToMany(Curso, {
+  through: CursoAlumno,
+  foreignKey: "alumno_id",
+  onDelete: "CASCADE",
+});
+Curso.belongsToMany(Alumno, {
+  through: CursoAlumno,
+  foreignKey: "curso_id",
+  onDelete: "CASCADE",
+});
 
 // las UF estan en varios cursos y los cursos tiene varias Uf
-Uf.belongsToMany(Alumno,  { through: AlumnoUf });
-Alumno.belongsToMany(Uf,  { through: AlumnoUf });
+Uf.belongsToMany(Alumno, {
+  through: AlumnoUf,
+  foreignKey: "alumno_id",
+  onDelete: "CASCADE",
+});
+Alumno.belongsToMany(Uf, {
+  through: AlumnoUf,
+  foreignKey: "uf_id",
+  onDelete: "CASCADE"
+});
 
 // Alumno belongsTo Usuario (FK ultimo_id_modif)
 Alumno.belongsTo(Usuario, { foreignKey: "ultimo_id_modif" });
