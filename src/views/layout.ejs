@@ -10,6 +10,9 @@
     <% if (locals.css) { %>
         <link rel="stylesheet" href="/css/<%= css %>">
     <% } %>
+    <% if (typeof styles !== 'undefined') { %>
+        <%- styles %>
+    <% } %>
     <script src="/js/main.js" defer></script>
     <script src="/js/modal.js" defer></script>
     <% if (locals.js) { %>
@@ -85,6 +88,10 @@
             <div class="modal-body">
                 <h2 class="modal-title"></h2>
                 <p class="modal-message"></p>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secundario btn-sm modal-cancel">Cancel·lar</button>
+                    <button type="button" class="btn btn-danger btn-sm modal-confirm">Confirmar</button>
+                </div>
             </div>
         </div>
     </div>

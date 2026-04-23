@@ -78,3 +78,65 @@
 .modal-card.is-error .modal-title {
   color: #c0392b;
 }
+
+.modal-actions {
+  display: none;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+.modal-card.is-confirm .modal-actions {
+  display: flex;
+}
+
+.modal-card.is-confirm .modal-icon {
+  color: var(--color-danger);
+}
+
+.modal-card.is-confirm .modal-title {
+  color: var(--color-texto-principal);
+}
+
+.modal-overlay.is-confirm {
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-overlay.is-confirm.is-open {
+  display: flex;
+}
+
+.modal-overlay.is-confirm .modal-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radio-grande);
+  align-items: flex-start;
+  gap: 0.9rem;
+}
+
+.modal-overlay.is-confirm .modal-icon {
+  font-size: 1.75rem;
+}
+
+.modal-overlay.is-confirm .modal-title {
+  font-size: 1.05rem;
+}
+
+.modal-overlay.is-confirm .modal-message {
+  font-size: 0.9rem;
+}
+
+.modal-overlay.is-confirm .modal-close {
+  top: 0.6rem;
+  right: 0.9rem;
+  font-size: 1.35rem;
+}
