@@ -146,7 +146,7 @@ const forgotPassword = async (req, res) => {
 
   try {
     // Comprobar email único
-    const existe = await Usuario.findOne({ where: { email } });
+    const existe = await Usuario.findOne({ where: { email, activo: true } });
     if (existe) {
       const nuevoPassword = generaContrasenaAleatoria();
       // Hashear nueva contraseña
