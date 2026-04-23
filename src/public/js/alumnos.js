@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
 
         // Convertim el formulari en un objecte JS
-        const formData = new FormData(alumnoForm);
+        const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
         //Preparem els checkboxes per ser activats
