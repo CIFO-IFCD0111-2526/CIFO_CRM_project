@@ -1,5 +1,6 @@
 const { Usuario } = require("../models");
 const bcrypt = require("bcrypt");
+const { sendMail } = require("../config/mailer.js");
 
 // GET /login
 
@@ -70,7 +71,7 @@ const registerForm = async (req, res) => {
     titulo: "Registre",
     usuario: null,
     css: "register.css",
-    js:"auth.js"
+    js: "auth.js"
   });
 };
 
@@ -121,4 +122,65 @@ const logout = async (req, res) => {
   });
 };
 
-module.exports = { loginForm, login, registerForm, register, logout,  forgotPasswordForm };
+// Función para generar contraseña aleatoria
+
+function generaContrasenaAleatoria(length = 10) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let password = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    password += characters[randomIndex];
+  }
+  return password;
+}
+
+// POST /forgot-password
+
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  // Validación básica
+  if (!email || !email.includes("@")) {
+    return res.status(400).json({ error: "El correu electrònic és obligatori i ha de ser vàlid." });
+  }
+
+  try {
+    // Comprobar email único
+    const existe = await Usuario.findOne({ where: { email, activo: true } });
+    if (existe) {
+      const nuevoPassword = generaContrasenaAleatoria();
+      // Hashear nueva contraseña
+      const hashedNuevoPassword = bcrypt.hashSync(nuevoPassword, 10);
+
+      // Actualizar usuario.password en la base de datos
+      await Usuario.update(
+        { password: hashedNuevoPassword },
+        { where: { email, activo: true } }
+      );
+
+      //Llamada a SendMail
+
+      try {
+        await sendMail({
+          to: email,
+          subject: "Recuperació de contrasenya - CIFO CRM",
+          html: `
+          <h2>Has sol·licitat recuperar la teva contrasenya</h2>
+          <p>La teva nova contrasenya temporal és:</p>
+          <h3> ${nuevoPassword}</h3>
+          <p>Et recomanem canviar-la després d'iniciar sessió.</p>
+        `,
+        });
+      } catch (mailError) {
+        console.error("Error enviant el correu de recuperació:", mailError);
+      }
+    }
+    return res.status(200).json({ ok: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error del servidor." });
+  }
+
+};
+
+module.exports = { loginForm, login, registerForm, register, logout, forgotPasswordForm, forgotPassword };
