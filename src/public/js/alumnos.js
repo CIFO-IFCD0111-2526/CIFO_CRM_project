@@ -2,14 +2,25 @@ window.addEventListener('error', e => {
   console.error('JS ERROR GLOBAL:', e.error)
 })
 
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('#alumnoForm')
-  if (!form) return
-
+document.addEventListener("DOMContentLoaded", () => {
+    // Agafem el formulari de la pàgina
+    console.log(window.location.pathname);
     const form = document.querySelector("#alumnoForm");
+    const RegAlNombre = document.querySelector("#RegAlNombre");
+    const RegAlApellidos = document.querySelector("#RegAlApellidos");
+    const RegAlDni = document.querySelector("#RegAlDni");
+    const RegAltipo = document.querySelector("#RegAltipo");
 
-    const formData = new FormData(form)
-    const data = Object.fromEntries(formData.entries())
+    if (sessionStorage.getItem("alumnoCreado")){
+        sessionStorage.removeItem("alumnoCreado");   
+        window.showModal?.({
+            type: "success",
+            title: "Alumne creat",
+            message: "Has creat l'alumne correctament.",
+        });
+    }
+    
+    if (!form) return; // Si no és la pàgina del formulari, sortim
 
     data.derechos_imagen =
       form.querySelector('[name="derechos_imagen"]')?.checked || false
