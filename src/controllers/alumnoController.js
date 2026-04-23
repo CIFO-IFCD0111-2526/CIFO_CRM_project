@@ -86,7 +86,7 @@ const newAlumno = async (req, res) => {
       ultimo_id_modif : req.session.usuario.id,
     });
 
-    return res.status(200).json({ ok: true, redirect: "/alumnos/nuevo" });
+    return res.status(200).json({ ok: true, redirect: "/alumnos" });
 
   } catch (error) {
     console.error(error);
