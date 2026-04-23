@@ -19,6 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!form) return;
 
+  if (new URLSearchParams(window.location.search).get("logout") === "1") {
+    window.showModal?.({
+      type: "success",
+      title: "Sessió tancada",
+      message: "Has tancat la sessió correctament.",
+    });
+    window.history.replaceState({}, "", window.location.pathname);
+  }
+
   const showMsg = (html, isError = true) => {
     loginMsg.innerHTML = html;
     loginMsg.style.display = "block";
@@ -79,12 +88,27 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (data.ok) {
-        window.location.href = data.redirect;
+        window.showModal?.({
+          type: "success",
+          title: "Sessió iniciada",
+          message: "Accedint al panell...",
+        });
+        setTimeout(() => { window.location.href = data.redirect; }, 2000);
+      } else if (res.status >= 500) {
+        window.showModal?.({
+          type: "error",
+          title: "Error del servidor",
+          message: "Torna-ho a provar d'aquí uns minuts.",
+        });
       } else {
         showMsg(data.error || "No s'ha pogut iniciar sessió.");
       }
     } catch (error) {
-      showMsg("No s'ha pogut iniciar sessió. Torna-ho a provar.");
+      window.showModal?.({
+        type: "error",
+        title: "Error de connexió",
+        message: "No s'ha pogut contactar amb el servidor.",
+      });
     }
   });
 
@@ -181,15 +205,115 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
 
       if (data.ok) {
-        window.location.href = data.redirect;
+        window.showModal?.({
+          type: "success",
+          title: "Compte creat",
+          message: "Benvingut/da! Entrant al panell...",
+        });
+        setTimeout(() => { window.location.href = data.redirect; }, 2000);
+      } else if (response.status >= 500) {
+        window.showModal?.({
+          type: "error",
+          title: "Error del servidor",
+          message: "Torna-ho a provar d'aquí uns minuts.",
+        });
       } else {
         showMsg(data.error || "Error en el registre.");
       }
     } catch (error) {
-      showMsg("Error de connexió amb el servidor.");
+      window.showModal?.({
+        type: "error",
+        title: "Error de connexió",
+        message: "No s'ha pogut contactar amb el servidor.",
+      });
     }
   });
 
   [nombreInput, apellidosInput, emailInput, passwordInput, confirmPasswordInput]
     .forEach((input) => input.addEventListener("input", () => clearError(input)));
+});
+
+// Validacion de forgot password
+document.addEventListener("DOMContentLoaded", () => {
+  const forgotPasswordForm = document.querySelector("#forgotPasswordForm");
+
+  if (!forgotPasswordForm) return;
+
+  const emailInput = document.querySelector("#forgotPasswordEmail");
+  const forgotMsg = document.querySelector("#forgotPasswordMsg");
+  const submitBtn = forgotPasswordForm.querySelector("button");
+
+  const showMsg = (html) => {
+    forgotMsg.innerHTML = html;
+    forgotMsg.style.display = "block";
+  };
+
+  const clearMsg = () => {
+    forgotMsg.innerHTML = "";
+    forgotMsg.style.display = "none";
+  };
+
+  forgotPasswordForm.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const email = emailInput.value.trim();
+
+    clearError(emailInput);
+    clearMsg();
+
+    if (!email) {
+
+      setError(emailInput);
+
+      showMsg("L'email és obligatori.");
+
+      return;
+
+    }
+
+    if (!isValidEmail(email)) {
+
+      setError(emailInput);
+
+      showMsg("El format de l'email no és vàlid.");
+
+      return;
+
+    }
+
+    submitBtn.disabled = true;
+
+    try {
+
+      await fetch("/forgot-password", {
+
+        method: "POST",
+
+        headers: { "Content-Type": "application/json" },
+
+        body: JSON.stringify({ email })
+
+      });
+
+      showMsg("Si l'email està registrat, rebràs un correu amb la nova contrasenya.");
+
+    } catch (error) {
+
+      showMsg("Error de connexió");
+
+    } finally {
+
+      submitBtn.disabled = false;
+
+    }
+
+  });
+
+  emailInput.addEventListener("input", () => {
+
+    clearError(emailInput);
+
+  });
+
 });

@@ -6,10 +6,12 @@
     <title><%= titulo %> | CIFO La Violeta</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/modal.css">
     <% if (locals.css) { %>
         <link rel="stylesheet" href="/css/<%= css %>">
     <% } %>
     <script src="/js/main.js" defer></script>
+    <script src="/js/modal.js" defer></script>
     <% if (locals.js) { %>
         <script src="/js/<%= js %>" defer></script>
     <% } %>
@@ -73,6 +75,17 @@
             <main>
                 <%- body %>
             </main>
+        </div>
+    </div>
+
+    <div id="appModal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-card">
+            <button type="button" class="modal-close" aria-label="Tancar">&times;</button>
+            <div class="modal-icon"></div>
+            <div class="modal-body">
+                <h2 class="modal-title"></h2>
+                <p class="modal-message"></p>
+            </div>
         </div>
     </div>
 </body>

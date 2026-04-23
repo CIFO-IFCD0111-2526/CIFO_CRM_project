@@ -1,30 +1,25 @@
 const router = require("express").Router();
-const { authPage } = require("../middlewares/auth.js");
 
 const authRoutes = require("./authRoutes");
+const dashboardRoutes = require("./dashboardRoutes");
 const alumnoRoutes = require("./alumnoRoutes");
 const cursoRoutes = require("./cursoRoutes");
-// const profesorRoutes = require("./profesorRoutes");
 const ufRoutes = require("./ufRoutes");
+const profesorRoutes = require("./profesorRoutes");
 // const usuarioRoutes = require("./usuarioRoutes");
 
-router.use("/", authRoutes);
+router.use("/", authRoutes, dashboardRoutes);
 
 // Rutas con sus prefijos
 router.use("/alumnos", alumnoRoutes);
 router.use("/cursos", cursoRoutes);
 router.use("/ufs", ufRoutes);
-// router.use("/profesores", profesorRoutes);
+router.use("/profesores", profesorRoutes);
 // router.use("/usuarios", usuarioRoutes);
 
 router.get("/", (req, res) => {
   if (req.session.usuario) return res.redirect("/dashboard");
   return res.redirect("/login");
-});
-
-// ruta dashboard
-router.get("/dashboard", authPage, (req, res) => {
-  res.render("dashboard", { usuario: req.session.usuario });
 });
 
 module.exports = router;

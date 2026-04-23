@@ -13,6 +13,18 @@ const loginForm = async (req, res) => {
   });
 };
 
+//Redirigeix si has oblidat la contrasenya a un formulari.
+
+const forgotPasswordForm = (req, res) => {
+  res.render("forgot-password", {
+    titulo: "Recuperar contrasenya",
+    usuario: null,
+    css: "login.css",
+    js: "auth.js",
+  });
+};
+
+
 // POST /login
 
 const login = async (req, res) => {
@@ -170,4 +182,5 @@ const forgotPassword = async (req, res) => {
   }
 
 };
-module.exports = { loginForm, login, registerForm, register, logout, forgotPassword };
+
+module.exports = { loginForm, login, registerForm, register, logout, forgotPasswordForm, forgotPassword };

@@ -1,0 +1,70 @@
+main {
+    /* A REVISAR SI APLICAN EN MAIN.CSS */
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--color-fondo-tarjeta);
+}
+
+.bienvenida {
+    color: var(--color-primario);
+    text-align: center;
+    padding: 20px;
+}
+
+.mostra-info {
+    display: flex;
+    flex-direction: row;
+    text-align: center;    
+    margin: 25px;
+    min-height: 200px;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-pequeno);
+    background-color: var(--color-fondo-sidebar);
+
+    & .mostra-alumn {
+        width: 60%;
+        height: auto;
+    }
+
+    & .mostra-curs {
+        width: 40%;
+        height: auto;
+    }
+
+    div {
+        margin: 25px;
+        padding: 0.5%;
+        border: 1px solid var(--color-borde);
+        border-radius: var(--radio-pequeno);
+    }
+}
+
+.mostra-notes {
+    display: flex;
+    flex-direction: row;
+    height: auto;    
+    margin: 25px;
+
+    & .notes-pag {
+        width: 25%;
+    }
+
+    & .notes-text {
+        resize: none;
+        min-height: 200px;
+        width: 75%;
+    }
+
+    div,
+    textarea {
+        padding: 0.5%;
+        text-align: center;      
+        border: 1px solid var(--color-borde);
+        border-radius: var(--radio-pequeno);
+        background-color: var(--color-fondo-sidebar);
+    }
+
+    textarea {
+        background-color: var(--color-fondo-pagina);
+    }
+}

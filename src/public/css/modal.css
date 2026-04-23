@@ -1,0 +1,80 @@
+.modal-overlay {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: none;
+  z-index: 1000;
+}
+
+.modal-overlay.is-open {
+  display: block;
+}
+
+.modal-card {
+  background-color: var(--color-fondo-pagina);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  padding: 0.75rem 2rem 0.75rem 0.9rem;
+  width: 280px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.15rem;
+  right: 0.4rem;
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--color-texto-etiquetas);
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: var(--color-texto-principal);
+}
+
+.modal-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-family: var(--fuente-titulos);
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 0 0 0.1rem 0;
+  color: var(--color-texto-principal);
+}
+
+.modal-message {
+  color: var(--color-texto-etiquetas);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.modal-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.modal-card.is-success .modal-icon {
+  color: #2ecc71;
+}
+
+.modal-card.is-error .modal-icon {
+  color: #e74c3c;
+}
+
+.modal-card.is-success .modal-title {
+  color: #27ae60;
+}
+
+.modal-card.is-error .modal-title {
+  color: #c0392b;
+}
