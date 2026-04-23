@@ -35,6 +35,10 @@
   margin-bottom: 2rem;
 }
 
+.login-subtitle--compact {
+  margin-bottom: 0.75rem;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
