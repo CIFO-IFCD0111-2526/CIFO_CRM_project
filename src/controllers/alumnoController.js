@@ -47,6 +47,7 @@ const getById = async (req, res) => {
 const createFormPrint = async (req, res) => {
     res.render("alumno-form", {
     titulo: "Nou alumne",
+    usuario: req.session.usuario,
     css: "alumnos.css",
     // css: "forms.css",
     js: "alumnos.js",

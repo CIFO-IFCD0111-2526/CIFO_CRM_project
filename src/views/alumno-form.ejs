@@ -1,35 +1,91 @@
-<% var styles = '<link rel="stylesheet" href="../css/forms.css">' %>
-<h1>Benvingut, <%= usuario.nombre %> <%= usuario.apellidos %></h1>
-<h2>Nou Alumne</h2>
+<% var styles = '<link rel="stylesheet" href="/css/forms.css">' %>
 
-<form id="alumnoForm">
-  <input name="nombre" placeholder="Nom" required />
-  <input name="apellidos" placeholder="Cognoms" required />
-  <input name="dni" placeholder="DNI" required />
-  <input name="telefono" placeholder="Telèfon" />
-  <input name="email" placeholder="Email" />
-  <input name="nivel_estudios" placeholder="Nivell d'estudis" />
+<div class="form-container">
+  <div class="form-card">
+    <h1 class="form-title">Nou alumne</h1>
+    <p class="form-subtitle">Introdueix les dades del nou alumne</p>
 
-  <select name="tipo" required>
-    <option value="">Selecciona tipus</option>
-    <option value="actual">Actual</option>
-    <option value="antiguo">Antic</option>
-    <option value="futuro">Futur</option>
-  </select>
+    <form id="alumnoForm" class="form-grid" novalidate>
+      <div class="form-group">
+        <label>
+          Nom
+          <input type="text" name="nombre" placeholder="Nom" required />
+        </label>
+      </div>
 
-  <label>
-    <input type="checkbox" name="derechos_imagen" />
-    Drets d'imagen
-  </label>
+      <div class="form-group">
+        <label>
+          Cognoms
+          <input type="text" name="apellidos" placeholder="Cognoms" required />
+        </label>
+      </div>
 
-  <label>
-    <input type="checkbox" name="cesion_material" />
-    Cesió material
-  </label>
+      <div class="form-group">
+        <label>
+          DNI
+          <input type="text" name="dni" placeholder="DNI" required />
+        </label>
+      </div>
 
-  <textarea name="comentarios" placeholder="Comentarios"></textarea>
+      <div class="form-group">
+        <label>
+          Telèfon
+          <input type="tel" name="telefono" placeholder="Telèfon" />
+        </label>
+      </div>
 
-  <button type="submit">Crear</button>
-</form>
+      <div class="form-group">
+        <label>
+          Email
+          <input type="email" name="email" placeholder="tu@exemple.com" />
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Nivell d'estudis
+          <input type="text" name="nivel_estudios" placeholder="Nivell d'estudis" />
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Tipus
+          <select name="tipo" required>
+            <option value="">Selecciona tipus</option>
+            <option value="actual">Actual</option>
+            <option value="antiguo">Antic</option>
+            <option value="futuro">Futur</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="form-check">
+        <label>
+          <input type="checkbox" name="derechos_imagen" />
+          Drets d'imatge
+        </label>
+      </div>
+
+      <div class="form-check">
+        <label>
+          <input type="checkbox" name="cesion_material" />
+          Cessió material
+        </label>
+      </div>
+
+      <div class="form-group form-full">
+        <label>
+          Comentaris
+          <textarea name="comentarios" placeholder="Comentaris"></textarea>
+        </label>
+      </div>
+
+      <div id="alumnoMsg" class="form-msg form-full" aria-live="polite"></div>
+
+      <button type="submit" class="btn btn-primario btn-block form-full">Crear</button>
+    </form>
+  </div>
+</div>
 
 <script src="/js/alumnos.js"></script>
