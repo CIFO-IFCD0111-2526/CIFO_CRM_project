@@ -35,38 +35,38 @@ const createFormPrint = async (req, res) => {
 // POST /alumnos
 
 const newAlumno = async (req, res) => {
-    const { nombre, apellidos, dni, telefono, email, nivel_estudios, tipo, derechos_imagen, cesion_material, comentarios } = req.body;
+  const { nombre, apellidos, dni, telefono, email, nivel_estudios, tipo, derechos_imagen, cesion_material, comentarios } = req.body;
 
-    if (!nombre || !apellidos || !dni || !tipo) {
-        return res.status(400).json({ error: "Tots els camps són obligatoris." });
+  if (!nombre || !apellidos || !dni || !tipo) {
+    return res.status(400).json({ error: "Tots els camps són obligatoris." });
+  }
+
+  try {
+    const existe = await Alumno.findOne({ where: { dni } });
+    if (existe) {
+      return res.status(400).json({ error: "L'alumne ja està registrat." });
     }
 
-    try {
-        const existe = await Alumno.findOne({ where: { dni } });
-        if (existe) {
-            return res.status(400).json({ error: "L'alumne ja està registrat." });
-        }
+    await Alumno.create({
+      nombre,
+      apellidos,
+      dni,
+      telefono,
+      email,
+      nivel_estudios,
+      tipo,
+      derechos_imagen,
+      cesion_material,
+      comentarios,
+      ultimo_id_modif: req.session.usuario.id,
+    });
 
-        await Alumno.create({
-            nombre,
-            apellidos,
-            dni,
-            telefono,
-            email,
-            nivel_estudios,
-            tipo,
-            derechos_imagen,
-            cesion_material,
-            comentarios,
-            ultimo_id_modif: req.session.usuario.id,
-        });
+    return res.status(200).json({ ok: true, redirect: "/alumnos" });
 
-        return res.status(200).json({ ok: true, redirect: "/alumnos" });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error del servidor." });
-    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error del servidor." });
+  }
 };
 
 // GET /alumnos/:id
