@@ -1,3 +1,5 @@
+const e = require("express");
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#alumnoForm");
   if (!form) return;
@@ -61,10 +63,26 @@ document.addEventListener("click", async (e) => {
     await new Promise(r => setTimeout(r, 1000));
     window.location.href = "/alumnos";
   } catch (err) {
-   await window.showModal({
+    await window.showModal({
       type: "error",
       title: "Error",
       message: "No s'ha pogut eliminar l'alumne.",
     });
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btnEditar = document.querySelector(".btn-editar");
+  if (!btnEditar) return;
+
+  btnEditar.addEventListener("click", () => {
+    document.querySelectorAll(".view-mode").forEach(e => {
+      e.classList.add("hidden");
+    });
+
+    document.querySelectorAll(".edit-mode").forEach(e => {
+      e.classList.remove("hidden");
+    });
+  });
+});
+

@@ -1,12 +1,22 @@
 <div class="page-header">
   <div>
     <a href="/alumnos" class="back-link"><i class="fa-solid fa-arrow-left"></i> Tornar al llistat</a>
-    <h1 class="page-title"><%= alumno.nombre %> <%= alumno.apellidos %></h1>
+    <h1 class="page-title">
+      <span class="view-mode">
+        <%= alumno.nombre %>
+          <%= alumno.apellidos %>
+      </span>
+      <div class="edit-mode hidden">
+        <input type="text" name="nombre" value="<%= alumno.nombre %>"/>
+        <input type="text" name="apellidos" value="<%= alumno.apellidos %>"/>
+      </div>
+    </h1>
+
     <p class="page-subtitle">
       <span class="badge badge-<%= alumno.tipo %>">
-        <% if (alumno.tipo === 'actual') { %>Actual<% } %>
-        <% if (alumno.tipo === 'antiguo') { %>Antic<% } %>
-        <% if (alumno.tipo === 'futuro') { %>Futur<% } %>
+        <% if (alumno.tipo==='actual' ) { %>Actual<% } %>
+            <% if (alumno.tipo==='antiguo' ) { %>Antic<% } %>
+                <% if (alumno.tipo==='futuro' ) { %>Futur<% } %>
       </span>
     </p>
   </div>
@@ -22,19 +32,27 @@
     <dl class="detalle-list">
       <div class="detalle-item">
         <dt>DNI</dt>
-        <dd><%= alumno.dni || '—' %></dd>
+        <dd>
+          <%= alumno.dni || '—' %>
+        </dd>
       </div>
       <div class="detalle-item">
         <dt>Email</dt>
-        <dd><%= alumno.email || '—' %></dd>
+        <dd>
+          <%= alumno.email || '—' %>
+        </dd>
       </div>
       <div class="detalle-item">
         <dt>Telèfon</dt>
-        <dd><%= alumno.telefono || '—' %></dd>
+        <dd>
+          <%= alumno.telefono || '—' %>
+        </dd>
       </div>
       <div class="detalle-item">
         <dt>Nivell d'estudis</dt>
-        <dd><%= alumno.nivel_estudios || '—' %></dd>
+        <dd>
+          <%= alumno.nivel_estudios || '—' %>
+        </dd>
       </div>
     </dl>
   </section>
@@ -47,9 +65,9 @@
         <dd>
           <% if (alumno.derechos_imagen) { %>
             <span class="badge badge-actual">Sí</span>
-          <% } else { %>
-            <span class="badge badge-antiguo">No</span>
-          <% } %>
+            <% } else { %>
+              <span class="badge badge-antiguo">No</span>
+              <% } %>
         </dd>
       </div>
       <div class="detalle-item">
@@ -57,9 +75,9 @@
         <dd>
           <% if (alumno.cesion_material) { %>
             <span class="badge badge-actual">Sí</span>
-          <% } else { %>
-            <span class="badge badge-antiguo">No</span>
-          <% } %>
+            <% } else { %>
+              <span class="badge badge-antiguo">No</span>
+              <% } %>
         </dd>
       </div>
     </dl>
@@ -68,23 +86,29 @@
   <% if (alumno.comentarios) { %>
     <section class="detalle-card detalle-full">
       <h2 class="detalle-card-title">Comentaris</h2>
-      <p class="detalle-text"><%= alumno.comentarios %></p>
+      <p class="detalle-text">
+        <%= alumno.comentarios %>
+      </p>
     </section>
-  <% } %>
-
-  <section class="detalle-card detalle-full">
-    <h2 class="detalle-card-title">Cursos</h2>
-    <% if (alumno.Cursos && alumno.Cursos.length > 0) { %>
-      <ul class="detalle-cursos">
-        <% alumno.Cursos.forEach(curso => { %>
-          <li>
-            <span class="curso-codigo"><%= curso.codigo %></span>
-            <span class="curso-nombre"><%= curso.nombre %></span>
-          </li>
-        <% }) %>
-      </ul>
-    <% } else { %>
-      <p class="detalle-empty">No està matriculat en cap curs.</p>
     <% } %>
-  </section>
+
+      <section class="detalle-card detalle-full">
+        <h2 class="detalle-card-title">Cursos</h2>
+        <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
+          <ul class="detalle-cursos">
+            <% alumno.Cursos.forEach(curso=> { %>
+              <li>
+                <span class="curso-codigo">
+                  <%= curso.codigo %>
+                </span>
+                <span class="curso-nombre">
+                  <%= curso.nombre %>
+                </span>
+              </li>
+              <% }) %>
+          </ul>
+          <% } else { %>
+            <p class="detalle-empty">No està matriculat en cap curs.</p>
+            <% } %>
+      </section>
 </div>
