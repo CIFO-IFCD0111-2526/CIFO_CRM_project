@@ -54,7 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    if (!form) return; // Si no és la pàgina del formulari, sortim
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();        
@@ -98,4 +99,54 @@ document.addEventListener("DOMContentLoaded", () => {
         sessionStorage.setItem("alumnoCreado", true);
         window.location.href = json.redirect;
     });
+
+    const json = await res.json();
+
+    if (!json.ok) {
+      console.log("Errors rebuts del backend:", json.errores);
+      document.querySelectorAll(".error-msg").forEach((e) => (e.textContent = ""));
+      for (const camp in json.errores) {
+        const span = document.querySelector(`#error-${camp}`);
+        if (span) span.textContent = json.errores[camp];
+      }
+      return;
+    }
+
+    window.location.href = json.redirect;
+  });
+
+
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".btn-eliminar");
+  if (!btn) return;
+
+  const id = btn.dataset.id;
+  const row = btn.closest("tr");
+  const nombre = row?.querySelector(".alumno-nombre")?.textContent.trim() || "aquest alumne";
+
+  const ok = await window.showConfirm({
+    title: "Eliminar alumne",
+    message: `Segur que vols eliminar ${nombre}? Aquesta acció no es pot desfer.`,
+    confirmText: "Eliminar",
+    cancelText: "Cancel·lar",
+  });
+
+  if (!ok) return;
+
+  try {
+    const res = await fetch(`/alumnos/${id}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Error al eliminar");
+    row?.remove();
+    window.showModal({
+      type: "success",
+      title: "Alumne eliminat",
+      message: "L'alumne s'ha eliminat correctament.",
+    });
+  } catch (err) {
+    window.showModal({
+      type: "error",
+      title: "Error",
+      message: "No s'ha pogut eliminar l'alumne.",
+    });
+  }
 });
