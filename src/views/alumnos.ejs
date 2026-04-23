@@ -1,18 +1,62 @@
-<h1>Alumnes</h1>
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Alumnes</h1>
+    <p class="page-subtitle">Llistat d'alumnes registrats al centre</p>
+  </div>
+  <a href="/alumnos/nuevo" class="btn btn-primario">Nou alumne</a>
+</div>
 
 <% if (alumnos && alumnos.length > 0) { %>
-  <ul>
-    <% alumnos.forEach(alumno => { %>
-      <li>
-        <a href="/alumnos/<%= alumno.id %>">
-          <%= alumno.apellidos %>, <%= alumno.nombre %> (<%= alumno.tipo %>)
-        </a>
-      </li>
-    <% }) %>
-  </ul>
+  <div class="tabla-container">
+    <table id="alumnosTable">
+      <thead>
+        <tr>
+          <th>Cognoms, Nom</th>
+          <th>DNI</th>
+          <th>Email</th>
+          <th>Telèfon</th>
+          <th>Nivell d'estudis</th>
+          <th>Tipus</th>
+          <th>Data d'alta</th>
+          <th class="col-accions">Accions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% alumnos.forEach(alumno => { %>
+          <tr>
+            <td>
+              <a class="alumno-nombre" href="/alumnos/<%= alumno.id %>">
+                <%= alumno.apellidos %>, <%= alumno.nombre %>
+              </a>
+            </td>
+            <td><%= alumno.dni || '—' %></td>
+            <td><%= alumno.email || '—' %></td>
+            <td><%= alumno.telefono || '—' %></td>
+            <td><%= alumno.nivel_estudios || '—' %></td>
+            <td>
+              <span class="badge badge-<%= alumno.tipo %>">
+                <% if (alumno.tipo === 'actual') { %>Actual<% } %>
+                <% if (alumno.tipo === 'antiguo') { %>Antic<% } %>
+                <% if (alumno.tipo === 'futuro') { %>Futur<% } %>
+              </span>
+            </td>
+            <td class="col-fecha">
+              <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+            </td>
+            <td class="col-accions">
+              <div class="acciones">
+                <a href="/alumnos/<%= alumno.id %>/editar" class="btn btn-secundario btn-sm">Editar</a>
+                <button type="button" class="btn btn-danger btn-sm btn-eliminar" data-id="<%= alumno.id %>">Eliminar</button>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
 <% } else { %>
-  <p>No hi ha alumnes registrats.</p>
+  <div class="empty-state">
+    <p>No hi ha alumnes registrats.</p>
+    <a href="/alumnos/nuevo" class="btn btn-primario">Crear el primer alumne</a>
+  </div>
 <% } %>
-<a href="/alumnos/nuevo">
-  <button class="newButton"><i class="fa-solid fa-user-graduate"></i>+ Alumne</button>
-</a>
