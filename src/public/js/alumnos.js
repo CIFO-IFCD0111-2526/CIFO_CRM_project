@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('#alumnoForm')
   if (!form) return
 
-    const form = document.querySelector("alumnoForm");
+    const form = document.querySelector("#alumnoForm");
 
     const formData = new FormData(form)
     const data = Object.fromEntries(formData.entries())
@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const json = await res.json()
 
-        data.derechos_imagen = alumnoForm.querySelector('[name="derechos_imagen"]')?.checked || false;
-        data.cesion_material = alumnoForm.querySelector('[name="cesion_material"]')?.checked || false;
+        data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
+        data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
 
     window.location.href = json.redirect
   })

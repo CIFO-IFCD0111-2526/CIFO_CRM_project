@@ -19,7 +19,7 @@
   "url": "https://github.com/CIFO-IFCD0111-2526/CIFO_CRM_project",
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.6.1",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-ejs-layouts": "^2.5.1",
