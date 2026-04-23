@@ -3,7 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Agafem el formulari de la pàgina
 
-    const form = document.querySelector("alumnoForm");
+    const form = document.querySelector("#alumnoForm");
 
     if (!form) return; // Si no és la pàgina del formulari, sortim
 
@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         //Preparem els checkboxes per ser activats
 
-        data.derechos_imagen = alumnoForm.querySelector('[name="derechos_imagen"]')?.checked || false;
-        data.cesion_material = alumnoForm.querySelector('[name="cesion_material"]')?.checked || false;
+        data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
+        data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
 
         // Enviem al backend
         const res = await fetch("/alumnos", {
