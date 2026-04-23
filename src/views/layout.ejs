@@ -10,21 +10,13 @@
     <% if (locals.css) { %>
         <link rel="stylesheet" href="/css/<%= css %>">
     <% } %>
-    <link rel="stylesheet" href="/css/main.css">
     <% if (typeof styles !== 'undefined') { %>
-    <%= styles %>
-<% } %>
+        <%- styles %>
+    <% } %>
     <script src="/js/main.js" defer></script>
     <script src="/js/modal.js" defer></script>
     <% if (locals.js) { %>
         <script src="/js/<%= js %>" defer></script>
-
-    <link rel="stylesheet" href="/css/main.css">
-    <% if (typeof styles !== 'undefined') { %>
-        <%= styles %>
-  <% } %>
-</head>
-        
     <% } %>
 </head>
 <body>
