@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
       form.querySelector('[name="cesion_material"]')?.checked || false
 
         // Convertim el formulari en un objecte JS
-        const formData = new FormData(alumnoForm);
+        const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
     const json = await res.json()
