@@ -4,6 +4,8 @@ const path = require("path");
 const express = require("express");
 const session = require("express-session");
 const expressLayouts = require("express-ejs-layouts");
+//seeders
+const seedAlumnos = require("./seeder/seeders.js");
 
 const { ensureDatabaseExists } = require("./config/database");
 const { sequelize } = require("./models");
@@ -60,7 +62,7 @@ async function startServer() {
 
     await sequelize.sync({ alter: true });
     console.log("Modelos sincronizados.");
-
+    await seedAlumnos();
     server.listen(PORT, () => {
       console.log(`Servidor en http://localhost:${PORT}`);
     });
