@@ -6,8 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('#alumnoForm')
   if (!form) return
 
-  form.addEventListener('submit', async e => {
-    e.preventDefault()
+    const form = document.querySelector("alumnoForm");
 
     const formData = new FormData(form)
     const data = Object.fromEntries(formData.entries())
@@ -17,27 +16,18 @@ document.addEventListener('DOMContentLoaded', () => {
     data.cesion_material =
       form.querySelector('[name="cesion_material"]')?.checked || false
 
-    const res = await fetch('/alumnos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
+        // Convertim el formulari en un objecte JS
+        const formData = new FormData(alumnoForm);
+        const data = Object.fromEntries(formData.entries());
 
     const json = await res.json()
 
-    if (!json.ok) {
-      console.log('Errors rebuts del backend:', json.errores)
-      document.querySelectorAll('.error-msg').forEach(e => (e.textContent = ''))
-      for (const camp in json.errores) {
-        const span = document.querySelector(`#error-${camp}`)
-        if (span) span.textContent = json.errores[camp]
-      }
-      return
-    }
+        data.derechos_imagen = alumnoForm.querySelector('[name="derechos_imagen"]')?.checked || false;
+        data.cesion_material = alumnoForm.querySelector('[name="cesion_material"]')?.checked || false;
 
     window.location.href = json.redirect
   })
-})
+
 
 document.addEventListener('click', async e => {
   const btn = e.target.closest('.btn-eliminar')
