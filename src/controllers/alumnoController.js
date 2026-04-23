@@ -35,38 +35,38 @@ const createFormPrint = async (req, res) => {
 // POST /alumnos
 
 const newAlumno = async (req, res) => {
-  const { nombre, apellidos, dni, telefono, email, nivel_estudios, tipo, derechos_imagen, cesion_material, comentarios } = req.body;
+    const { nombre, apellidos, dni, telefono, email, nivel_estudios, tipo, derechos_imagen, cesion_material, comentarios } = req.body;
 
-  if (!nombre || !apellidos || !dni || !tipo) {
-    return res.status(400).json({ error: "Tots els camps són obligatoris." });
-  }
-
-  try {
-    const existe = await Alumno.findOne({ where: { dni } });
-    if (existe) {
-      return res.status(400).json({ error: "L'alumne ja està registrat." });
+    if (!nombre || !apellidos || !dni || !tipo) {
+        return res.status(400).json({ error: "Tots els camps són obligatoris." });
     }
 
-    await Alumno.create({
-      nombre,
-      apellidos,
-      dni,
-      telefono,
-      email,
-      nivel_estudios,
-      tipo,
-      derechos_imagen,
-      cesion_material,
-      comentarios,
-      ultimo_id_modif: req.session.usuario.id,
-    });
+    try {
+        const existe = await Alumno.findOne({ where: { dni } });
+        if (existe) {
+            return res.status(400).json({ error: "L'alumne ja està registrat." });
+        }
 
-    return res.status(200).json({ ok: true, redirect: "/alumnos" });
+        await Alumno.create({
+            nombre,
+            apellidos,
+            dni,
+            telefono,
+            email,
+            nivel_estudios,
+            tipo,
+            derechos_imagen,
+            cesion_material,
+            comentarios,
+            ultimo_id_modif: req.session.usuario.id,
+        });
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error del servidor." });
-  }
+        return res.status(200).json({ ok: true, redirect: "/alumnos" });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error del servidor." });
+    }
 };
 
 // GET /alumnos/:id
@@ -104,13 +104,12 @@ const removeAlumno = async (req, res) => {
         await alumno.destroy();
         return res.json({
             ok: true,
-            message: "Alumne eliminat correctament"
+            message:"Alumne eliminat correctament"
         });
     } catch (error) {
         res.status(500).json({
-            ok: false,
-            message: "Error eliminant alumne"
-        });
+            ok:false,
+            message:"Error eliminant alumne"});
     }
 
 };

@@ -322,15 +322,16 @@ document.addEventListener("click", async (e) => {
 
   try {
     const res = await fetch(`/alumnos/${id}`, { method: "DELETE" });
-    if (!res.ok) throw new Error("Error al eliminar");
-    row?.remove();
-    window.showModal({
+    if (!res.ok) { throw new Error("Error eliminanta alumne"); }
+    await window.showModal({
       type: "success",
       title: "Alumne eliminat",
       message: "L'alumne s'ha eliminat correctament.",
     });
+    await new Promise(r => setTimeout(r, 1000));
+    window.location.href = "/alumnos";
   } catch (err) {
-    window.showModal({
+   await window.showModal({
       type: "error",
       title: "Error",
       message: "No s'ha pogut eliminar l'alumne.",
