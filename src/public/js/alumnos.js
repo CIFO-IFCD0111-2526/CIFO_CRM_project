@@ -2,9 +2,22 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     // Agafem el formulari de la pàgina
-
+    console.log(window.location.pathname);
     const form = document.querySelector("#alumnoForm");
+    const RegAlNombre = document.querySelector("#RegAlNombre");
+    const RegAlApellidos = document.querySelector("#RegAlApellidos");
+    const RegAlDni = document.querySelector("#RegAlDni");
+    const RegAltipo = document.querySelector("#RegAltipo");
 
+    if (sessionStorage.getItem("alumnoCreado")){
+        sessionStorage.removeItem("alumnoCreado");   
+        window.showModal?.({
+            type: "success",
+            title: "Alumne creat",
+            message: "Has creat l'alumne correctament.",
+        });
+    }
+    
     if (!form) return; // Si no és la pàgina del formulari, sortim
 
     form.addEventListener("submit", async (e) => {
@@ -45,6 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Si tot va bé → redirigir a /alumnos/:id
+
+        sessionStorage.setItem("alumnoCreado", true);
         window.location.href = json.redirect;
     });
 });
