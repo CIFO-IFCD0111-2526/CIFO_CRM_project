@@ -1,14 +1,48 @@
-window.addEventListener('error', e => {
-  console.error('JS ERROR GLOBAL:', e.error)
-})
+const isValidEmail = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
+const setError = (input) => {
+  input.classList.add("error");
+};
+
+const clearError = (input) => {
+  input.classList.remove("error");
+};
+
+const validacion = (input) => {
+  const errors = [];
+    // ADAPTAR A FUNCIONALIDAD ACTUAL
+  if (!email) {
+    errors.push("El email és obligatori.");
+    setError(emailInput);
+  } else if (!isValidEmail(email)) {
+    errors.push("El format de l'email no és vàlid.");
+    setError(emailInput);
+  }
+
+  if (!password) {
+    errors.push("La contraseña és obligatòria.");
+    setError(passwordInput);
+  } else if (password.length < 6) {
+    errors.push("La contraseña deu tenir al menys 6 caràcters.");
+    setError(passwordInput);
+  }
+
+  if (errors.length > 0) {
+    showMsg(errors.join("<br>"));
+    return;
+  }
+};
 
 document.addEventListener("DOMContentLoaded", () => {
     // Agafem el formulari de la pàgina
-    console.log(window.location.pathname);
+    console.log(setError);
     const form = document.querySelector("#alumnoForm");
     const RegAlNombre = document.querySelector("#RegAlNombre");
     const RegAlApellidos = document.querySelector("#RegAlApellidos");
     const RegAlDni = document.querySelector("#RegAlDni");
+    const RegAlEmail = document.querySelector("#RegAlEmail");
     const RegAltipo = document.querySelector("#RegAltipo");
 
     if (sessionStorage.getItem("alumnoCreado")){
@@ -19,13 +53,11 @@ document.addEventListener("DOMContentLoaded", () => {
             message: "Has creat l'alumne correctament.",
         });
     }
-    
+
     if (!form) return; // Si no és la pàgina del formulari, sortim
 
-    data.derechos_imagen =
-      form.querySelector('[name="derechos_imagen"]')?.checked || false
-    data.cesion_material =
-      form.querySelector('[name="cesion_material"]')?.checked || false
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();        
 
         // Convertim el formulari en un objecte JS
         const formData = new FormData(form);
