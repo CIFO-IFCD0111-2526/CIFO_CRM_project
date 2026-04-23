@@ -9,49 +9,83 @@
       <div class="form-group">
         <label>
           Nom
-          <input type="text" name="nombre" placeholder="Nom" required />
+          <input type="text" id="RegAlNombre" name="nombre" placeholder="Nom" required />
         </label>
       </div>
 
       <div class="form-group">
         <label>
           Cognoms
-          <input type="text" name="apellidos" placeholder="Cognoms" required />
+          <input type="text"  id="RegAlApellidos" name="apellidos" placeholder="Cognoms" required />
         </label>
       </div>
 
       <div class="form-group">
         <label>
           DNI
-          <input type="text" name="dni" placeholder="DNI" required />
+          <input type="text" id="RegAlDni" name="dni" placeholder="DNI" required />
         </label>
       </div>
 
       <div class="form-group">
         <label>
           Telèfon
-          <input type="tel" name="telefono" placeholder="Telèfon" />
+          <input type="tel" id="RegAlTelefono" name="telefono" placeholder="Telèfon" />
         </label>
       </div>
 
       <div class="form-group">
         <label>
           Email
-          <input type="email" name="email" placeholder="tu@exemple.com" />
+          <input type="email" id="RegAlEmail" name="email" placeholder="tu@exemple.com" />
         </label>
       </div>
 
       <div class="form-group">
         <label>
           Nivell d'estudis
-          <input type="text" name="nivel_estudios" placeholder="Nivell d'estudis" />
+          
+<!-- 
+          <input type="text"  id="RegAlNivel_estudios" name="nivel_estudios" placeholder="Nivell d'estudis" /> 
+
+          Nivells educatius
+Codi	Descripció
+0
+Educació infantil
+1
+Educació primària
+2
+Primera etapa d'educació secundària i similar
+3
+Segona etapa d'educació secundària i similar
+4
+Educació postsecundària no superior
+5
+Ensenyaments de grau superior de formació professional, arts plàstiques i disseny, i esportius i equivalents; títols universitaris propis que requereixen el títol de batxillerat, de durada igual o superior a dos anys
+6
+Graus universitaris de fins a 240 crèdits ECTS, diplomatures universitàries, títols universitaris propis d'expert o especialista i similars
+7
+Graus universitaris de més de 240 crèdits ECTS, llicenciatures, màsters i especialitats en ciències de la salut pel sistema de residència i similars
+8
+Doctorat universitari 
+
+-->
+        <select id="RegAlNivel_estudios" name="tipo" required>
+            <option value="">Selecciona tipus</option>
+            <option value="0">Sense Estudis</option>
+            <option value="1">Primaria</option>
+            <option value="2">Secundaria</option>
+            <option value="4">Formacio Professional I </option>
+            <option value="5">Batxillerat</option>
+            <option value="6">Formacio Professional II </option>
+          </select>
         </label>
       </div>
 
       <div class="form-group">
         <label>
           Tipus
-          <select name="tipo" required>
+          <select id="RegAltipo" name="tipo" required>
             <option value="">Selecciona tipus</option>
             <option value="actual">Actual</option>
             <option value="antiguo">Antic</option>
@@ -62,14 +96,14 @@
 
       <div class="form-check">
         <label>
-          <input type="checkbox" name="derechos_imagen" />
+          <input id="RegAlderechos_imagen" type="checkbox" name="derechos_imagen" />
           Drets d'imatge
         </label>
       </div>
 
       <div class="form-check">
         <label>
-          <input type="checkbox" name="cesion_material" />
+          <input id="RegAlcesion_material" type="checkbox" name="cesion_material" />
           Cessió material
         </label>
       </div>
@@ -77,11 +111,11 @@
       <div class="form-group form-full">
         <label>
           Comentaris
-          <textarea name="comentarios" placeholder="Comentaris"></textarea>
+          <textarea id="RegAlComentarios" name="comentarios" placeholder="Comentaris"></textarea>
         </label>
       </div>
 
-      <div id="alumnoMsg" class="form-msg form-full" aria-live="polite"></div>
+      <div id="RegAlalumnoMsg" class="form-msg form-full" aria-live="polite"></div>
 
       <button type="submit" class="btn btn-primario btn-block form-full">Crear</button>
     </form>
