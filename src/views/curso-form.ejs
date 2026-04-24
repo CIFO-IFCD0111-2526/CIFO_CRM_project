@@ -1,91 +1,66 @@
-<% var styles = '<link rel="stylesheet" href="/css/forms.css">' %>
+<% var styles='<link rel="stylesheet" href="/css/forms.css">' %>
 
-<div class="form-container">
-  <div class="form-card">
-    <h1 class="form-title">Nou curs</h1>
-    <p class="form-subtitle">Introdueix les dades del nou curs</p>
+    <div class="form-container">
+        <div class="form-card">
+            <h1 class="form-title">Nou curs</h1>
+            <p class="form-subtitle">Introdueix les dades del nou curs</p>
 
-    <form id="cursoForm" class="form-grid" novalidate>
-      <div class="form-group">
-        <label>
-          Nom
-          <input type="text" name="nombre" placeholder="Nom" required />
-        </label>
-      </div>
+            <form id="cursoForm" class="form-grid" novalidate>
+                <div class="form-group">
+                    <label>
+                        Nom
+                        <input type="text" name="nombre" id="RegCursoNombre" placeholder="Nom del curs" required />
+                    </label>
+                </div>
 
-      <div class="form-group">
-        <label>
-          Codi
-          <input type="text" name="codigo" placeholder="Codi" required />
-        </label>
-      </div>
+                <div class="form-group">
+                    <label>
+                        Codi
+                        <input type="text" name="codigo" placeholder="Codi" required />
+                    </label>
+                </div>
 
-      <div class="form-group">
-        <label>
-          DNI
-          <input type="text" name="dni" placeholder="DNI" required />
-        </label>
-      </div>
+                <div class="form-group">
+                    <label>
+                        Data inici
+                        <input type="date" name="fecha_inicio" id="RegCursoFechaInicio" required />
+                    </label>
+                </div>
 
-      <div class="form-group">
-        <label>
-          Telèfon
-          <input type="tel" name="telefono" placeholder="Telèfon" />
-        </label>
-      </div>
+                <div class="form-group">
+                    <label>
+                        Data fi
+                        <input type="date" name="fecha_fin" id="RegCursoFechaFin" required />
+                    </label>
+                </div>
 
-      <div class="form-group">
-        <label>
-          Email
-          <input type="email" name="email" placeholder="tu@exemple.com" />
-        </label>
-      </div>
+                <div class="form-group">
+                    <label>
+                        Requisist mínims
+                        <select id="RegCursoRequisitos" name="requisitos">
+                            <option value="">Selecciona nivell</option>
+                            <option value="0">Sense estudis</option>
+                            <option value="1">Primària</option>
+                            <option value="2">Secundària</option>
+                            <option value="4">FP Grau Mitjà</option>
+                            <option value="5">Batxillerat</option>
+                            <option value="6">FP Grau Superior</option>
+                        </select>
+                    </label>
+                </div>
+                <div
+                id="RegCursoMsg"
+                class="form-msg form-full"
+                aria-live="polite"
+                >
+        </div>
+        <button type="submit" class="btn btn-primario btn-block form-full">
+            Crear curs
+        </button>
 
-      <div class="form-group">
-        <label>
-          Nivell d'estudis
-          <input type="text" name="nivel_estudios" placeholder="Nivell d'estudis" />
-        </label>
-      </div>
+        </form>
 
-      <div class="form-group">
-        <label>
-          Tipus
-          <select name="tipo" required>
-            <option value="">Selecciona tipus</option>
-            <option value="actual">Actual</option>
-            <option value="antiguo">Antic</option>
-            <option value="futuro">Futur</option>
-          </select>
-        </label>
-      </div>
+    </div>
+    </div>
 
-      <div class="form-check">
-        <label>
-          <input type="checkbox" name="derechos_imagen" />
-          Drets d'imatge
-        </label>
-      </div>
-
-      <div class="form-check">
-        <label>
-          <input type="checkbox" name="cesion_material" />
-          Cessió material
-        </label>
-      </div>
-
-      <div class="form-group form-full">
-        <label>
-          Comentaris
-          <textarea name="comentarios" placeholder="Comentaris"></textarea>
-        </label>
-      </div>
-
-      <div id="alumnoMsg" class="form-msg form-full" aria-live="polite"></div>
-
-      <button type="submit" class="btn btn-primario btn-block form-full">Crear</button>
-    </form>
-  </div>
-</div>
-
-<script src="/src/public/js/cursos.js"></script>
+    <script src="/js/cursos.js"></script>
