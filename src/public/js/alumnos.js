@@ -10,21 +10,21 @@ const clearError = (input) => {
   input.classList.remove("error");
 };
 
-const RegAlalumnoMsg = document.querySelector("#RegAlalumnoMsg");
-
-const showMsg = (html, isError = true) => {
-  RegAlalumnoMsg.innerHTML = html;
-  RegAlalumnoMsg.style.display = "block";
-  RegAlalumnoMsg.classList.toggle("error-msg", isError);
-};
-
-const clearMsg = () => {
-  RegAlalumnoMsg.innerHTML = "";
-  RegAlalumnoMsg.style.display = "none";
-  RegAlalumnoMsg.classList.remove("error-msg");
-};
-
 document.addEventListener("DOMContentLoaded", () => {    
+
+    const RegAlalumnoMsg = document.querySelector("#RegAlalumnoMsg");
+
+    const showMsg = (html, isError = true) => {
+      RegAlalumnoMsg.innerHTML = html;
+      RegAlalumnoMsg.style.display = "block";
+      RegAlalumnoMsg.classList.toggle("error-msg", isError);
+    };
+
+    const clearMsg = () => {
+      RegAlalumnoMsg.innerHTML = "";
+      RegAlalumnoMsg.style.display = "none";
+      RegAlalumnoMsg.classList.remove("error-msg");
+    };
 
     // Agafem el formulari de la pàgina
     
@@ -63,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Convertim el formulari en un objecte JS
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        console.log(formData);
 
         //Preparem els checkboxes per ser activats, canviem el valor a true/false
 
