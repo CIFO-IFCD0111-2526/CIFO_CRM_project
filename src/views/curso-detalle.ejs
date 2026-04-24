@@ -1,39 +1,93 @@
-<h1><%= curso.nombre %></h1>
-<p>Codi: <%= curso.codigo %></p>
-<p>Inici: <%= curso.fecha_inicio %></p>
-<p>Fi: <%= curso.fecha_fin %></p>
+<div class="page-header">
+  <div>
+    <a href="/cursos" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i> Tornar al llistat
+    </a>
+    <h1 class="page-title"><%= curso.nombre %></h1>
+    <p class="page-subtitle">
+      <span class="badge">
+        <%= curso.codigo %>
+      </span>
+    </p>
+  </div>
 
-<h2>UFs</h2>
-<% if (curso.Ufs && curso.Ufs.length > 0) { %>
-  <ul>
-    <% curso.Ufs.forEach(uf => { %>
-      <li><%= uf.nombre %></li>
-    <% }) %>
-  </ul>
-<% } else { %>
-  <p>No hi ha UFs associades.</p>
-<% } %>
+  <div class="acciones">
+    <a href="/cursos/<%= curso.id %>/editar" class="btn btn-secundario">Editar</a>
+    <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= curso.id %>">Eliminar</button>
+  </div>
+</div>
 
-<h2>Professors</h2>
-<% if (curso.Profesors && curso.Profesors.length > 0) { %>
-  <ul>
-    <% curso.Profesors.forEach(prof => { %>
-      <li><%= prof.nombre %> <%= prof.apellidos %></li>
-    <% }) %>
-  </ul>
-<% } else { %>
-  <p>No hi ha professors associats.</p>
-<% } %>
+<div class="detalle-grid">
+  
+  <!-- Datos del curso -->
+  <section class="detalle-card">
+    <h2 class="detalle-card-title">Dades del curs</h2>
+    <dl class="detalle-list">
+      <div class="detalle-item">
+        <dt>Codi</dt>
+        <dd><%= curso.codigo || '—' %></dd>
+      </div>
+      <div class="detalle-item">
+        <dt>Data inici</dt>
+        <dd><%= curso.fecha_inicio || '—' %></dd>
+      </div>
+      <div class="detalle-item">
+        <dt>Requisits</dt>
+        <dd><%= curso.requisitos || '—' %></dd>
+      </div>
+      <div class="detalle-item">
+        <dt>Data fi</dt>
+        <dd><%= curso.fecha_fin || '—' %></dd>
+      </div>
+    </dl>
+  </section>
 
-<h2>Alumnes</h2>
-<% if (curso.Alumnos && curso.Alumnos.length > 0) { %>
-  <ul>
-    <% curso.Alumnos.forEach(al => { %>
-      <li><%= al.nombre %> <%= al.apellidos %></li>
-    <% }) %>
-  </ul>
-<% } else { %>
-  <p>No hi ha alumnes matriculats.</p>
-<% } %>
+  <!-- UFs -->
+  <section class="detalle-card">
+    <h2 class="detalle-card-title">UFs</h2>
+    <% if (curso.Ufs && curso.Ufs.length > 0) { %>
+      <ul class="detalle-cursos">
+        <% curso.Ufs.forEach(uf => { %>
+          <li>
+            <span class="curso-nombre"><%= uf.nombre %></span>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p class="detalle-empty">No hi ha UFs associades.</p>
+    <% } %>
+  </section>
 
-<p><a href="/cursos">← Tornar</a></p>
+  <!-- Professors -->
+  <section class="detalle-card">
+    <h2 class="detalle-card-title">Professors</h2>
+    <% if (curso.Profesors && curso.Profesors.length > 0) { %>
+      <ul class="detalle-cursos">
+        <% curso.Profesors.forEach(prof => { %>
+          <li>
+            <span class="curso-nombre"><%= prof.nombre %> <%= prof.apellidos %></span>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p class="detalle-empty">No hi ha professors associats.</p>
+    <% } %>
+  </section>
+
+  <!-- Alumnes -->
+  <section class="detalle-card detalle-full">
+    <h2 class="detalle-card-title">Alumnes</h2>
+    <% if (curso.Alumnos && curso.Alumnos.length > 0) { %>
+      <ul class="detalle-cursos">
+        <% curso.Alumnos.forEach(al => { %>
+          <li>
+            <span class="curso-nombre"><%= al.nombre %> <%= al.apellidos %></span>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p class="detalle-empty">No hi ha alumnes matriculats.</p>
+    <% } %>
+  </section>
+
+</div>
