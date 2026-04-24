@@ -1,0 +1,91 @@
+<% var styles = '<link rel="stylesheet" href="/css/forms.css">' %>
+
+<div class="form-container">
+  <div class="form-card">
+    <h1 class="form-title">Nou curs</h1>
+    <p class="form-subtitle">Introdueix les dades del nou curs</p>
+
+    <form id="cursoForm" class="form-grid" novalidate>
+      <div class="form-group">
+        <label>
+          Nom
+          <input type="text" name="nombre" placeholder="Nom" required />
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Codi
+          <input type="text" name="codigo" placeholder="Codi" required />
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          DNI
+          <input type="text" name="dni" placeholder="DNI" required />
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Telèfon
+          <input type="tel" name="telefono" placeholder="Telèfon" />
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Email
+          <input type="email" name="email" placeholder="tu@exemple.com" />
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Nivell d'estudis
+          <input type="text" name="nivel_estudios" placeholder="Nivell d'estudis" />
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Tipus
+          <select name="tipo" required>
+            <option value="">Selecciona tipus</option>
+            <option value="actual">Actual</option>
+            <option value="antiguo">Antic</option>
+            <option value="futuro">Futur</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="form-check">
+        <label>
+          <input type="checkbox" name="derechos_imagen" />
+          Drets d'imatge
+        </label>
+      </div>
+
+      <div class="form-check">
+        <label>
+          <input type="checkbox" name="cesion_material" />
+          Cessió material
+        </label>
+      </div>
+
+      <div class="form-group form-full">
+        <label>
+          Comentaris
+          <textarea name="comentarios" placeholder="Comentaris"></textarea>
+        </label>
+      </div>
+
+      <div id="alumnoMsg" class="form-msg form-full" aria-live="polite"></div>
+
+      <button type="submit" class="btn btn-primario btn-block form-full">Crear</button>
+    </form>
+  </div>
+</div>
+
+<script src="/src/public/js/cursos.js"></script>

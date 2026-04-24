@@ -1,15 +1,51 @@
-<h1>Cursos</h1>
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Cursos</h1>
+    <p class="page-subtitle">Llistat d'cursos registrats al centre</p>
+  </div>
+  <a href="/cursos/nuevo" class="btn btn-primario">Nou curs</a>
+</div>
 
-<% if (cursos && cursos.length > 0) { %>
-  <ul>
-    <% cursos.forEach(curso => { %>
-      <li>
-        <a href="/cursos/<%= curso.id %>">
-          <%= curso.codigo %> — <%= curso.nombre %>
-        </a>
-      </li>
-    <% }) %>
-  </ul>
-<% } else { %>
-  <p>No hi ha cursos registrats.</p>
-<% } %>
+<% if (cursos && cursos.length> 0) { %>
+  <div class="tabla-container">
+    <table id="cursosTable">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Codigo</th>
+          <th>Requisitos</th>
+          <th>Fecha_inicio</th>
+          <th>Fecha_fin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% cursos.forEach(curso=> {%>
+          <tr>
+            <td>
+              <a class="curso-nombre" href="/cursos/<%= curso.id %>">
+                <%= curso.nombre %>
+              </a>
+            </td>
+            <td>
+              <%= curso.codigo || '—' %>
+            </td>
+            <td>
+              <%= curso.requisitos || '—' %>
+            </td>
+            <td>
+              <%= curso.fecha_inicio || '—' %>
+            </td>
+            <td>
+              <%= curso.fecha_fin || '—' %>
+            </td>
+          </tr>
+          <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } else { %>
+    <div class="empty-state">
+      <p>No hi ha cursos registrats.</p>
+      <a href="/cursos/nuevo" class="btn btn-primario">Crear el primer curso</a>
+    </div>
+    <% } %>
