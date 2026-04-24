@@ -1,5 +1,5 @@
 const Alumno = require("../models/Alumno.js");
-
+const Curso = require("../models/Curso.js")
 
 async function seedAlumnos() {
   try {
@@ -117,4 +117,65 @@ async function seedAlumnos() {
   }
 }
 
-module.exports = seedAlumnos;
+async function seedCursos() {
+  try {
+
+    const total = await Curso.count();
+
+    if (total > 0) {
+      console.log("Los cursos ya existen. Seed cancelado.");
+      return;
+    }
+
+    console.log("Insertando cursos de prueba...");
+
+    const cursos = [
+      {
+        nombre: "Desenvolupament Web Frontend",
+        codigo: "DWFE-2025",
+        fecha_inicio: new Date("2025-02-10"),
+        fecha_fin: new Date("2025-06-30"),
+        requisitos: 2
+      },
+      {
+        nombre: "Desenvolupament Web Backend",
+        codigo: "DWBE-2025",
+        fecha_inicio: new Date("2025-03-01"),
+        fecha_fin: new Date("2025-07-15"),
+        requisitos: 3
+      },
+      {
+        nombre: "Introducció a la Programació",
+        codigo: "INTRO-PROG",
+        fecha_inicio: new Date("2025-01-15"),
+        fecha_fin: new Date("2025-04-15"),
+        requisitos: 1
+      },
+      {
+        nombre: "Administració de Sistemes Linux",
+        codigo: "ASIX-LINUX",
+        fecha_inicio: new Date("2025-04-01"),
+        fecha_fin: new Date("2025-09-01"),
+        requisitos: 3
+      },
+      {
+        nombre: "Bases de Dades SQL",
+        codigo: "BBDD-SQL",
+        fecha_inicio: new Date("2025-05-05"),
+        fecha_fin: new Date("2025-08-20"),
+        requisitos: 2
+      }
+    ];
+
+    await Curso.bulkCreate(cursos);
+
+    console.log("5 cursos insertados correctamente");
+
+  } catch (error) {
+    console.error("Error insertando cursos:", error.message);
+  }
+}
+
+
+
+module.exports = {seedAlumnos,seedCursos};

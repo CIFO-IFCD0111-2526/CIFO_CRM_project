@@ -1,0 +1,66 @@
+<% var styles='<link rel="stylesheet" href="/css/forms.css">' %>
+
+    <div class="form-container">
+        <div class="form-card">
+            <h1 class="form-title">Nou curs</h1>
+            <p class="form-subtitle">Introdueix les dades del nou curs</p>
+
+            <form id="cursoForm" class="form-grid" novalidate>
+                <div class="form-group">
+                    <label>
+                        Nom
+                        <input type="text" name="nombre" id="RegCursoNombre" placeholder="Nom del curs" required />
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Codi
+                        <input type="text" name="codigo" placeholder="Codi" required />
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Data inici
+                        <input type="date" name="fecha_inicio" id="RegCursoFechaInicio" required />
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Data fi
+                        <input type="date" name="fecha_fin" id="RegCursoFechaFin" required />
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Requisist mínims
+                        <select id="RegCursoRequisitos" name="requisitos">
+                            <option value="">Selecciona nivell</option>
+                            <option value="0">Sense estudis</option>
+                            <option value="1">Primària</option>
+                            <option value="2">Secundària</option>
+                            <option value="4">FP Grau Mitjà</option>
+                            <option value="5">Batxillerat</option>
+                            <option value="6">FP Grau Superior</option>
+                        </select>
+                    </label>
+                </div>
+                <div
+                id="RegCursoMsg"
+                class="form-msg form-full"
+                aria-live="polite"
+                >
+        </div>
+        <button type="submit" class="btn btn-primario btn-block form-full">
+            Crear curs
+        </button>
+
+        </form>
+
+    </div>
+    </div>
+
+    <script src="/js/cursos.js"></script>
