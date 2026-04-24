@@ -24,15 +24,18 @@ const clearMsg = () => {
   RegAlalumnoMsg.classList.remove("error-msg");
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {    
+
     // Agafem el formulari de la pàgina
-    console.log(setError);
+    
     const form = document.querySelector("#alumnoForm");
     const RegAlNombre = document.querySelector("#RegAlNombre");
     const RegAlApellidos = document.querySelector("#RegAlApellidos");
     const RegAlDni = document.querySelector("#RegAlDni");
     const RegAlEmail = document.querySelector("#RegAlEmail");
     const RegAltipo = document.querySelector("#RegAltipo");
+
+    // Netejem els errors de la pàgina    
 
     if (sessionStorage.getItem("alumnoCreado")){
         sessionStorage.removeItem("alumnoCreado");   
@@ -47,7 +50,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = Object.fromEntries(formData.entries());
 
     form.addEventListener("submit", async (e) => {
-        e.preventDefault();        
+        e.preventDefault(); 
+        
+       [RegAlNombre, RegAlApellidos, RegAlDni, RegAlEmail, RegAltipo].forEach(
+         (input) => {
+           input.addEventListener("input", () => {
+             clearError(input);
+           });
+         },
+       );
         
         // Convertim el formulari en un objecte JS
         const formData = new FormData(form);
