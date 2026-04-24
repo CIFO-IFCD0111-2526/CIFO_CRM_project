@@ -20,7 +20,7 @@ async function seedAlumnos() {
         dni: "11111111A",
         telefono: "600111111",
         email: "carlos@test.com",
-        nivel_estudios: "ESO",
+        nivel_estudios: "2",
         tipo: "actual",
         derechos_imagen: true,
         cesion_material: false,
@@ -31,7 +31,7 @@ async function seedAlumnos() {
         dni: "22222222B",
         telefono: "600222222",
         email: "laura@test.com",
-        nivel_estudios: "Bachillerato",
+        nivel_estudios: "5",
         tipo: "futuro",
       },
       {
@@ -40,7 +40,7 @@ async function seedAlumnos() {
         dni: "33333333C",
         telefono: "600333333",
         email: "david@test.com",
-        nivel_estudios: "FP",
+        nivel_estudios: "4",
         tipo: "actual",
       },
       {
@@ -49,7 +49,7 @@ async function seedAlumnos() {
         dni: "44444444D",
         telefono: "600444444",
         email: "ana@test.com",
-        nivel_estudios: "Universidad",
+        nivel_estudios: "6",
         tipo: "antiguo",
       },
       {
@@ -58,7 +58,7 @@ async function seedAlumnos() {
         dni: "55555555E",
         telefono: "600555555",
         email: "mario@test.com",
-        nivel_estudios: "ESO",
+        nivel_estudios: "2",
         tipo: "actual",
       },
       {
@@ -67,7 +67,7 @@ async function seedAlumnos() {
         dni: "66666666F",
         telefono: "600666666",
         email: "sara@test.com",
-        nivel_estudios: "FP",
+        nivel_estudios: "4",
         tipo: "futuro",
       },
       {
@@ -76,7 +76,7 @@ async function seedAlumnos() {
         dni: "77777777G",
         telefono: "600777777",
         email: "javier@test.com",
-        nivel_estudios: "ESO",
+        nivel_estudios: "2",
         tipo: "actual",
       },
       {
@@ -85,7 +85,7 @@ async function seedAlumnos() {
         dni: "88888888H",
         telefono: "600888888",
         email: "lucia@test.com",
-        nivel_estudios: "Bachillerato",
+        nivel_estudios: "5",
         tipo: "actual",
       },
       {
@@ -94,7 +94,7 @@ async function seedAlumnos() {
         dni: "99999999I",
         telefono: "600999999",
         email: "pablo@test.com",
-        nivel_estudios: "FP",
+        nivel_estudios: "4",
         tipo: "antiguo",
       },
       {
@@ -103,7 +103,7 @@ async function seedAlumnos() {
         dni: "10101010J",
         telefono: "600101010",
         email: "elena@test.com",
-        nivel_estudios: "Universidad",
+        nivel_estudios: "6",
         tipo: "actual",
       }
     ];
@@ -142,7 +142,7 @@ async function seedCursos() {
         codigo: "DWBE-2025",
         fecha_inicio: new Date("2025-03-01"),
         fecha_fin: new Date("2025-07-15"),
-        requisitos: 3
+        requisitos: 4
       },
       {
         nombre: "Introducció a la Programació",
@@ -156,7 +156,7 @@ async function seedCursos() {
         codigo: "ASIX-LINUX",
         fecha_inicio: new Date("2025-04-01"),
         fecha_fin: new Date("2025-09-01"),
-        requisitos: 3
+        requisitos: 4
       },
       {
         nombre: "Bases de Dades SQL",
