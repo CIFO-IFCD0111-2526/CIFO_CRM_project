@@ -75,14 +75,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnEditar = document.querySelector(".btn-editar");
   if (!btnEditar) return;
 
-  btnEditar.addEventListener("click", () => {
-    document.querySelectorAll(".view-mode").forEach(e => {
-      e.classList.add("hidden");
-    });
+  // btnEditar.addEventListener("click", () => {
+  //   document.querySelectorAll(".view-mode").forEach(e => {
+  //     e.classList.add("hidden");
+  //   });
 
-    document.querySelectorAll(".edit-mode").forEach(e => {
-      e.classList.remove("hidden");
-    });
-  });
+  //   document.querySelectorAll(".edit-mode").forEach(e => {
+  //     e.classList.remove("hidden");
+  //   });
+  // });
 });
 

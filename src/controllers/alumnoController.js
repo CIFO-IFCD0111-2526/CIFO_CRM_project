@@ -1,4 +1,5 @@
 const { Alumno, Curso } = require("../models");
+const { Op } = require("sequelize");
 
 //GET /alumnos
 
@@ -103,15 +104,74 @@ const removeAlumno = async (req, res) => {
         await alumno.destroy();
         return res.json({
             ok: true,
-            message:"Alumne eliminat correctament"
+            message: "Alumne eliminat correctament"
         });
     } catch (error) {
         res.status(500).json({
-            ok:false,
-            message:"Error eliminant alumne"});
+            ok: false,
+            message: "Error eliminant alumne"
+        });
     }
 
 };
 
+//GET /alumnos/:id/editar
 
-module.exports = { getAll, createFormPrint, newAlumno, getById, removeAlumno }
+const editAlumnoDetalle = async (req, res) => {
+    res.redirect(`/alumnos/${req.params.id}?edit=true`);
+};
+
+//PUT /alumnos/:id
+
+const updateAlumno = async (req, res) => {
+    try {
+        const alumno = await Alumno.findByPk(req.params.id);
+
+        const {
+            nombre,
+            apellidos,
+            dni,
+            telefono,
+            email,
+            nivel_estudios,
+            tipo,
+            derechos_imagen,
+            cesion_material,
+            comentarios,
+        } = req.body;
+
+        if (!nombre || !apellidos || !dni || !tipo) {
+            return res.status(400).json({ ok: false, mensaje: "Tots el camps són obligatoris" });
+        }
+
+        if (dni !== alumno.dni) {
+            const existe = await Alumno.findOne({ where: { dni } });
+            if (existe) {
+                return res.status(400).json({ ok: false, error: "Ja existeix un altre alumne amb aquest DNI" });
+            }
+        }
+
+        await alumno.update({
+            nombre,
+            apellidos,
+            dni,
+            telefono: telefono || null,
+            email: email || null,
+            nivel_estudios: nivel_estudios || null,
+            tipo,
+            derechos_imagen: derechos_imagen === "true" || derechos_imagen === true,
+            cesion_material: cesion_material === "true" || cesion_material === true,
+            comentarios: comentarios || null,
+            ultimo_id_modif: req.session.usuario.id,
+        });
+
+        return res.json({ ok: true, redirect: `/alumnos/${req.params.id}` }); //comentamos luego
+
+    } catch (error) {
+        console.error("Error al actualitzar alumne:", error);
+        res.status(500).json({ ok: false, mensaje: "Error del servidor." }); // comentamos al volver
+    }
+
+};
+
+module.exports = { getAll, createFormPrint, newAlumno, getById, removeAlumno, editAlumnoDetalle, updateAlumno }
