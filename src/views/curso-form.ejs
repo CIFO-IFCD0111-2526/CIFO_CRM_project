@@ -2,6 +2,7 @@
 
     <div class="form-container">
         <div class="form-card">
+            <a href="/cursos" class="back-link"><i class="fa-solid fa-arrow-left"></i> Tornar al llistat</a>
             <h1 class="form-title">Nou curs</h1>
             <p class="form-subtitle">Introdueix les dades del nou curs</p>
 
@@ -48,19 +49,15 @@
                         </select>
                     </label>
                 </div>
-                <div
-                id="RegCursoMsg"
-                class="form-msg form-full"
-                aria-live="polite"
-                >
+                <div id="RegCursoMsg" class="form-msg form-full" aria-live="polite">
+                </div>
+                <button type="submit" class="btn btn-primario btn-block form-full">
+                    Crear curs
+                </button>
+
+            </form>
+
         </div>
-        <button type="submit" class="btn btn-primario btn-block form-full">
-            Crear curs
-        </button>
-
-        </form>
-
-    </div>
     </div>
 
     <script src="/js/cursos.js"></script>
