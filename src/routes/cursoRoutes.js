@@ -4,18 +4,20 @@ const { authPage } = require("../middlewares/auth.js");
 
 const router = Router();
 
+
 // Rutas de cursos, todas requieren autenticacion
 router.use(authPage);
+// Formulario de creación de cursos
+router.get('/nuevo', authPage, controller.renderNuevoCurso);
+
 
 router.get("/", controller.getAll);
 router.get("/:id", controller.getById);
 
-// Formulario de creación de cursos
-router.get('/nuevo', authPage, cursoController.renderNuevoCurso);
+
 
 // Crear curso (POST vía fetch)
-router.post('/', authPage, cursoController.crearCurso);
-
+router.post('/', authPage, controller.crearCurso);
 
 
 module.exports = router;

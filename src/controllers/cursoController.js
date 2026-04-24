@@ -42,17 +42,20 @@ const getById = async (req, res) => {
 };
 
 /** Render del formulario de creación de cursos */
-exports.renderNuevoCurso = (req, res) => {
-  res.render('curso-form', {
-    curso: {},
-    errores: []
+const renderNuevoCurso = (req, res) => {
+  res.render("curso-form", {
+        titulo: "Nou curs",
+        usuario: req.session.usuario,
+        css: "cursos.css",
+        js: "cursos.js",
+        paginaActual: "cursos",
+
   });
 };
 
 /** Crear curso (POST) */
-const Curso = require('../models/Curso'); // ajusta según tu ORM
 
-exports.crearCurso = async (req, res) => {
+const crearCurso = async (req, res) => {
   try {
     const { codigo, nombre, fecha_inicio, fecha_fin, requisitos } = req.body;
 
@@ -87,4 +90,4 @@ exports.crearCurso = async (req, res) => {
   }
 };
 
-module.exports = { getAll, getById };
+module.exports = { getAll, getById,crearCurso,renderNuevoCurso };
