@@ -10,4 +10,12 @@ router.use(authPage);
 router.get("/", controller.getAll);
 router.get("/:id", controller.getById);
 
+// Formulario de creación de cursos
+router.get('/nuevo', authPage, cursoController.renderNuevoCurso);
+
+// Crear curso (POST vía fetch)
+router.post('/', authPage, cursoController.crearCurso);
+
+
+
 module.exports = router;
