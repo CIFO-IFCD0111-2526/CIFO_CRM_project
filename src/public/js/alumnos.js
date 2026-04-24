@@ -60,39 +60,47 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();        
 
-        // Convertim el formulari en un objecte JS
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+    data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
+    data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
 
-        //Preparem els checkboxes per ser activats
+    const res = await fetch("/alumnos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
 
-        data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
-        data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
+    const json = await res.json();
 
-        // Enviem al backend
-        const res = await fetch("/alumnos", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        });
+    if (!json.ok) {
+      console.log("Errors rebuts del backend:", json.errores);
+      document.querySelectorAll(".error-msg").forEach((e) => (e.textContent = ""));
+      for (const camp in json.errores) {
+        const span = document.querySelector(`#error-${camp}`);
+        if (span) span.textContent = json.errores[camp];
+      }
+      return;
+    }
 
-        const json = await res.json();
+    window.location.href = json.redirect;
+  });
+});
 
-        // Si hi ha errors → mostrar-los
-        if (!json.ok) {
-            console.log("Errors rebuts del backend:", json.errores);
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".btn-eliminar");
+  if (!btn) return;
 
-            // Netejar errors anteriors
-            document.querySelectorAll(".error-msg").forEach(e => e.textContent = "");
+  const id = btn.dataset.id;
+  const row = btn.closest("tr");
+  const nombre = row?.querySelector(".alumno-nombre")?.textContent.trim() || "aquest alumne";
 
-            // Mostrar errors nous
-            for (const camp in json.errores) {
-                const span = document.querySelector(`#error-${camp}`);
-                if (span) span.textContent = json.errores[camp];
-            }
+  const ok = await window.showConfirm({
+    title: "Eliminar alumne",
+    message: `Segur que vols eliminar ${nombre}? Aquesta acció no es pot desfer.`,
+    confirmText: "Eliminar",
+    cancelText: "Cancel·lar",
+  });
 
-            return;
-        }
+  if (!ok) return;
 
         // Si tot va bé → redirigir a /alumnos/:id
 

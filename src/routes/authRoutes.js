@@ -1,3 +1,4 @@
+
 const { Router } = require("express");
 const controller = require("../controllers/authController");
 const { redirectIfLogged } = require("../middlewares/auth");
