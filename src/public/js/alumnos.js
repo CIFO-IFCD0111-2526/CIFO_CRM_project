@@ -10,29 +10,18 @@ const clearError = (input) => {
   input.classList.remove("error");
 };
 
-const validacion = (input) => {
-  const errors = [];
-    // ADAPTAR A FUNCIONALIDAD ACTUAL
-  if (!email) {
-    errors.push("El email és obligatori.");
-    setError(emailInput);
-  } else if (!isValidEmail(email)) {
-    errors.push("El format de l'email no és vàlid.");
-    setError(emailInput);
-  }
+const RegAlalumnoMsg = document.querySelector("#RegAlalumnoMsg");
 
-  if (!password) {
-    errors.push("La contraseña és obligatòria.");
-    setError(passwordInput);
-  } else if (password.length < 6) {
-    errors.push("La contraseña deu tenir al menys 6 caràcters.");
-    setError(passwordInput);
-  }
+const showMsg = (html, isError = true) => {
+  RegAlalumnoMsg.innerHTML = html;
+  RegAlalumnoMsg.style.display = "block";
+  RegAlalumnoMsg.classList.toggle("error-msg", isError);
+};
 
-  if (errors.length > 0) {
-    showMsg(errors.join("<br>"));
-    return;
-  }
+const clearMsg = () => {
+  RegAlalumnoMsg.innerHTML = "";
+  RegAlalumnoMsg.style.display = "none";
+  RegAlalumnoMsg.classList.remove("error-msg");
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -59,37 +48,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();        
-
+        
         // Convertim el formulari en un objecte JS
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
+        console.log(formData);
 
-    const json = await res.json()
+        //Preparem els checkboxes per ser activats, canviem el valor a true/false
 
         data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
         data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
 
-    window.location.href = json.redirect
-  })
+        const errors = [];
+        // ADAPTAR A FUNCIONALIDAD ACTUAL
 
+        if (!data.nombre) {
+          errors.push("El nom és obligatori.");
+          setError(RegAlNombre);
+        }
 
-document.addEventListener('click', async e => {
-  const btn = e.target.closest('.btn-eliminar')
-  if (!btn) return
+        if (!data.apellidos) {
+          errors.push("Un cognom és obligatori.");
+          setError(RegAlApellidos);
+        }
 
-  const id = btn.dataset.id
-  const row = btn.closest('tr')
-  const nombre =
-    row?.querySelector('.alumno-nombre')?.textContent.trim() || 'aquest alumne'
+        if (!data.dni) {
+          errors.push("El DNI o NIE és obligatori");
+          setError(RegAlDni);
+        } else if (data.dni.length < 9) {
+          errors.push("Format incorrecte (DNI: 12345679A. NIE: Y1234567Z)");
+          setError(passwordInput);
+        }
 
-  const ok = await window.showConfirm({
-    title: 'Eliminar alumne',
-    message: `Segur que vols eliminar ${nombre}? Aquesta acció no es pot desfer.`,
-    confirmText: 'Eliminar',
-    cancelText: 'Cancel·lar'
-  })
+        if (!data.email) {
+          errors.push("El email és obligatori.");
+          setError(RegAlEmail);
+        } else if (!isValidEmail(data.email)) {
+          errors.push("El format de l'email no és vàlid.");
+          setError(RegAlEmail);
+        }
+        
+        if (!data.tipo) {
+          errors.push("És obligatori escollir un tipus.");
+          setError(RegAltipo);
+        }
 
-  if (!ok) return
+        if (errors.length > 0) {
+          showMsg(errors.join("<br>"));
+          return;
+        }
+
+        // Enviem al backend
+        const res = await fetch("/alumnos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+    
+    if (!ok) return;
 
   try {
     const res = await fetch(`/alumnos/${id}`, { method: 'DELETE' })
@@ -301,7 +317,6 @@ function initBuscador (input, dropdown) {
 
     window.location.href = json.redirect;
   });
-
 
 document.addEventListener("click", async (e) => {
   const btn = e.target.closest(".btn-eliminar");
