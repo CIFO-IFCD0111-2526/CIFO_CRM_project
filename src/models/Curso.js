@@ -30,7 +30,19 @@ const Curso = sequelize.define(
             type: DataTypes.DATE,
         },
         requisitos: {
-            type: DataTypes.INTEGER, 
+            type: DataTypes.INTEGER,
+            get() {
+                const niveles = {
+                    0: "Sense estudis",
+                    1: "Primària",
+                    2: "Secundària",
+                    4: "FP Grau Mitjà",
+                    5: "Batxillerat",
+                    6: "FP Grau Superior"
+                };
+
+                return niveles[this.getDataValue("requisitos")] ?? "—";
+            }
         },
     },
     {

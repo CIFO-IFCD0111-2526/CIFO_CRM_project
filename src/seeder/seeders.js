@@ -142,7 +142,7 @@ async function seedCursos() {
         codigo: "DWBE-2025",
         fecha_inicio: new Date("2025-03-01"),
         fecha_fin: new Date("2025-07-15"),
-        requisitos: 3
+        requisitos: 4
       },
       {
         nombre: "Introducció a la Programació",
@@ -156,7 +156,7 @@ async function seedCursos() {
         codigo: "ASIX-LINUX",
         fecha_inicio: new Date("2025-04-01"),
         fecha_fin: new Date("2025-09-01"),
-        requisitos: 3
+        requisitos: 4
       },
       {
         nombre: "Bases de Dades SQL",
