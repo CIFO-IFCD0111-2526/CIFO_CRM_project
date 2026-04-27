@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const RegAlNombre = document.querySelector("#RegAlNombre");
     const RegAlApellidos = document.querySelector("#RegAlApellidos");
     const RegAlDni = document.querySelector("#RegAlDni");
+    const RegAlTelefono = document.querySelector("#RegAlTelefono");
     const RegAlEmail = document.querySelector("#RegAlEmail");
     const RegAltipo = document.querySelector("#RegAltipo");
 
@@ -115,77 +116,120 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = Object.fromEntries(formData.entries());
 
     form.addEventListener("submit", async (e) => {
-        e.preventDefault(); 
-        
-       [RegAlNombre, RegAlApellidos, RegAlDni, RegAlEmail, RegAltipo].forEach(
-         (input) => {
-           input.addEventListener("input", () => {
-             clearError(input);
-           });
-         },
-       );
-        
-        // Convertim el formulari en un objecte JS
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+      e.preventDefault();
 
-        //Preparem els checkboxes per ser activats, canviem el valor a true/false
+      [
+        RegAlNombre,
+        RegAlApellidos,
+        RegAlDni,
+        RegAlTelefono,
+        RegAlEmail,
+        RegAltipo,
+      ].forEach((input) => {
+        input.addEventListener("input", () => {
+          clearError(input);
+        });
+      });
 
-    const json = await res.json();
+      // Convertim el formulari en un objecte JS
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
 
-        const errors = [];
-        // ADAPTAR A FUNCIONALIDAD ACTUAL
+      console.log(data);
 
-        if (!data.nombre) {
-          errors.push("El nom és obligatori.");
-          setError(RegAlNombre);
-        }
+      //Preparem els checkboxes per ser activats, canviem el valor a true/false
 
-        if (!data.apellidos) {
-          errors.push("Un cognom és obligatori.");
-          setError(RegAlApellidos);
-        }
+      data.derechos_imagen =
+        form.querySelector('[name="derechos_imagen"]')?.checked || false;
+      data.cesion_material =
+        form.querySelector('[name="cesion_material"]')?.checked || false;
 
-        if (!data.dni) {
-          errors.push("El DNI o NIE és obligatori");
-          setError(RegAlDni);
-        } else if (!validDniCifNie(data.dni)) {
-          console.log("holi")
-          errors.push("Format incorrecte (DNI: 12345679A. NIE: Y1234567Z)");
-          setError(RegAlDni);
-        }
+      const errors = [];
+      // ADAPTAR A FUNCIONALIDAD ACTUAL
 
-        if (!data.email) {
-          errors.push("El email és obligatori.");
-          setError(RegAlEmail);
-        } else if (!isValidEmail(data.email)) {
+      if (!data.nombre) {
+        errors.push("El nom és obligatori.");
+        setError(RegAlNombre);
+      }
+
+      if (!data.apellidos) {
+        errors.push("Un cognom és obligatori.");
+        setError(RegAlApellidos);
+      }
+
+      if (!data.dni) {
+        errors.push("El DNI o NIE és obligatori");
+        setError(RegAlDni);
+      } else if (!validDniCifNie(data.dni)) {
+        errors.push("Format incorrecte (DNI: 12345679A. NIE: Y1234567Z)");
+        setError(RegAlDni);
+      }
+
+      let valTelMail = false;
+
+      do {
+        if (!data.telefono && !data.email) {
+          errors.push("És necessari informar l'email o el telèfon.");
+          setError(RegAlEmail);         
+          setError(RegAlTelefono);
+          break;
+        } else if (!isValidEmail(data.email) && !data.telefono) {
           errors.push("El format de l'email no és vàlid.");
           setError(RegAlEmail);
+          break;
+        } else if (data.email.length > 0 && !isValidEmail(data.email) && data.telefono) {
+          errors.push("El format de l'email no és vàlid.");               
+          setError(RegAlEmail);
+          break;
+        } else {
+          if (data.email.length === 0) { data.email = null };
+          clearError(RegAlEmail);
+          clearError(RegAlTelefono);
+          valTelMail = true;
+        };
+      } while (valTelMail === false);
+
+      if (!data.tipo) {
+        errors.push("És obligatori escollir un tipus.");
+        setError(RegAltipo);
+      }
+
+      if (errors.length > 0) {
+        showMsg(errors.join("<br>"));
+        return;
+      }      
+
+      // Enviem al backend
+      const res = await fetch("/alumnos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const json = await res.json();
+
+      // Si hi ha errors → mostrar-los
+      if (!json.ok) {
+        console.log("Errors rebuts del backend:", json.errores);
+
+        // Netejar errors anteriors
+        document
+          .querySelectorAll(".error-msg")
+          .forEach((e) => (e.textContent = ""));
+
+        // Mostrar errors nous
+        for (const camp in json.errores) {
+          const span = document.querySelector(`#error-${camp}`);
+          if (span) span.textContent = json.errores[camp];
         }
-        
-        if (!data.tipo) {
-          errors.push("És obligatori escollir un tipus.");
-          setError(RegAltipo);
-        }
 
-        if (errors.length > 0) {
-          showMsg(errors.join("<br>"));
-          return;
-        }
+        return;
+      }
 
-        // Enviem al backend
-        const res = await fetch("/alumnos", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        });
-    
-    if (!ok) return;
+      // Si tot va bé → redirigir a /alumnos/:id
 
-        // Si tot va bé → redirigir a /alumnos/:id
-
-        sessionStorage.setItem("alumnoCreado", true);
-        window.location.href = json.redirect;
+      sessionStorage.setItem("alumnoCreado", true);
+      window.location.href = json.redirect;
     });
 
     const json = await res.json();
