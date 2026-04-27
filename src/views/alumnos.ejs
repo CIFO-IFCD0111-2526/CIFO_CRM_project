@@ -9,10 +9,12 @@
   <input
     type="text"
     id="busquedaAlumno"
-    placeholder="Buscar alumno..."
+    placeholder="Cercar alumne..."
     autocomplete="off"
   />
-  <div id="dropdownResultados" class="dropdown hidden"></div>
+  <div id="loader" class="caja-der">
+      <div id="dropdownResultados" class="dropdown hidden"></div>
+  </div>
 </div>
 <% if (alumnos && alumnos.length > 0) { %>
   <div class="tabla-container">
