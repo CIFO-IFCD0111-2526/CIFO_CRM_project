@@ -183,4 +183,10 @@ const forgotPassword = async (req, res) => {
 
 };
 
-module.exports = { loginForm, login, registerForm, register, logout, forgotPasswordForm, forgotPassword };
+
+
+
+
+
+module.exports = { loginForm, login, registerForm, register, logout , forgotPassword ,  forgotPasswordForm  };
+
