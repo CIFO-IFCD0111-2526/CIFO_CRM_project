@@ -118,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      // Limpiamos los errores.
       [
         RegAlNombre,
         RegAlApellidos,
@@ -130,6 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
           clearError(input);
         });
       });
+
+      clearMsg();
 
       // Convertim el formulari en un objecte JS
       const formData = new FormData(form);
@@ -210,18 +213,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Si hi ha errors → mostrar-los
       if (!json.ok) {
-        console.log("Errors rebuts del backend:", json.errores);
+        console.log("Errors rebuts del backend:", json.error);
 
-        // Netejar errors anteriors
-        document
-          .querySelectorAll(".error-msg")
-          .forEach((e) => (e.textContent = ""));
+        // CONTROL DE ERRORES ANTERIOR, HACÍA REFERENCIA A UN SPAN QUE NO EXISTE.
+        // // Netejar errors anteriors
+        // document
+        //   .querySelectorAll(".error-msg")
+        //   .forEach((e) => (e.textContent = ""));
 
-        // Mostrar errors nous
-        for (const camp in json.errores) {
-          const span = document.querySelector(`#error-${camp}`);
-          if (span) span.textContent = json.errores[camp];
-        }
+        // // Mostrar errors nous
+        // for (const camp in json.errores) {
+        //   const span = document.querySelector(`#error-${camp}`);
+        //   if (span) span.textContent = json.errores[camp];
+        // }
+
+        showMsg(json.error);
 
         return;
       }
