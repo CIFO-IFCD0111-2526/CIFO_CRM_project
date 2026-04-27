@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Alumno, Curso } = require("../models");
 
 //GET /alumnos
@@ -115,7 +116,7 @@ const removeAlumno = async (req, res) => {
 };
 
 const buscarAlumno = async (req, res) => {
-    const q = req.query.q;
+    const q = (req.query.q || "").trim();
 
     // Si hi ha menys de 2 caràcters → retornem array buit
     if (q.length < 2) {
