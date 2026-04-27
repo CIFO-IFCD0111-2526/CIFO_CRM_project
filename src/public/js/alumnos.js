@@ -507,7 +507,6 @@ document.addEventListener('click', async e => {
 })
 
 document.addEventListener('DOMContentLoaded', () => {
-  // FORMULARIO (crear alumno)
   const form = document.querySelector('#alumnoForm')
   if (form) {
     form.addEventListener('submit', async e => {
@@ -547,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  // BUSCADOR
+ 
   const input = document.getElementById('busquedaAlumno')
   const dropdown = document.getElementById('dropdownResultados')
 
@@ -556,7 +555,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })
 
-// ELIMINAR (esto puede ir fuera)
 document.addEventListener('click', async e => {
   const btn = e.target.closest('.btn-eliminar')
   if (!btn) return
@@ -628,7 +626,6 @@ function initBuscador (input, dropdown) {
 
       console.log('STATUS:', res.status)
 
-      // usar directamente json (más limpio y sin errores)
       const data = await res.json()
 
       console.log('Datos recibidos:', data)
