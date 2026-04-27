@@ -222,15 +222,6 @@ main {
   }
 }
 
-.buscador-alumnos {
-  position: relative;
-  margin-bottom: 1rem;
-  max-width: 960px;
-  color: var(--color-texto-etiquetas);
-  padding: 8px !important;
-  
-}
-
 #busquedaAlumno {
   width: 50%;
   padding: 8px !important;
@@ -242,16 +233,13 @@ main {
 
 .dropdown {
   position: absolute;
-  top: 100%;
-  right: 10px;
-  width: 100%;
-  background: white;
   border: 1px solid #ccc;
   border-top: none;
-  border-bottom: 8px !important;
+  /* border-bottom: 8px !important; */
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
+  border-radius: var(--radio-pequeno);
 }
 
 .dropdown.hidden {
@@ -271,27 +259,29 @@ main {
   color: #888;
   cursor: default;
 }
-.dropdown {
-  display: block !important;
-  background: rgb(255, 255, 255) !important;
-  opacity: 100 !important;
+
+.buscador-wrapper {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 0 2rem 1rem;
+  max-width: calc(100% - 4rem);
 }
 
-.caja-izq {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  width: 50%;
-  height: 2vh;
-  padding: 5%;
-  color: #ffffff;
-    }
+.buscador-alumnos {
+  flex: 1;
+  /* margin: 0;*/
+}
 
-.caja-der {
-  display: flex;
-  flex-direction: column;
-  justify-content: right;
-  width: 2%;
-  height: 5vh;
-  padding: 5% 12%;
+#dropdownResultados {
+  flex: 1;
+  position: absolute;
+  left: 50%;
+  min-height: 42px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background: white;
+  padding: 4px 0;
 }
