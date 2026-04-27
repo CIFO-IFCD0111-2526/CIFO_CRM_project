@@ -1,37 +1,73 @@
-const e = require("express");
-
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#alumnoForm");
   if (!form) return;
 
+  // --Editar--
+
+  const btnEditar = document.querySelector(".btn-secundario");
+  btnEditar?.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.querySelectorAll(".view-mode").forEach(el => el.classList.add("hidden"));
+    document.querySelectorAll(".edit-mode").forEach(el => el.classList.remove("hidden"));
+  });
+
+  // -- Lógica para Cancelar (Opcional pero recomendada) --
+  const btnCancelar = document.querySelector("#btnCancelar");
+  btnCancelar?.addEventListener("click", () => {
+    document.querySelectorAll(".view-mode").forEach(el => el.classList.remove("hidden"));
+    document.querySelectorAll(".edit-mode").forEach(el => el.classList.add("hidden"));
+  });
+
+  // -- SUBMIT (POST o PUT) --
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
     data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
     data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
 
-    const res = await fetch("/alumnos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    const id = document.querySelector(".btn-eliminar")?.dataset.id;
 
-    const json = await res.json();
+    // Si hay ID, usamos PUT a /alumnos/:id. Si no, POST a /alumnos
+    const url = id ? `/alumnos/${id}` : "/alumnos";
+    const metodo = id ? "PUT" : "POST";
 
-    if (!json.ok) {
-      console.log("Errors rebuts del backend:", json.errores);
-      document.querySelectorAll(".error-msg").forEach((e) => (e.textContent = ""));
-      for (const camp in json.errores) {
-        const span = document.querySelector(`#error-${camp}`);
-        if (span) span.textContent = json.errores[camp];
+    try {
+      const res = await fetch(url, {
+        method: metodo,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      submitBtn.disabled = false;
+
+      const json = await res.json();
+
+      if (!json.ok) {
+        // Tu lógica original de mostrar errores
+        console.log("Errors rebuts del backend:", json.errores || json.mensaje);
+        document.querySelectorAll(".error-msg").forEach((e) => (e.textContent = ""));
+
+        if (json.errores) {
+          for (const camp in json.errores) {
+            const span = document.querySelector(`#error-${camp}`);
+            if (span) span.textContent = json.errores[camp];
+          }
+        } else if (json.mensaje) {
+          alert(json.mensaje); // Para errores genéricos como el DNI duplicado
+        }
+        return;
       }
-      return;
-    }
+      window.location.href = json.redirect;
 
-    window.location.href = json.redirect;
+    } catch (err) {
+      console.error("Error en la petició:", err);
+    }
   });
 });
 
@@ -71,18 +107,6 @@ document.addEventListener("click", async (e) => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const btnEditar = document.querySelector(".btn-editar");
-  if (!btnEditar) return;
 
-  // btnEditar.addEventListener("click", () => {
-  //   document.querySelectorAll(".view-mode").forEach(e => {
-  //     e.classList.add("hidden");
-  //   });
 
-  //   document.querySelectorAll(".edit-mode").forEach(e => {
-  //     e.classList.remove("hidden");
-  //   });
-  // });
-});
 

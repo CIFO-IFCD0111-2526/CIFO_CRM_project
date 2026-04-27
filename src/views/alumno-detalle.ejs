@@ -23,7 +23,7 @@
 
       <p class="page-subtitle">
         <!-- modo vista -->
-        <span class="view-mode badge badge-<%= alumno.tipo %>"> 
+        <span class="view-mode badge badge-<%= alumno.tipo %>">
           <% if (alumno.tipo==='actual' ) { %>Actual<% } %>
               <% if (alumno.tipo==='antiguo' ) { %>Antic<% } %>
                   <% if (alumno.tipo==='futuro' ) { %>Futur<% } %>
@@ -38,7 +38,10 @@
       </p>
     </div>
     <div class="acciones">
-      <a href="/alumnos/<%= alumno.id %>/editar" class="btn btn-secundario">Editar</a>
+      <a href="#" class="btn btn-secundario">Editar</a>
+      <!-- <buttom type="button" id="btnEditar" class="btn btn-secundario">Editar</buttom> -->
+      <button type="submit" id="btnGuardar" class="btn btn-secundario edit-mode hidden">Guardar</button>
+      <button type="button" id="btnCancelar" class="btn btn-secundario cancelar-btn edit-mode hidden">Cancelar</button>
       <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= alumno.id %>">Eliminar</button>
     </div>
   </div>
@@ -50,25 +53,29 @@
         <div class="detalle-item">
           <dt>DNI</dt>
           <dd>
-            <%= alumno.dni || '—' %>
+            <span class="view-mode"><%= alumno.dni || '—' %></span>
+            <input type="text" name="dni" value="<%= alumno.dni %>" class="edit-mode hidden" />
           </dd>
         </div>
         <div class="detalle-item">
           <dt>Email</dt>
           <dd>
-            <%= alumno.email || '—' %>
+            <span class="view-mode"><%= alumno.email || '—' %></span>
+            <input type="email" name="email" value="<%= alumno.email %>" class="edit-mode hidden" />
           </dd>
         </div>
         <div class="detalle-item">
           <dt>Telèfon</dt>
           <dd>
-            <%= alumno.telefono || '—' %>
+            <span class="view-mode"><%= alumno.telefono || '—' %></span>
+            <input type="tel" name="telefono" value="<%= alumno.telefono %>" class="edit-mode hidden" />
           </dd>
         </div>
         <div class="detalle-item">
           <dt>Nivell d'estudis</dt>
           <dd>
-            <%= alumno.nivel_estudios || '—' %>
+            <span class="view-mode"><%= alumno.nivel_estudios || '—' %></span>
+            <input type="text" name="nivel_estudios" value="<%= alumno.nivel_estudios %>" class="edit-mode hidden" />
           </dd>
         </div>
       </dl>
