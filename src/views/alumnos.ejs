@@ -5,7 +5,15 @@
   </div>
   <a href="/alumnos/nuevo" class="btn btn-primario">Nou alumne</a>
 </div>
-
+<div class="busqueda-alumnos">
+  <input
+    type="text"
+    id="busquedaAlumno"
+    placeholder="Cercar alumne..."
+    autocomplete="off"
+  />
+  <div id="sugerenciasAlumno" class="dropdown hidden"></div>
+</div>
 <% if (alumnos && alumnos.length > 0) { %>
   <div class="tabla-container">
     <table id="alumnosTable">

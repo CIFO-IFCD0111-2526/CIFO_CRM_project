@@ -221,3 +221,38 @@ main {
     grid-template-columns: 1fr;
   }
 }
+
+.busqueda-alumnos {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+#busquedaAlumno {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.dropdown {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dropdown.hidden {
+  display: none;
+}
+
+.dropdown .item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown .item:hover {
+  background-color: #f0f0f0;
+}

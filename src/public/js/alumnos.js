@@ -68,3 +68,80 @@ document.addEventListener("click", async (e) => {
     });
   }
 });
+
+const input = document.getElementById("busquedaAlumno");
+const dropdown = document.getElementById("sugerenciasAlumno");
+
+let debounceTimer = null;
+
+input.addEventListener("input", () => {
+  const query = input.value.trim();
+
+  clearTimeout(debounceTimer);
+
+  if (query.length < 2) {
+    ocultarDropdown();
+    return;
+  }
+
+  debounceTimer = setTimeout(() => {
+    buscarAlumnos(query);
+  }, 250);
+});
+
+async function buscarAlumnos(query) {
+  try {
+    const res = await fetch(`/alumnos/buscar?q=${encodeURIComponent(query)}`);
+    const data = await res.json();
+
+    renderizarResultados(data);
+  } catch (err) {
+    console.error("Error en búsqueda:", err);
+  }
+}
+
+function renderizarResultados(alumnos) {
+  dropdown.innerHTML = "";
+
+  if (!alumnos.length) {
+    dropdown.innerHTML = `<div class="item">Sense resultats</div>`;
+    mostrarDropdown();
+    return;
+  }
+
+  alumnos.forEach((alumno) => {
+    const item = document.createElement("div");
+    item.classList.add("item");
+
+    item.textContent = `${alumno.apellidos}, ${alumno.nombre} — ${alumno.dni}`;
+
+    item.addEventListener("click", () => {
+      window.location.href = `/alumnos/${alumno.id}`;
+    });
+
+    dropdown.appendChild(item);
+  });
+
+  mostrarDropdown();
+}
+
+function mostrarDropdown() {
+  dropdown.classList.remove("hidden");
+}
+
+function ocultarDropdown() {
+  dropdown.classList.add("hidden");
+}
+
+// Cerrar al perder foco
+input.addEventListener("blur", () => {
+  setTimeout(ocultarDropdown, 150); // delay para permitir click
+});
+
+// Cerrar con Escape
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    ocultarDropdown();
+    input.blur();
+  }
+});
