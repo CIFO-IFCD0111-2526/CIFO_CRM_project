@@ -61,7 +61,7 @@ const Alumno = sequelize.define(
     },
 
     nivel_estudios: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
 
