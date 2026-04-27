@@ -103,15 +103,47 @@ const removeAlumno = async (req, res) => {
         await alumno.destroy();
         return res.json({
             ok: true,
-            message:"Alumne eliminat correctament"
+            message: "Alumne eliminat correctament"
         });
     } catch (error) {
         res.status(500).json({
-            ok:false,
-            message:"Error eliminant alumne"});
+            ok: false,
+            message: "Error eliminant alumne"
+        });
     }
 
 };
 
+const buscarAlumno = async (req, res) => {
+    const q = req.query.q;
 
-module.exports = { getAll, createFormPrint, newAlumno, getById, removeAlumno }
+    // Si hi ha menys de 2 caràcters → retornem array buit
+    if (q.length < 2) {
+        return res.json([]);
+    }
+
+    try {
+        const alumnos = await Alumno.findAll({
+            where: {
+                [Op.or]: [
+                    { nombre: { [Op.like]: `%${q}%` } },
+                    { apellidos: { [Op.like]: `%${q}%` } },
+                    { dni: { [Op.like]: `%${q}%` } }
+                ]
+            },
+            limit: 10,
+            order: [["apellidos", "ASC"]],
+            attributes: ["id", "nombre", "apellidos", "dni"]
+        });
+
+        return res.json(alumnos);
+
+    } catch (error) {
+        console.error("Error en buscarAlumno:", error);
+        return res.status(500).json({ error: "Error intern del servidor" });
+    }
+};
+
+
+
+module.exports = { getAll, createFormPrint, newAlumno, getById, removeAlumno, buscarAlumno };
