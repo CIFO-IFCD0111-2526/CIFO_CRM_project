@@ -225,23 +225,33 @@ main {
 .busqueda-alumnos {
   position: relative;
   margin-bottom: 1rem;
+  max-width: 960px;
+  color: var(--color-texto-etiquetas);
+  padding: 8px !important;
+  
 }
 
 #busquedaAlumno {
   width: 100%;
-  padding: 8px;
+  padding: 8px !important;
   font-size: 14px;
+  color: var(--color-texto-principal);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
 }
 
 .dropdown {
   position: absolute;
+  top: 100%;
+  left: 0;
   width: 100%;
   background: white;
   border: 1px solid #ccc;
   border-top: none;
-  z-index: 10;
+  border-bottom: 8px !important;
   max-height: 200px;
   overflow-y: auto;
+  z-index: 10;
 }
 
 .dropdown.hidden {
@@ -249,10 +259,15 @@ main {
 }
 
 .dropdown .item {
-  padding: 8px;
+  padding: 8px !important;
   cursor: pointer;
 }
 
 .dropdown .item:hover {
   background-color: #f0f0f0;
+}
+
+.dropdown .empty {
+  color: #888;
+  cursor: default;
 }

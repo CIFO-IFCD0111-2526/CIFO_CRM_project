@@ -69,20 +69,22 @@ document.addEventListener("click", async (e) => {
   }
 });
 
+
 const input = document.getElementById("busquedaAlumno");
-const dropdown = document.getElementById("sugerenciasAlumno");
+const dropdown = document.getElementById("dropdownResultados");
 
 let debounceTimer = null;
 
 input.addEventListener("input", () => {
   const query = input.value.trim();
 
-  clearTimeout(debounceTimer);
-
+ 
   if (query.length < 2) {
-    ocultarDropdown();
+    cerrarDropdown();
     return;
   }
+
+  clearTimeout(debounceTimer);
 
   debounceTimer = setTimeout(() => {
     buscarAlumnos(query);
@@ -94,54 +96,51 @@ async function buscarAlumnos(query) {
     const res = await fetch(`/alumnos/buscar?q=${encodeURIComponent(query)}`);
     const data = await res.json();
 
-    renderizarResultados(data);
-  } catch (err) {
-    console.error("Error en búsqueda:", err);
+    renderResultados(data);
+  } catch (error) {
+    console.error("Error en búsqueda:", error);
   }
 }
 
-function renderizarResultados(alumnos) {
+function renderResultados(alumnos) {
   dropdown.innerHTML = "";
 
   if (!alumnos.length) {
-    dropdown.innerHTML = `<div class="item">Sense resultats</div>`;
-    mostrarDropdown();
-    return;
+    dropdown.innerHTML = `<div class="item empty">Sense resultats</div>`;
+  } else {
+    alumnos.forEach((alumno) => {
+      const item = document.createElement("div");
+      item.classList.add("item");
+
+      item.textContent = `${alumno.apellidos}, ${alumno.nombre} — ${alumno.dni}`;
+
+      item.addEventListener("click", () => {
+        window.location.href = `/alumnos/${alumno.id}`;
+      });
+
+      dropdown.appendChild(item);
+    });
   }
 
-  alumnos.forEach((alumno) => {
-    const item = document.createElement("div");
-    item.classList.add("item");
-
-    item.textContent = `${alumno.apellidos}, ${alumno.nombre} — ${alumno.dni}`;
-
-    item.addEventListener("click", () => {
-      window.location.href = `/alumnos/${alumno.id}`;
-    });
-
-    dropdown.appendChild(item);
-  });
-
-  mostrarDropdown();
+  abrirDropdown();
 }
 
-function mostrarDropdown() {
+function abrirDropdown() {
   dropdown.classList.remove("hidden");
 }
 
-function ocultarDropdown() {
+function cerrarDropdown() {
   dropdown.classList.add("hidden");
+  dropdown.innerHTML = "";
 }
 
-// Cerrar al perder foco
 input.addEventListener("blur", () => {
-  setTimeout(ocultarDropdown, 150); // delay para permitir click
+  setTimeout(cerrarDropdown, 150);
 });
 
-// Cerrar con Escape
 input.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
-    ocultarDropdown();
+    cerrarDropdown();
     input.blur();
   }
 });
