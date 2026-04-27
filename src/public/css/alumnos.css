@@ -222,7 +222,7 @@ main {
   }
 }
 
-.busqueda-alumnos {
+.buscador-alumnos {
   position: relative;
   margin-bottom: 1rem;
   max-width: 960px;
@@ -259,7 +259,7 @@ main {
 }
 
 .dropdown .item {
-  padding: 8px !important;
+  padding: 8px ;
   cursor: pointer;
 }
 
@@ -270,4 +270,8 @@ main {
 .dropdown .empty {
   color: #888;
   cursor: default;
+}
+.dropdown {
+  display: block !important;
+  background: red !important;
 }
