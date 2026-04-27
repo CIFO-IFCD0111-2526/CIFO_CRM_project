@@ -148,7 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
         form.querySelector('[name="cesion_material"]')?.checked || false;
 
       const errors = [];
-      // ADAPTAR A FUNCIONALIDAD ACTUAL
 
       if (!data.nombre) {
         errors.push("El nom és obligatori.");
@@ -232,25 +231,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Si tot va bé → redirigir a /alumnos/:id
+      // Si tot va bé → redirigir a /alumnos
 
       sessionStorage.setItem("alumnoCreado", true);
       window.location.href = json.redirect;
     });
-
-    const json = await res.json();
-
-    if (!json.ok) {
-      console.log("Errors rebuts del backend:", json.errores);
-      document.querySelectorAll(".error-msg").forEach((e) => (e.textContent = ""));
-      for (const camp in json.errores) {
-        const span = document.querySelector(`#error-${camp}`);
-        if (span) span.textContent = json.errores[camp];
-      }
-      return;
-    }
-
-    window.location.href = json.redirect;
   });
 
 document.addEventListener("click", async (e) => {
