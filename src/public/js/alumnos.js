@@ -273,11 +273,10 @@ document.addEventListener("click", async (e) => {
   }
 });
 
+// Edició inline d'alumne (vista detalle)
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#alumnoForm");
   if (!form) return;
-
-  // --Editar--
 
   const btnEditar = document.querySelector("#btnEditar");
   btnEditar?.addEventListener("click", (e) => {
@@ -287,15 +286,12 @@ document.addEventListener("DOMContentLoaded", () => {
     btnEditar.classList.add("hidden");
   });
 
-  // -- Lógica para Cancelar (Opcional pero recomendada) --
   const btnCancelar = document.querySelector("#btnCancelar");
   btnCancelar?.addEventListener("click", () => {
     document.querySelectorAll(".view-mode").forEach(el => el.classList.remove("hidden"));
     document.querySelectorAll(".edit-mode").forEach(el => el.classList.add("hidden"));
     btnEditar.classList.remove("hidden");
   });
-
-  // -- SUBMIT (POST o PUT) --
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -309,8 +305,6 @@ document.addEventListener("DOMContentLoaded", () => {
     data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
 
     const id = form.dataset.id;
-
-    // Si hay ID, usamos PUT a /alumnos/:id. Si no, POST a /alumnos
     const url = id ? `/alumnos/${id}` : "/alumnos";
     const metodo = id ? "PUT" : "POST";
 
@@ -326,7 +320,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const json = await res.json();
 
       if (!json.ok) {
-        // Tu lógica original de mostrar errores
         console.log("Errors rebuts del backend:", json.errores || json.mensaje);
         document.querySelectorAll(".error-msg").forEach((e) => (e.textContent = ""));
 
@@ -336,15 +329,80 @@ document.addEventListener("DOMContentLoaded", () => {
             if (span) span.textContent = json.errores[camp];
           }
         } else if (json.mensaje) {
-          alert(json.mensaje); // Para errores genéricos como el DNI duplicado
+          alert(json.mensaje);
         }
         return;
       }
       window.location.href = json.redirect;
-
-
     } catch (err) {
       console.error("Error en la petició:", err);
     }
   });
 });
+
+// Buscador d'alumnes amb autocompletar
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("busquedaAlumno");
+  const dropdown = document.getElementById("dropdownResultados");
+  if (input && dropdown) initBuscador(input, dropdown);
+});
+
+function initBuscador(input, dropdown) {
+  let debounceTimer = null;
+
+  input.addEventListener("input", () => {
+    const query = input.value.trim();
+    if (query.length < 2) {
+      cerrarDropdown();
+      return;
+    }
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => buscarAlumnos(query), 250);
+  });
+
+  async function buscarAlumnos(query) {
+    try {
+      const res = await fetch(`/alumnos/buscar?q=${encodeURIComponent(query)}`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+      renderResultados(data);
+    } catch (error) {
+      console.error("Error en cerca:", error);
+    }
+  }
+
+  function renderResultados(alumnos) {
+    dropdown.innerHTML = "";
+    if (!alumnos.length) {
+      dropdown.innerHTML = `<div class="item empty">Sense resultats</div>`;
+    } else {
+      alumnos.forEach((alumno) => {
+        const item = document.createElement("div");
+        item.classList.add("item");
+        item.textContent = `${alumno.apellidos}, ${alumno.nombre} — ${alumno.dni}`;
+        item.addEventListener("click", () => {
+          window.location.href = `/alumnos/${alumno.id}`;
+        });
+        dropdown.appendChild(item);
+      });
+    }
+    dropdown.classList.remove("hidden");
+  }
+
+  function cerrarDropdown() {
+    dropdown.classList.add("hidden");
+    dropdown.innerHTML = "";
+  }
+
+  input.addEventListener("blur", () => {
+    setTimeout(cerrarDropdown, 150);
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      cerrarDropdown();
+      input.blur();
+    }
+  });
+}
