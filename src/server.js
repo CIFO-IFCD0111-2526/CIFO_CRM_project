@@ -56,7 +56,16 @@ server.use(flash);
 // -------------------------------------------------------
 // Rutas
 // -------------------------------------------------------
+
 server.use("/", routes);
+server.use((req, res) => {
+  res.status(404).render("404", {
+    titulo: "Pàgina no trobada",
+    usuario: req.session.usuario,
+    css: "404.css"
+  });
+});
+
 
 // -------------------------------------------------------
 // Arrancar
