@@ -221,3 +221,17 @@ main {
     grid-template-columns: 1fr;
   }
 }
+
+.hidden {
+  display: none;
+}
+
+#btnGuardar {
+    background-color: var(--color-primario);
+    color: var(--color-texto-blanco);
+}
+
+#btnCancelar {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
