@@ -78,6 +78,7 @@ const clearError = (input) => {
 document.addEventListener("DOMContentLoaded", () => {
 
   const RegAlalumnoMsg = document.querySelector("#RegAlalumnoMsg");
+  if (!RegAlalumnoMsg) return;
 
   const showMsg = (html, isError = true) => {
     RegAlalumnoMsg.innerHTML = html;
@@ -94,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Agafem el formulari de la pàgina
 
   const form = document.querySelector("#alumnoForm");
+  if (!form) return;
   const RegAlNombre = document.querySelector("#RegAlNombre");
   const RegAlApellidos = document.querySelector("#RegAlApellidos");
   const RegAlDni = document.querySelector("#RegAlDni");
