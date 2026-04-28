@@ -116,8 +116,8 @@ const register = async (req, res) => {
       email: userLogin.email,
       nivel_acceso: userLogin.nivel_acceso,
     };
-    req.session.cookie.maxAge = 60 * 60 * 1000; // <-- se li ha de donar temps de sessio
-    req.session.flash = ""; //  añadir para mostrar el modal/flash de Jose
+    req.session.cookie.maxAge = 60 * 60 * 1000;  //  60 minutos per defecte, en registre no es guarda el ""recordar sessió""
+    // req.session.flash = ""; //  añadir para la logica que muestra el modal("flash") de "Jose"
     ///////////////////////////////////////////////////////////////////////
     return res.status(200).json({ ok: true, redirect: "/dashboard" });
   } catch (error) {
