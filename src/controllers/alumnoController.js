@@ -150,16 +150,10 @@ const buscarAlumno = async (req, res) => {
     }
     try {
         const alumnos = await Alumno.findAll({
-            where: {
-                [Op.or]: [
-                    { nombre: { [Op.like]: `%${q}%` } },
-                    { apellidos: { [Op.like]: `%${q}%` } },
-                    { dni: { [Op.like]: `%${q}%` } }
-                ]
-            },
+            where,
             limit: 10,
             order: [["apellidos", "ASC"]],
-            attributes: ["id", "nombre", "apellidos", "dni"]
+            attributes: ["id", "nombre", "apellidos", "dni", "tipo"]
         });
 
         return res.json(alumnos);
