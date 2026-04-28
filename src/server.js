@@ -60,7 +60,7 @@ async function startServer() {
     await sequelize.authenticate();
     console.log("Conexión a MySQL OK.");
 
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ force: true });
     console.log("Modelos sincronizados.");
     await seedAlumnos();
     await seedCursos();
