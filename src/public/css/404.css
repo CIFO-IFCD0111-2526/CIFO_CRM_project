@@ -1,0 +1,47 @@
+.error404 {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    align-content: start;
+    text-align: center;
+    padding-top: 100px;
+    background-image: url("/images/fondo-404.webp");
+    background-color: rgba(255, 255, 255, 0.788);
+    background-blend-mode: lighten;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.error404__image {
+    width: 100%;
+    max-width: 650px;
+    height: auto;
+    display: block;
+    margin: 0 auto 24px;
+}
+
+.error404__content {
+    max-width: 720px;
+    width: 100%;
+}
+
+.error404__title {
+    margin-bottom: 15px;
+    font-size: 43px;
+    font-family: var(--fuente-titulos);
+    color: var(--color-texto-principal);
+}
+
+.error404__text {
+    margin-bottom: 24px;
+    font-size: 20px;
+    font-family: var(--fuente-cuerpo);
+    color: var(--color-texto-principal);
+}
+
+.error404__button {
+    margin-top: 20px;
+    font-size: 19px;
+    display: inline-block;
+}
