@@ -47,9 +47,19 @@ server.use(session({
 }));
 
 // -------------------------------------------------------
-// Rutas
+// 404 ERROR
 // -------------------------------------------------------
+
 server.use("/", routes);
+server.use((req, res) => {
+  res.status(404).render("404", {
+    titulo: "Pàgina no trobada",
+    usuario: req.session.usuario,
+    css: "404.css",
+    js: "404.js"
+  });
+});
+
 
 // -------------------------------------------------------
 // Arrancar

@@ -1,0 +1,15 @@
+
+
+<section class="error404">
+    <div class="error404__content">
+        <img class="error404__image" src="/images/404.webp" alt="Il·lustració d’error 404">
+        <h1 class="error404__title">Pàgina no trobada</h1>
+        <p class="error404__text">Ups! Sembla que el camí de la lliçó s'ha desviat.</p>
+
+        <% if (usuario) { %>
+            <a class="btn btn-primario error404__button" href="/dashboard">Tornar al dashboard</a>
+        <% } else { %>
+            <a class="btn btn-primario error404__button" href="/login" id="backButton">Tornar</a>
+        <% } %>
+    </div>
+</section>
