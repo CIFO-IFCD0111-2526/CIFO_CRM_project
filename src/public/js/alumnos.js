@@ -308,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
     data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
     data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
 
-    const id = document.querySelector(".btn-eliminar")?.dataset.id;
+    const id = form.dataset.id;
 
     // Si hay ID, usamos PUT a /alumnos/:id. Si no, POST a /alumnos
     const url = id ? `/alumnos/${id}` : "/alumnos";

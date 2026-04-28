@@ -155,17 +155,14 @@ const buscarAlumno = async (req, res) => {
     }
 };
 
-//GET /alumnos/:id/editar
-
-const editAlumnoDetalle = async (req, res) => {
-    res.redirect(`/alumnos/${req.params.id}?edit=true`);
-};
-
 //PUT /alumnos/:id
 
 const updateAlumno = async (req, res) => {
     try {
         const alumno = await Alumno.findByPk(req.params.id);
+        if (!alumno) {
+            return res.status(404).json({ ok: false, mensaje: "Alumne no trobat" });
+        }
 
         const {
             nombre,
@@ -214,4 +211,4 @@ const updateAlumno = async (req, res) => {
 
 };
 
-module.exports = { getAll, createFormPrint, newAlumno, getById, removeAlumno, buscarAlumno, editAlumnoDetalle, updateAlumno };
+module.exports = { getAll, createFormPrint, newAlumno, getById, removeAlumno, buscarAlumno, updateAlumno };
