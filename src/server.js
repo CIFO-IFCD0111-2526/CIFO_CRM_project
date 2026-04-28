@@ -3,6 +3,7 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const session = require("express-session");
+const flash = require("./middlewares/flash.js");
 const expressLayouts = require("express-ejs-layouts");
 //seeders
 const {seedAlumnos,seedCursos} = require("./seeder/seeders.js");
@@ -45,6 +46,12 @@ server.use(session({
     maxAge: 60 * 60 * 1000,  // 1 hora
   },
 }));
+
+// -------------------------------------------------------
+// Mensajes flash
+// -------------------------------------------------------
+
+server.use(flash);
 
 // -------------------------------------------------------
 // Rutas
