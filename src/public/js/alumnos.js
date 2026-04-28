@@ -425,7 +425,7 @@ function initBuscador (input, dropdown) {
         sessionStorage.setItem("alumnoCreado", true);
         window.location.href = json.redirect;
     });
-  });
+
 window.addEventListener('error', e => {
   console.error('JS ERROR GLOBAL:', e.error)
 })
