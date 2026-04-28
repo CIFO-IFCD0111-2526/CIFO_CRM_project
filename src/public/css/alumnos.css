@@ -277,7 +277,7 @@ main {
 #dropdownResultados {
   flex: 1;
   position: absolute;
-  left: 50%;
+  left: 25%;
   min-height: 42px;
   max-height: 200px;
   overflow-y: auto;
