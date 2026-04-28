@@ -17,4 +17,6 @@ router.get("/nuevo", controller.createFormPrint);
 router.post("/", controller.newAlumno);
 router.get("/:id", controller.getById);
 router.delete("/:id",controller.removeAlumno);
+router.get("/:id/editar", controller.editAlumnoDetalle);
+router.put("/:id", controller.updateAlumno);
 module.exports = router;

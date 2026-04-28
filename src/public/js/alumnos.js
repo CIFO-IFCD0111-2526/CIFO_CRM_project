@@ -75,165 +75,165 @@ const clearError = (input) => {
 
 // INICIO DE LÓGICA DE LA PÁGINA
 
-document.addEventListener("DOMContentLoaded", () => {    
+document.addEventListener("DOMContentLoaded", () => {
 
-    const RegAlalumnoMsg = document.querySelector("#RegAlalumnoMsg");
+  const RegAlalumnoMsg = document.querySelector("#RegAlalumnoMsg");
 
-    const showMsg = (html, isError = true) => {
-      RegAlalumnoMsg.innerHTML = html;
-      RegAlalumnoMsg.style.display = "block";
-      RegAlalumnoMsg.classList.toggle("error-msg", isError);
-    };
+  const showMsg = (html, isError = true) => {
+    RegAlalumnoMsg.innerHTML = html;
+    RegAlalumnoMsg.style.display = "block";
+    RegAlalumnoMsg.classList.toggle("error-msg", isError);
+  };
 
-    const clearMsg = () => {
-      RegAlalumnoMsg.innerHTML = "";
-      RegAlalumnoMsg.style.display = "none";
-      RegAlalumnoMsg.classList.remove("error-msg");
-    };
+  const clearMsg = () => {
+    RegAlalumnoMsg.innerHTML = "";
+    RegAlalumnoMsg.style.display = "none";
+    RegAlalumnoMsg.classList.remove("error-msg");
+  };
 
-    // Agafem el formulari de la pàgina
-    
-    const form = document.querySelector("#alumnoForm");
-    const RegAlNombre = document.querySelector("#RegAlNombre");
-    const RegAlApellidos = document.querySelector("#RegAlApellidos");
-    const RegAlDni = document.querySelector("#RegAlDni");
-    const RegAlTelefono = document.querySelector("#RegAlTelefono");
-    const RegAlEmail = document.querySelector("#RegAlEmail");
-    const RegAltipo = document.querySelector("#RegAltipo");
+  // Agafem el formulari de la pàgina
 
-    // Netejem els errors de la pàgina
+  const form = document.querySelector("#alumnoForm");
+  const RegAlNombre = document.querySelector("#RegAlNombre");
+  const RegAlApellidos = document.querySelector("#RegAlApellidos");
+  const RegAlDni = document.querySelector("#RegAlDni");
+  const RegAlTelefono = document.querySelector("#RegAlTelefono");
+  const RegAlEmail = document.querySelector("#RegAlEmail");
+  const RegAltipo = document.querySelector("#RegAltipo");
 
-    if (sessionStorage.getItem("alumnoCreado")){
-        sessionStorage.removeItem("alumnoCreado");   
-        window.showModal?.({
-            type: "success",
-            title: "Alumne creat",
-            message: "Has creat l'alumne correctament.",
-        });
+  // Netejem els errors de la pàgina
+
+  if (sessionStorage.getItem("alumnoCreado")) {
+    sessionStorage.removeItem("alumnoCreado");
+    window.showModal?.({
+      type: "success",
+      title: "Alumne creat",
+      message: "Has creat l'alumne correctament.",
+    });
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Limpiamos los errores.
+    [
+      RegAlNombre,
+      RegAlApellidos,
+      RegAlDni,
+      RegAlTelefono,
+      RegAlEmail,
+      RegAltipo,
+    ].forEach((input) => {
+      input.addEventListener("input", () => {
+        clearError(input);
+      });
+    });
+
+    clearMsg();
+
+    // Convertim el formulari en un objecte JS
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    console.log(data);
+
+    //Preparem els checkboxes per ser activats, canviem el valor a true/false
+
+    data.derechos_imagen =
+      form.querySelector('[name="derechos_imagen"]')?.checked || false;
+    data.cesion_material =
+      form.querySelector('[name="cesion_material"]')?.checked || false;
+
+    const errors = [];
+
+    if (!data.nombre) {
+      errors.push("El nom és obligatori.");
+      setError(RegAlNombre);
     }
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    if (!data.apellidos) {
+      errors.push("Un cognom és obligatori.");
+      setError(RegAlApellidos);
+    }
 
-      // Limpiamos los errores.
-      [
-        RegAlNombre,
-        RegAlApellidos,
-        RegAlDni,
-        RegAlTelefono,
-        RegAlEmail,
-        RegAltipo,
-      ].forEach((input) => {
-        input.addEventListener("input", () => {
-          clearError(input);
-        });
-      });
+    if (!data.dni) {
+      errors.push("El DNI o NIE és obligatori");
+      setError(RegAlDni);
+    } else if (!validDniCifNie(data.dni)) {
+      errors.push("Format incorrecte (DNI: 12345679A. NIE: Y1234567Z)");
+      setError(RegAlDni);
+    }
 
-      clearMsg();
+    let valTelMail = false;
 
-      // Convertim el formulari en un objecte JS
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
+    do {
+      if (!data.telefono && !data.email) {
+        errors.push("És necessari informar l'email o el telèfon.");
+        setError(RegAlEmail);
+        setError(RegAlTelefono);
+        break;
+      } else if (!isValidEmail(data.email) && !data.telefono) {
+        errors.push("El format de l'email no és vàlid.");
+        setError(RegAlEmail);
+        break;
+      } else if (data.email.length > 0 && !isValidEmail(data.email) && data.telefono) {
+        errors.push("El format de l'email no és vàlid.");
+        setError(RegAlEmail);
+        break;
+      } else {
+        if (data.email.length === 0) { data.email = null };
+        clearError(RegAlEmail);
+        clearError(RegAlTelefono);
+        valTelMail = true;
+      };
+    } while (valTelMail === false);
 
-      console.log(data);
+    if (!data.tipo) {
+      errors.push("És obligatori escollir un tipus.");
+      setError(RegAltipo);
+    }
 
-      //Preparem els checkboxes per ser activats, canviem el valor a true/false
+    if (errors.length > 0) {
+      showMsg(errors.join("<br>"));
+      return;
+    }
 
-      data.derechos_imagen =
-        form.querySelector('[name="derechos_imagen"]')?.checked || false;
-      data.cesion_material =
-        form.querySelector('[name="cesion_material"]')?.checked || false;
-
-      const errors = [];
-
-      if (!data.nombre) {
-        errors.push("El nom és obligatori.");
-        setError(RegAlNombre);
-      }
-
-      if (!data.apellidos) {
-        errors.push("Un cognom és obligatori.");
-        setError(RegAlApellidos);
-      }
-
-      if (!data.dni) {
-        errors.push("El DNI o NIE és obligatori");
-        setError(RegAlDni);
-      } else if (!validDniCifNie(data.dni)) {
-        errors.push("Format incorrecte (DNI: 12345679A. NIE: Y1234567Z)");
-        setError(RegAlDni);
-      }
-
-      let valTelMail = false;
-
-      do {
-        if (!data.telefono && !data.email) {
-          errors.push("És necessari informar l'email o el telèfon.");
-          setError(RegAlEmail);         
-          setError(RegAlTelefono);
-          break;
-        } else if (!isValidEmail(data.email) && !data.telefono) {
-          errors.push("El format de l'email no és vàlid.");
-          setError(RegAlEmail);
-          break;
-        } else if (data.email.length > 0 && !isValidEmail(data.email) && data.telefono) {
-          errors.push("El format de l'email no és vàlid.");               
-          setError(RegAlEmail);
-          break;
-        } else {
-          if (data.email.length === 0) { data.email = null };
-          clearError(RegAlEmail);
-          clearError(RegAlTelefono);
-          valTelMail = true;
-        };
-      } while (valTelMail === false);
-
-      if (!data.tipo) {
-        errors.push("És obligatori escollir un tipus.");
-        setError(RegAltipo);
-      }
-
-      if (errors.length > 0) {
-        showMsg(errors.join("<br>"));
-        return;
-      }      
-
-      // Enviem al backend
-      const res = await fetch("/alumnos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      const json = await res.json();
-
-      // Si hi ha errors → mostrar-los
-      if (!json.ok) {
-        console.log("Errors rebuts del backend:", json.error);
-
-        // CONTROL DE ERRORES ANTERIOR, HACÍA REFERENCIA A UN SPAN QUE NO EXISTE.
-        // // Netejar errors anteriors
-        // document
-        //   .querySelectorAll(".error-msg")
-        //   .forEach((e) => (e.textContent = ""));
-
-        // // Mostrar errors nous
-        // for (const camp in json.errores) {
-        //   const span = document.querySelector(`#error-${camp}`);
-        //   if (span) span.textContent = json.errores[camp];
-        // }
-
-        showMsg(json.error);
-
-        return;
-      }
-
-      // Si tot va bé → redirigir a /alumnos
-
-      sessionStorage.setItem("alumnoCreado", true);
-      window.location.href = json.redirect;
+    // Enviem al backend
+    const res = await fetch("/alumnos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     });
+
+    const json = await res.json();
+
+    // Si hi ha errors → mostrar-los
+    if (!json.ok) {
+      console.log("Errors rebuts del backend:", json.error);
+
+      // CONTROL DE ERRORES ANTERIOR, HACÍA REFERENCIA A UN SPAN QUE NO EXISTE.
+      // // Netejar errors anteriors
+      // document
+      //   .querySelectorAll(".error-msg")
+      //   .forEach((e) => (e.textContent = ""));
+
+      // // Mostrar errors nous
+      // for (const camp in json.errores) {
+      //   const span = document.querySelector(`#error-${camp}`);
+      //   if (span) span.textContent = json.errores[camp];
+      // }
+
+      showMsg(json.error);
+
+      return;
+    }
+
+    // Si tot va bé → redirigir a /alumnos
+
+    sessionStorage.setItem("alumnoCreado", true);
+    window.location.href = json.redirect;
   });
+});
 
 document.addEventListener("click", async (e) => {
   const btn = e.target.closest(".btn-eliminar");
@@ -266,10 +266,86 @@ document.addEventListener("click", async (e) => {
 */
     window.location.href = res.redirect;
   } catch (err) {
-   await window.showModal({
+    await window.showModal({
       type: "error",
       title: "Error",
       message: "No s'ha pogut eliminar l'alumne.",
     });
   }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("#alumnoForm");
+  if (!form) return;
+
+  // --Editar--
+
+  const btnEditar = document.querySelector("#btnEditar");
+  btnEditar?.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.querySelectorAll(".view-mode").forEach(el => el.classList.add("hidden"));
+    document.querySelectorAll(".edit-mode").forEach(el => el.classList.remove("hidden"));
+    btnEditar.classList.add("hidden");
+  });
+
+  // -- Lógica para Cancelar (Opcional pero recomendada) --
+  const btnCancelar = document.querySelector("#btnCancelar");
+  btnCancelar?.addEventListener("click", () => {
+    document.querySelectorAll(".view-mode").forEach(el => el.classList.remove("hidden"));
+    document.querySelectorAll(".edit-mode").forEach(el => el.classList.add("hidden"));
+    btnEditar.classList.remove("hidden");
+  });
+
+  // -- SUBMIT (POST o PUT) --
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
+    data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
+
+    const id = document.querySelector(".btn-eliminar")?.dataset.id;
+
+    // Si hay ID, usamos PUT a /alumnos/:id. Si no, POST a /alumnos
+    const url = id ? `/alumnos/${id}` : "/alumnos";
+    const metodo = id ? "PUT" : "POST";
+
+    try {
+      const res = await fetch(url, {
+        method: metodo,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      submitBtn.disabled = false;
+
+      const json = await res.json();
+
+      if (!json.ok) {
+        // Tu lógica original de mostrar errores
+        console.log("Errors rebuts del backend:", json.errores || json.mensaje);
+        document.querySelectorAll(".error-msg").forEach((e) => (e.textContent = ""));
+
+        if (json.errores) {
+          for (const camp in json.errores) {
+            const span = document.querySelector(`#error-${camp}`);
+            if (span) span.textContent = json.errores[camp];
+          }
+        } else if (json.mensaje) {
+          alert(json.mensaje); // Para errores genéricos como el DNI duplicado
+        }
+        return;
+      }
+      window.location.href = json.redirect;
+
+
+    } catch (err) {
+      console.error("Error en la petició:", err);
+    }
+  });
 });

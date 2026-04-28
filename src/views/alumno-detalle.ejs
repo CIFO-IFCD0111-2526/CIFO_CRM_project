@@ -1,90 +1,146 @@
-<div class="page-header">
-  <div>
-    <a href="/alumnos" class="back-link"><i class="fa-solid fa-arrow-left"></i> Tornar al llistat</a>
-    <h1 class="page-title"><%= alumno.nombre %> <%= alumno.apellidos %></h1>
-    <p class="page-subtitle">
-      <span class="badge badge-<%= alumno.tipo %>">
-        <% if (alumno.tipo === 'actual') { %>Actual<% } %>
-        <% if (alumno.tipo === 'antiguo') { %>Antic<% } %>
-        <% if (alumno.tipo === 'futuro') { %>Futur<% } %>
-      </span>
-    </p>
+<form id="alumnoForm">
+
+  <div class="page-header">
+    <div>
+      <a href="/alumnos" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Tornar al llistat
+      </a>
+
+      <h1 class="page-title form-group">
+        <!-- modo vista -->
+        <span class="view-mode">
+          <%= alumno.nombre %>
+            <%= alumno.apellidos %>
+        </span>
+
+        <!-- Modo edición -->
+
+        <div class="edit-mode hidden form-group">
+          <input type="text" name="nombre" value="<%= alumno.nombre %>" />
+          <input type="text" name="apellidos" value="<%= alumno.apellidos %>" />
+        </div>
+      </h1>
+
+      <p class="page-subtitle form-group">
+        <!-- modo vista -->
+        <span class="view-mode badge badge-<%= alumno.tipo %>">
+          <% if (alumno.tipo==='actual' ) { %>Actual<% } %>
+              <% if (alumno.tipo==='antiguo' ) { %>Antic<% } %>
+                  <% if (alumno.tipo==='futuro' ) { %>Futur<% } %>
+        </span>
+
+        <!-- Modo edición -->
+        <select name="tipo" class="edit-mode hidden form-group" required>
+          <option value="actual" <%=alumno.tipo==='actual' ? 'selected' : '' %>>Actual</option>
+          <option value="antiguo" <%=alumno.tipo==='antiguo' ? 'selected' : '' %>>Antic</option>
+          <option value="futuro" <%=alumno.tipo==='futuro' ? 'selected' : '' %>>Futur</option>
+        </select>
+      </p>
+    </div>
+    <div class="acciones">
+      <a href="#" id="btnEditar" class="btn btn-secundario">Editar</a>
+      <button type="submit" id="btnGuardar" class="btn btn-secundario edit-mode hidden">Guardar</button>
+      <button type="button" id="btnCancelar" class="btn btn-secundario cancelar-btn edit-mode hidden">Cancelar</button>
+      <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= alumno.id %>">Eliminar</button>
+    </div>
   </div>
-  <div class="acciones">
-    <a href="/alumnos/<%= alumno.id %>/editar" class="btn btn-secundario">Editar</a>
-    <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= alumno.id %>">Eliminar</button>
-  </div>
-</div>
 
-<div class="detalle-grid">
-  <section class="detalle-card">
-    <h2 class="detalle-card-title">Dades personals</h2>
-    <dl class="detalle-list">
-      <div class="detalle-item">
-        <dt>DNI</dt>
-        <dd><%= alumno.dni || '—' %></dd>
-      </div>
-      <div class="detalle-item">
-        <dt>Email</dt>
-        <dd><%= alumno.email || '—' %></dd>
-      </div>
-      <div class="detalle-item">
-        <dt>Telèfon</dt>
-        <dd><%= alumno.telefono || '—' %></dd>
-      </div>
-      <div class="detalle-item">
-        <dt>Nivell d'estudis</dt>
-        <dd><%= alumno.nivel_estudios || '—' %></dd>
-      </div>
-    </dl>
-  </section>
-
-  <section class="detalle-card">
-    <h2 class="detalle-card-title">Autoritzacions</h2>
-    <dl class="detalle-list">
-      <div class="detalle-item">
-        <dt>Drets d'imatge</dt>
-        <dd>
-          <% if (alumno.derechos_imagen) { %>
-            <span class="badge badge-actual">Sí</span>
-          <% } else { %>
-            <span class="badge badge-antiguo">No</span>
-          <% } %>
-        </dd>
-      </div>
-      <div class="detalle-item">
-        <dt>Cessió material</dt>
-        <dd>
-          <% if (alumno.cesion_material) { %>
-            <span class="badge badge-actual">Sí</span>
-          <% } else { %>
-            <span class="badge badge-antiguo">No</span>
-          <% } %>
-        </dd>
-      </div>
-    </dl>
-  </section>
-
-  <% if (alumno.comentarios) { %>
-    <section class="detalle-card detalle-full">
-      <h2 class="detalle-card-title">Comentaris</h2>
-      <p class="detalle-text"><%= alumno.comentarios %></p>
+  <div class="detalle-grid form-group">
+    <section class="detalle-card">
+      <h2 class="detalle-card-title">Dades personals</h2>
+      <dl class="detalle-list">
+        <div class="detalle-item">
+          <dt>DNI</dt>
+          <dd>
+            <span class="view-mode">
+              <%= alumno.dni || '—' %>
+            </span>
+            <input type="text" name="dni" value="<%= alumno.dni %>" class="edit-mode hidden" />
+          </dd>
+        </div>
+        <div class="detalle-item">
+          <dt>Email</dt>
+          <dd>
+            <span class="view-mode">
+              <%= alumno.email || '—' %>
+            </span>
+            <input type="email" name="email" value="<%= alumno.email %>" class="edit-mode hidden" />
+          </dd>
+        </div>
+        <div class="detalle-item">
+          <dt>Telèfon</dt>
+          <dd>
+            <span class="view-mode">
+              <%= alumno.telefono || '—' %>
+            </span>
+            <input type="tel" name="telefono" value="<%= alumno.telefono %>" class="edit-mode hidden" />
+          </dd>
+        </div>
+        <div class="detalle-item">
+          <dt>Nivell d'estudis</dt>
+          <dd>
+            <span class="view-mode">
+              <%= alumno.nivel_estudios || '—' %>
+            </span>
+            <input type="text" name="nivel_estudios" value="<%= alumno.nivel_estudios %>" class="edit-mode hidden" />
+          </dd>
+        </div>
+      </dl>
     </section>
-  <% } %>
 
-  <section class="detalle-card detalle-full">
-    <h2 class="detalle-card-title">Cursos</h2>
-    <% if (alumno.Cursos && alumno.Cursos.length > 0) { %>
-      <ul class="detalle-cursos">
-        <% alumno.Cursos.forEach(curso => { %>
-          <li>
-            <span class="curso-codigo"><%= curso.codigo %></span>
-            <span class="curso-nombre"><%= curso.nombre %></span>
-          </li>
-        <% }) %>
-      </ul>
-    <% } else { %>
-      <p class="detalle-empty">No està matriculat en cap curs.</p>
-    <% } %>
-  </section>
-</div>
+    <section class="detalle-card">
+      <h2 class="detalle-card-title">Autoritzacions</h2>
+      <dl class="detalle-list">
+        <div class="detalle-item">
+          <dt>Drets d'imatge</dt>
+          <dd>
+            <% if (alumno.derechos_imagen) { %>
+              <span class="badge badge-actual">Sí</span>
+              <% } else { %>
+                <span class="badge badge-antiguo">No</span>
+                <% } %>
+          </dd>
+        </div>
+        <div class="detalle-item">
+          <dt>Cessió material</dt>
+          <dd>
+            <% if (alumno.cesion_material) { %>
+              <span class="badge badge-actual">Sí</span>
+              <% } else { %>
+                <span class="badge badge-antiguo">No</span>
+                <% } %>
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <% if (alumno.comentarios) { %>
+      <section class="detalle-card detalle-full">
+        <h2 class="detalle-card-title">Comentaris</h2>
+        <p class="detalle-text">
+          <%= alumno.comentarios %>
+        </p>
+      </section>
+      <% } %>
+
+        <section class="detalle-card detalle-full">
+          <h2 class="detalle-card-title">Cursos</h2>
+          <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
+            <ul class="detalle-cursos">
+              <% alumno.Cursos.forEach(curso=> { %>
+                <li>
+                  <span class="curso-codigo">
+                    <%= curso.codigo %>
+                  </span>
+                  <span class="curso-nombre">
+                    <%= curso.nombre %>
+                  </span>
+                </li>
+                <% }) %>
+            </ul>
+            <% } else { %>
+              <p class="detalle-empty">No està matriculat en cap curs.</p>
+              <% } %>
+        </section>
+  </div>
+</form>
