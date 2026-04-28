@@ -4,9 +4,9 @@
     place-items: center;
     align-content: start;
     text-align: center;
-    padding-top: 100px;
+    padding-top: 170px;
     background-image: url("/images/fondo-404.webp");
-    background-color: rgba(255, 255, 255, 0.788);
+    background-color: rgba(255, 255, 255, 0.829);
     background-blend-mode: lighten;
     background-repeat: no-repeat;
     background-position: center;
@@ -15,7 +15,7 @@
 
 .error404__image {
     width: 100%;
-    max-width: 650px;
+    max-width: 470px;
     height: auto;
     display: block;
     margin: 0 auto 24px;
@@ -28,7 +28,7 @@
 
 .error404__title {
     margin-bottom: 15px;
-    font-size: 43px;
+    font-size: 45px;
     font-family: var(--fuente-titulos);
     color: var(--color-texto-principal);
 }
