@@ -270,3 +270,70 @@ document.addEventListener("click", async (e) => {
     });
   }
 });
+
+// Buscador d'alumnes amb autocompletar
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("busquedaAlumno");
+  const dropdown = document.getElementById("dropdownResultados");
+  if (input && dropdown) initBuscador(input, dropdown);
+});
+
+function initBuscador(input, dropdown) {
+  let debounceTimer = null;
+
+  input.addEventListener("input", () => {
+    const query = input.value.trim();
+    if (query.length < 2) {
+      cerrarDropdown();
+      return;
+    }
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => buscarAlumnos(query), 250);
+  });
+
+  async function buscarAlumnos(query) {
+    try {
+      const res = await fetch(`/alumnos/buscar?q=${encodeURIComponent(query)}`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+      renderResultados(data);
+    } catch (error) {
+      console.error("Error en cerca:", error);
+    }
+  }
+
+  function renderResultados(alumnos) {
+    dropdown.innerHTML = "";
+    if (!alumnos.length) {
+      dropdown.innerHTML = `<div class="item empty">Sense resultats</div>`;
+    } else {
+      alumnos.forEach((alumno) => {
+        const item = document.createElement("div");
+        item.classList.add("item");
+        item.textContent = `${alumno.apellidos}, ${alumno.nombre} — ${alumno.dni}`;
+        item.addEventListener("click", () => {
+          window.location.href = `/alumnos/${alumno.id}`;
+        });
+        dropdown.appendChild(item);
+      });
+    }
+    dropdown.classList.remove("hidden");
+  }
+
+  function cerrarDropdown() {
+    dropdown.classList.add("hidden");
+    dropdown.innerHTML = "";
+  }
+
+  input.addEventListener("blur", () => {
+    setTimeout(cerrarDropdown, 150);
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      cerrarDropdown();
+      input.blur();
+    }
+  });
+}
