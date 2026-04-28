@@ -155,6 +155,60 @@ const buscarAlumno = async (req, res) => {
     }
 };
 
+//PUT /alumnos/:id
 
+const updateAlumno = async (req, res) => {
+    try {
+        const alumno = await Alumno.findByPk(req.params.id);
+        if (!alumno) {
+            return res.status(404).json({ ok: false, mensaje: "Alumne no trobat" });
+        }
 
-module.exports = { getAll, createFormPrint, newAlumno, getById, removeAlumno, buscarAlumno };
+        const {
+            nombre,
+            apellidos,
+            dni,
+            telefono,
+            email,
+            nivel_estudios,
+            tipo,
+            derechos_imagen,
+            cesion_material,
+            comentarios,
+        } = req.body;
+
+        if (!nombre || !apellidos || !dni || !tipo) {
+            return res.status(400).json({ ok: false, mensaje: "Tots el camps són obligatoris" });
+        }
+
+        if (dni !== alumno.dni) {
+            const existe = await Alumno.findOne({ where: { dni } });
+            if (existe) {
+                return res.status(400).json({ ok: false, error: "Ja existeix un altre alumne amb aquest DNI" });
+            }
+        }
+
+        await alumno.update({
+            nombre,
+            apellidos,
+            dni,
+            telefono: telefono || null,
+            email: email || null,
+            nivel_estudios: nivel_estudios || null,
+            tipo,
+            derechos_imagen: derechos_imagen === "true" || derechos_imagen === true,
+            cesion_material: cesion_material === "true" || cesion_material === true,
+            comentarios: comentarios || null,
+            ultimo_id_modif: req.session.usuario.id,
+        });
+
+        return res.json({ ok: true, redirect: `/alumnos/${req.params.id}` }); //comentamos luego
+
+    } catch (error) {
+        console.error("Error al actualitzar alumne:", error);
+        res.status(500).json({ ok: false, mensaje: "Error del servidor." }); // comentamos al volver
+    }
+
+};
+
+module.exports = { getAll, createFormPrint, newAlumno, getById, removeAlumno, buscarAlumno, updateAlumno };
