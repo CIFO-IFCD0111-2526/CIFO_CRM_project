@@ -117,24 +117,34 @@ const removeAlumno = async (req, res) => {
 
 const buscarAlumno = async (req, res) => {
     const q = (req.query.q || "").trim();
+    const tipo = (req.query.tipo || "").trim().toLowerCase();
 
     // Si hi ha menys de 2 caràcters → retornem array buit
     if (q.length < 2) {
         return res.json([]);
     }
+    // Filtres per tipus d'alumne
+    const tiposValidos = ["actual", "antiguo", "futuro"];
 
+    // Construïm el filtre de cerca
+    const where = {
+        [Op.or]: [
+            { nombre: { [Op.like]: `%${q}%` } },
+            { apellidos: { [Op.like]: `%${q}%` } },
+            { dni: { [Op.like]: `%${q}%` } }
+        ]
+    };
+
+    // Si el tipus és vàlid, l'afegim al filtre
+    if (tiposValidos.includes(tipo)) {
+        where.tipo = tipo;
+    }
     try {
         const alumnos = await Alumno.findAll({
-            where: {
-                [Op.or]: [
-                    { nombre: { [Op.like]: `%${q}%` } },
-                    { apellidos: { [Op.like]: `%${q}%` } },
-                    { dni: { [Op.like]: `%${q}%` } }
-                ]
-            },
+            where,
             limit: 10,
             order: [["apellidos", "ASC"]],
-            attributes: ["id", "nombre", "apellidos", "dni"]
+            attributes: ["id", "nombre", "apellidos", "dni", "tipo"]
         });
 
         return res.json(alumnos);
