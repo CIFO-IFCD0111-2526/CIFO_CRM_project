@@ -24,7 +24,6 @@ const forgotPasswordForm = (req, res) => {
   });
 };
 
-
 // POST /login
 
 const login = async (req, res) => {
@@ -58,20 +57,19 @@ const login = async (req, res) => {
     }
 
     return res.status(200).json({ ok: true, redirect: "/dashboard" });
-
   } catch (error) {
     res.status(500).json({ error: "Error del servidor." });
   }
 };
 
 //Renderizar formulario de registro con el mismo diseño que el login.
-// GET /register 
+// GET /register
 const registerForm = async (req, res) => {
   res.render("register", {
     titulo: "Registre",
     usuario: null,
     css: "register.css",
-    js: "auth.js"
+    js: "auth.js",
   });
 };
 
@@ -89,7 +87,9 @@ const register = async (req, res) => {
     // Comprobar email único
     const existe = await Usuario.findOne({ where: { email } });
     if (existe) {
-      return res.status(400).json({ error: "El correu electrònic ja està registrat." });
+      return res
+        .status(400)
+        .json({ error: "El correu electrònic ja està registrat." });
     }
 
     // Hashear password
@@ -104,15 +104,27 @@ const register = async (req, res) => {
       nivel_acceso: "editor",
       activo: true,
     });
+    // AÑADIR CREACION DE SESSION PARA PODER IR DIRECTO A DASHBOARD ////////////////////////////////
+    const userLogin = await Usuario.findOne({
+      where: { email: email, activo: true },
+    });
 
-    return res.status(200).json({ ok: true, redirect: "/login" });
-
+    req.session.usuario = {
+      id: userLogin.id,
+      nombre: userLogin.nombre,
+      apellidos: userLogin.apellidos,
+      email: userLogin.email,
+      nivel_acceso: userLogin.nivel_acceso,
+    };
+    req.session.cookie.maxAge = 60 * 60 * 1000; // <-- se li ha de donar temps de sessio
+    req.session.flash = ""; //  añadir para mostrar el modal/flash de Jose
+    ///////////////////////////////////////////////////////////////////////
+    return res.status(200).json({ ok: true, redirect: "/dashboard" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error del servidor." });
   }
 };
-
 
 // POST /logout
 
@@ -125,8 +137,9 @@ const logout = async (req, res) => {
 // Función para generar contraseña aleatoria
 
 function generaContrasenaAleatoria(length = 10) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let password = '';
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let password = "";
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
     password += characters[randomIndex];
@@ -141,7 +154,9 @@ const forgotPassword = async (req, res) => {
 
   // Validación básica
   if (!email || !email.includes("@")) {
-    return res.status(400).json({ error: "El correu electrònic és obligatori i ha de ser vàlid." });
+    return res
+      .status(400)
+      .json({ error: "El correu electrònic és obligatori i ha de ser vàlid." });
   }
 
   try {
@@ -155,7 +170,7 @@ const forgotPassword = async (req, res) => {
       // Actualizar usuario.password en la base de datos
       await Usuario.update(
         { password: hashedNuevoPassword },
-        { where: { email, activo: true } }
+        { where: { email, activo: true } },
       );
 
       //Llamada a SendMail
@@ -180,13 +195,14 @@ const forgotPassword = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Error del servidor." });
   }
-
 };
 
-
-
-
-
-
-module.exports = { loginForm, login, registerForm, register, logout , forgotPassword ,  forgotPasswordForm  };
-
+module.exports = {
+  loginForm,
+  login,
+  registerForm,
+  register,
+  logout,
+  forgotPassword,
+  forgotPasswordForm,
+};
