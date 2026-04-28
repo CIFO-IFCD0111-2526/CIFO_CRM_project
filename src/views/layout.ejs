@@ -95,12 +95,12 @@
             </div>
         </div>
     </div>
-    <% if (flash) { %>
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                window.showModal(JSON.stringify(flash));
-            });
-        </script>
+    <% if (locals.flash) { %>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        window.showModal(<%- JSON.stringify(locals.flash) %>);
+        });
+    </script>
     <% } %>
 </body>
 </html>

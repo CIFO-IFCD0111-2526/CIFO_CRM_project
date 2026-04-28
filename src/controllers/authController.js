@@ -57,6 +57,12 @@ const login = async (req, res) => {
       req.session.cookie.maxAge = 60 * 60 * 1000;
     }
 
+    req.session.flash = {
+      type: "success",
+      title: "Sessió iniciada",
+      message: `Benvingut, ${userLogin.nombre} ${userLogin.apellidos}`
+    };
+
     return res.status(200).json({ ok: true, redirect: "/dashboard" });
 
   } catch (error) {
@@ -103,7 +109,7 @@ const register = async (req, res) => {
       password: hashedPassword,
       nivel_acceso: "editor",
       activo: true,
-    });
+    });    
 
     return res.status(200).json({ ok: true, redirect: "/login" });
 

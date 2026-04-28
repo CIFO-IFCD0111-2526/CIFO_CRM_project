@@ -87,22 +87,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await res.json();
 
-      if (data.ok) {
-        window.showModal?.({
-          type: "success",
-          title: "Sessió iniciada",
-          message: "Accedint al panell...",
-        });
-        setTimeout(() => { window.location.href = data.redirect; }, 2000);
-      } else if (res.status >= 500) {
-        window.showModal?.({
-          type: "error",
-          title: "Error del servidor",
-          message: "Torna-ho a provar d'aquí uns minuts.",
-        });
-      } else {
-        showMsg(data.error || "No s'ha pogut iniciar sessió.");
-      }
+      if (data.ok) { window.location.href = data.redirect };
+
+      // if (data.ok) {
+      //   window.showModal?.({
+      //     type: "success",
+      //     title: "Sessió iniciada",
+      //     message: "Accedint al panell...",
+      //   });
+      //   setTimeout(() => { window.location.href = data.redirect; }, 2000);
+      // } else if (res.status >= 500) {
+      //   window.showModal?.({
+      //     type: "error",
+      //     title: "Error del servidor",
+      //     message: "Torna-ho a provar d'aquí uns minuts.",
+      //   });
+      // } else {
+      //   showMsg(data.error || "No s'ha pogut iniciar sessió.");
+      // }
     } catch (error) {
       window.showModal?.({
         type: "error",
