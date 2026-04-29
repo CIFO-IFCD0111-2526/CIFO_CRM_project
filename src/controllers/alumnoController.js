@@ -3,7 +3,7 @@ const { Alumno, Curso } = require("../models");
 
 //GET /alumnos
 
-const getAll = async (req, res) => {
+const getAll = async (req, res, next) => {
     try {
         const alumnos = await Alumno.findAll({
             order: [["apellidos", "ASC"]],
@@ -16,9 +16,11 @@ const getAll = async (req, res) => {
             alumnos
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
+            next(error);
+        }
+        //  res.status(500).json({ error: error.message });
+    };
+
 
 // GET /alumnos/nuevo
 
@@ -71,13 +73,18 @@ const newAlumno = async (req, res) => {
 
 // GET /alumnos/:id
 
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
     try {
         const alumno = await Alumno.findByPk(req.params.id, {
             include: [Curso],
         });
 
         if (!alumno) {
+            req.session.flash = {
+            type: "error",
+            title: "No trobat",
+            message: "L'alumne no existeix.",
+                };
             return res.redirect("/alumnos");
         }
 
@@ -166,7 +173,7 @@ const buscarAlumno = async (req, res) => {
 
 //PUT /alumnos/:id
 
-const updateAlumno = async (req, res) => {
+const updateAlumno = async (req, res, next) => {
     try {
         const alumno = await Alumno.findByPk(req.params.id);
         if (!alumno) {
