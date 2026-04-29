@@ -1,7 +1,7 @@
 const { Curso, Alumno, Uf, Profesor } = require("../models");
 
 /** GET /cursos */
-const getAll = async (req, res) => {
+const getAll = async (req, res, next) => {
     try {
         const cursos = await Curso.findAll();
         res.render("cursos", {
@@ -12,12 +12,13 @@ const getAll = async (req, res) => {
             cursos
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        /* res.status(500).json({ error: error.message });*/
+        next(error);
     }
 };
 
 /** GET /cursos/:id */
-const getById = async (req, res) => {
+const getById = async (req, resl, next) => {
     try {
         const curso = await Curso.findByPk(req.params.id, {
             include: [
@@ -26,8 +27,16 @@ const getById = async (req, res) => {
                 Alumno
             ],
         });
-        if (!curso)
-            return res.redirect("/cursos");
+        /* if (!curso)
+            return res.redirect("/cursos");*/
+        if (!curso) {
+            req.session.flash = {
+            type: "error",
+            title: "No trobat",
+            message: "El curs no existeix.",
+        };
+        return res.redirect("/cursos");
+    }
 
         res.render("curso-detalle", {
             titulo: "Busqueda de cursos por ID",
@@ -37,7 +46,8 @@ const getById = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        /* res.status(500).json({ error: error.message }); */
+        next(error);
     }
 };
 
