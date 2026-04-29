@@ -12,13 +12,12 @@ const getAll = async (req, res, next) => {
             cursos
         });
     } catch (error) {
-        /* res.status(500).json({ error: error.message });*/
-        next(error);
+       next(error);
     }
 };
 
 /** GET /cursos/:id */
-const getById = async (req, resl, next) => {
+const getById = async (req, res, next) => {
     try {
         const curso = await Curso.findByPk(req.params.id, {
             include: [
@@ -27,26 +26,23 @@ const getById = async (req, resl, next) => {
                 Alumno
             ],
         });
-        /* if (!curso)
-            return res.redirect("/cursos");*/
         if (!curso) {
             req.session.flash = {
-            type: "error",
-            title: "No trobat",
-            message: "El curs no existeix.",
-        };
-        return res.redirect("/cursos");
-    }
+                type: "error",
+                title: "No trobat",
+                message: "El curs no existeix.",
+                };
+                return res.redirect("/cursos");
+            }
 
-        res.render("curso-detalle", {
-            titulo: "Busqueda de cursos por ID",
-            usuario: req.session.usuario,
-            css: "cursos.css",
-            curso
-        });
+            res.render("curso-detalle", {
+                titulo: "Busqueda de cursos por ID",
+                usuario: req.session.usuario,
+                css: "cursos.css",
+                curso
+                });
 
-    } catch (error) {
-        /* res.status(500).json({ error: error.message }); */
+        } catch (error) {
         next(error);
     }
 };
@@ -59,8 +55,7 @@ const renderNuevoCurso = (req, res) => {
         css: "cursos.css",
         js: "cursos.js",
         paginaActual: "cursos",
-
-    });
+        });
 };
 
 /** Crear curso (POST) */
@@ -97,7 +92,7 @@ const crearCurso = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ errores: ["Error al crear el curso"] });
+        next(error);
     }
 };
 
