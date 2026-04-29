@@ -95,7 +95,9 @@ const register = async (req, res) => {
     // Comprobar email único
     const existe = await Usuario.findOne({ where: { email } });
     if (existe) {
-      return res.status(400).json({ error: "El correu electrònic ja està registrat." });
+      return res
+        .status(400)
+        .json({ error: "El correu electrònic ja està registrat." });
     }
 
     // Hashear password
@@ -111,7 +113,28 @@ const register = async (req, res) => {
       activo: true,
     });    
 
-    return res.status(200).json({ ok: true, redirect: "/login" });
+// AÑADIR CREACION DE SESSION PARA PODER IR DIRECTO A DASHBOARD ////////////////////////////////
+    const userLogin = await Usuario.findOne({
+      where: { email: email, activo: true },
+    });
+
+    req.session.usuario = {
+      id: userLogin.id,
+      nombre: userLogin.nombre,
+      apellidos: userLogin.apellidos,
+      email: userLogin.email,
+      nivel_acceso: userLogin.nivel_acceso,
+    };
+    req.session.cookie.maxAge = 60 * 60 * 1000;  //  60 minutos per defecte, en registre no es guarda el ""recordar sessió""
+    // req.session.flash = ""; //  añadir para la logica que muestra el modal("flash") de "Jose"
+    
+    req.session.flash = {
+      type: "success",
+      title: "Compte creat.",
+      message: `Benvingut, ${userLogin.nombre} ${userLogin.apellidos}.`,
+    };
+///////////////////////////////////////////////////////////////////////
+    return res.status(200).json({ ok: true, redirect: "/dashboard" });
 
   } catch (error) {
     console.error(error);

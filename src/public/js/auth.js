@@ -219,6 +219,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
 
       if (data.ok) {
+        window.location.href = data.redirect;
+      } else {
+        window.showModal?.({
+          type: "error",
+          title: "Error de connexió",
+          message: `${data.error}` || "No s'ha pogut crear compte.",
+        });
+        //showMsg(data.error || "No s'ha pogut iniciar sessió.");
+      }
+      /*
+      if (data.ok) {
         window.showModal?.({
           type: "success",
           title: "Compte creat",
@@ -233,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       } else {
         showMsg(data.error || "Error en el registre.");
-      }
+      } */
     } catch (error) {
       window.showModal?.({
         type: "error",
