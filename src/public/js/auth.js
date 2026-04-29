@@ -87,7 +87,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await res.json();
 
-      if (data.ok) { window.location.href = data.redirect };
+      if (data.ok) { 
+        window.location.href = data.redirect;
+      } else {
+        window.showModal?.({
+          type: "error",
+          title: "Error de connexió",
+          message: `${data.error}` || "No s'ha pogut iniciar sessió.",
+        });
+         //showMsg(data.error || "No s'ha pogut iniciar sessió.");
+      };
 
       // if (data.ok) {
       //   window.showModal?.({
@@ -109,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.showModal?.({
         type: "error",
         title: "Error de connexió",
-        message: "No s'ha pogut contactar amb el servidor.",
+        message: `${data.error}` || "No s'ha pogut iniciar sessió.",
       });
     }
   });

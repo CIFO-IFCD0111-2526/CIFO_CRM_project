@@ -59,8 +59,8 @@ const login = async (req, res) => {
 
     req.session.flash = {
       type: "success",
-      title: "Sessió iniciada",
-      message: `Benvingut, ${userLogin.nombre} ${userLogin.apellidos}`
+      title: "Sessió iniciada.",
+      message: `Benvingut, ${userLogin.nombre} ${userLogin.apellidos}.`,
     };
 
     return res.status(200).json({ ok: true, redirect: "/dashboard" });
