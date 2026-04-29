@@ -204,7 +204,15 @@ const forgotPassword = async (req, res) => {
         console.error("Error enviant el correu de recuperació:", mailError);
       }
     }
-    return res.status(200).json({ ok: true });
+
+    req.session.flash = {
+      type: "success",
+      title: "Email enviat.",
+      message: "Ja pots revisar el teu correu.",
+    };
+
+    return res.status(200).json({ ok: true, redirect: "/login" });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error del servidor." });

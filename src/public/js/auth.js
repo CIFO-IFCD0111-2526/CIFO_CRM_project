@@ -210,13 +210,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("/register", {
+      const res = await fetch("/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombre, apellidos, email, password }),
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
       if (data.ok) {
         window.location.href = data.redirect;
@@ -311,23 +311,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
 
-      await fetch("/forgot-password", {
+      const res = await fetch("/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
       });
 
+      const data = await res.json();
+
       showMsg("Si l'email està registrat, rebràs un correu amb la nova contrasenya.");
+
+      window.location.href = data.redirect;
 
     } catch (error) {
 
       showMsg("Error de connexió");
 
-    } finally {
-
-      submitBtn.disabled = false;
-
-    }
+    };
 
   });
 
