@@ -33,6 +33,40 @@ const getNuevo = (req, res) => {
     });
 };
 
+// GET /ufs/:id/editar
+const getEditar = async (req, res) => {
+    const { id } = req.params;
+
+    const uf = await Uf.findByPk(id);
+
+    if (!uf) {
+        return res.redirect("/ufs");
+    }
+
+    res.render("uf-form", {
+        titulo: "Editar UF",
+        usuario: req.session.usuario,
+        paginaActual: "ufs",
+        css: "ufs.css",
+        js: "ufs.js",
+        uf,
+        errores: {},
+    });
+};
+
+// PUT /ufs/:id
+const putActualizar = async (req, res) => {
+    const { id } = req.params;
+    const { codigo, nombre, horas } = req.body;
+
+    const uf = await Uf.findByPk(id);
+    if (!uf) {
+        return res.status(404).json({ ok: false, redirect: "/ufs" });
+    }
+};
+
+const errores = {};
+
 // POST /ufs
 const postCrear = async (req, res) => {
     const { codigo, nombre, horas } = req.body;
@@ -69,4 +103,4 @@ const postCrear = async (req, res) => {
     }
 };
 
-module.exports = { getAll, getNuevo, postCrear };
+module.exports = { getAll, getNuevo, getEditar, putActualizar, postCrear };
