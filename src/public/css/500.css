@@ -1,0 +1,25 @@
+.error500 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  text-align: center;
+}
+
+.error500__content {
+  max-width: 500px;
+}
+
+.error500__title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.error500__text {
+  margin-bottom: 1.5rem;
+  color: #666;
+}
+
+.error500__button {
+  text-decoration: none;
+}

@@ -60,6 +60,21 @@ server.use((req, res) => {
   });
 });
 
+// -------------------------------------------------------
+// HANDLER DE ERRORES
+// -------------------------------------------------------
+server.use((err, req, res, next) => {
+  console.error(err);
+  if (req.xhr || req.headers.accept?.includes("application/json")) {
+    return res.status(500).json({ error: "Error del servidor" });
+  }
+  res.status(500).render("500", {
+    titulo: "Error del servidor",
+    usuario: req.session?.usuario,
+    css: "500.css",
+    js: "500.js"
+  });
+});
 
 // -------------------------------------------------------
 // Arrancar

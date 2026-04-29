@@ -1,0 +1,23 @@
+<!--<%- include("layout", { titulo }) %>
+
+ <div class="error-container">
+  <h1>Error del servidor</h1>
+  <p>Ha ocurrido un error inesperado.</p>
+  <a href="/dashboard">Volver al dashboard</a>
+</div> -->
+<section class="error500">
+  <div class="error500__content">
+    <h1 class="error500__title">Error del servidor</h1>
+    <p class="error500__text">Ha ocurrido un error inesperado.</p>
+
+    <% if (usuario) { %>
+      <a href="/dashboard" class="btn btn-primario error500__button">
+        Tornar al dashboard
+      </a>
+    <% } else { %>
+      <a href="/login" class="btn btn-primario error500__button">
+        Tornar
+      </a>
+    <% } %>
+  </div>
+</section>
