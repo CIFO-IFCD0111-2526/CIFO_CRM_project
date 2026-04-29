@@ -62,10 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!password) {
-      errors.push("La contraseña és obligatòria.");
+      errors.push("La contrasenya és obligatòria.");
       setError(passwordInput);
     } else if (password.length < 6) {
-      errors.push("La contraseña deu tenir al menys 6 caràcters.");
+      errors.push("La contrasenya ha de tenir al menys 6 caràcters.");
       setError(passwordInput);
     }
 
@@ -92,10 +92,10 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         window.showModal?.({
           type: "error",
-          title: "Error de connexió",
+          title: "Error d'inici de sessió",
           message: `${data.error}` || "No s'ha pogut iniciar sessió.",
         });
-         //showMsg(data.error || "No s'ha pogut iniciar sessió.");
+        //showMsg(data.error || "No s'ha pogut iniciar sessió.");
       };
 
       // if (data.ok) {
@@ -312,13 +312,9 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
 
       await fetch("/forgot-password", {
-
         method: "POST",
-
         headers: { "Content-Type": "application/json" },
-
         body: JSON.stringify({ email })
-
       });
 
       showMsg("Si l'email està registrat, rebràs un correu amb la nova contrasenya.");
