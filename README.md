@@ -2,6 +2,8 @@
 
 Proyecto Final CIFO IFCD0111 2025/26 — CRM intern per a la gestió d'alumnat.
 
+> Per al desplegament al PC servidor del centre amb Docker i GitHub Actions, vegeu **[DEPLOYMENT.md](DEPLOYMENT.md)**.
+
 ---
 
 ## 1. Setup inicial (solo la primera vez)
