@@ -4,4 +4,4 @@ function flash (req, res, next) {
   next();
 };
 
-module.exports = flash;
+module.exports = { flash };
