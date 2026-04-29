@@ -27,6 +27,7 @@ const Profesor = sequelize.define(
       allowNull: false,
       validate: {
         notEmpty: { msg: "Los apellidos no pueden estar vacíos" },
+        len: { args: [2, 150], msg: "Els cognoms han de tenir entre 2 i 150 caràcters" },
       },
     },
     telefono: {
