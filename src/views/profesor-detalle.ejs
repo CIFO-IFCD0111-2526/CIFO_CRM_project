@@ -1,0 +1,51 @@
+<div class="page-header">
+  <div>
+    <a href="/profesores" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i> Tornar al llistat
+    </a>
+    <h1 class="page-title">
+      <%= profesor.nombre %> <%= profesor.apellidos %>
+    </h1>
+  </div>
+  <div class="acciones">
+    <a href="/profesores/<%= profesor.id %>/editar" class="btn btn-secundario">Editar</a>
+    <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= profesor.id %>">Eliminar</button>
+  </div>
+</div>
+
+<div class="detalle-grid">
+
+  <section class="detalle-card">
+    <h2 class="detalle-card-title">Dades de contacte</h2>
+    <dl class="detalle-list">
+
+      <div class="detalle-item">
+        <dt>Email</dt>
+        <dd><%= profesor.email %></dd>
+      </div>
+
+      <div class="detalle-item">
+        <dt>Telèfon</dt>
+        <dd><%= profesor.telefono || '—' %></dd>
+      </div>
+
+    </dl>
+  </section>
+
+  <section class="detalle-card detalle-full">
+    <h2 class="detalle-card-title">Cursos que imparteix</h2>
+    <% if (profesor.Cursos && profesor.Cursos.length > 0) { %>
+      <ul class="detalle-cursos">
+        <% profesor.Cursos.forEach(curso => { %>
+          <li>
+            <span class="curso-codigo"><%= curso.codigo %></span>
+            <span class="curso-nombre"><%= curso.nombre %></span>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p class="detalle-empty">No imparteix cap curs.</p>
+    <% } %>
+  </section>
+
+</div>
