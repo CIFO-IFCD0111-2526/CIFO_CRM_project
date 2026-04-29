@@ -36,7 +36,7 @@ services:
       - "3000:3000"
 
   watchtower:
-    image: containrrr/watchtower
+    image: nickfedor/watchtower:latest
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
