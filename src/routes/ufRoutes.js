@@ -8,11 +8,9 @@ const router = Router();
 router.use(authPage);
 
 router.get("/", controller.getAll);
-
-// GET /ufs/nuevo
 router.get("/nuevo", controller.getNuevo);
-
-// POST /ufs
+router.get("/:id/editar", controller.getEditar);
+router.put("/:id", controller.putActualizar);
 router.post("/", controller.postCrear);
 router.get("/:id", controller.getById);
 router.delete("/:id", controller.removeUf);
