@@ -31,18 +31,17 @@ const getById = async (req, res, next) => {
                 type: "error",
                 title: "No trobat",
                 message: "El curs no existeix.",
-                };
-                return res.redirect("/cursos");
-            }
+            };
+            return res.redirect("/cursos");
+        }
 
-            res.render("curso-detalle", {
-                titulo: "Busqueda de cursos por ID",
-                usuario: req.session.usuario,
-                css: "cursos.css",
-                curso
-                });
-
-        } catch (error) {
+        res.render("curso-detalle", {
+            titulo: "Busqueda de cursos por ID",
+            usuario: req.session.usuario,
+            css: "cursos.css",
+            curso
+        });
+    } catch (error) {
         next(error);
     }
 };
@@ -55,12 +54,12 @@ const renderNuevoCurso = (req, res) => {
         css: "cursos.css",
         js: "cursos.js",
         paginaActual: "cursos",
-        });
+    });
 };
 
 /** Crear curso (POST) */
 
-const crearCurso = async (req, res) => {
+const crearCurso = async (req, res, next) => {
     try {
         const { codigo, nombre, fecha_inicio, fecha_fin, requisitos } = req.body;
 
@@ -91,7 +90,6 @@ const crearCurso = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
         next(error);
     }
 };
