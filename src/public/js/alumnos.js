@@ -254,14 +254,17 @@ document.addEventListener("click", async (e) => {
 
   try {
     const res = await fetch(`/alumnos/${id}`, { method: "DELETE" });
+    
     if (!res.ok) { throw new Error("Error eliminanta alumne"); }
+    /*
     await window.showModal({
       type: "success",
       title: "Alumne eliminat",
       message: "L'alumne s'ha eliminat correctament.",
     });
     await new Promise(r => setTimeout(r, 1000));
-    window.location.href = "/alumnos";
+*/
+    window.location.href = res.redirect;
   } catch (err) {
    await window.showModal({
       type: "error",

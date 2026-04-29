@@ -102,9 +102,18 @@ const removeAlumno = async (req, res) => {
             message: "Alumno no trobat"
         });
         await alumno.destroy();
+        
+        req.session.flash = {
+            type: "success",
+            title: "Alumne eliminat",
+            message: "L'alumne s'ha eliminat correctament.",
+            keepModal: true,
+        };
+        
         return res.json({
             ok: true,
-            message: "Alumne eliminat correctament"
+            /*message: "Alumne eliminat correctament",*/
+            redirect: "/alumnos"
         });
     } catch (error) {
         res.status(500).json({
