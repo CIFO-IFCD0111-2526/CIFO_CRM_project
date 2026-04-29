@@ -113,6 +113,9 @@ const putActualizar = async (req, res) => {
 };
 
 
+
+const errores = {};
+
 // POST /ufs
 const createUf = async (req, res, next) => {
     const { codigo, nombre, horas } = req.body;
