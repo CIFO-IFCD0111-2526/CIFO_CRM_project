@@ -279,15 +279,39 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!form) return;
 
   const btnEditar = document.querySelector("#btnEditar");
+  const btnCancelar = document.querySelector("#btnCancelar");
+
+  const SELECTOR = ".edit-mode input, .edit-mode select, .edit-mode textarea, input.edit-mode, select.edit-mode, textarea.edit-mode";
+
+  // ── Guardem snapshot dels valors originals ──────────────────
+  let snapshot = {};
+
+  const saveSnapshot = () => {
+    snapshot = {};
+    form.querySelectorAll(SELECTOR).forEach(el => {
+      snapshot[el.name] = el.type === "checkbox" ? el.checked : el.value;
+    });
+  };
+
+  const restoreSnapshot = () => {
+    form.querySelectorAll(SELECTOR).forEach(el => {
+      if (!(el.name in snapshot)) return;
+      if (el.type === "checkbox") el.checked = snapshot[el.name];
+      else el.value = snapshot[el.name];
+    });
+  };
+
   btnEditar?.addEventListener("click", (e) => {
     e.preventDefault();
+    saveSnapshot(); // Guardem abans d'entrar en mode edició
     document.querySelectorAll(".view-mode").forEach(el => el.classList.add("hidden"));
     document.querySelectorAll(".edit-mode").forEach(el => el.classList.remove("hidden"));
     btnEditar.classList.add("hidden");
   });
 
-  const btnCancelar = document.querySelector("#btnCancelar");
+
   btnCancelar?.addEventListener("click", () => {
+    restoreSnapshot(); // Restaurem els valors originals
     document.querySelectorAll(".view-mode").forEach(el => el.classList.remove("hidden"));
     document.querySelectorAll(".edit-mode").forEach(el => el.classList.add("hidden"));
     btnEditar.classList.remove("hidden");
@@ -298,11 +322,81 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
+
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
     data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
     data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
+
+    // ── Validacions ──────────────────────────────────────────────
+    const errors = [];
+
+    const nombreInput = form.querySelector('[name="nombre"]');
+    const apellidosInput = form.querySelector('[name="apellidos"]');
+    const tipoInput = form.querySelector('[name="tipo"]');
+    const dniInput = form.querySelector('[name="dni"]');
+    const emailInput = form.querySelector('[name="email"]');
+    const telInput = form.querySelector('[name="telefono"]');
+
+    // Nombre
+    if (!data.nombre) {
+      errors.push("El nom és obligatori.");
+      setError(nombreInput);
+    } else {
+      clearError(nombreInput);
+    }
+
+    // Apellidos
+    if (!data.apellidos) {
+      errors.push("Un cognom és obligatori.");
+      setError(apellidosInput);
+    } else {
+      clearError(apellidosInput);
+    }
+
+    // Tipo
+    if (!data.tipo) {
+      errors.push("És obligatori escollir un tipus.");
+      setError(tipoInput);
+    } else {
+      clearError(tipoInput);
+    }
+
+    if (!data.dni) {
+      errors.push("El DNI o NIE és obligatori.");
+      setError(dniInput);
+    } else if (!validDniCifNie(data.dni)) {
+      errors.push("Format incorrecte (DNI: 12345678A · NIE: Y1234567Z)");
+      setError(dniInput);
+    } else {
+      clearError(dniInput);
+    }
+
+    if (!data.email && !data.telefono) {
+      errors.push("És necessari informar l'email o el telèfon.");
+      setError(emailInput);
+      setError(telInput);
+    } else if (data.email && !isValidEmail(data.email)) {
+      errors.push("El format de l'email no és vàlid.");
+      setError(emailInput);
+    } else {
+      clearError(emailInput);
+      clearError(telInput);
+      if (data.email?.length === 0) data.email = null;
+    }
+
+
+    if (errors.length > 0) {
+      await window.showModal?.({
+        type: "error",
+        title: "Error de validació",
+        message: errors.join("<br>"),
+      }) ?? alert(errors.join("<br>"));
+      submitBtn.disabled = false;
+      return;
+    }
+    // ─────────────────────────────────────────────────────────────    
 
     const id = form.dataset.id;
     const url = id ? `/alumnos/${id}` : "/alumnos";
@@ -329,13 +423,25 @@ document.addEventListener("DOMContentLoaded", () => {
             if (span) span.textContent = json.errores[camp];
           }
         } else if (json.mensaje) {
-          alert(json.mensaje);
+          window.showModal({
+            type: "error",
+            title: "Error",
+            message: json.mensaje
+          });//alert(json.mensaje);
         }
         return;
       }
       window.location.href = json.redirect;
     } catch (err) {
       console.error("Error en la petició:", err);
+
+      await window.showModal({
+        type: "error",
+        title: "Error",
+        message: "No s'ha pogut desar l'alumne.",
+      });
+
+      submitBtn.disabled = false;
     }
   });
 });
