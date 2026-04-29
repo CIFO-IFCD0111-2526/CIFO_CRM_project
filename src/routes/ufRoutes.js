@@ -9,4 +9,10 @@ router.use(authPage);
 
 router.get("/", controller.getAll);
 
+// GET /ufs/nuevo
+router.get("/nuevo", controller.getNuevo);
+
+// POST /ufs
+router.post("/", controller.postCrear);
+
 module.exports = router;
