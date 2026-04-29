@@ -3,7 +3,7 @@ const { Alumno, Curso } = require("../models");
 
 //GET /alumnos
 
-const getAll = async (req, res) => {
+const getAll = async (req, res, next) => {
     try {
         const alumnos = await Alumno.findAll({
             order: [["apellidos", "ASC"]],
@@ -16,9 +16,10 @@ const getAll = async (req, res) => {
             alumnos
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 };
+
 
 // GET /alumnos/nuevo
 
@@ -34,7 +35,7 @@ const createFormPrint = async (req, res) => {
 
 // POST /alumnos
 
-const newAlumno = async (req, res) => {
+const newAlumno = async (req, res, next) => {
     const { nombre, apellidos, dni, telefono, email, nivel_estudios, tipo, derechos_imagen, cesion_material, comentarios } = req.body;
 
     if (!nombre || !apellidos || !dni || !tipo) {
@@ -64,20 +65,24 @@ const newAlumno = async (req, res) => {
         return res.status(200).json({ ok: true, redirect: "/alumnos" });
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error del servidor." });
+        next(error);
     }
 };
 
 // GET /alumnos/:id
 
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
     try {
         const alumno = await Alumno.findByPk(req.params.id, {
             include: [Curso],
         });
 
         if (!alumno) {
+            req.session.flash = {
+                type: "error",
+                title: "No trobat",
+                message: "L'alumne no existeix.",
+            };
             return res.redirect("/alumnos");
         }
 
@@ -89,12 +94,12 @@ const getById = async (req, res) => {
             alumno
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 };
 
 //DELETE/alumnos/:id
-const removeAlumno = async (req, res) => {
+const removeAlumno = async (req, res, next) => {
     try {
         const alumno = await Alumno.findByPk(req.params.id);
         if (!alumno) return res.status(404).json({
@@ -107,15 +112,11 @@ const removeAlumno = async (req, res) => {
             message: "Alumne eliminat correctament"
         });
     } catch (error) {
-        res.status(500).json({
-            ok: false,
-            message: "Error eliminant alumne"
-        });
+        next(error);
     }
-
 };
 
-const buscarAlumno = async (req, res) => {
+const buscarAlumno = async (req, res, next) => {
     const q = (req.query.q || "").trim();
     const tipo = (req.query.tipo || "").trim().toLowerCase();
 
@@ -150,14 +151,13 @@ const buscarAlumno = async (req, res) => {
         return res.json(alumnos);
 
     } catch (error) {
-        console.error("Error en buscarAlumno:", error);
-        return res.status(500).json({ error: "Error intern del servidor" });
+        next(error);
     }
 };
 
 //PUT /alumnos/:id
 
-const updateAlumno = async (req, res) => {
+const updateAlumno = async (req, res, next) => {
     try {
         const alumno = await Alumno.findByPk(req.params.id);
         if (!alumno) {
@@ -202,13 +202,11 @@ const updateAlumno = async (req, res) => {
             ultimo_id_modif: req.session.usuario.id,
         });
 
-        return res.json({ ok: true, redirect: `/alumnos/${req.params.id}` }); //comentamos luego
+        return res.json({ ok: true, redirect: `/alumnos/${req.params.id}` });
 
     } catch (error) {
-        console.error("Error al actualitzar alumne:", error);
-        res.status(500).json({ ok: false, mensaje: "Error del servidor." }); // comentamos al volver
+        next(error);
     }
-
 };
 
 module.exports = { getAll, createFormPrint, newAlumno, getById, removeAlumno, buscarAlumno, updateAlumno };

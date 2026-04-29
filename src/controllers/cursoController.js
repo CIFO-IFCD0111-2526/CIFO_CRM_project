@@ -1,7 +1,7 @@
 const { Curso, Alumno, Uf, Profesor } = require("../models");
 
 /** GET /cursos */
-const getAll = async (req, res) => {
+const getAll = async (req, res, next) => {
     try {
         const cursos = await Curso.findAll();
         res.render("cursos", {
@@ -12,12 +12,12 @@ const getAll = async (req, res) => {
             cursos
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+       next(error);
     }
 };
 
 /** GET /cursos/:id */
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
     try {
         const curso = await Curso.findByPk(req.params.id, {
             include: [
@@ -26,8 +26,14 @@ const getById = async (req, res) => {
                 Alumno
             ],
         });
-        if (!curso)
+        if (!curso) {
+            req.session.flash = {
+                type: "error",
+                title: "No trobat",
+                message: "El curs no existeix.",
+            };
             return res.redirect("/cursos");
+        }
 
         res.render("curso-detalle", {
             titulo: "Busqueda de cursos por ID",
@@ -35,9 +41,8 @@ const getById = async (req, res) => {
             css: "cursos.css",
             curso
         });
-
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 };
 
@@ -49,13 +54,12 @@ const renderNuevoCurso = (req, res) => {
         css: "cursos.css",
         js: "cursos.js",
         paginaActual: "cursos",
-
     });
 };
 
 /** Crear curso (POST) */
 
-const crearCurso = async (req, res) => {
+const crearCurso = async (req, res, next) => {
     try {
         const { codigo, nombre, fecha_inicio, fecha_fin, requisitos } = req.body;
 
@@ -86,8 +90,7 @@ const crearCurso = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ errores: ["Error al crear el curso"] });
+        next(error);
     }
 };
 
