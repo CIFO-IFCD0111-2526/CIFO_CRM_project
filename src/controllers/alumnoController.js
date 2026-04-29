@@ -79,10 +79,10 @@ const getById = async (req, res, next) => {
 
         if (!alumno) {
             req.session.flash = {
-            type: "error",
-            title: "No trobat",
-            message: "L'alumne no existeix.",
-                };
+                type: "error",
+                title: "No trobat",
+                message: "L'alumne no existeix.",
+            };
             return res.redirect("/alumnos");
         }
 
