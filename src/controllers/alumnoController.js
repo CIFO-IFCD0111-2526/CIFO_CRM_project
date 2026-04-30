@@ -62,6 +62,12 @@ const newAlumno = async (req, res, next) => {
             ultimo_id_modif: req.session.usuario.id,
         });
 
+        req.session.flash = {
+          type: "success",
+          title: "Alumne creat.",
+          message: `L'alumne ${existe.nombre} ${existe.apellidos} s'ha creat correctament.`,
+        };
+
         return res.status(200).json({ ok: true, redirect: "/alumnos" });
 
     } catch (error) {
