@@ -1,23 +1,55 @@
-<h1>UFs</h1>
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Ufs</h1>
+    <p class="page-subtitle">Llistat d'Ufs registrats al centre</p>
+  </div>
+  <a href="/ufs/nuevo" class="btn btn-primario">Nou uf</a>
+</div>
+  <div class="buscador-wrapper">
+    <div class="buscador-ufs">
+      <input type="text" id="busquedaUf" placeholder="Cerca unitat formativa..." autocomplete="off" />
+    </div>
+    <div id="dropdownResultados" class="dropdown hidden"></div>
+  </div>
 
-<% if (ufs && ufs.length > 0) { %>
-  <ul>
-    <% ufs.forEach(uf => { %>
-      <li>
-        <strong><%= uf.codigo %></strong> — <%= uf.nombre %>
-        <% if (uf.horas) { %>(<%= uf.horas %>h)<% } %>
-        <% if (uf.Cursos && uf.Cursos.length > 0) { %>
-          <br>
-          <small>
-            Cursos:
-            <%= uf.Cursos.map(c => c.codigo + " " + c.nombre).join(", ") %>
-          </small>
-        <% } else { %>
-          <br><small>No associada a cap curs.</small>
-        <% } %>
-      </li>
-    <% }) %>
-  </ul>
-<% } else { %>
-  <p>No hi ha UFs registrades.</p>
-<% } %>
+  <% if (ufs && ufs.length> 0) { %>
+    <div class="tabla-container">
+      <table id="ufsTable">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Codi</th>
+            <th>Hores</th>
+            <th class="col-accions">Accions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% ufs.forEach(uf=> { %>
+            <tr>
+              <td>
+                <a class="uf-nombre" href="/ufs/<%= uf.id %>">
+                  <%= uf.nombre %>
+                </a>
+              </td>
+              <td>
+                <%= uf.codigo || '-' %>
+              </td>
+              <td>
+                <%= uf.horas || '-' %>
+              </td>
+              <td class="col-acciones">
+                <div class="acciones">
+                  <a href="/ufs/<%= uf.id %>" class="btn btn-secundario btn-sm">Editar</a>
+                </div>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <% } else { %>
+      <div class="empty-state">
+        <p> No hi ha ufs registrats. </p>
+        <a href="/ufs/nuevo" clas="btn btn-primario"> Crear la primera uf</a>
+      </div>
+      <% } %>
