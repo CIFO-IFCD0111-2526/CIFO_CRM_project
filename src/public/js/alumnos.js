@@ -105,14 +105,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Netejem els errors de la pàgina
 
-  if (sessionStorage.getItem("alumnoCreado")) {
-    sessionStorage.removeItem("alumnoCreado");
-    window.showModal?.({
-      type: "success",
-      title: "Alumne creat",
-      message: "Has creat l'alumne correctament.",
-    });
-  }
+  // if (sessionStorage.getItem("alumnoCreado")) {
+  //   sessionStorage.removeItem("alumnoCreado");
+  //   window.showModal?.({
+  //     type: "success",
+  //     title: "Alumne creat",
+  //     message: "Has creat l'alumne correctament.",
+  //   });
+  // }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -207,11 +207,11 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify(data),
     });
 
-    const json = await res.json();
+    const data = await res.json();
 
     // Si hi ha errors → mostrar-los
-    if (!json.ok) {
-      console.log("Errors rebuts del backend:", json.error);
+    if (!data.ok) {
+      console.log("Errors rebuts del backend:", data.error);
 
       // CONTROL DE ERRORES ANTERIOR, HACÍA REFERENCIA A UN SPAN QUE NO EXISTE.
       // // Netejar errors anteriors
@@ -225,15 +225,15 @@ document.addEventListener("DOMContentLoaded", () => {
       //   if (span) span.textContent = json.errores[camp];
       // }
 
-      showMsg(json.error);
+      showMsg(data.error);
 
       return;
     }
 
     // Si tot va bé → redirigir a /alumnos
 
-    sessionStorage.setItem("alumnoCreado", true);
-    window.location.href = json.redirect;
+    // sessionStorage.setItem("alumnoCreado", true);
+    window.location.href = data.redirect;
   });
 });
 
