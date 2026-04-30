@@ -95,5 +95,24 @@ const postCrear = async (req, res) => {
         return res.status(500).json({ ok: false, error: error.message });
     }
 };
+//DELETE/ufs/:id
+const removeUf = async (req, res, next) => {
+    try {
+        const uf = await Uf.findByPk(req.params.id);
+        if (!uf) return res.status(404).json({
+            ok: false,
+            message: "UF no trobada."
+        });
+        await uf.destroy();
+        req.session.flash = {
+            type: "success",
+            title: "UF eliminada.",
+            message: "UF eliminada correctament",
+        };
+        return res.status(200).json({ ok: true, redirect: "/ufs" });
+    } catch (error) {
+        next(error);
+    }
+};
 
-module.exports = { getAll,getById, getNuevo, postCrear };
+module.exports = { getAll, getById, getNuevo, postCrear, removeUf };
