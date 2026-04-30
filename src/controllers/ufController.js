@@ -19,7 +19,34 @@ const getAll = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+// GET /ufs/:id
 
+const getById = async (req, res, next) => {
+    try {
+        const uf = await Uf.findByPk(req.params.id, {
+            include: [Curso],
+        });
+
+        if (!uf) {
+            req.session.flash = {
+                type: "error",
+                title: "No trobat",
+                message: "L'uf no existeix.",
+            };
+            return res.redirect("/ufs");
+        }
+
+        res.render("uf-detalle", {
+            titulo: "Detall d'uf",
+            usuario: req.session.usuario,
+            css: "ufs.css",
+            js: "ufs.js",
+            uf
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 // GET /ufs/nuevo
 const getNuevo = (req, res) => {
     res.render("uf-form", {
@@ -69,4 +96,4 @@ const postCrear = async (req, res) => {
     }
 };
 
-module.exports = { getAll, getNuevo, postCrear };
+module.exports = { getAll,getById, getNuevo, postCrear };
