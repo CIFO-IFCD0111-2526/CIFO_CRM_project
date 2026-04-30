@@ -111,7 +111,7 @@ const removeAlumno = async (req, res, next) => {
         req.session.flash = {
             type: "success",
             title: "Alumne eliminat",
-            message: "L'alumne s'ha eliminat correctament.",
+            message: `L'alumne: ${alumno.nombre} ${alumno.apellidos} s'ha eliminat correctament.`,
             keepModal: true,
         };
         
