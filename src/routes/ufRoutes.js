@@ -14,5 +14,6 @@ router.get("/nuevo", controller.getNuevo);
 
 // POST /ufs
 router.post("/", controller.postCrear);
-
+router.get("/:id", controller.getById);
+router.delete("/:id",controller.removeUf);
 module.exports = router;
