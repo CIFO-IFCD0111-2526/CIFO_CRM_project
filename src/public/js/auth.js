@@ -288,23 +288,15 @@ document.addEventListener("DOMContentLoaded", () => {
     clearMsg();
 
     if (!email) {
-
       setError(emailInput);
-
       showMsg("L'email és obligatori.");
-
       return;
-
     }
 
     if (!isValidEmail(email)) {
-
       setError(emailInput);
-
       showMsg("El format de l'email no és vàlid.");
-
       return;
-
     }
 
     submitBtn.disabled = true;
@@ -319,22 +311,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await res.json();
 
-      showMsg("Si l'email està registrat, rebràs un correu amb la nova contrasenya.");
-
-      window.location.href = data.redirect;
+      if (data.ok) {
+        // showMsg("Si l'email està registrat, rebràs un correu amb la nova contrasenya.");
+        window.location.href = data.redirect;
+      } else {
+          window.showModal?.({
+          type: "error",
+          title: "Correu no enviat.",
+          message: `${data.error}` || "No ha sigut possible enviar el correu.",
+        });
+        //showMsg(data.error || "No s'ha pogut iniciar sessió.");
+      };      
 
     } catch (error) {
-
-      showMsg("Error de connexió");
-
+      window.showModal?.({
+        type: "error",
+        title: "Error de connexió",
+        message: "No s'ha pogut contactar amb el servidor.",
+      });
     };
 
   });
 
   emailInput.addEventListener("input", () => {
-
     clearError(emailInput);
-
   });
 
 });
