@@ -257,7 +257,7 @@ document.addEventListener("click", async (e) => {
   try {
     const res = await fetch(`/alumnos/${id}`, { method: "DELETE" });
     
-    if (!res.ok) { throw new Error("Error eliminanta alumne"); }
+    if (!res.ok) { throw new Error("Error eliminant alumne"); }
     /*
     await window.showModal({
       type: "success",
@@ -266,7 +266,9 @@ document.addEventListener("click", async (e) => {
     });
     await new Promise(r => setTimeout(r, 1000));
 */
-    window.location.href = res.redirect;
+    const data = await res.json();
+
+    window.location.href = data.redirect;
   } catch (err) {
     await window.showModal({
       type: "error",
