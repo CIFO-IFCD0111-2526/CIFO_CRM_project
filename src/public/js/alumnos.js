@@ -135,33 +135,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Convertim el formulari en un objecte JS
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    const dataNewAlumno = Object.fromEntries(formData.entries());
 
-    console.log(data);
+    //console.log(dataNewAlumno);
 
     //Preparem els checkboxes per ser activats, canviem el valor a true/false
 
-    data.derechos_imagen =
+    dataNewAlumno.derechos_imagen =
       form.querySelector('[name="derechos_imagen"]')?.checked || false;
-    data.cesion_material =
+    dataNewAlumno.cesion_material =
       form.querySelector('[name="cesion_material"]')?.checked || false;
 
     const errors = [];
 
-    if (!data.nombre) {
+    if (!dataNewAlumno.nombre) {
       errors.push("El nom és obligatori.");
       setError(RegAlNombre);
     }
 
-    if (!data.apellidos) {
+    if (!dataNewAlumno.apellidos) {
       errors.push("Un cognom és obligatori.");
       setError(RegAlApellidos);
     }
 
-    if (!data.dni) {
+    if (!dataNewAlumno.dni) {
       errors.push("El DNI o NIE és obligatori");
       setError(RegAlDni);
-    } else if (!validDniCifNie(data.dni)) {
+    } else if (!validDniCifNie(dataNewAlumno.dni)) {
       errors.push("Format incorrecte (DNI: 12345679A. NIE: Y1234567Z)");
       setError(RegAlDni);
     }
@@ -169,28 +169,28 @@ document.addEventListener("DOMContentLoaded", () => {
     let valTelMail = false;
 
     do {
-      if (!data.telefono && !data.email) {
+      if (!dataNewAlumno.telefono && !dataNewAlumno.email) {
         errors.push("És necessari informar l'email o el telèfon.");
         setError(RegAlEmail);
         setError(RegAlTelefono);
         break;
-      } else if (!isValidEmail(data.email) && !data.telefono) {
+      } else if (!isValidEmail(dataNewAlumno.email) && !dataNewAlumno.telefono) {
         errors.push("El format de l'email no és vàlid.");
         setError(RegAlEmail);
         break;
-      } else if (data.email.length > 0 && !isValidEmail(data.email) && data.telefono) {
+      } else if (dataNewAlumno.email.length > 0 && !isValidEmail(dataNewAlumno.email) && dataNewAlumno.telefono) {
         errors.push("El format de l'email no és vàlid.");
         setError(RegAlEmail);
         break;
       } else {
-        if (data.email.length === 0) { data.email = null };
+        if (dataNewAlumno.email.length === 0) { dataNewAlumno.email = null };
         clearError(RegAlEmail);
         clearError(RegAlTelefono);
         valTelMail = true;
       };
     } while (valTelMail === false);
 
-    if (!data.tipo) {
+    if (!dataNewAlumno.tipo) {
       errors.push("És obligatori escollir un tipus.");
       setError(RegAltipo);
     }
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const res = await fetch("/alumnos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(dataNewAlumno),
     });
 
     const data = await res.json();
