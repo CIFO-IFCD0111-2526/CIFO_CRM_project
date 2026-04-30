@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - feat/docker
 
 env:
   REGISTRY: ghcr.io
