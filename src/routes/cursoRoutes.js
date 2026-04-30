@@ -16,8 +16,7 @@ router.post('/', authPage, controller.crearCurso);
 router.get("/", controller.getAll);
 router.get("/:id", controller.getById);
 
-
-
-
+// Eliminar curso
+router.delete("/:id", controller.eliminarCurso);
 
 module.exports = router;
