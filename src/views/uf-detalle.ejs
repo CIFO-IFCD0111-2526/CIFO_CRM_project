@@ -1,0 +1,83 @@
+<form id="ufForm" data-id="<%= uf.id %>">
+
+  <div class="page-header">
+    <div>
+      <a href="/ufs" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Tornar al llistat
+      </a>
+
+      <h1 class="page-title form-group">
+        <!-- modo vista -->
+        <span class="view-mode">
+          <%= uf.nombre %>
+        </span>
+        <!-- Modo edición -->
+        <div class="edit-mode hidden form-group">
+          <input type="text" name="nombre" value="<%= uf.nombre %>" />
+        </div>
+      </h1>
+
+    </div>
+    <div class="acciones">
+      <a href="#" id="btnEditar" class="btn btn-secundario">Editar</a>
+      <button type="submit" id="btnGuardar" class="btn btn-secundario edit-mode hidden">Guardar</button>
+      <button type="button" id="btnCancelar" class="btn btn-secundario cancelar-btn edit-mode hidden">Cancelar</button>
+      <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= uf.id %>">Eliminar</button>
+    </div>
+  </div>
+
+  <div class="detalle-grid form-group">
+    <section class="detalle-card">
+      <h2 class="detalle-card-title"> Dades d'unitat formativa</h2>
+      <dl class="detalle-list">
+        <div class="detalle-item">
+          <dt>Codi</dt>
+          <dd>
+            <span class="view-mode">
+              <%= uf.codigo || '—' %>
+            </span>
+            <input type="text" name="codigo" value="<%= uf.codigo %>" class="edit-mode hidden" />
+          </dd>
+        </div>
+        <div class="detalle-item">
+          <dt>Hores</dt>
+          <dd>
+            <span class="view-mode">
+              <%= uf.horas || '—' %>
+            </span>
+            <input type="number" name="horas" value="<%= uf.horas %>" class="edit-mode hidden" />
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <% if (uf.comentarios) { %>
+      <section class="detalle-card detalle-full">
+        <h2 class="detalle-card-title">Comentaris</h2>
+        <p class="detalle-text">
+          <%= uf.comentarios %>
+        </p>
+      </section>
+      <% } %>
+
+        <section class="detalle-card detalle-full">
+          <h2 class="detalle-card-title">Cursos</h2>
+          <% if (uf.Cursos && uf.Cursos.length> 0) { %>
+            <ul class="detalle-cursos">
+              <% uf.Cursos.forEach(curso=> { %>
+                <li>
+                  <span class="curso-codigo">
+                    <%= curso.codigo %>
+                  </span>
+                  <span class="curso-nombre">
+                    <%= curso.nombre %>
+                  </span>
+                </li>
+                <% }) %>
+            </ul>
+            <% } else { %>
+              <p class="detalle-empty">Aquesta uf no figura a cap curs.</p>
+              <% } %>
+        </section>
+  </div>
+</form>
