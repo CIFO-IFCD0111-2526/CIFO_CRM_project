@@ -208,7 +208,7 @@ const updateAlumno = async (req, res, next) => {
             message: "Les dades s'han desat correctament.",
         };
 
-        return res.json({ ok: true, redirect: `/alumnos/${req.params.id}` }); //comentamos luego
+        return res.json({ ok: true, redirect: `/alumnos/${req.params.id}` });
 
     } catch (error) {
         next(error);

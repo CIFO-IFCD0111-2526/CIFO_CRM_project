@@ -16,8 +16,8 @@
         <!-- Modo edición -->
 
         <div class="edit-mode hidden form-group">
-          <input type="text" name="nombre" value="<%= alumno.nombre %>" required />
-          <input type="text" name="apellidos" value="<%= alumno.apellidos %>" required />
+          <input type="text" name="nombre" value="<%= alumno.nombre %>" placeholder="Nom" required />
+          <input type="text" name="apellidos" value="<%= alumno.apellidos %>" placeholder="Cognoms" required />
         </div>
       </h1>
 
@@ -55,7 +55,8 @@
             <span class="view-mode">
               <%= alumno.dni || '—' %>
             </span>
-            <input type="text" id="DetAlDni" name="dni" value="<%= alumno.dni %>" class="edit-mode hidden" required />
+            <input type="text" id="DetAlDni" name="dni" value="<%= alumno.dni %>" class="edit-mode hidden"
+              placeholder="DNI" required />
           </dd>
         </div>
         <div class="detalle-item">
@@ -65,7 +66,7 @@
               <%= alumno.email || '—' %>
             </span>
             <input type="email" id="AlDeEmail" name="email" value="<%= alumno.email %>" class="edit-mode hidden"
-              required />
+              placeholder="Email" required />
           </dd>
         </div>
         <div class="detalle-item">
@@ -74,7 +75,8 @@
             <span class="view-mode">
               <%= alumno.telefono || '—' %>
             </span>
-            <input type="tel" name="telefono" value="<%= alumno.telefono %>" class="edit-mode hidden" />
+            <input type="tel" name="telefono" value="<%= alumno.telefono %>" placeholder="Teléfon"
+              class="edit-mode hidden" />
           </dd>
         </div>
         <div class="detalle-item">
@@ -122,7 +124,10 @@
           </dd>
         </div>
       </dl>
+
     </section>
+
+    <div id="AlDetMsg" class="form-msg form-full" aria-live="polite"></div>
 
     <section class="detalle-card detalle-full">
       <h2 class="detalle-card-title">Comentaris</h2>
@@ -162,5 +167,6 @@
           <p class="detalle-empty">No està matriculat en cap curs.</p>
           <% } %>
     </section>
+
   </div>
 </form>

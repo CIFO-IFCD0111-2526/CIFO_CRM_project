@@ -276,7 +276,24 @@ document.addEventListener("click", async (e) => {
 // Edició inline d'alumne (vista detalle)
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#alumnoForm");
-  if (!form) return;
+  if (!form || !form.dataset.id) return;
+
+  const msgBox = document.querySelector("#AlDetMsg");
+  if (!msgBox) return;
+
+  const showMsg = (html, isError = true) => {
+    if (!msgBox) return;
+    msgBox.innerHTML = html;
+    msgBox.style.display = "block";
+    msgBox.classList.toggle("error-msg", isError);
+  };
+
+  const clearMsg = () => {
+    if (!msgBox) return;
+    msgBox.innerHTML = "";
+    msgBox.style.display = "none";
+    msgBox.classList.remove("error-msg");
+  };
 
   const btnEditar = document.querySelector("#btnEditar");
   const btnCancelar = document.querySelector("#btnCancelar");
@@ -303,15 +320,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btnEditar?.addEventListener("click", (e) => {
     e.preventDefault();
+    clearMsg();
+    //Limpiar errores visuales
+    form.querySelectorAll(".error").forEach(el => {
+      el.classList.remove("error");
+    });
     saveSnapshot(); // Guardem abans d'entrar en mode edició
     document.querySelectorAll(".view-mode").forEach(el => el.classList.add("hidden"));
     document.querySelectorAll(".edit-mode").forEach(el => el.classList.remove("hidden"));
     btnEditar.classList.add("hidden");
   });
 
-
   btnCancelar?.addEventListener("click", () => {
     restoreSnapshot(); // Restaurem els valors originals
+    // Limpiar errores visuales
+    form.querySelectorAll(".error").forEach(el => {
+      el.classList.remove("error");
+    });
+    clearMsg();
     document.querySelectorAll(".view-mode").forEach(el => el.classList.remove("hidden"));
     document.querySelectorAll(".edit-mode").forEach(el => el.classList.add("hidden"));
     btnEditar.classList.remove("hidden");
@@ -319,6 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    clearMsg();
 
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
@@ -331,7 +358,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ── Validacions ──────────────────────────────────────────────
     const errors = [];
-
     const nombreInput = form.querySelector('[name="nombre"]');
     const apellidosInput = form.querySelector('[name="apellidos"]');
     const tipoInput = form.querySelector('[name="tipo"]');
@@ -386,49 +412,36 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.email?.length === 0) data.email = null;
     }
 
-
     if (errors.length > 0) {
-      await window.showModal?.({
-        type: "error",
-        title: "Error de validació",
-        message: errors.join("<br>"),
-      }) ?? alert(errors.join("<br>"));
+      showMsg(errors.join("<br>"));
       submitBtn.disabled = false;
       return;
     }
     // ─────────────────────────────────────────────────────────────    
 
     const id = form.dataset.id;
-    const url = id ? `/alumnos/${id}` : "/alumnos";
-    const metodo = id ? "PUT" : "POST";
-
+    
     try {
-      const res = await fetch(url, {
-        method: metodo,
+      const res = await fetch(`/alumnos/${id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      submitBtn.disabled = false;
-
       const json = await res.json();
 
-      if (!json.ok) {
-        console.log("Errors rebuts del backend:", json.errores || json.mensaje);
-        document.querySelectorAll(".error-msg").forEach((e) => (e.textContent = ""));
+      submitBtn.disabled = false;
 
-        if (json.errores) {
-          for (const camp in json.errores) {
-            const span = document.querySelector(`#error-${camp}`);
-            if (span) span.textContent = json.errores[camp];
-          }
-        } else if (json.mensaje) {
-          window.showModal({
-            type: "error",
-            title: "Error",
-            message: json.mensaje
-          });//alert(json.mensaje);
+      if (!json.ok) {
+        if (json.error) {
+          showMsg(json.error);
+        } else if (json.errores) {
+          const errores = Object.values(json.errores);
+          showMsg(errores.join("<br>"));
+        } else {
+          showMsg("Error desconegut");  // fallback por si acaso
         }
+        submitBtn.disabled = false;
         return;
       }
       window.location.href = json.redirect;
