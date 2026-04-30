@@ -30,17 +30,18 @@ const getById = async (req, res, next) => {
         if (!uf) {
             req.session.flash = {
                 type: "error",
-                title: "No trobat",
-                message: "L'uf no existeix.",
+                title: "No trobada",
+                message: "La UF no existeix.",
             };
             return res.redirect("/ufs");
         }
 
         res.render("uf-detalle", {
-            titulo: "Detall d'uf",
+            titulo: "Detall de UF",
             usuario: req.session.usuario,
             css: "ufs.css",
             js: "ufs.js",
+            paginaActual: "ufs",
             uf
         });
     } catch (error) {
@@ -106,8 +107,8 @@ const removeUf = async (req, res, next) => {
         await uf.destroy();
         req.session.flash = {
             type: "success",
-            title: "UF eliminada.",
-            message: "UF eliminada correctament",
+            title: "UF eliminada",
+            message: "La UF s'ha eliminat correctament.",
         };
         return res.status(200).json({ ok: true, redirect: "/ufs" });
     } catch (error) {
