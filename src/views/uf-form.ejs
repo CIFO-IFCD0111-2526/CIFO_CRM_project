@@ -1,0 +1,51 @@
+<% var styles='<link rel="stylesheet" href="/css/forms.css">' %>
+    <h1>
+        <%= uf && uf.id ? "Editar UF" : "Crear UF" %>
+    </h1>
+
+    <form id="uf-form" method="POST" action="<%= uf && uf.id ? '/ufs/' + uf.id + '?_method=PUT' : '/ufs' %>">
+
+        <div class="form-group">
+            <label for="codigo">Codi</label>
+            <input type="text" id="codigo" name="codigo" value="<%= uf ? uf.codigo : '' %>" required>
+            <% if (errores && errores.codigo) { %>
+                <div class="error">
+                    <%= errores.codigo %>
+                </div>
+                <% } %>
+        </div>
+
+        <!-- Nom -->
+        <div class="form-group">
+            <label for="nombre">Nom</label>
+            <input type="text" id="nombre" name="nombre" value="<%= uf ? uf.nombre : '' %>" required>
+            <% if (errores && errores.nombre) { %>
+                <div class="error">
+                    <%= errores.nombre %>
+                </div>
+                <% } %>
+        </div>
+
+        <!-- Hores -->
+        <div class="form-group">
+            <label for="horas">Hores</label>
+            <input type="number" id="horas" name="horas" min="1" value="<%= uf ? uf.horas : '' %>" required>
+            <% if (errores && errores.horas) { %>
+                <div class="error">
+                    <%= errores.horas %>
+                </div>
+                <% } %>
+        </div>
+
+        <!-- Botons -->
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-primary">
+                <%= uf && uf.id ? "Guardar canvis" : "Crear UF" %>
+            </button>
+
+            <a href="/ufs" class="btn btn-secondary">Cancel·lar</a>
+        </div>
+
+    </form>
+
+    <script src="/js/ufs.js"></script>

@@ -1,23 +1,30 @@
-<h1>UFs</h1>
-
-<% if (ufs && ufs.length > 0) { %>
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Unitats Formatives</h1>
+    <p class="page-subtitle">Llistat d'UFs registrades al centre</p>
+  </div>
+  <a href="/ufs/nuevo" class="btn btn-primario">Nova UF</a>
+</div>
+<% if (ufs && ufs.length> 0) { %>
   <ul>
-    <% ufs.forEach(uf => { %>
+    <% ufs.forEach(uf=> { %>
       <li>
-        <strong><%= uf.codigo %></strong> — <%= uf.nombre %>
-        <% if (uf.horas) { %>(<%= uf.horas %>h)<% } %>
-        <% if (uf.Cursos && uf.Cursos.length > 0) { %>
-          <br>
-          <small>
-            Cursos:
-            <%= uf.Cursos.map(c => c.codigo + " " + c.nombre).join(", ") %>
-          </small>
-        <% } else { %>
-          <br><small>No associada a cap curs.</small>
-        <% } %>
+        <strong>
+          <%= uf.codigo %>
+        </strong> — <%= uf.nombre %>
+          <% if (uf.horas) { %>(<%= uf.horas %>h)<% } %>
+                <% if (uf.Cursos && uf.Cursos.length> 0) { %>
+                  <br>
+                  <small>
+                    Cursos:
+                    <%= uf.Cursos.map(c=> c.codigo + " " + c.nombre).join(", ") %>
+                  </small>
+                  <% } else { %>
+                    <br><small>No associada a cap curs.</small>
+                    <% } %>
       </li>
-    <% }) %>
+      <% }) %>
   </ul>
-<% } else { %>
-  <p>No hi ha UFs registrades.</p>
-<% } %>
+  <% } else { %>
+    <p>No hi ha UFs registrades.</p>
+    <% } %>
