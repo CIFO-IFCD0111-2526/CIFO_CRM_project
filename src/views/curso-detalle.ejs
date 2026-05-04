@@ -14,7 +14,10 @@
   </div>
 
   <div class="acciones">
-    <a href="/cursos/<%= curso.id %>/editar" class="btn btn-secundario">Editar</a>
+    <button  class="btn btn-secundario" id="btn-curso-editar" >Editar</button>
+    <!-- <a href="/cursos/<%= curso.id %>/editar" class="btn btn-secundario" id="btn-curso-editar" >Editar</a> -->
+    <button  class="btn btn-secundario hidden" id="btn-curso-guardar"  type="submit">Guardar</button>
+    <button  class="btn btn-secundario hidden" id="btn-curso-cancelar-edit" >Cancelar</button>
     <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= curso.id %>" data-nombre="<%= curso.nombre %>">Eliminar</button>
   </div>
 </div>

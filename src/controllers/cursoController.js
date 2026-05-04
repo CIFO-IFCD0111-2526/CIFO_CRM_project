@@ -128,4 +128,19 @@ const eliminarCurso = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, getById, crearCurso, renderNuevoCurso, eliminarCurso };
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const editarCurso = async (req, res, next) => { 
+
+console.log("entrant a editar cursos");
+
+/* ho guardem per quan ho necessitem
+req.session.flash = {
+            type: "success",
+            title: "Curs editat",
+            message: `El curs ${nuevoCurso.nombre} s'ha modificat correctament.`,
+            // keepModal: false, // per si hem de fer recarga quan sortim 
+        };
+*/
+};
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// EDITAR CURSO /////////////////////////////
+module.exports = { getAll, getById, crearCurso, renderNuevoCurso, eliminarCurso, editarCurso };
