@@ -28,7 +28,7 @@ const forgotPasswordForm = (req, res) => {
 
 // POST /login
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { loginEmail, loginPassword, loginRemember } = req.body;
 
   try {
@@ -67,7 +67,7 @@ const login = async (req, res) => {
     return res.status(200).json({ ok: true, redirect: "/dashboard" });
 
   } catch (error) {
-    return handleControllerError(error, res);
+    return handleControllerError(error, res, next);
   }
 };
 
@@ -84,7 +84,7 @@ const registerForm = async (req, res) => {
 
 //Procesar el registro de un nuevo usuario, validando que el email no exista, hasheando la contraseña y guardando el nuevo usuario en la base de datos.
 // POST /register
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   const { nombre, apellidos, email, password } = req.body;
 
   // Validación básica
@@ -138,7 +138,7 @@ const register = async (req, res) => {
     return res.status(200).json({ ok: true, redirect: "/dashboard" });
 
   } catch (error) {
-    return handleControllerError(error, res);
+    return handleControllerError(error, res, next);
   }
 };
 
@@ -174,7 +174,7 @@ function generaContrasenaAleatoria(length = 10) {
 
 // POST /forgot-password
 
-const forgotPassword = async (req, res) => {
+const forgotPassword = async (req, res, next) => {
   const { email } = req.body;
 
   // Validación básica
@@ -229,7 +229,7 @@ const forgotPassword = async (req, res) => {
 
     return res.status(200).json({ ok: true, redirect: "/login" });
   } catch (error) {
-    return handleControllerError(error, res);
+    return handleControllerError(error, res, next);
   }
 };
 

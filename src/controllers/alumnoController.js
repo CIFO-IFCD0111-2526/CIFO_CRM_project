@@ -16,7 +16,7 @@ const getAll = async (req, res, next) => {
             alumnos
         });
     } catch (error) {
-        return handleControllerError(error, res);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -71,7 +71,7 @@ const newAlumno = async (req, res, next) => {
         return res.status(200).json({ ok: true, redirect: "/alumnos" });
 
     } catch (error) {
-        return handleControllerError(error, res);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -100,7 +100,7 @@ const getById = async (req, res, next) => {
             alumno
         });
     } catch (error) {
-        return handleControllerError(error, res);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -127,7 +127,7 @@ const removeAlumno = async (req, res, next) => {
             redirect: "/alumnos"
         });
     } catch (error) {
-        return handleControllerError(error, res);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -166,7 +166,7 @@ const buscarAlumno = async (req, res, next) => {
         return res.json(alumnos);
 
     } catch (error) {
-        return handleControllerError(error, res);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -226,7 +226,7 @@ const updateAlumno = async (req, res, next) => {
         return res.json({ ok: true, redirect: `/alumnos/${req.params.id}` });
 
     } catch (error) {
-        return handleControllerError(error, res);
+        return handleControllerError(error, res, next);
     }
 };
 
