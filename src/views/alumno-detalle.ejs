@@ -1,4 +1,4 @@
-<form id="alumnoForm" data-id="<%= alumno.id %>">
+<form id="alumnoForm" data-id="<%= alumno.id %>" novalidate>
 
   <div class="page-header">
     <div>
@@ -16,8 +16,8 @@
         <!-- Modo edición -->
 
         <div class="edit-mode hidden form-group">
-          <input type="text" name="nombre" value="<%= alumno.nombre %>" />
-          <input type="text" name="apellidos" value="<%= alumno.apellidos %>" />
+          <input type="text" name="nombre" value="<%= alumno.nombre %>" placeholder="Nom" required />
+          <input type="text" name="apellidos" value="<%= alumno.apellidos %>" placeholder="Cognoms" required />
         </div>
       </h1>
 
@@ -55,7 +55,8 @@
             <span class="view-mode">
               <%= alumno.dni || '—' %>
             </span>
-            <input type="text" name="dni" value="<%= alumno.dni %>" class="edit-mode hidden" />
+            <input type="text" id="DetAlDni" name="dni" value="<%= alumno.dni %>" class="edit-mode hidden"
+              placeholder="DNI" required />
           </dd>
         </div>
         <div class="detalle-item">
@@ -64,7 +65,8 @@
             <span class="view-mode">
               <%= alumno.email || '—' %>
             </span>
-            <input type="email" name="email" value="<%= alumno.email %>" class="edit-mode hidden" />
+            <input type="email" id="AlDeEmail" name="email" value="<%= alumno.email %>" class="edit-mode hidden"
+              placeholder="Email" required />
           </dd>
         </div>
         <div class="detalle-item">
@@ -73,7 +75,8 @@
             <span class="view-mode">
               <%= alumno.telefono || '—' %>
             </span>
-            <input type="tel" name="telefono" value="<%= alumno.telefono %>" class="edit-mode hidden" />
+            <input type="tel" name="telefono" value="<%= alumno.telefono %>" placeholder="Telèfon"
+              class="edit-mode hidden" />
           </dd>
         </div>
         <div class="detalle-item">
@@ -82,7 +85,16 @@
             <span class="view-mode">
               <%= alumno.nivel_estudios || '—' %>
             </span>
-            <input type="text" name="nivel_estudios" value="<%= alumno.nivel_estudios %>" class="edit-mode hidden" />
+            <!-- MODO EDICIÓN -->
+            <select name="nivel_estudios" class="edit-mode hidden" required>
+              <option value="">Selecciona tipus</option>
+              <option value="0" <%=alumno.nivel_estudios==0 ? 'selected' : '' %>>Sense estudis</option>
+              <option value="1" <%=alumno.nivel_estudios==1 ? 'selected' : '' %>>Primària</option>
+              <option value="2" <%=alumno.nivel_estudios==2 ? 'selected' : '' %>>Secundària</option>
+              <option value="4" <%=alumno.nivel_estudios==4 ? 'selected' : '' %>>FP I</option>
+              <option value="5" <%=alumno.nivel_estudios==5 ? 'selected' : '' %>>Batxillerat</option>
+              <option value="6" <%=alumno.nivel_estudios==6 ? 'selected' : '' %>>FP II</option>
+            </select>
           </dd>
         </div>
       </dl>
@@ -112,35 +124,49 @@
           </dd>
         </div>
       </dl>
+
     </section>
 
-    <% if (alumno.comentarios) { %>
-      <section class="detalle-card detalle-full">
-        <h2 class="detalle-card-title">Comentaris</h2>
-        <p class="detalle-text">
-          <%= alumno.comentarios %>
-        </p>
-      </section>
-      <% } %>
+    <div id="AlDetMsg" class="form-msg form-full" aria-live="polite"></div>
 
-        <section class="detalle-card detalle-full">
-          <h2 class="detalle-card-title">Cursos</h2>
-          <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
-            <ul class="detalle-cursos">
-              <% alumno.Cursos.forEach(curso=> { %>
-                <li>
-                  <span class="curso-codigo">
-                    <%= curso.codigo %>
-                  </span>
-                  <span class="curso-nombre">
-                    <%= curso.nombre %>
-                  </span>
-                </li>
-                <% }) %>
-            </ul>
-            <% } else { %>
-              <p class="detalle-empty">No està matriculat en cap curs.</p>
-              <% } %>
-        </section>
+    <section class="detalle-card detalle-full">
+      <h2 class="detalle-card-title">Comentaris</h2>
+      <!-- MODO VISTA -->
+      <div class="view-mode">
+        <% if (alumno.comentarios) { %>
+          <p class="detalle-text">
+            <%= alumno.comentarios %>
+          </p>
+          <% } else { %>
+            <p class="detalle-empty">—</p>
+            <% } %>
+      </div>
+
+      <!-- MODO EDICIÓN -->
+      <div class="edit-mode hidden">
+        <textarea name="comentarios" class="form-full"><%= alumno.comentarios || '' %></textarea>
+      </div>
+    </section>
+
+    <section class="detalle-card detalle-full">
+      <h2 class="detalle-card-title">Cursos</h2>
+      <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
+        <ul class="detalle-cursos">
+          <% alumno.Cursos.forEach(curso=> { %>
+            <li>
+              <span class="curso-codigo">
+                <%= curso.codigo %>
+              </span>
+              <span class="curso-nombre">
+                <%= curso.nombre %>
+              </span>
+            </li>
+            <% }) %>
+        </ul>
+        <% } else { %>
+          <p class="detalle-empty">No està matriculat en cap curs.</p>
+          <% } %>
+    </section>
+
   </div>
 </form>

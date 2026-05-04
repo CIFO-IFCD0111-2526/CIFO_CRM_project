@@ -217,6 +217,12 @@ const updateAlumno = async (req, res, next) => {
             ultimo_id_modif: req.session.usuario.id,
         });
 
+        req.session.flash = {
+            type: "success",
+            title: "Alumne actualitzat",
+            message: "Les dades s'han desat correctament.",
+        };
+
         return res.json({ ok: true, redirect: `/alumnos/${req.params.id}` });
 
     } catch (error) {
