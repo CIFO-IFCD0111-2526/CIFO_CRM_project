@@ -52,16 +52,24 @@ const AlumnoUf = sequelize.define('alumno_uf', {
 
 
 // los cursos tienen varias Uf, y las mismas Uf pueden estar en mas de un curso
-Curso.belongsToMany(Uf, { through: 'curso_uf',
-  onDelete:"CASCADE",
- });
-Uf.belongsToMany(Curso, { through: 'curso_uf',
-  onDelete: "CASCADE",
- });
+Curso.belongsToMany(Uf, {
+  through: 'curso_uf',
+  onDelete: "CASCADE"
+});
+Uf.belongsToMany(Curso, {
+  through: 'curso_uf',
+  onDelete: "CASCADE"
+});
 
 // los profesores pueden estar en varios cursos y algunos cursos pueden tener mas de un profe
-Profesor.belongsToMany(Curso, { through: "curso_profesor" });
-Curso.belongsToMany(Profesor, { through: "curso_profesor" });
+Profesor.belongsToMany(Curso, {
+  through: "curso_profesor",
+  onDelete: "CASCADE"
+});
+Curso.belongsToMany(Profesor, {
+  through: "curso_profesor",
+  onDelete: "CASCADE"
+});
 
 // Cursos tienen varios alumnos, los alumnos pueden estar en varios cursos, 
 // ( aunque no en dos cursos activos simultáneamente en teoria , deberemos verificar en otra parte, quizás )
