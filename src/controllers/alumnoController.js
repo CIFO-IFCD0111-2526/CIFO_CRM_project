@@ -48,7 +48,7 @@ const newAlumno = async (req, res, next) => {
             return res.status(400).json({ error: "L'alumne ja està registrat." });
         }
 
-        await Alumno.create({
+        const nuevoAlumno = await Alumno.create({
             nombre,
             apellidos,
             dni,
@@ -64,8 +64,8 @@ const newAlumno = async (req, res, next) => {
 
         req.session.flash = {
           type: "success",
-          title: "Alumne creat.",
-          message: `L'alumne ${existe.nombre} ${existe.apellidos} s'ha creat correctament.`,
+          title: "Alumne creat",
+          message: `L'alumne ${nuevoAlumno.nombre} ${nuevoAlumno.apellidos} s'ha creat correctament.`,
         };
 
         return res.status(200).json({ ok: true, redirect: "/alumnos" });
