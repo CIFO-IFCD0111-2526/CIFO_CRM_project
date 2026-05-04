@@ -1,6 +1,7 @@
 const { Usuario } = require("../models");
 const bcrypt = require("bcrypt");
 const { sendMail } = require("../config/mailer.js");
+const { handleControllerError } = require("../middlewares/errorHandler.js");
 
 // GET /login
 
@@ -27,7 +28,7 @@ const forgotPasswordForm = (req, res) => {
 
 // POST /login
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { loginEmail, loginPassword, loginRemember } = req.body;
 
   try {
@@ -57,10 +58,16 @@ const login = async (req, res) => {
       req.session.cookie.maxAge = 60 * 60 * 1000;
     }
 
+    req.session.flash = {
+      type: "success",
+      title: "Sessió iniciada.",
+      message: `Benvingut, ${userLogin.nombre} ${userLogin.apellidos}.`,
+    };
+
     return res.status(200).json({ ok: true, redirect: "/dashboard" });
 
   } catch (error) {
-    res.status(500).json({ error: "Error del servidor." });
+    return handleControllerError(error, res, next);
   }
 };
 
@@ -77,7 +84,7 @@ const registerForm = async (req, res) => {
 
 //Procesar el registro de un nuevo usuario, validando que el email no exista, hasheando la contraseña y guardando el nuevo usuario en la base de datos.
 // POST /register
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   const { nombre, apellidos, email, password } = req.body;
 
   // Validación básica
@@ -89,7 +96,9 @@ const register = async (req, res) => {
     // Comprobar email único
     const existe = await Usuario.findOne({ where: { email } });
     if (existe) {
-      return res.status(400).json({ error: "El correu electrònic ja està registrat." });
+      return res
+        .status(400)
+        .json({ error: "El correu electrònic ja està registrat." });
     }
 
     // Hashear password
@@ -105,11 +114,31 @@ const register = async (req, res) => {
       activo: true,
     });
 
-    return res.status(200).json({ ok: true, redirect: "/login" });
+    // AÑADIR CREACION DE SESSION PARA PODER IR DIRECTO A DASHBOARD ////////////////////////////////
+    const userLogin = await Usuario.findOne({
+      where: { email: email, activo: true },
+    });
+
+    req.session.usuario = {
+      id: userLogin.id,
+      nombre: userLogin.nombre,
+      apellidos: userLogin.apellidos,
+      email: userLogin.email,
+      nivel_acceso: userLogin.nivel_acceso,
+    };
+    req.session.cookie.maxAge = 60 * 60 * 1000;  //  60 minutos per defecte, en registre no es guarda el ""recordar sessió""
+    // req.session.flash = ""; //  añadir para la logica que muestra el modal("flash") de "Jose"
+
+    req.session.flash = {
+      type: "success",
+      title: "Compte creat.",
+      message: `Benvingut, ${userLogin.nombre} ${userLogin.apellidos}.`,
+    };
+    ///////////////////////////////////////////////////////////////////////
+    return res.status(200).json({ ok: true, redirect: "/dashboard" });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error del servidor." });
+    return handleControllerError(error, res, next);
   }
 };
 
@@ -117,7 +146,16 @@ const register = async (req, res) => {
 // POST /logout
 
 const logout = async (req, res) => {
-  req.session.destroy(() => {
+  req.session.regenerate((err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Error del servidor." });
+    }
+    req.session.flash = {
+      type: "success",
+      title: "Sessió tancada",
+      message: "Has tancat la sessió correctament.",
+    };
     res.json({ ok: true, redirect: "/login" });
   });
 };
@@ -136,12 +174,14 @@ function generaContrasenaAleatoria(length = 10) {
 
 // POST /forgot-password
 
-const forgotPassword = async (req, res) => {
+const forgotPassword = async (req, res, next) => {
   const { email } = req.body;
 
   // Validación básica
   if (!email || !email.includes("@")) {
-    return res.status(400).json({ error: "El correu electrònic és obligatori i ha de ser vàlid." });
+    return res
+      .status(400)
+      .json({ error: "El correu electrònic és obligatori i ha de ser vàlid." });
   }
 
   try {
@@ -152,41 +192,45 @@ const forgotPassword = async (req, res) => {
       // Hashear nueva contraseña
       const hashedNuevoPassword = bcrypt.hashSync(nuevoPassword, 10);
 
+      //Llamada a SendMail
+
+      const mailError = await sendMail({
+        to: email,
+        subject: "Recuperació de contrasenya - CIFO CRM",
+        html: `
+      <h2>Has sol·licitat recuperar la teva contrasenya</h2>
+      <p>La teva nova contrasenya temporal és:</p>
+      <h3> ${nuevoPassword}</h3>
+      <p>Et recomanem canviar-la després d'iniciar sessió.</p>
+      `,
+      });
+
+      if (mailError) {
+        console.error("Error enviant el correu de recuperació:", mailError);
+        return res.status(500).json({ error: "Error del servidor de correu." });
+      }
+
       // Actualizar usuario.password en la base de datos
       await Usuario.update(
         { password: hashedNuevoPassword },
-        { where: { email, activo: true } }
+        { where: { email, activo: true } },
       );
-
-      //Llamada a SendMail
-
-      try {
-        await sendMail({
-          to: email,
-          subject: "Recuperació de contrasenya - CIFO CRM",
-          html: `
-          <h2>Has sol·licitat recuperar la teva contrasenya</h2>
-          <p>La teva nova contrasenya temporal és:</p>
-          <h3> ${nuevoPassword}</h3>
-          <p>Et recomanem canviar-la després d'iniciar sessió.</p>
-        `,
-        });
-      } catch (mailError) {
-        console.error("Error enviant el correu de recuperació:", mailError);
-      }
+    } else {
+      return res
+        .status(500)
+        .json({ error: "No existeix cap compte registrat amb aquest correu." });
     }
-    return res.status(200).json({ ok: true });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error del servidor." });
-  }
 
+    req.session.flash = {
+      type: "success",
+      title: "Email enviat.",
+      message: "Ja pots revisar el teu correu.",
+    };
+
+    return res.status(200).json({ ok: true, redirect: "/login" });
+  } catch (error) {
+    return handleControllerError(error, res, next);
+  }
 };
 
-
-
-
-
-
-module.exports = { loginForm, login, registerForm, register, logout , forgotPassword ,  forgotPasswordForm  };
-
+module.exports = { loginForm, login, registerForm, register, logout, forgotPassword, forgotPasswordForm };

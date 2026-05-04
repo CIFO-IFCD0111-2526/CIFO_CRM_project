@@ -1,5 +1,5 @@
 const { Curso, Alumno, Uf, Profesor } = require("../models");
-
+const { handleControllerError } = require("../middlewares/errorHandler");
 /** GET /cursos */
 const getAll = async (req, res, next) => {
     try {
@@ -12,7 +12,7 @@ const getAll = async (req, res, next) => {
             cursos
         });
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -43,7 +43,7 @@ const getById = async (req, res, next) => {
             curso
         });
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -85,13 +85,19 @@ const crearCurso = async (req, res, next) => {
             requisitos: requisitos || null
         });
 
+        req.session.flash = {
+            type: "success",
+            title: "Curs creat",
+            message: `El curs ${nuevoCurso.nombre} s'ha creat correctament.`,
+        };
+
         return res.json({
             ok: true,
             redirect: `/cursos/${nuevoCurso.id}`
         });
 
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -118,7 +124,7 @@ const eliminarCurso = async (req, res, next) => {
             redirect: "/cursos"
         });
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res, next);
     }
 };
 
