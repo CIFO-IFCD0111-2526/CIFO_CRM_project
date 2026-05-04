@@ -132,4 +132,37 @@ const updateProfesor = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, renderNewProfesor, createProfesor, getById, getEditForm, updateProfesor };
+const deleteProfesor = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const profesor = await Profesor.findByPk(id);
+
+    if (!profesor) {
+      return res.status(404).json({
+        ok: false,
+        message: "Profesor no encontrado",
+      });
+    }
+
+    // eliminar relaciones
+    await CursoProfesor.destroy({
+      where: { profesor_id: id },
+    });
+
+    // eliminar profesor
+    await profesor.destroy();
+
+    return res.json({
+      ok: true,
+      redirect: "/profesores",
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ ok: false });
+  }
+};
+
+
+module.exports = { listarProfesores, mostrarFormCrear, crearProfesor, getById, deleteProfesor };

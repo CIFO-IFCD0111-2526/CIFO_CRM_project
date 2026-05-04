@@ -21,4 +21,3 @@ router.put("/:id", authPage, profesorController.updateProfesor);
 
 module.exports = router;
 
-module.exports = router;
