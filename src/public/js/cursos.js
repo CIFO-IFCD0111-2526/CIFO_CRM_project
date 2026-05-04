@@ -86,7 +86,12 @@ document.addEventListener("click", async (e) => {
     const btnEditar = e.target.closest("#btn-curso-editar");
     const btnGuardar = document.querySelector("#btn-curso-guardar"); // seleccionem el boto de guardar
     const btnCancelar = document.querySelector("#btn-curso-cancelar-edit");
+    const formEdit = document.querySelector("#form-editable");
+    const formShow= document.querySelector("#form-ple");
         btnGuardar.classList.remove("hidden");  // fem visible el de guardar 
         btnCancelar.classList.remove("hidden"); // fem visible el de cancelar edició
+        formEdit.classList.remove("hidden");    // fem visible el formulari editable
+        formShow.classList.add("hidden");       // amaguem el que mostrava la info
         btnEditar.classList.add("hidden");      // ja estem editant, no cal mostrar-lo
+    
 });
