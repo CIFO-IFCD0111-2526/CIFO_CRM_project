@@ -90,7 +90,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+  if (profesorId) {
     window.location.href = json.redirect;
+  } else {
+    sessionStorage.setItem("professorCreat", "true");
+    window.location.href = json.redirect;
+  }
   });
 });
 

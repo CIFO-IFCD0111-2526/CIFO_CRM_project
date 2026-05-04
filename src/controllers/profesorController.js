@@ -167,5 +167,57 @@ const deleteProfesor = async (req, res, next) => {
     }
 };
 
+/** GET /profesores/:id/editar — detall/editar professor */
+const mostrarProfesorEditar = async (req, res, next) => {
+    try {
+        const profesor = await Profesor.findByPk(req.params.id);
+        if (!profesor) {
+            return res.redirect("/profesores");
+        }
+        res.render("profesor-form", {
+            titulo: `Editar ${profesor.nombre} ${profesor.apellidos}`,
+            usuario: req.session.usuario,
+            css: "profesores.css",
+            styles: '<link rel="stylesheet" href="/css/forms.css">',
+            js: "profesores.js",
+            paginaActual: "profesores",
+            profesor,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
-module.exports = { getAll, renderNewProfesor, createProfesor, getById, getEditForm, updateProfesor , deleteProfesor};
+/** PUT /profesores/:id — editar professor */
+const editarProfesor = async (req, res, next) => {
+    try {
+        const profesor = await Profesor.findByPk(req.params.id);
+        if (!profesor) {
+            return res.redirect("/profesores");
+        }
+        const { nombre, apellidos, telefono, email } = req.body;
+        if (!nombre || !apellidos || !email) {
+        return res.status(400).json({ ok: false, error: "Nom, cognoms i email són obligatoris." });
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return res.status(400).json({ ok: false, error: "Format d'email no vàlid." });
+        }
+        if (email !== profesor.email) {
+            const existe = await Profesor.findOne({ where: { email } });
+            if (existe) {
+                return res.status(400).json({ ok: false, error: "Ja existeix un professor amb aquest email." });
+        }}
+        await profesor.update({ nombre, apellidos, telefono: telefono || null, email });
+        req.session.flash = {
+            type: "success",
+            title: "Professor actualitzat",
+            message: `El professor ${profesor.nombre} ${profesor.apellidos} s'ha actualitzat correctament.`,
+        };
+
+        return res.json({ ok: true, redirect: `/profesores/${profesor.id}` });  
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { listarProfesores, mostrarFormCrear, crearProfesor, getById, mostrarProfesorEditar, editarProfesor };
