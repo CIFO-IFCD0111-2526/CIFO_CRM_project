@@ -102,6 +102,11 @@ const mostrarProfesorEditar = async (req, res, next) => {
     try {
         const profesor = await Profesor.findByPk(req.params.id);
         if (!profesor) {
+            req.session.flash = {
+                type: "error",
+                title: "No trobat",
+                message: "El professor no existeix.",
+            };
             return res.redirect("/profesores");
         }
         res.render("profesor-form", {
@@ -123,7 +128,7 @@ const editarProfesor = async (req, res, next) => {
     try {
         const profesor = await Profesor.findByPk(req.params.id);
         if (!profesor) {
-            return res.redirect("/profesores");
+            return res.status(404).json({ ok: false, error: "El professor no existeix." });
         }
         const { nombre, apellidos, telefono, email } = req.body;
         if (!nombre || !apellidos || !email) {
