@@ -12,7 +12,7 @@ const getAll = async (req, res, next) => {
             cursos
         });
     } catch (error) {
-       next(error);
+        next(error);
     }
 };
 

@@ -424,9 +424,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const errores = Object.values(json.errores);
           showMsg(errores.join("<br>"));
         } else {
-          showMsg("Error desconegut");  // fallback por si acaso
+          showMsg("Error desconegut");
         }
-        submitBtn.disabled = false;
         return;
       }
       window.location.href = json.redirect;
