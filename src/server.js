@@ -3,6 +3,7 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const session = require("express-session");
+const { flash }  = require("./middlewares/flash.js");
 const expressLayouts = require("express-ejs-layouts");
 //seeders
 const seeder = require("./seeder/seeders.js");
@@ -47,10 +48,18 @@ server.use(session({
 }));
 
 // -------------------------------------------------------
-// 404 ERROR
+// Mensajes flash
 // -------------------------------------------------------
+server.use(flash);
 
+// -------------------------------------------------------
+// Rutas
+// -------------------------------------------------------
 server.use("/", routes);
+
+// -------------------------------------------------------
+// 404 - Página no encontrada
+// -------------------------------------------------------
 server.use((req, res) => {
   res.status(404).render("404", {
     titulo: "Pàgina no trobada",

@@ -105,15 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Netejem els errors de la pàgina
 
-  if (sessionStorage.getItem("alumnoCreado")) {
-    sessionStorage.removeItem("alumnoCreado");
-    window.showModal?.({
-      type: "success",
-      title: "Alumne creat",
-      message: "Has creat l'alumne correctament.",
-    });
-  }
-
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -232,7 +223,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Si tot va bé → redirigir a /alumnos
 
-    sessionStorage.setItem("alumnoCreado", true);
     window.location.href = json.redirect;
   });
 });
@@ -256,14 +246,9 @@ document.addEventListener("click", async (e) => {
 
   try {
     const res = await fetch(`/alumnos/${id}`, { method: "DELETE" });
-    if (!res.ok) { throw new Error("Error eliminanta alumne"); }
-    await window.showModal({
-      type: "success",
-      title: "Alumne eliminat",
-      message: "L'alumne s'ha eliminat correctament.",
-    });
-    await new Promise(r => setTimeout(r, 1000));
-    window.location.href = "/alumnos";
+    const json = await res.json();
+    if (!res.ok || !json.ok) { throw new Error("Error eliminant alumne"); }
+    window.location.href = json.redirect || "/alumnos";
   } catch (err) {
     await window.showModal({
       type: "error",

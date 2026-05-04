@@ -3,7 +3,9 @@
     <a href="/cursos" class="back-link">
       <i class="fa-solid fa-arrow-left"></i> Tornar al llistat
     </a>
-    <h1 class="page-title"><%= curso.nombre %></h1>
+    <h1 class="page-title">
+      <%= curso.nombre %>
+    </h1>
     <p class="page-subtitle">
       <span class="badge">
         <%= curso.codigo %>
@@ -13,31 +15,39 @@
 
   <div class="acciones">
     <a href="/cursos/<%= curso.id %>/editar" class="btn btn-secundario">Editar</a>
-    <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= curso.id %>">Eliminar</button>
+    <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= curso.id %>" data-nombre="<%= curso.nombre %>">Eliminar</button>
   </div>
 </div>
 
 <div class="detalle-grid">
-  
+
   <!-- Datos del curso -->
   <section class="detalle-card">
     <h2 class="detalle-card-title">Dades del curs</h2>
     <dl class="detalle-list">
       <div class="detalle-item">
         <dt>Codi</dt>
-        <dd><%= curso.codigo || '—' %></dd>
+        <dd>
+          <%= curso.codigo || '—' %>
+        </dd>
       </div>
       <div class="detalle-item">
         <dt>Data inici</dt>
-        <dd><%= curso.fecha_inicio || '—' %></dd>
+        <dd>
+          <%= curso.fecha_inicio || '—' %>
+        </dd>
       </div>
       <div class="detalle-item">
         <dt>Requisits</dt>
-        <dd><%= curso.requisitos || '—' %></dd>
+        <dd>
+          <%= curso.requisitos || '—' %>
+        </dd>
       </div>
       <div class="detalle-item">
         <dt>Data fi</dt>
-        <dd><%= curso.fecha_fin || '—' %></dd>
+        <dd>
+          <%= curso.fecha_fin || '—' %>
+        </dd>
       </div>
     </dl>
   </section>
@@ -45,49 +55,57 @@
   <!-- UFs -->
   <section class="detalle-card">
     <h2 class="detalle-card-title">UFs</h2>
-    <% if (curso.Ufs && curso.Ufs.length > 0) { %>
+    <% if (curso.Ufs && curso.Ufs.length> 0) { %>
       <ul class="detalle-cursos">
-        <% curso.Ufs.forEach(uf => { %>
+        <% curso.Ufs.forEach(uf=> { %>
           <li>
-            <span class="curso-nombre"><%= uf.nombre %></span>
+            <span class="curso-nombre">
+              <%= uf.nombre %>
+            </span>
           </li>
-        <% }) %>
+          <% }) %>
       </ul>
-    <% } else { %>
-      <p class="detalle-empty">No hi ha UFs associades.</p>
-    <% } %>
+      <% } else { %>
+        <p class="detalle-empty">No hi ha UFs associades.</p>
+        <% } %>
   </section>
 
   <!-- Professors -->
   <section class="detalle-card">
     <h2 class="detalle-card-title">Professors</h2>
-    <% if (curso.Profesors && curso.Profesors.length > 0) { %>
+    <% if (curso.Profesors && curso.Profesors.length> 0) { %>
       <ul class="detalle-cursos">
-        <% curso.Profesors.forEach(prof => { %>
+        <% curso.Profesors.forEach(prof=> { %>
           <li>
-            <span class="curso-nombre"><%= prof.nombre %> <%= prof.apellidos %></span>
+            <span class="curso-nombre">
+              <%= prof.nombre %>
+                <%= prof.apellidos %>
+            </span>
           </li>
-        <% }) %>
+          <% }) %>
       </ul>
-    <% } else { %>
-      <p class="detalle-empty">No hi ha professors associats.</p>
-    <% } %>
+      <% } else { %>
+        <p class="detalle-empty">No hi ha professors associats.</p>
+        <% } %>
   </section>
 
   <!-- Alumnes -->
   <section class="detalle-card detalle-full">
     <h2 class="detalle-card-title">Alumnes</h2>
-    <% if (curso.Alumnos && curso.Alumnos.length > 0) { %>
+    <% if (curso.Alumnos && curso.Alumnos.length> 0) { %>
       <ul class="detalle-cursos">
-        <% curso.Alumnos.forEach(al => { %>
+        <% curso.Alumnos.forEach(al=> { %>
           <li>
-            <span class="curso-nombre"><%= al.nombre %> <%= al.apellidos %></span>
+            <span class="curso-nombre">
+              <%= al.nombre %>
+                <%= al.apellidos %>
+            </span>
           </li>
-        <% }) %>
+          <% }) %>
       </ul>
-    <% } else { %>
-      <p class="detalle-empty">No hi ha alumnes matriculats.</p>
-    <% } %>
+      <% } else { %>
+        <p class="detalle-empty">No hi ha alumnes matriculats.</p>
+        <% } %>
   </section>
 
 </div>

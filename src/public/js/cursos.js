@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        
+
         data.requisitos = data.requisitos ? parseInt(data.requisitos) : null;
         data.fecha_inicio = data.fecha_inicio || null;
         data.fecha_fin = data.fecha_fin || null;
@@ -44,4 +44,39 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     });
+});
+
+// Eliminar curso
+
+document.addEventListener("click", async (e) => {
+    const btn = e.target.closest(".btn-eliminar");
+    if (!btn) return;
+
+    const id = btn.dataset.id;
+    const row = btn.closest("tr");
+    const nombre = btn.dataset.nombre
+        || btn.closest("tr")?.querySelector(".curso-nombre")?.textContent.trim()
+        || "aquest curs";
+
+    const ok = await window.showConfirm({
+        title: "Confirmar eliminació",
+        message: `Segur que vols eliminar ${nombre}? Aquesta acció no es pot desfer.`,
+        confirmText: "Eliminar",
+        cancelText: "Cancelar",
+    });
+
+    if (!ok) return;
+
+    try {
+        const res = await fetch(`/cursos/${id}`, { method: "DELETE" });
+        const json = await res.json();
+        if (!res.ok) { throw new Error("Error eliminant el curs"); }
+        window.location.href = json.redirect || "/cursos";
+    } catch (err) {
+        await window.showModal({
+            type: "error",
+            title: "Error",
+            message: "No s'ha pogut eliminar el curs. Torna-ho a intentar més tard."
+        });
+    }
 });

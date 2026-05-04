@@ -95,5 +95,12 @@
             </div>
         </div>
     </div>
+    <% if (locals.flash) { %>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        window.showModal(<%- JSON.stringify(locals.flash) %>);
+        });
+    </script>
+    <% } %>
 </body>
 </html>

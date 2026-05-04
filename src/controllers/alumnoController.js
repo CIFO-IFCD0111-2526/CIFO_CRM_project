@@ -62,6 +62,12 @@ const newAlumno = async (req, res, next) => {
             ultimo_id_modif: req.session.usuario.id,
         });
 
+        req.session.flash = {
+          type: "success",
+          title: "Alumne creat.",
+          message: `L'alumne ${existe.nombre} ${existe.apellidos} s'ha creat correctament.`,
+        };
+
         return res.status(200).json({ ok: true, redirect: "/alumnos" });
 
     } catch (error) {
@@ -107,9 +113,18 @@ const removeAlumno = async (req, res, next) => {
             message: "Alumno no trobat"
         });
         await alumno.destroy();
+        
+        req.session.flash = {
+            type: "success",
+            title: "Alumne eliminat",
+            message: `L'alumne: ${alumno.nombre} ${alumno.apellidos} s'ha eliminat correctament.`,
+            keepModal: true,
+        };
+        
         return res.json({
             ok: true,
-            message: "Alumne eliminat correctament"
+            /*message: "Alumne eliminat correctament",*/
+            redirect: "/alumnos"
         });
     } catch (error) {
         next(error);

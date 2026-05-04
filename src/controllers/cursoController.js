@@ -39,6 +39,7 @@ const getById = async (req, res, next) => {
             titulo: "Busqueda de cursos por ID",
             usuario: req.session.usuario,
             css: "cursos.css",
+            js: "cursos.js",
             curso
         });
     } catch (error) {
@@ -79,10 +80,16 @@ const crearCurso = async (req, res, next) => {
         const nuevoCurso = await Curso.create({
             codigo,
             nombre,
-            fecha_inicio: fecha_inicio ||null,
+            fecha_inicio: fecha_inicio || null,
             fecha_fin: fecha_fin || null,
             requisitos: requisitos || null
         });
+
+        req.session.flash = {
+            type: "success",
+            title: "Curs creat",
+            message: `El curs ${nuevoCurso.nombre} s'ha creat correctament.`,
+        };
 
         return res.json({
             ok: true,
@@ -94,4 +101,31 @@ const crearCurso = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, getById, crearCurso, renderNuevoCurso };
+// DELETE /cursos/:id
+
+const eliminarCurso = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const curso = await Curso.findByPk(id);
+        if (!curso) {
+            return res.status(404).json({
+                ok: false,
+                message: "El curs no existeix"
+            });
+        }
+        await curso.destroy();
+        req.session.flash = {
+            type: "success",
+            title: "Curs eliminat",
+            message: "El curs s'ha eliminat correctament."
+        };
+        return res.json({
+            ok: true,
+            redirect: "/cursos"
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { getAll, getById, crearCurso, renderNuevoCurso, eliminarCurso };
