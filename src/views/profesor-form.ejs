@@ -1,41 +1,49 @@
 <div class="form-container">
   <div class="form-card">
-    <h1 class="form-title">Nou professor</h1>
-    <p class="form-subtitle">Introdueix les dades del nou professor</p>
+    <h1 class="form-title">
+      <%= locals.profesor ? 'Editar professor' : 'Nou professor' %>
+    </h1>
+    <p class="form-subtitle"> 
+      <%= locals.profesor ? 'Modifica les dades del professor' : 'Introdueix les dades del nou professor' %>
+    </p>
 
-    <form id="profesorForm" class="form-grid" novalidate>
+    <form id="profesorForm" class="form-grid" novalidate
+    <% if (locals.profesor) { %>data-id="<%= profesor.id %>"<% } %>>
+
 
       <div class="form-group">
         <label>
           Nom
-          <input type="text" id="profesorNombre" name="nombre" placeholder="Nom" required />
+        <input type="text" id="profesorNombre" name="nombre" placeholder="Nom" value="<%= locals.profesor ? profesor.nombre : '' %>" required />
         </label>
-      </div>
+      </div> 
 
       <div class="form-group">
         <label>
           Cognoms
-          <input type="text" id="profesorApellidos" name="apellidos" placeholder="Cognoms" required />
+          <input type="text" id="profesorApellidos" name="apellidos" placeholder="Cognoms" value="<%= locals.profesor ? profesor.apellidos : '' %>" required />
         </label>
       </div>
 
       <div class="form-group">
         <label>
           Telèfon
-          <input type="tel" id="profesorTelefono" name="telefono" placeholder="Telèfon" />
+          <input type="tel" id="profesorTelefono" name="telefono" placeholder="Telèfon" value="<%= locals.profesor ? profesor.telefono : '' %>"/>
         </label>
       </div>
 
       <div class="form-group">
         <label>
           Email
-          <input type="email" id="profesorEmail" name="email" placeholder="professor@exemple.com" required />
+          <input type="email" id="profesorEmail" name="email" placeholder="professor@exemple.com" value="<%= locals.profesor ? profesor.email : '' %>" required />
         </label>
       </div>
 
       <div id="profesorMsg" class="form-msg form-full" aria-live="polite"></div>
 
-      <button type="submit" class="btn btn-primario btn-block form-full">Crear professor</button>
+      <button type="submit" class="btn btn-primario btn-block form-full">
+      <%= locals.profesor ? 'Guardar canvis' : 'Crear professor'%>
+      </button>
 
     </form>
   </div>
