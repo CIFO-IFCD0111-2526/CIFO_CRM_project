@@ -1,5 +1,5 @@
 const { Uf, Curso } = require("../models");
-
+const { handleControllerError } = require("../middlewares/errorHandler");
 // GET /ufs
 const getAll = async (req, res) => {
     try {
@@ -16,7 +16,7 @@ const getAll = async (req, res) => {
             ufs,
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return handleControllerError(error, res);
     }
 };
 // GET /ufs/:id
@@ -45,7 +45,7 @@ const getById = async (req, res, next) => {
             uf
         });
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res);
     }
 };
 // GET /ufs/nuevo
@@ -93,7 +93,7 @@ const postCrear = async (req, res) => {
             redirect: `/ufs/${nuevaUF.id}`,
         });
     } catch (error) {
-        return res.status(500).json({ ok: false, error: error.message });
+        return handleControllerError(error, res);
     }
 };
 //DELETE/ufs/:id
@@ -112,7 +112,7 @@ const removeUf = async (req, res, next) => {
         };
         return res.status(200).json({ ok: true, redirect: "/ufs" });
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res);
     }
 };
 
