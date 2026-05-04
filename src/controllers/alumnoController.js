@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const { Alumno, Curso } = require("../models");
-
+const { handleControllerError } = require("../middlewares/errorHandler");
 //GET /alumnos
 
 const getAll = async (req, res, next) => {
@@ -16,7 +16,7 @@ const getAll = async (req, res, next) => {
             alumnos
         });
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -63,15 +63,15 @@ const newAlumno = async (req, res, next) => {
         });
 
         req.session.flash = {
-          type: "success",
-          title: "Alumne creat",
-          message: `L'alumne ${nuevoAlumno.nombre} ${nuevoAlumno.apellidos} s'ha creat correctament.`,
+            type: "success",
+            title: "Alumne creat",
+            message: `L'alumne ${nuevoAlumno.nombre} ${nuevoAlumno.apellidos} s'ha creat correctament.`,
         };
 
         return res.status(200).json({ ok: true, redirect: "/alumnos" });
 
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -100,7 +100,7 @@ const getById = async (req, res, next) => {
             alumno
         });
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -113,21 +113,21 @@ const removeAlumno = async (req, res, next) => {
             message: "Alumno no trobat"
         });
         await alumno.destroy();
-        
+
         req.session.flash = {
             type: "success",
             title: "Alumne eliminat",
             message: `L'alumne: ${alumno.nombre} ${alumno.apellidos} s'ha eliminat correctament.`,
             keepModal: true,
         };
-        
+
         return res.json({
             ok: true,
             /*message: "Alumne eliminat correctament",*/
             redirect: "/alumnos"
         });
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -166,7 +166,7 @@ const buscarAlumno = async (req, res, next) => {
         return res.json(alumnos);
 
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -226,7 +226,7 @@ const updateAlumno = async (req, res, next) => {
         return res.json({ ok: true, redirect: `/alumnos/${req.params.id}` });
 
     } catch (error) {
-        next(error);
+        return handleControllerError(error, res, next);
     }
 };
 
