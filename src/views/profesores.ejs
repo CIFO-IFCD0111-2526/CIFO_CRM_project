@@ -1,4 +1,4 @@
-<h1>Professors</h1>
+<!-- <h1>Professors</h1>
 
 <% if (profesores && profesores.length > 0) { %>
   <ul>
@@ -14,9 +14,102 @@
         <% } else { %>
           <br><small>No imparteix cap curs.</small>
         <% } %>
+        <br>
+        <button
+          class="btn-eliminar"
+          data-id="<%= prof.id %>"
+        >
+          Suprimeix
+        </button>
       </li>
     <% }) %>
   </ul>
 <% } else { %>
   <p>No hi ha professors registrats.</p>
+<% } %>
+<script src="/js/profesores.js"></script> -->
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Professors</h1>
+    <p class="page-subtitle">Llistat de professors registrats al centre</p>
+  </div>
+  <a href="/profesores/nuevo" class="btn btn-primario">Nou professor</a>
+</div>
+
+<div class="buscador-wrapper">
+  <div class="buscador-alumnos">
+    <input
+      type="text"
+      id="busquedaProfesor"
+      placeholder="Buscar professor..."
+      autocomplete="off"
+    />
+  </div>
+  <div id="dropdownResultados" class="dropdown hidden"></div>
+</div>
+
+<% if (profesores && profesores.length > 0) { %>
+  <div class="tabla-container">
+    <table id="profesoresTable">
+      <thead>
+        <tr>
+          <th>Cognoms, Nom</th>
+          <th>Email</th>
+          <th>Telèfon</th>
+          <th>Cursos</th>
+          <th class="col-accions">Accions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% profesores.forEach(profesor => { %>
+          <tr>
+            <td>
+              <a class="profesor-nombre" href="/profesores/<%= profesor.id %>">
+                <%= profesor.apellidos %>, <%= profesor.nombre %>
+              </a>
+            </td>
+
+            <td><%= profesor.email || '—' %></td>
+            <td><%= profesor.telefono || '—' %></td>
+
+            <td>
+              <% if (profesor.Cursos && profesor.Cursos.length > 0) { %>
+                <%= profesor.Cursos.map(c => c.nombre).join(', ') %>
+              <% } else { %>
+                —
+              <% } %>
+            </td>
+
+            <td class="col-accions">
+              <div class="acciones">
+                <!-- <a href="/profesores/<%= profesor.id %>" class="btn btn-secundario btn-sm">
+                  Veure
+                </a> -->
+
+                <a href="/profesores/<%= profesor.id %>/editar" class="btn btn-secundario btn-sm">
+                  Editar
+                </a>
+
+                <!-- <button
+                  class="btn btn-danger btn-sm btn-eliminar"
+                  data-id="<%= profesor.id %>">
+                  Suprimeix
+                </button> -->
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+<% } else { %>
+  <div class="empty-state">
+    <p>No hi ha professors registrats.</p>
+    <a href="/profesores/nuevo" class="btn btn-primario">
+      Crear el primer professor
+    </a>
+  </div>
 <% } %>
