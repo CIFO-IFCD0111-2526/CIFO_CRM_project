@@ -86,14 +86,50 @@ const getEditar = async (req, res) => {
 const putActualizar = async (req, res) => {
     const { id } = req.params;
     const { codigo, nombre, horas } = req.body;
+    const errores = {};
 
     const uf = await Uf.findByPk(id);
     if (!uf) {
         return res.status(404).json({ ok: false, redirect: "/ufs" });
     }
+
+    // Validacions
+    if (!codigo || codigo.trim() === "") errores.codigo = "El codi és obligatori";
+    if (!nombre || nombre.trim() === "") errores.nombre = "El nom és obligatori";
+    if (horas && isNaN(Number(horas))) errores.horas = "Les hores han de ser numèriques";
+
+    // Codi únic (només si s'ha proporcionat i ha canviat)
+    if (codigo && codigo.trim() !== "" && codigo !== uf.codigo && !errores.codigo) {
+        const existente = await Uf.findOne({ where: { codigo } });
+        if (existente) errores.codigo = "El codi ja existeix";
+    }
+
+    if (Object.keys(errores).length > 0) {
+        return res.status(400).json({ ok: false, errores });
+    }
+    try {
+        await uf.update({
+            codigo,
+            nombre,
+            horas: horas ? Number(horas) : null,
+        });
+
+        // missatge d'èxit
+        req.session.flash = {
+            type: "success",
+            title: "UF actualitzada",
+            message: "Les dades s'han desat correctament."
+        };
+
+        return res.json({
+            ok: true,
+            redirect: `/ufs/${uf.id}`,
+        });
+    } catch (error) {
+        return res.status(500).json({ ok: false, error: error.message });
+    }
 };
 
-const errores = {};
 
 // POST /ufs
 const postCrear = async (req, res, next) => {
