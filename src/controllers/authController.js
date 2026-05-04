@@ -1,6 +1,7 @@
 const { Usuario } = require("../models");
 const bcrypt = require("bcrypt");
 const { sendMail } = require("../config/mailer.js");
+const { handleControllerError } = require("../middlewares/errorHandler.js");
 
 // GET /login
 
@@ -27,7 +28,7 @@ const forgotPasswordForm = (req, res) => {
 
 // POST /login
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { loginEmail, loginPassword, loginRemember } = req.body;
 
   try {
@@ -66,7 +67,7 @@ const login = async (req, res) => {
     return res.status(200).json({ ok: true, redirect: "/dashboard" });
 
   } catch (error) {
-    res.status(500).json({ error: "Error del servidor." });
+    return handleControllerError(error, res, next);
   }
 };
 
@@ -83,7 +84,7 @@ const registerForm = async (req, res) => {
 
 //Procesar el registro de un nuevo usuario, validando que el email no exista, hasheando la contraseña y guardando el nuevo usuario en la base de datos.
 // POST /register
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   const { nombre, apellidos, email, password } = req.body;
 
   // Validación básica
@@ -111,9 +112,9 @@ const register = async (req, res) => {
       password: hashedPassword,
       nivel_acceso: "editor",
       activo: true,
-    });    
+    });
 
-// AÑADIR CREACION DE SESSION PARA PODER IR DIRECTO A DASHBOARD ////////////////////////////////
+    // AÑADIR CREACION DE SESSION PARA PODER IR DIRECTO A DASHBOARD ////////////////////////////////
     const userLogin = await Usuario.findOne({
       where: { email: email, activo: true },
     });
@@ -127,18 +128,17 @@ const register = async (req, res) => {
     };
     req.session.cookie.maxAge = 60 * 60 * 1000;  //  60 minutos per defecte, en registre no es guarda el ""recordar sessió""
     // req.session.flash = ""; //  añadir para la logica que muestra el modal("flash") de "Jose"
-    
+
     req.session.flash = {
       type: "success",
       title: "Compte creat.",
       message: `Benvingut, ${userLogin.nombre} ${userLogin.apellidos}.`,
     };
-///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
     return res.status(200).json({ ok: true, redirect: "/dashboard" });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error del servidor." });
+    return handleControllerError(error, res, next);
   }
 };
 
@@ -174,7 +174,7 @@ function generaContrasenaAleatoria(length = 10) {
 
 // POST /forgot-password
 
-const forgotPassword = async (req, res) => {
+const forgotPassword = async (req, res, next) => {
   const { email } = req.body;
 
   // Validación básica
@@ -229,9 +229,8 @@ const forgotPassword = async (req, res) => {
 
     return res.status(200).json({ ok: true, redirect: "/login" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error del servidor." });
+    return handleControllerError(error, res, next);
   }
 };
 
-module.exports = { loginForm, login, registerForm, register, logout , forgotPassword ,  forgotPasswordForm  };
+module.exports = { loginForm, login, registerForm, register, logout, forgotPassword, forgotPasswordForm };
