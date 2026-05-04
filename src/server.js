@@ -6,7 +6,7 @@ const session = require("express-session");
 const { flash }  = require("./middlewares/flash.js");
 const expressLayouts = require("express-ejs-layouts");
 //seeders
-const {seedAlumnos,seedCursos} = require("./seeder/seeders.js");
+const seeder = require("./seeder/seeders.js");
 
 const { ensureDatabaseExists } = require("./config/database");
 const { sequelize } = require("./models");
@@ -50,14 +50,16 @@ server.use(session({
 // -------------------------------------------------------
 // Mensajes flash
 // -------------------------------------------------------
-
 server.use(flash);
 
 // -------------------------------------------------------
 // Rutas
 // -------------------------------------------------------
-
 server.use("/", routes);
+
+// -------------------------------------------------------
+// 404 - Página no encontrada
+// -------------------------------------------------------
 server.use((req, res) => {
   res.status(404).render("404", {
     titulo: "Pàgina no trobada",
@@ -94,8 +96,9 @@ async function startServer() {
 
     await sequelize.sync();
     console.log("Modelos sincronizados.");
-    await seedAlumnos();
-    await seedCursos();
+    await seeder.seedAlumnos();
+    await seeder.seedCursos();
+    await seeder.seedUfs();
     server.listen(PORT, () => {
       console.log(`Servidor en http://localhost:${PORT}`);
     });

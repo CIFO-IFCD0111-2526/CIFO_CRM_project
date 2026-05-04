@@ -7,17 +7,11 @@ const router = Router();
 
 // Rutas de cursos, todas requieren autenticacion
 router.use(authPage);
-// Formulario de creación de cursos
-router.get('/nuevo', authPage, controller.renderNuevoCurso);
 
-// Crear curso (POST vía fetch)
-router.post('/', authPage, controller.crearCurso);
-
+router.get('/nuevo', controller.renderNuevoCurso);
+router.post('/', controller.crearCurso);
 router.get("/", controller.getAll);
 router.get("/:id", controller.getById);
-
-
-
-
+router.delete("/:id", controller.eliminarCurso);
 
 module.exports = router;

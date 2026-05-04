@@ -235,6 +235,7 @@ main {
   color: var(--color-danger);
   border-color: var(--color-danger);
 }
+
 #busquedaAlumno {
   width: 50%;
   padding: 8px !important;
@@ -248,7 +249,6 @@ main {
   position: absolute;
   border: 1px solid #ccc;
   border-top: none;
-  /* border-bottom: 8px !important; */
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
@@ -260,7 +260,7 @@ main {
 }
 
 .dropdown .item {
-  padding: 8px ;
+  padding: 8px;
   cursor: pointer;
 }
 
@@ -284,7 +284,6 @@ main {
 
 .buscador-alumnos {
   flex: 1;
-  /* margin: 0;*/
 }
 
 #dropdownResultados {

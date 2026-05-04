@@ -105,15 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Netejem els errors de la pàgina
 
-  // if (sessionStorage.getItem("alumnoCreado")) {
-  //   sessionStorage.removeItem("alumnoCreado");
-  //   window.showModal?.({
-  //     type: "success",
-  //     title: "Alumne creat",
-  //     message: "Has creat l'alumne correctament.",
-  //   });
-  // }
-
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -135,33 +126,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Convertim el formulari en un objecte JS
     const formData = new FormData(form);
-    const dataNewAlumno = Object.fromEntries(formData.entries());
+    const data = Object.fromEntries(formData.entries());
 
-    //console.log(dataNewAlumno);
+    console.log(data);
 
     //Preparem els checkboxes per ser activats, canviem el valor a true/false
 
-    dataNewAlumno.derechos_imagen =
+    data.derechos_imagen =
       form.querySelector('[name="derechos_imagen"]')?.checked || false;
-    dataNewAlumno.cesion_material =
+    data.cesion_material =
       form.querySelector('[name="cesion_material"]')?.checked || false;
 
     const errors = [];
 
-    if (!dataNewAlumno.nombre) {
+    if (!data.nombre) {
       errors.push("El nom és obligatori.");
       setError(RegAlNombre);
     }
 
-    if (!dataNewAlumno.apellidos) {
+    if (!data.apellidos) {
       errors.push("Un cognom és obligatori.");
       setError(RegAlApellidos);
     }
 
-    if (!dataNewAlumno.dni) {
+    if (!data.dni) {
       errors.push("El DNI o NIE és obligatori");
       setError(RegAlDni);
-    } else if (!validDniCifNie(dataNewAlumno.dni)) {
+    } else if (!validDniCifNie(data.dni)) {
       errors.push("Format incorrecte (DNI: 12345679A. NIE: Y1234567Z)");
       setError(RegAlDni);
     }
@@ -169,28 +160,28 @@ document.addEventListener("DOMContentLoaded", () => {
     let valTelMail = false;
 
     do {
-      if (!dataNewAlumno.telefono && !dataNewAlumno.email) {
+      if (!data.telefono && !data.email) {
         errors.push("És necessari informar l'email o el telèfon.");
         setError(RegAlEmail);
         setError(RegAlTelefono);
         break;
-      } else if (!isValidEmail(dataNewAlumno.email) && !dataNewAlumno.telefono) {
+      } else if (!isValidEmail(data.email) && !data.telefono) {
         errors.push("El format de l'email no és vàlid.");
         setError(RegAlEmail);
         break;
-      } else if (dataNewAlumno.email.length > 0 && !isValidEmail(dataNewAlumno.email) && dataNewAlumno.telefono) {
+      } else if (data.email.length > 0 && !isValidEmail(data.email) && data.telefono) {
         errors.push("El format de l'email no és vàlid.");
         setError(RegAlEmail);
         break;
       } else {
-        if (dataNewAlumno.email.length === 0) { dataNewAlumno.email = null };
+        if (data.email.length === 0) { data.email = null };
         clearError(RegAlEmail);
         clearError(RegAlTelefono);
         valTelMail = true;
       };
     } while (valTelMail === false);
 
-    if (!dataNewAlumno.tipo) {
+    if (!data.tipo) {
       errors.push("És obligatori escollir un tipus.");
       setError(RegAltipo);
     }
@@ -204,14 +195,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const res = await fetch("/alumnos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dataNewAlumno),
+      body: JSON.stringify(data),
     });
 
-    const data = await res.json();
+    const json = await res.json();
 
     // Si hi ha errors → mostrar-los
-    if (!data.ok) {
-      console.log("Errors rebuts del backend:", data.error);
+    if (!json.ok) {
+      console.log("Errors rebuts del backend:", json.error);
 
       // CONTROL DE ERRORES ANTERIOR, HACÍA REFERENCIA A UN SPAN QUE NO EXISTE.
       // // Netejar errors anteriors
@@ -225,15 +216,14 @@ document.addEventListener("DOMContentLoaded", () => {
       //   if (span) span.textContent = json.errores[camp];
       // }
 
-      showMsg(data.error);
+      showMsg(json.error);
 
       return;
     }
 
     // Si tot va bé → redirigir a /alumnos
 
-    // sessionStorage.setItem("alumnoCreado", true);
-    window.location.href = data.redirect;
+    window.location.href = json.redirect;
   });
 });
 
@@ -256,19 +246,9 @@ document.addEventListener("click", async (e) => {
 
   try {
     const res = await fetch(`/alumnos/${id}`, { method: "DELETE" });
-    
-    if (!res.ok) { throw new Error("Error eliminant alumne"); }
-    /*
-    await window.showModal({
-      type: "success",
-      title: "Alumne eliminat",
-      message: "L'alumne s'ha eliminat correctament.",
-    });
-    await new Promise(r => setTimeout(r, 1000));
-*/
-    const data = await res.json();
-
-    window.location.href = data.redirect;
+    const json = await res.json();
+    if (!res.ok || !json.ok) { throw new Error("Error eliminant alumne"); }
+    window.location.href = json.redirect || "/alumnos";
   } catch (err) {
     await window.showModal({
       type: "error",
@@ -276,6 +256,73 @@ document.addEventListener("click", async (e) => {
       message: "No s'ha pogut eliminar l'alumne.",
     });
   }
+});
+
+// Edició inline d'alumne (vista detalle)
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("#alumnoForm");
+  if (!form) return;
+
+  const btnEditar = document.querySelector("#btnEditar");
+  btnEditar?.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.querySelectorAll(".view-mode").forEach(el => el.classList.add("hidden"));
+    document.querySelectorAll(".edit-mode").forEach(el => el.classList.remove("hidden"));
+    btnEditar.classList.add("hidden");
+  });
+
+  const btnCancelar = document.querySelector("#btnCancelar");
+  btnCancelar?.addEventListener("click", () => {
+    document.querySelectorAll(".view-mode").forEach(el => el.classList.remove("hidden"));
+    document.querySelectorAll(".edit-mode").forEach(el => el.classList.add("hidden"));
+    btnEditar.classList.remove("hidden");
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
+    data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
+
+    const id = form.dataset.id;
+    const url = id ? `/alumnos/${id}` : "/alumnos";
+    const metodo = id ? "PUT" : "POST";
+
+    try {
+      const res = await fetch(url, {
+        method: metodo,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      submitBtn.disabled = false;
+
+      const json = await res.json();
+
+      if (!json.ok) {
+        console.log("Errors rebuts del backend:", json.errores || json.mensaje);
+        document.querySelectorAll(".error-msg").forEach((e) => (e.textContent = ""));
+
+        if (json.errores) {
+          for (const camp in json.errores) {
+            const span = document.querySelector(`#error-${camp}`);
+            if (span) span.textContent = json.errores[camp];
+          }
+        } else if (json.mensaje) {
+          alert(json.mensaje);
+        }
+        return;
+      }
+      window.location.href = json.redirect;
+    } catch (err) {
+      console.error("Error en la petició:", err);
+    }
+  });
 });
 
 // Buscador d'alumnes amb autocompletar

@@ -19,7 +19,35 @@ const getAll = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+// GET /ufs/:id
 
+const getById = async (req, res, next) => {
+    try {
+        const uf = await Uf.findByPk(req.params.id, {
+            include: [Curso],
+        });
+
+        if (!uf) {
+            req.session.flash = {
+                type: "error",
+                title: "No trobada",
+                message: "La UF no existeix.",
+            };
+            return res.redirect("/ufs");
+        }
+
+        res.render("uf-detalle", {
+            titulo: "Detall de UF",
+            usuario: req.session.usuario,
+            css: "ufs.css",
+            js: "ufs.js",
+            paginaActual: "ufs",
+            uf
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 // GET /ufs/nuevo
 const getNuevo = (req, res) => {
     res.render("uf-form", {
@@ -68,5 +96,24 @@ const postCrear = async (req, res) => {
         return res.status(500).json({ ok: false, error: error.message });
     }
 };
+//DELETE/ufs/:id
+const removeUf = async (req, res, next) => {
+    try {
+        const uf = await Uf.findByPk(req.params.id);
+        if (!uf) return res.status(404).json({
+            ok: false,
+            message: "UF no trobada."
+        });
+        await uf.destroy();
+        req.session.flash = {
+            type: "success",
+            title: "UF eliminada",
+            message: "La UF s'ha eliminat correctament.",
+        };
+        return res.status(200).json({ ok: true, redirect: "/ufs" });
+    } catch (error) {
+        next(error);
+    }
+};
 
-module.exports = { getAll, getNuevo, postCrear };
+module.exports = { getAll, getById, getNuevo, postCrear, removeUf };
