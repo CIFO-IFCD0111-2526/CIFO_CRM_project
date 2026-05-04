@@ -85,6 +85,12 @@ const crearCurso = async (req, res, next) => {
             requisitos: requisitos || null
         });
 
+        req.session.flash = {
+            type: "success",
+            title: "Curs creat",
+            message: `El curs ${nuevoCurso.nombre} s'ha creat correctament.`,
+        };
+
         return res.json({
             ok: true,
             redirect: `/cursos/${nuevoCurso.id}`

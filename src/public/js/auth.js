@@ -62,10 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!password) {
-      errors.push("La contraseña és obligatòria.");
+      errors.push("La contrasenya és obligatòria.");
       setError(passwordInput);
     } else if (password.length < 6) {
-      errors.push("La contraseña deu tenir al menys 6 caràcters.");
+      errors.push("La contrasenya ha de tenir al menys 6 caràcters.");
       setError(passwordInput);
     }
 
@@ -87,27 +87,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await res.json();
 
-      if (data.ok) {
-        window.showModal?.({
-          type: "success",
-          title: "Sessió iniciada",
-          message: "Accedint al panell...",
-        });
-        setTimeout(() => { window.location.href = data.redirect; }, 2000);
-      } else if (res.status >= 500) {
+      if (data.ok) { 
+        window.location.href = data.redirect;
+      } else {
         window.showModal?.({
           type: "error",
-          title: "Error del servidor",
-          message: "Torna-ho a provar d'aquí uns minuts.",
+          title: "Error d'inici de sessió",
+          message: `${data.error}` || "No s'ha pogut iniciar sessió.",
         });
-      } else {
-        showMsg(data.error || "No s'ha pogut iniciar sessió.");
-      }
+        //showMsg(data.error || "No s'ha pogut iniciar sessió.");
+      };
+
+      // if (data.ok) {
+      //   window.showModal?.({
+      //     type: "success",
+      //     title: "Sessió iniciada",
+      //     message: "Accedint al panell...",
+      //   });
+      //   setTimeout(() => { window.location.href = data.redirect; }, 2000);
+      // } else if (res.status >= 500) {
+      //   window.showModal?.({
+      //     type: "error",
+      //     title: "Error del servidor",
+      //     message: "Torna-ho a provar d'aquí uns minuts.",
+      //   });
+      // } else {
+      //   showMsg(data.error || "No s'ha pogut iniciar sessió.");
+      // }
     } catch (error) {
       window.showModal?.({
         type: "error",
         title: "Error de connexió",
-        message: "No s'ha pogut contactar amb el servidor.",
+        message: `${data.error}` || "No s'ha pogut iniciar sessió.",
       });
     }
   });
@@ -199,14 +210,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("/register", {
+      const res = await fetch("/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombre, apellidos, email, password }),
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
+      if (data.ok) {
+        window.location.href = data.redirect;
+      } else {
+        window.showModal?.({
+          type: "error",
+          title: "Error de connexió",
+          message: `${data.error}` || "No s'ha pogut crear compte.",
+        });
+        //showMsg(data.error || "No s'ha pogut iniciar sessió.");
+      }
+      /*
       if (data.ok) {
         window.showModal?.({
           type: "success",
@@ -222,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       } else {
         showMsg(data.error || "Error en el registre.");
-      }
+      } */
     } catch (error) {
       window.showModal?.({
         type: "error",
@@ -266,57 +288,53 @@ document.addEventListener("DOMContentLoaded", () => {
     clearMsg();
 
     if (!email) {
-
       setError(emailInput);
-
       showMsg("L'email és obligatori.");
-
       return;
-
     }
 
     if (!isValidEmail(email)) {
-
       setError(emailInput);
-
       showMsg("El format de l'email no és vàlid.");
-
       return;
-
     }
 
     submitBtn.disabled = true;
 
     try {
 
-      await fetch("/forgot-password", {
-
+      const res = await fetch("/forgot-password", {
         method: "POST",
-
         headers: { "Content-Type": "application/json" },
-
         body: JSON.stringify({ email })
-
       });
 
-      showMsg("Si l'email està registrat, rebràs un correu amb la nova contrasenya.");
+      const data = await res.json();
+
+      if (data.ok) {
+        // showMsg("Si l'email està registrat, rebràs un correu amb la nova contrasenya.");
+        window.location.href = data.redirect;
+      } else {
+          window.showModal?.({
+          type: "error",
+          title: "Correu no enviat.",
+          message: `${data.error}` || "No ha sigut possible enviar el correu.",
+        });
+        //showMsg(data.error || "No s'ha pogut iniciar sessió.");
+      };      
 
     } catch (error) {
-
-      showMsg("Error de connexió");
-
-    } finally {
-
-      submitBtn.disabled = false;
-
-    }
+      window.showModal?.({
+        type: "error",
+        title: "Error de connexió",
+        message: "No s'ha pogut contactar amb el servidor.",
+      });
+    };
 
   });
 
   emailInput.addEventListener("input", () => {
-
     clearError(emailInput);
-
   });
 
 });

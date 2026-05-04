@@ -30,7 +30,7 @@ async function sendMail({ to, subject, html }) {
     return info;
   } catch (error) {
     console.error("[MAIL ERROR]", error.message);
-    return null; // no rompe la request
+    return error; // no rompe la request
   }
 }
 
