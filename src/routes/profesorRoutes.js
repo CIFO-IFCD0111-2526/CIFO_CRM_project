@@ -10,26 +10,11 @@ const { authPage } = require("../middlewares/auth");
 const { loadResource } = require("../middlewares/loadResource.js");
 const { Profesor, Curso } = require("../models");
 
-router.use(authPage);
-
-router.get("/nuevo", profesorController.mostrarFormCrear);
-router.get("/", profesorController.listarProfesores);
-router.post("/", profesorController.crearProfesor);
-router.get("/:id",
-    loadResource(Profesor, {
-        redirectTo: "/profesores",
-        include: [{ model: Curso, attributes: ["id", "codigo", "nombre"] }]
-    }),
-    profesorController.getById
-);
-router.get("/:id/editar",
-    loadResource(Profesor, { redirectTo: "/profesores" }),
-    profesorController.mostrarProfesorEditar
-);
-router.put("/:id",
-    loadResource(Profesor, { redirectTo: "/profesores" }),
-    profesorController.editarProfesor
-);
+router.get("/nuevo", authPage, profesorController.mostrarFormCrear);
+router.get("/", authPage, profesorController.listarProfesores);
+router.post("/", authPage, profesorController.crearProfesor);
+router.get("/:id", authPage, profesorController.getById);
+// router.delete("/profesores/:id", authPage, profesorController.deleteProfesor);
+router.delete("/:id", authPage, profesorController.deleteProfesor);
 
 module.exports = router;
-

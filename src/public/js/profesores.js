@@ -25,6 +25,38 @@ document.addEventListener("DOMContentLoaded", () => {
     profesorMsg.classList.remove("error-msg");
   };
 
+  const botonesEliminar = document.querySelectorAll(".btn-eliminar");
+
+botonesEliminar.forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const id = btn.dataset.id;
+
+    const confirmacion = confirm("¿Segur que vols esborrar aquest professor?");
+    if (!confirmacion) return;
+
+    try {
+      const res = await fetch(`/profesores/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      const data = await res.json();
+
+      if (data.ok) {
+        window.location.href = data.redirect;
+      } else {
+        alert(data.message || "Errada al esborrar el professor");
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Error de conexió amb el servidor");
+    }
+  });
+});
+
   if (sessionStorage.getItem("professorCreat")) {
     sessionStorage.removeItem("professorCreat");
     window.showModal?.({

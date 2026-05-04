@@ -2,8 +2,8 @@
 // Controller: Profesores (renderiza vistas)
 // -------------------------------------------------------
 
-const { Profesor, Curso } = require("../models");
-const { handleControllerError } = require("../middlewares/errorHandler");
+const { Profesor, Curso, CursoProfesor } = require("../models");
+const { sequelize } = require("../config/database");
 
 /** GET /profesores — listar todos */
 const listarProfesores = async (req, res, next) => {
@@ -144,4 +144,38 @@ const editarProfesor = async (req, res, next) => {
     }
 };
 
-module.exports = { listarProfesores, mostrarFormCrear, crearProfesor, getById, mostrarProfesorEditar, editarProfesor };
+
+const deleteProfesor = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const profesor = await Profesor.findByPk(id);
+
+    if (!profesor) {
+      return res.status(404).json({
+        ok: false,
+        message: "Profesor no encontrado",
+      });
+    }
+
+    // eliminar relaciones
+    await CursoProfesor.destroy({
+      where: { profesor_id: id },
+    });
+
+    // eliminar profesor
+    await profesor.destroy();
+
+    return res.json({
+      ok: true,
+      redirect: "/profesores",
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ ok: false });
+  }
+};
+
+module.exports = { listarProfesores, mostrarFormCrear, crearProfesor, getById, mostrarProfesorEditar, editarProfesor , deleteProfesor  };
+
