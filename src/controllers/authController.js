@@ -146,7 +146,16 @@ const register = async (req, res) => {
 // POST /logout
 
 const logout = async (req, res) => {
-  req.session.destroy(() => {
+  req.session.regenerate((err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Error del servidor." });
+    }
+    req.session.flash = {
+      type: "success",
+      title: "Sessió tancada",
+      message: "Has tancat la sessió correctament.",
+    };
     res.json({ ok: true, redirect: "/login" });
   });
 };

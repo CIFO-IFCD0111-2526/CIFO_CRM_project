@@ -79,10 +79,16 @@ const crearCurso = async (req, res, next) => {
         const nuevoCurso = await Curso.create({
             codigo,
             nombre,
-            fecha_inicio: fecha_inicio ||null,
+            fecha_inicio: fecha_inicio || null,
             fecha_fin: fecha_fin || null,
             requisitos: requisitos || null
         });
+
+        req.session.flash = {
+            type: "success",
+            title: "Curs creat",
+            message: `El curs ${nuevoCurso.nombre} s'ha creat correctament.`,
+        };
 
         return res.json({
             ok: true,
