@@ -131,7 +131,7 @@ const eliminarCurso = async (req, res, next) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const editarCurso = async (req, res, next) => { 
 
-console.log("entrant a editar cursos");
+console.log("[DBG] entrant a editar cursos");
 
 /* ho guardem per quan ho necessitem
 req.session.flash = {
