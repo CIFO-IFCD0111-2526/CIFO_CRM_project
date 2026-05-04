@@ -21,6 +21,8 @@ router.delete("/:id",
     loadResource(Curso, { redirectTo: "/cursos" }),
     controller.eliminarCurso
 );
+////////////////////////////////////////////////////// AFEGIM ENDPOINT PER EDITAR ( put/update )
+router.put("/:id/editar", controller.editarCurso);
 
 ////////////////////////////////////////////////////// AFEGIM ENDPOINT PER EDITAR ( put/update )
 router.put("/:id", controller.updateCurso);
