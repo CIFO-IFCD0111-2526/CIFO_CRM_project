@@ -6,7 +6,7 @@ const { Profesor, Curso } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
 /** GET /profesores — listar todos */
-const listarProfesores = async (req, res) => {
+const listarProfesores = async (req, res, next) => {
     try {
         const profesores = await Profesor.findAll({
             include: [{
@@ -25,7 +25,7 @@ const listarProfesores = async (req, res) => {
             profesores,
         });
     } catch (error) {
-        return handleControllerError(error, res);
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -42,7 +42,7 @@ const mostrarFormCrear = (req, res) => {
 };
 
 /** POST /profesores — crear professor */
-const crearProfesor = async (req, res) => {
+const crearProfesor = async (req, res, next) => {
     const { nombre, apellidos, telefono, email } = req.body;
 
     if (!nombre || !apellidos || !email) {
@@ -68,12 +68,12 @@ const crearProfesor = async (req, res) => {
 
         return res.status(201).json({ ok: true, redirect: `/profesores/${profesor.id}` });
     } catch (error) {
-        return handleControllerError(error, res);
+        return handleControllerError(error, res, next);
     }
 };
 
 /** GET /profesores/:id — detall professor */
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
     try {
         const profesor = await Profesor.findByPk(req.params.id, {
             include: [{ model: Curso, attributes: ["id", "codigo", "nombre"] }],
@@ -92,7 +92,7 @@ const getById = async (req, res) => {
             profesor,
         });
     } catch (error) {
-        return handleControllerError(error, res);
+        return handleControllerError(error, res, next);
     }
 };
 
