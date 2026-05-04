@@ -38,6 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
     input.addEventListener("input", () => clearError(input));
   });
 
+  const profesorId = form.dataset.id;
+  const metodo = profesorId ? "PUT" : "POST";
+  const url = profesorId ? `/profesores/${profesorId}` : "/profesores";
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     clearMsg();
@@ -70,8 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const res = await fetch("/profesores", {
-      method: "POST",
+    const res = await fetch(url, {
+      method: metodo,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
@@ -83,7 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+  if (profesorId) {
+    window.location.href = json.redirect;
+  } else {
     sessionStorage.setItem("professorCreat", "true");
     window.location.href = json.redirect;
+  }
   });
 });
