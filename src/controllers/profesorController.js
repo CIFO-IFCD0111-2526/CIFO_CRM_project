@@ -87,29 +87,17 @@ const getById = (req, res) => {
 };
 
 /** GET /profesores/:id/editar — detall/editar professor */
-const getEditForm = async (req, res, next) => {
-    try {
-        const profesor = await Profesor.findByPk(req.params.id);
-        if (!profesor) {
-            req.session.flash = {
-                type: "error",
-                title: "No trobat",
-                message: "El professor no existeix.",
-            };
-            return res.redirect("/profesores");
-        }
-        res.render("profesor-form", {
-            titulo: `Editar ${profesor.nombre} ${profesor.apellidos}`,
-            usuario: req.session.usuario,
-            css: "profesores.css",
-            styles: '<link rel="stylesheet" href="/css/forms.css">',
-            js: "profesores.js",
-            paginaActual: "profesores",
-            profesor,
-        });
-    } catch (error) {
-        next(error);
-    }
+const mostrarProfesorEditar = (req, res) => {
+    const profesor = req.profesor;
+    res.render("profesor-form", {
+        titulo: `Editar ${profesor.nombre} ${profesor.apellidos}`,
+        usuario: req.session.usuario,
+        css: "profesores.css",
+        js: "profesores.js",
+        styles: '<link rel="stylesheet" href="/css/forms.css">',
+        paginaActual: "profesores",
+        profesor,
+    });
 };
 
 /** PUT /profesores/:id — editar professor */
@@ -139,37 +127,6 @@ const updateProfesor = async (req, res, next) => {
             message: `El professor ${profesor.nombre} ${profesor.apellidos} s'ha actualitzat correctament.`,
         };
         return res.json({ ok: true, redirect: `/profesores/${profesor.id}` });
-    } catch (error) {
-        next(error);
-    }
-};
-
-
-
-const deleteProfesor = async (req, res, next) => {
-    try {
-        const profesor = await Profesor.findByPk(req.params.id);
-
-        if (!profesor) {
-            return res.status(404).json({
-                ok: false,
-                message: "Professor no trobat",
-            });
-        }
-
-        await profesor.destroy();
-
-        req.session.flash = {
-            type: "success",
-            title: "Professor eliminat",
-            message: `El professor ${profesor.nombre} ${profesor.apellidos} s'ha eliminat correctament.`,
-            keepModal: true,
-        };
-
-        return res.json({
-            ok: true,
-            redirect: "/profesores",
-        });
     } catch (error) {
         return handleControllerError(error, res, next);
     }
