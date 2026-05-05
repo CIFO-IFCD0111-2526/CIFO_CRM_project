@@ -129,18 +129,29 @@ const eliminarCurso = async (req, res, next) => {
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const editarCurso = async (req, res, next) => { 
+const updateCurso = async (req, res, next) => {
+ try {
+    console.log(req.body);
+    
+    const { data_curso } = req.body ;
+    console.log("DATA?",data_curso);
 
-console.log("[DBG] entrant a editar cursos");
 
-/* ho guardem per quan ho necessitem
-req.session.flash = {
+ } catch (error) {
+    console.log("ERR:: ", error , " ::ERR")
+ }    
+
+    
+
+};
+// ho guardem per quan ho necessitem
+/* req.session.flash = {
             type: "success",
             title: "Curs editat",
-            message: `El curs ${nuevoCurso.nombre} s'ha modificat correctament.`,
+            message: `El curs {Curso.nombre} s'ha modificat correctament.`,
             // keepModal: false, // per si hem de fer recarga quan sortim 
         };
+
 */
-};
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// EDITAR CURSO /////////////////////////////
-module.exports = { getAll, getById, crearCurso, renderNuevoCurso, eliminarCurso, editarCurso };
+//////////////////////////////////////////////////////////////////////////////////////////////// editarCurso//////////////////////// EDITAR CURSO /////////////////////////////
+module.exports = { getAll, getById, crearCurso, renderNuevoCurso, eliminarCurso, updateCurso };

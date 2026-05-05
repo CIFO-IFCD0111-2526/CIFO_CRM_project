@@ -14,6 +14,6 @@ router.get("/", controller.getAll);
 router.get("/:id", controller.getById);
 router.delete("/:id", controller.eliminarCurso);
 ////////////////////////////////////////////////////// AFEGIM ENDPOINT PER EDITAR ( put/update )
-router.put("/:id/editar", controller.editarCurso);
+router.put("/:id", controller.updateCurso);
 
 module.exports = router;
