@@ -3,6 +3,7 @@
 // -------------------------------------------------------
 
 const { Profesor, Curso } = require("../models");
+const { sequelize } = require("../config/database");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
 /** GET /profesores — listar todos */
@@ -132,7 +133,7 @@ const updateProfesor = async (req, res, next) => {
     }
 };
 
-const deleteProfesor = async (req, res) => {
+const deleteProfesor = async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -141,16 +142,16 @@ const deleteProfesor = async (req, res) => {
     if (!profesor) {
       return res.status(404).json({
         ok: false,
-        message: "Profesor no encontrado",
+        message: "Professor no trobat",
       });
     }
 
-    // eliminar relaciones
-    await CursoProfesor.destroy({
+    
+    /*await CursoProfesor.destroy({
       where: { profesor_id: id },
-    });
+    });*/
 
-    // eliminar profesor
+    
     await profesor.destroy();
 
     return res.json({
