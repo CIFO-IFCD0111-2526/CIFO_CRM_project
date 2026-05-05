@@ -17,34 +17,14 @@ const getAll = async (req, res, next) => {
 };
 
 /** GET /cursos/:id */
-const getById = async (req, res, next) => {
-    try {
-        const curso = await Curso.findByPk(req.params.id, {
-            include: [
-                Uf,
-                Profesor,
-                Alumno
-            ],
-        });
-        if (!curso) {
-            req.session.flash = {
-                type: "error",
-                title: "No trobat",
-                message: "El curs no existeix.",
-            };
-            return res.redirect("/cursos");
-        }
-
-        res.render("curso-detalle", {
-            titulo: "Busqueda de cursos por ID",
-            usuario: req.session.usuario,
-            css: "cursos.css",
-            js: "cursos.js",
-            curso
-        });
-    } catch (error) {
-        return handleControllerError(error, res, next);
-    }
+const getById = (req, res) => {
+    res.render("curso-detalle", {
+        titulo: "Busqueda de cursos por ID",
+        usuario: req.session.usuario,
+        css: "cursos.css",
+        js: "cursos.js",
+        curso: req.curso
+    });
 };
 
 /** Render del formulario de creación de cursos */
@@ -102,27 +82,18 @@ const crearCurso = async (req, res, next) => {
 };
 
 // DELETE /cursos/:id
-
 const eliminarCurso = async (req, res, next) => {
     try {
-        const id = req.params.id;
-        const curso = await Curso.findByPk(id);
-        if (!curso) {
-            return res.status(404).json({
-                ok: false,
-                message: "El curs no existeix"
-            });
-        }
+        const curso = req.curso;
         await curso.destroy();
+
         req.session.flash = {
             type: "success",
             title: "Curs eliminat",
             message: "El curs s'ha eliminat correctament."
         };
-        return res.json({
-            ok: true,
-            redirect: "/cursos"
-        });
+
+        return res.json({ ok: true, redirect: "/cursos" });
     } catch (error) {
         return handleControllerError(error, res, next);
     }
