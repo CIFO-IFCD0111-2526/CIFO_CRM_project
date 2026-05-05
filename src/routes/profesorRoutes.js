@@ -7,13 +7,29 @@ const router = express.Router();
 
 const profesorController = require("../controllers/profesorController");
 const { authPage } = require("../middlewares/auth");
+const { loadResource } = require("../middlewares/loadResource.js");
+const { Profesor, Curso } = require("../models");
 
-router.get("/nuevo", authPage, profesorController.mostrarFormCrear);
-router.get("/", authPage, profesorController.listarProfesores);
-router.post("/", authPage, profesorController.crearProfesor);
-router.get("/:id", authPage, profesorController.getById);
-router.get("/:id/editar", authPage, profesorController.mostrarProfesorEditar);
-router.put("/:id", authPage, profesorController.editarProfesor);
+router.use(authPage);
+
+router.get("/nuevo", profesorController.mostrarFormCrear);
+router.get("/", profesorController.listarProfesores);
+router.post("/", profesorController.crearProfesor);
+router.get("/:id",
+    loadResource(Profesor, {
+        redirectTo: "/profesores",
+        include: [{ model: Curso, attributes: ["id", "codigo", "nombre"] }]
+    }),
+    profesorController.getById
+);
+router.get("/:id/editar",
+    loadResource(Profesor, { redirectTo: "/profesores" }),
+    profesorController.mostrarProfesorEditar
+);
+router.put("/:id",
+    loadResource(Profesor, { redirectTo: "/profesores" }),
+    profesorController.editarProfesor
+);
 
 module.exports = router;
 
