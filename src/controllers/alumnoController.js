@@ -90,7 +90,11 @@ const getById = (req, res) => {
 //DELETE/alumnos/:id
 const removeAlumno = async (req, res, next) => {
     try {
-        const alumno = req.alumno;
+        const alumno = await Alumno.findByPk(req.params.id);
+        if (!alumno) return res.status(404).json({
+            ok: false,
+            message: "Alumne no trobat"
+        });
         await alumno.destroy();
 
         req.session.flash = {
