@@ -10,11 +10,11 @@ router.use(authPage);
 router.get("/", controller.getAll);
 
 // GET /ufs/nuevo
-router.get("/nuevo", controller.getNuevo);
+router.get("/nuevo", controller.renderNewUf);
 
 // POST /ufs
-router.post("/", controller.postCrear);
+router.post("/", controller.createUf);
 router.get("/:id", controller.getById);
-router.delete("/:id", controller.removeUf);
+router.delete("/:id", controller.deleteUf);
 
 module.exports = router;
