@@ -12,12 +12,11 @@ const { loadResource } = require("../middlewares/loadResource.js");
 router.use(authPage);
 
 // Ruta para buscar alumnos por nombre o apellido
-router.get("/buscar", controller.buscarAlumno);
-
+router.get("/buscar", controller.searchAlumno);
 
 router.get("/", controller.getAll);
-router.get("/nuevo", controller.createFormPrint);
-router.post("/", controller.newAlumno);
+router.get("/nuevo", controller.renderNewAlumno);
+router.post("/", controller.createAlumno);
 router.get("/:id",
     loadResource(Alumno, { redirectTo: "/alumnos", include: [Curso] }),
     controller.getById
@@ -28,7 +27,7 @@ router.put("/:id",
 );
 router.delete("/:id",
     loadResource(Alumno),
-    controller.removeAlumno
+    controller.deleteAlumno
 );
 
 module.exports = router;

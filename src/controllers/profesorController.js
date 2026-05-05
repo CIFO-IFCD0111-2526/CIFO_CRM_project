@@ -6,7 +6,7 @@ const { Profesor, Curso } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
 /** GET /profesores — listar todos */
-const listarProfesores = async (req, res, next) => {
+const getAll = async (req, res, next) => {
     try {
         const profesores = await Profesor.findAll({
             include: [{
@@ -30,7 +30,7 @@ const listarProfesores = async (req, res, next) => {
 };
 
 /** GET /profesores/nuevo — formulari alta */
-const mostrarFormCrear = (req, res) => {
+const renderNewProfesor = (req, res) => {
     res.render("profesor-form", {
         titulo: "Nou professor",
         usuario: req.session.usuario,
@@ -42,7 +42,7 @@ const mostrarFormCrear = (req, res) => {
 };
 
 /** POST /profesores — crear professor */
-const crearProfesor = async (req, res, next) => {
+const createProfesor = async (req, res, next) => {
     const { nombre, apellidos, telefono, email } = req.body;
 
     if (!nombre || !apellidos || !email) {
@@ -85,8 +85,7 @@ const getById = (req, res) => {
     });
 };
 
-/** GET /profesores/:id/editar — detall/editar professor */
-const mostrarProfesorEditar = (req, res) => {
+const getEditForm = (req, res) => {
     const profesor = req.profesor;
     res.render("profesor-form", {
         titulo: `Editar ${profesor.nombre} ${profesor.apellidos}`,
@@ -100,7 +99,7 @@ const mostrarProfesorEditar = (req, res) => {
 };
 
 /** PUT /profesores/:id — editar professor */
-const editarProfesor = async (req, res, next) => {
+const updateProfesor = async (req, res, next) => {
     try {
         const profesor = req.profesor;
         const { nombre, apellidos, telefono, email } = req.body;
@@ -133,15 +132,7 @@ const editarProfesor = async (req, res, next) => {
 /** DELETE /profesores/:id — eliminar professor */
 const deleteProfesor = async (req, res, next) => {
     try {
-        const profesor = await Profesor.findByPk(req.params.id);
-
-        if (!profesor) {
-            return res.status(404).json({
-                ok: false,
-                message: "Professor no trobat",
-            });
-        }
-
+        const profesor = req.profesor;
         await profesor.destroy();
 
         req.session.flash = {
@@ -160,4 +151,4 @@ const deleteProfesor = async (req, res, next) => {
     }
 };
 
-module.exports = { listarProfesores, mostrarFormCrear, crearProfesor, getById, mostrarProfesorEditar, editarProfesor, deleteProfesor };
+module.exports = { getAll, renderNewProfesor, createProfesor, getById, getEditForm, updateProfesor, deleteProfesor };

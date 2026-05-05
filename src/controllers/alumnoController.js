@@ -9,7 +9,7 @@ const getAll = async (req, res, next) => {
             order: [["apellidos", "ASC"]],
         });
         res.render("alumnos", {
-            titulo: "Mostrar Alumnos",
+            titulo: "Mostrar Alumnes",
             usuario: req.session.usuario,
             css: "alumnos.css",
             js: "alumnos.js",
@@ -23,7 +23,7 @@ const getAll = async (req, res, next) => {
 
 // GET /alumnos/nuevo
 
-const createFormPrint = async (req, res) => {
+const renderNewAlumno = async (req, res) => {
     res.render("alumno-form", {
         titulo: "Nou alumne",
         usuario: req.session.usuario,
@@ -35,7 +35,7 @@ const createFormPrint = async (req, res) => {
 
 // POST /alumnos
 
-const newAlumno = async (req, res, next) => {
+const createAlumno = async (req, res, next) => {
     const { nombre, apellidos, dni, telefono, email, nivel_estudios, tipo, derechos_imagen, cesion_material, comentarios } = req.body;
 
     if (!nombre || !apellidos || !dni || !tipo) {
@@ -79,16 +79,16 @@ const newAlumno = async (req, res, next) => {
 
 const getById = (req, res) => {
     res.render("alumno-detalle", {
-        alumno: req.alumno,
-        titulo: "Detall d'alumne",
+        titulo: "Busqueda d'alumne per ID",
         usuario: req.session.usuario,
         css: "alumnos.css",
-        js: "alumnos.js"
+        js: "alumnos.js",
+        alumno: req.alumno
     });
 };
 
 //DELETE/alumnos/:id
-const removeAlumno = async (req, res, next) => {
+const deleteAlumno = async (req, res, next) => {
     try {
         const alumno = req.alumno;
         await alumno.destroy();
@@ -106,7 +106,7 @@ const removeAlumno = async (req, res, next) => {
     }
 };
 
-const buscarAlumno = async (req, res, next) => {
+const searchAlumno = async (req, res, next) => {
     const q = (req.query.q || "").trim();
     const tipo = (req.query.tipo || "").trim().toLowerCase();
 
@@ -194,4 +194,4 @@ const updateAlumno = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, createFormPrint, newAlumno, getById, removeAlumno, buscarAlumno, updateAlumno };
+module.exports = { getAll, renderNewAlumno, createAlumno, getById, deleteAlumno, searchAlumno, updateAlumno };

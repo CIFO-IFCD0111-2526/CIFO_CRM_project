@@ -12,9 +12,9 @@ const { Profesor, Curso } = require("../models");
 
 router.use(authPage);
 
-router.get("/nuevo", profesorController.mostrarFormCrear);
-router.get("/", profesorController.listarProfesores);
-router.post("/", profesorController.crearProfesor);
+router.get("/nuevo", profesorController.renderNewProfesor);
+router.get("/", profesorController.getAll);
+router.post("/", profesorController.createProfesor);
 router.get("/:id",
     loadResource(Profesor, {
         redirectTo: "/profesores",
@@ -24,11 +24,11 @@ router.get("/:id",
 );
 router.get("/:id/editar",
     loadResource(Profesor, { redirectTo: "/profesores" }),
-    profesorController.mostrarProfesorEditar
+    profesorController.getEditForm
 );
 router.put("/:id",
     loadResource(Profesor, { redirectTo: "/profesores" }),
-    profesorController.editarProfesor
+    profesorController.updateProfesor
 );
 router.delete("/:id",
     loadResource(Profesor),

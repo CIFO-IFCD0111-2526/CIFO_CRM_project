@@ -19,7 +19,7 @@ const getAll = async (req, res, next) => {
 /** GET /cursos/:id */
 const getById = (req, res) => {
     res.render("curso-detalle", {
-        titulo: "Busqueda de cursos por ID",
+        titulo: "Busqueda de cursos per ID",
         usuario: req.session.usuario,
         css: "cursos.css",
         js: "cursos.js",
@@ -28,7 +28,7 @@ const getById = (req, res) => {
 };
 
 /** Render del formulario de creación de cursos */
-const renderNuevoCurso = (req, res) => {
+const renderNewCurso = (req, res) => {
     res.render("curso-form", {
         titulo: "Nou curs",
         usuario: req.session.usuario,
@@ -40,18 +40,18 @@ const renderNuevoCurso = (req, res) => {
 
 /** Crear curso (POST) */
 
-const crearCurso = async (req, res, next) => {
+const createCurso = async (req, res, next) => {
     try {
         const { codigo, nombre, fecha_inicio, fecha_fin, requisitos } = req.body;
 
         let errores = [];
 
-        if (!codigo) errores.push('El código es obligatorio');
-        if (!nombre) errores.push('El nombre es obligatorio');
+        if (!codigo) errores.push('El codi és obligatori');
+        if (!nombre) errores.push('El nom és obligatori');
 
         // Validar código único
         const existe = await Curso.findOne({ where: { codigo } });
-        if (existe) errores.push('El código ya existe');
+        if (existe) errores.push('El codi ja existeix');
 
         if (errores.length > 0) {
             return res.status(400).json({ errores });
@@ -82,7 +82,7 @@ const crearCurso = async (req, res, next) => {
 };
 
 // DELETE /cursos/:id
-const eliminarCurso = async (req, res, next) => {
+const deleteCurso = async (req, res, next) => {
     try {
         const curso = req.curso;
         await curso.destroy();
@@ -99,4 +99,4 @@ const eliminarCurso = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, getById, crearCurso, renderNuevoCurso, eliminarCurso };
+module.exports = { getAll, getById, createCurso, renderNewCurso, deleteCurso };

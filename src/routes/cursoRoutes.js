@@ -10,8 +10,8 @@ const router = Router();
 // Rutas de cursos, todas requieren autenticacion
 router.use(authPage);
 
-router.get('/nuevo', controller.renderNuevoCurso);
-router.post('/', controller.crearCurso);
+router.get('/nuevo', controller.renderNewCurso);
+router.post('/', controller.createCurso);
 router.get("/", controller.getAll);
 router.get("/:id",
     loadResource(Curso, { redirectTo: "/cursos", include: [Uf, Profesor, Alumno] }),
@@ -19,7 +19,7 @@ router.get("/:id",
 );
 router.delete("/:id",
     loadResource(Curso, { redirectTo: "/cursos" }),
-    controller.eliminarCurso
+    controller.deleteCurso
 );
 
 module.exports = router;
