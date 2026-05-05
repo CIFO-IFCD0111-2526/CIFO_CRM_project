@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const { authPage } = require("../middlewares/auth.js");
 const controller = require("../controllers/ufController");
+const { loadResource } = require("../middlewares/loadResource.js");
+const { Uf, Curso } = require("../models");
 
 const router = Router();
 
@@ -10,11 +12,17 @@ router.use(authPage);
 router.get("/", controller.getAll);
 
 // GET /ufs/nuevo
-router.get("/nuevo", controller.getNuevo);
+router.get("/nuevo", controller.renderNewUf);
 
 // POST /ufs
-router.post("/", controller.postCrear);
-router.get("/:id", controller.getById);
-router.delete("/:id", controller.removeUf);
+router.post("/", controller.createUf);
+router.get("/:id",
+    loadResource(Uf, { redirectTo: "/ufs", include: [Curso] }),
+    controller.getById
+);
+router.delete("/:id",
+    loadResource(Uf, { redirectTo: "/ufs" }),
+    controller.deleteUf
+);
 
 module.exports = router;

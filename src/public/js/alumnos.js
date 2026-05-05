@@ -460,10 +460,10 @@ function initBuscador(input, dropdown) {
       return;
     }
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => buscarAlumnos(query), 250);
+    debounceTimer = setTimeout(() => searchAlumnos(query), 250);
   });
 
-  async function buscarAlumnos(query) {
+  async function searchAlumnos(query) {
     try {
       const res = await fetch(`/alumnos/buscar?q=${encodeURIComponent(query)}`, {
         credentials: "include",
