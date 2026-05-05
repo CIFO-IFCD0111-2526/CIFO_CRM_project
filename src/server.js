@@ -104,10 +104,10 @@ async function startServer() {
   try {
     await ensureDatabaseExists();
     await sequelize.authenticate();
-    console.log("Conexión a MySQL OK.");
+    console.log("Conexió a MySQL OK.");
 
     await sequelize.sync();
-    console.log("Modelos sincronizados.");
+    console.log("Models sincronizats.");
     await seeder.seedAlumnos();
     await seeder.seedCursos();
     await seeder.seedUfs();
@@ -116,7 +116,7 @@ async function startServer() {
       console.log(`Servidor en http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error("Error al iniciar:", error.message);
+    console.error("Error en iniciar:", error.message);
     process.exit(1);
   }
 }

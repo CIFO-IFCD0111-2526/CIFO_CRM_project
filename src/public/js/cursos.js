@@ -62,7 +62,7 @@ document.addEventListener("click", async (e) => {
         title: "Confirmar eliminació",
         message: `Segur que vols eliminar ${nombre}? Aquesta acció no es pot desfer.`,
         confirmText: "Eliminar",
-        cancelText: "Cancelar",
+        cancelText: "Cancel·lar",
     });
 
     if (!ok) return;

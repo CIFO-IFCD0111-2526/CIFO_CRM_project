@@ -14,8 +14,8 @@ const Uf = sequelize.define(
             allowNull: false,
             unique: true,
             validate: {
-                notEmpty: { msg: "El código no puede estar vacío" },
-                len: { args: [2, 32], msg: "El código debe tener entre 2 y 32 caracteres"
+                notEmpty: { msg: "El codi no pot estar buit" },
+                len: { args: [2, 32], msg: "El codi ha de tenir entre 2 i 32 caràcters"
                 },
             }
         },
@@ -23,8 +23,8 @@ const Uf = sequelize.define(
             type: DataTypes.STRING(100),
             allowNull: false,
             validate: {
-                notEmpty: { msg: "El nombre no puede estar vacío" },
-                len: { args: [2, 100], msg: "El nombre debe tener entre 2 y 100 caracteres" },
+                notEmpty: { msg: "El nom no pot estar buit" },
+                len: { args: [2, 100], msg: "El nom ha de tenir entre 2 i 100 caràcters" },
             },
         },
         horas: {

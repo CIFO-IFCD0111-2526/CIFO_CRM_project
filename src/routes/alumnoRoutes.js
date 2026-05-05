@@ -12,7 +12,7 @@ const { loadResource } = require("../middlewares/loadResource.js");
 router.use(authPage);
 
 // Ruta para buscar alumnos por nombre o apellido
-router.get("/buscar", controller.buscarAlumno);
+router.get("/buscar", controller.searchAlumno);
 
 
 router.get("/", controller.getAll);

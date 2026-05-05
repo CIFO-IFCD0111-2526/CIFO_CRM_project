@@ -9,11 +9,11 @@ async function seedAlumnos() {
     const total = await Alumno.count();
 
     if (total > 0) {
-      console.log("Los alumnos ya existen. Seed cancelado.");
+      console.log("Els alumnes ja existeixen. Seed cancel·lat.");
       return;
     }
 
-    console.log("Insertando alumnos de prueba...");
+    console.log("Inserint alumnes de prova...");
 
     const alumnos = [
       {
@@ -112,10 +112,10 @@ async function seedAlumnos() {
 
     await Alumno.bulkCreate(alumnos);
 
-    console.log("10 alumnos insertados correctamente");
+    console.log("10 alumnes inserits correctament");
 
   } catch (error) {
-    console.error("Error insertando alumnos:", error.message);
+    console.error("Error inserint alumnes:", error.message);
   }
 }
 
@@ -125,11 +125,11 @@ async function seedCursos() {
     const total = await Curso.count();
 
     if (total > 0) {
-      console.log("Los cursos ya existen. Seed cancelado.");
+      console.log("Els cursos ja existeixen. Seed cancel·lat.");
       return;
     }
 
-    console.log("Insertando cursos de prueba...");
+    console.log("Inserint cursos de prova...");
 
     const cursos = [
       {
@@ -171,10 +171,10 @@ async function seedCursos() {
 
     await Curso.bulkCreate(cursos);
 
-    console.log("5 cursos insertados correctamente");
+    console.log("5 cursos inserits correctament");
 
   } catch (error) {
-    console.error("Error insertando cursos:", error.message);
+    console.error("Error inserint cursos:", error.message);
   }
 }
 
@@ -182,10 +182,10 @@ async function seedUfs() {
   try {
     const total = await Uf.count();
     if (total > 0) {
-      console.log("Las UFs ya existen. Seed cancelado.");
+      console.log("Les UFs ja existeixen. Seed cancel·lat.");
       return;
     }
-    console.log("Insertando UFs de prueba...");
+    console.log("Inserint UFs de prova...");
     const ufs = [
       { codigo: "UF001", nombre: "HTML i CSS", horas: 40 },
       { codigo: "UF002", nombre: "JavaScript bàsic", horas: 50 },
@@ -204,9 +204,9 @@ async function seedUfs() {
       { codigo: "UF015", nombre: "Projecte final", horas: 80 }
     ];
     await Uf.bulkCreate(ufs);
-    console.log("15 UFs insertadas correctamente");
+    console.log("15 UFs inserides correctament");
   } catch (error){
-    console.error("Error insertando UFs",error.message);
+    console.error("Error inserint UFs",error.message);
   }
 }
 async function seedProfesores() { // 2. Nueva función de seed

@@ -12,7 +12,7 @@ router.use(authPage);
 router.get("/", controller.getAll);
 
 // GET /ufs/nuevo
-router.get("/nuevo", controller.getNuevo);
+router.get("/nuevo", controller.renderNewUf);
 
 // POST /ufs
 router.post("/", controller.postCrear);

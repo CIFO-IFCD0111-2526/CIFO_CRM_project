@@ -6,7 +6,7 @@ const { Profesor, Curso } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
 /** GET /profesores — listar todos */
-const listarProfesores = async (req, res, next) => {
+const getAll = async (req, res, next) => {
     try {
         const profesores = await Profesor.findAll({
             include: [{
@@ -30,7 +30,7 @@ const listarProfesores = async (req, res, next) => {
 };
 
 /** GET /profesores/nuevo — formulari alta */
-const mostrarFormCrear = (req, res) => {
+const renderNewProfesor = (req, res) => {
     res.render("profesor-form", {
         titulo: "Nou professor",
         usuario: req.session.usuario,
@@ -42,7 +42,7 @@ const mostrarFormCrear = (req, res) => {
 };
 
 /** POST /profesores — crear professor */
-const crearProfesor = async (req, res, next) => {
+const createProfesor = async (req, res, next) => {
     const { nombre, apellidos, telefono, email } = req.body;
 
     if (!nombre || !apellidos || !email) {
@@ -87,7 +87,7 @@ const getById = (req, res) => {
 };
 
 /** GET /profesores/:id/editar — detall/editar professor */
-const mostrarProfesorEditar = async (req, res, next) => {
+const getEditForm = async (req, res, next) => {
     try {
         const profesor = await Profesor.findByPk(req.params.id);
         if (!profesor) {
@@ -113,7 +113,7 @@ const mostrarProfesorEditar = async (req, res, next) => {
 };
 
 /** PUT /profesores/:id — editar professor */
-const editarProfesor = async (req, res, next) => {
+const updateProfesor = async (req, res, next) => {
     try {
         const profesor = req.profesor;
         const { nombre, apellidos, telefono, email } = req.body;
@@ -175,5 +175,4 @@ const deleteProfesor = async (req, res, next) => {
     }
 };
 
-module.exports = { listarProfesores, mostrarFormCrear, crearProfesor, getById, mostrarProfesorEditar, editarProfesor , deleteProfesor  };
-
+module.exports = { getAll, renderNewProfesor, createProfesor, getById, getEditForm, updateProfesor };
