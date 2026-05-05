@@ -3,7 +3,6 @@
 // -------------------------------------------------------
 
 const { Profesor, Curso } = require("../models");
-const { sequelize } = require("../config/database");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
 /** GET /profesores — listar todos */
@@ -98,35 +97,32 @@ const getById = async (req, res, next) => {
 };
 
 const deleteProfesor = async (req, res, next) => {
-  const { id } = req.params;
+    try {
+        const profesor = await Profesor.findByPk(req.params.id);
 
-  try {
-    const profesor = await Profesor.findByPk(id);
+        if (!profesor) {
+            return res.status(404).json({
+                ok: false,
+                message: "Professor no trobat",
+            });
+        }
 
-    if (!profesor) {
-      return res.status(404).json({
-        ok: false,
-        message: "Professor no trobat",
-      });
+        await profesor.destroy();
+
+        req.session.flash = {
+            type: "success",
+            title: "Professor eliminat",
+            message: `El professor ${profesor.nombre} ${profesor.apellidos} s'ha eliminat correctament.`,
+            keepModal: true,
+        };
+
+        return res.json({
+            ok: true,
+            redirect: "/profesores",
+        });
+    } catch (error) {
+        return handleControllerError(error, res, next);
     }
-
-    
-    /*await CursoProfesor.destroy({
-      where: { profesor_id: id },
-    });*/
-
-    
-    await profesor.destroy();
-
-    return res.json({
-      ok: true,
-      redirect: "/profesores",
-    });
-
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ ok: false });
-  }
 };
 
 
