@@ -5,6 +5,9 @@ const controller = require("../controllers/alumnoController");
 
 const router = Router();
 
+const { Alumno, Curso } = require("../models");
+const { loadResource } = require("../middlewares/loadResource.js");
+
 // Todas las rutas de alumnos requieren autenticación
 router.use(authPage);
 
@@ -15,7 +18,17 @@ router.get("/buscar", controller.buscarAlumno);
 router.get("/", controller.getAll);
 router.get("/nuevo", controller.createFormPrint);
 router.post("/", controller.newAlumno);
-router.get("/:id", controller.getById);
-router.delete("/:id",controller.removeAlumno);
-router.put("/:id", controller.updateAlumno);
+router.get("/:id",
+    loadResource(Alumno, { redirectTo: "/alumnos", include: [Curso] }),
+    controller.getById
+);
+router.put("/:id",
+    loadResource(Alumno, { notFoundMessage: "L'alumne no existeix." }),
+    controller.updateAlumno
+);
+router.delete("/:id",
+    loadResource(Alumno),
+    controller.removeAlumno
+);
+
 module.exports = router;
