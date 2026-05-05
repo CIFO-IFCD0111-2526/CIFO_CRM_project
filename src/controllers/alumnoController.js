@@ -110,7 +110,7 @@ const deleteAlumno = async (req, res, next) => {
         const alumno = await Alumno.findByPk(req.params.id);
         if (!alumno) return res.status(404).json({
             ok: false,
-            message: "Alumno no trobat"
+            message: "Alumne no trobat"
         });
         await alumno.destroy();
 

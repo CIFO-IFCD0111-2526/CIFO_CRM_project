@@ -1,0 +1,299 @@
+@import url('forms.css');
+
+main {
+  min-width: 0;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2rem 2rem 1.5rem;
+  flex-wrap: wrap;
+}
+
+.page-title {
+  font-family: var(--fuente-titulos);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-texto-principal);
+  margin-bottom: 0.25rem;
+}
+
+.page-subtitle {
+  color: var(--color-texto-etiquetas);
+  font-size: 0.9rem;
+}
+
+.tabla-container {
+  margin: 0 2rem 2rem;
+  max-width: calc(100% - 4rem);
+}
+
+#profesoresTable {
+  min-width: 960px;
+}
+
+.col-fecha {
+  white-space: nowrap;
+  color: var(--color-texto-etiquetas);
+  font-size: 13px;
+}
+
+#profesoresTable .profesor-nombre {
+  color: var(--color-texto-principal);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#profesoresTable .profesor-nombre:hover {
+  color: var(--color-primario);
+}
+
+.col-accions {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.acciones {
+  display: inline-flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.8rem;
+  font-size: 12px;
+}
+
+.empty-state {
+  margin: 3rem 2rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  border: 1px dashed var(--color-borde);
+  border-radius: var(--radio-grande);
+  color: var(--color-texto-etiquetas);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-texto-etiquetas);
+  font-size: 0.85rem;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: var(--color-primario);
+}
+
+.detalle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 0 2rem 2rem;
+}
+
+.detalle-full {
+  grid-column: 1 / -1;
+}
+
+.detalle-card {
+  background-color: var(--color-fondo-pagina);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-grande);
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.detalle-card-title {
+  font-family: var(--fuente-titulos);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-texto-principal);
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.detalle-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 1.5rem;
+}
+
+.detalle-item dt {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-texto-etiquetas);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+  font-family: var(--fuente-titulos);
+}
+
+.detalle-item dd {
+  font-size: 14px;
+  color: var(--color-texto-principal);
+}
+
+.detalle-text {
+  font-size: 14px;
+  color: var(--color-texto-principal);
+  white-space: pre-wrap;
+}
+
+.detalle-cursos {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.detalle-cursos li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-fondo-tarjeta);
+  border-radius: var(--radio-pequeno);
+}
+
+.curso-codigo {
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--color-primario);
+  background-color: var(--color-primario-suave);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radio-pequeno);
+}
+
+.curso-nombre {
+  font-size: 14px;
+  color: var(--color-texto-principal);
+}
+
+.detalle-empty {
+  font-size: 14px;
+  color: var(--color-texto-etiquetas);
+  font-style: italic;
+}
+
+.newButton {
+  background-color: var(--color-fondo-sidebar);
+  color: var(--color-texto-nav);
+  border: none;
+  border-radius: var(--radio-pequeno);
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+@media (max-width: 640px) {
+  .page-header,
+  .tabla-container,
+  .empty-state,
+  .detalle-grid {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .page-header {
+    padding: 1.5rem 1rem 1rem;
+  }
+
+  .detalle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detalle-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+#btnGuardar {
+    background-color: var(--color-primario);
+    color: var(--color-texto-blanco);
+}
+
+#btnCancelar {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+#busquedaProfesor {
+  width: 50%;
+  padding: 8px !important;
+  font-size: 14px;
+  color: var(--color-texto-principal);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+}
+
+.dropdown {
+  position: absolute;
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  border-radius: var(--radio-pequeno);
+}
+
+.dropdown.hidden {
+  display: none;
+}
+
+.dropdown .item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown .item:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown .empty {
+  color: #888;
+  cursor: default;
+}
+
+.buscador-wrapper {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 0 2rem 1rem;
+  max-width: calc(100% - 4rem);
+}
+
+.buscador-alumnos {
+  flex: 1;
+}
+
+#dropdownResultados {
+  flex: 1;
+  position: absolute;
+  left: 25%;
+  min-height: 42px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background: white;
+  padding: 4px 0;
+}

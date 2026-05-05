@@ -1,6 +1,7 @@
 const Alumno = require("../models/Alumno.js");
 const Curso = require("../models/Curso.js");
 const Uf = require("../models/Uf.js");
+const Profesor = require("../models/Profesor.js");
 
 async function seedAlumnos() {
   try {
@@ -208,5 +209,52 @@ async function seedUfs() {
     console.error("Error inserint UFs",error.message);
   }
 }
+async function seedProfesores() { // 2. Nueva función de seed
+  try {
+    const total = await Profesor.count();
 
-module.exports = { seedAlumnos, seedCursos,seedUfs };
+    if (total > 0) {
+      console.log("Los profesores ya existen. Seed cancelado.");
+      return;
+    }
+
+    console.log("Insertando profesores de prueba...");
+
+    const profesores = [
+      {
+        nombre: "Alan",
+        apellidos: "Turing",
+        email: "alan.turing@test.com",
+      },
+      {
+        nombre: "Ada",
+        apellidos: "Lovelace",
+        email: "ada.lovelace@test.com",
+      },
+      {
+        nombre: "Margaret",
+        apellidos: "Hamilton",
+        email: "m.hamilton@test.com",
+      },
+      {
+        nombre: "Grace",
+        apellidos: "Hopper",
+        email: "grace.hopper@test.com",
+      },
+      {
+        nombre: "Linus",
+        apellidos: "Torvalds",
+        email: "linus.t.linux@test.com",
+      }
+    ];
+
+    await Profesor.bulkCreate(profesores);
+    console.log("5 profesores insertados correctamente");
+
+  } catch (error) {
+    console.error("Error insertando profesores:", error.message);
+  }
+}
+
+// 3. Exportar la nueva función
+module.exports = { seedAlumnos, seedCursos, seedUfs, seedProfesores };
