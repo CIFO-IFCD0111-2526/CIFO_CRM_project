@@ -1,0 +1,122 @@
+@import url('forms.css');
+
+main {
+    min-width: 0;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 2rem 2rem 1.5rem;
+    flex-wrap: wrap;
+}
+
+.page-title {
+    font-family: var(--fuente-titulos);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-texto-principal);
+    margin-bottom: 0.25rem;
+}
+
+.page-subtitle {
+    color: var(--color-texto-etiquetas);
+    font-size: 0.9rem;
+}
+
+.tabla-container {
+    margin: 0 2rem 2rem;
+    max-width: calc(100% - 4rem);
+}
+
+.col-fecha {
+    white-space: nowrap;
+    color: var(--color-texto-etiquetas);
+    font-size: 13px;
+}
+
+.col-accions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.acciones {
+    display: inline-flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.btn-sm {
+    padding: 0.35rem 0.8rem;
+    font-size: 12px;
+}
+
+.empty-state {
+    margin: 3rem 2rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    border: 1px dashed var(--color-borde);
+    border-radius: var(--radio-grande);
+    color: var(--color-texto-etiquetas);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-texto-etiquetas);
+    font-size: 0.85rem;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: var(--color-primario);
+}
+
+.hidden {
+    display: none;
+}
+
+#btnGuardar {
+    background-color: var(--color-primario);
+    color: var(--color-texto-blanco);
+}
+
+#btnCancelar {
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+}
+
+@media (max-width: 640px) {
+
+    /* layout */
+    .page-header,
+    .tabla-container,
+    .empty-state,
+    .detalle-grid {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .page-header {
+        padding: 1.5rem 1rem 1rem;
+    }
+
+    /* detalle */
+    .detalle-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detalle-list {
+        grid-template-columns: 1fr;
+    }
+}
