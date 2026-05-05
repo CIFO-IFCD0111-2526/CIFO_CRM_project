@@ -22,7 +22,7 @@ router.delete("/:id",
     controller.eliminarCurso
 );
 ////////////////////////////////////////////////////// AFEGIM ENDPOINT PER EDITAR ( put/update )
-router.put("/:id/editar", controller.editarCurso);
+router.put("/:id", controller.updateCurso);
 
 ////////////////////////////////////////////////////// AFEGIM ENDPOINT PER EDITAR ( put/update )
 router.put("/:id", controller.updateCurso);
