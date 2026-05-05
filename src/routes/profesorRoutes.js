@@ -14,6 +14,6 @@ router.post("/", authPage, profesorController.crearProfesor);
 router.get("/:id", authPage, profesorController.getById);
 router.get("/:id/editar", authPage, profesorController.mostrarProfesorEditar);
 router.put("/:id", authPage, profesorController.editarProfesor);
+router.delete("/:id", authPage, profesorController.deleteProfesor);
 
 module.exports = router;
-
