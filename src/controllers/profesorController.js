@@ -6,7 +6,7 @@ const { Profesor, Curso } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
 /** GET /profesores — listar todos */
-const listarProfesores = async (req, res, next) => {
+const getAll = async (req, res, next) => {
     try {
         const profesores = await Profesor.findAll({
             include: [{
@@ -162,4 +162,4 @@ const deleteProfesor = async (req, res, next) => {
 };
 
 
-module.exports = { listarProfesores, mostrarFormCrear, crearProfesor, getById, deleteProfesor };
+module.exports = { getAll, renderNewProfesor, createProfesor, getById, getEditForm, updateProfesor , deleteProfesor};

@@ -31,7 +31,7 @@ const getById = (req, res) => {
     });
 };
 // GET /ufs/nuevo
-const getNuevo = (req, res) => {
+const renderNewUf = (req, res) => {
     res.render("uf-form", {
         titulo: "Nova UF",
         usuario: req.session.usuario,
@@ -114,7 +114,7 @@ const putActualizar = async (req, res) => {
 
 
 // POST /ufs
-const postCrear = async (req, res, next) => {
+const createUf = async (req, res, next) => {
     const { codigo, nombre, horas } = req.body;
     const errores = {};
 
@@ -149,7 +149,7 @@ const postCrear = async (req, res, next) => {
     }
 };
 //DELETE/ufs/:id
-const removeUf = async (req, res, next) => {
+const deleteUf = async (req, res, next) => {
     try {
         const uf = await Uf.findByPk(req.params.id);
         if (!uf) return res.status(404).json({
@@ -168,4 +168,4 @@ const removeUf = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, getById,getNuevo, getEditar, putActualizar, postCrear, removeUf };
+module.exports = { getAll, getById, renderNewUf, createUf, deleteUf };
