@@ -99,6 +99,7 @@ async function startServer() {
     await seeder.seedAlumnos();
     await seeder.seedCursos();
     await seeder.seedUfs();
+    await seeder.seedProfesores();
     server.listen(PORT, () => {
       console.log(`Servidor en http://localhost:${PORT}`);
     });
