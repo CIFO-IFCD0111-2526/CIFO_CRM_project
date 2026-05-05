@@ -10,9 +10,11 @@ const router = Router();
 router.use(authPage);
 
 router.get("/", controller.getAll);
-router.get("/nuevo", controller.getNuevo);
-router.get("/:id/editar", controller.getEditar);
-router.put("/:id", controller.putActualizar);
+
+// GET /ufs/nuevo
+router.get("/nuevo", controller.renderNewUf);
+
+// POST /ufs
 router.post("/", controller.postCrear);
 router.get("/:id",
     loadResource(Uf, { redirectTo: "/ufs", include: [Curso] }),

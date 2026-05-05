@@ -168,7 +168,7 @@ const deleteProfesor = async (req, res, next) => {
 };
 
 /** GET /profesores/:id/editar — detall/editar professor */
-const mostrarProfesorEditar = async (req, res, next) => {
+const getEditForm = async (req, res, next) => {
     try {
         const profesor = await Profesor.findByPk(req.params.id);
         if (!profesor) {
@@ -189,7 +189,7 @@ const mostrarProfesorEditar = async (req, res, next) => {
 };
 
 /** PUT /profesores/:id — editar professor */
-const editarProfesor = async (req, res, next) => {
+const updateProfesor = async (req, res, next) => {
     try {
         const profesor = req.profesor;
         const { nombre, apellidos, telefono, email } = req.body;
@@ -251,5 +251,4 @@ const deleteProfesor = async (req, res, next) => {
     }
 };
 
-module.exports = { listarProfesores, mostrarFormCrear, crearProfesor, getById, mostrarProfesorEditar, editarProfesor , deleteProfesor  };
-
+module.exports = { getAll, renderNewProfesor, createProfesor, getById, getEditForm, updateProfesor };
