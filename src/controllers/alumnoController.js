@@ -77,41 +77,20 @@ const createAlumno = async (req, res, next) => {
 
 // GET /alumnos/:id
 
-const getById = async (req, res, next) => {
-    try {
-        const alumno = await Alumno.findByPk(req.params.id, {
-            include: [Curso],
-        });
-
-        if (!alumno) {
-            req.session.flash = {
-                type: "error",
-                title: "No trobat",
-                message: "L'alumne no existeix.",
-            };
-            return res.redirect("/alumnos");
-        }
-
-        res.render("alumno-detalle", {
-            titulo: "Busqueda d'alumne per ID",
-            usuario: req.session.usuario,
-            css: "alumnos.css",
-            js: "alumnos.js",
-            alumno
-        });
-    } catch (error) {
-        return handleControllerError(error, res, next);
-    }
+const getById = (req, res) => {
+    res.render("alumno-detalle", {
+        titulo: "Busqueda d'alumne per ID",
+        usuario: req.session.usuario,
+        css: "alumnos.css",
+        js: "alumnos.js",
+        alumno: req.alumno
+    });
 };
 
 //DELETE/alumnos/:id
 const deleteAlumno = async (req, res, next) => {
     try {
-        const alumno = await Alumno.findByPk(req.params.id);
-        if (!alumno) return res.status(404).json({
-            ok: false,
-            message: "Alumne no trobat"
-        });
+        const alumno = req.alumno;
         await alumno.destroy();
 
         req.session.flash = {
@@ -121,11 +100,7 @@ const deleteAlumno = async (req, res, next) => {
             keepModal: true,
         };
 
-        return res.json({
-            ok: true,
-            /*message: "Alumne eliminat correctament",*/
-            redirect: "/alumnos"
-        });
+        return res.json({ ok: true, redirect: "/alumnos" });
     } catch (error) {
         return handleControllerError(error, res, next);
     }
@@ -174,22 +149,11 @@ const searchAlumno = async (req, res, next) => {
 
 const updateAlumno = async (req, res, next) => {
     try {
-        const alumno = await Alumno.findByPk(req.params.id);
-        if (!alumno) {
-            return res.status(404).json({ ok: false, mensaje: "Alumne no trobat" });
-        }
+        const alumno = req.alumno;
 
         const {
-            nombre,
-            apellidos,
-            dni,
-            telefono,
-            email,
-            nivel_estudios,
-            tipo,
-            derechos_imagen,
-            cesion_material,
-            comentarios,
+            nombre, apellidos, dni, telefono, email,
+            nivel_estudios, tipo, derechos_imagen, cesion_material, comentarios,
         } = req.body;
 
         if (!nombre || !apellidos || !dni || !tipo) {
