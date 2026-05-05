@@ -17,34 +17,14 @@ const getAll = async (req, res, next) => {
 };
 
 /** GET /cursos/:id */
-const getById = async (req, res, next) => {
-    try {
-        const curso = await Curso.findByPk(req.params.id, {
-            include: [
-                Uf,
-                Profesor,
-                Alumno
-            ],
-        });
-        if (!curso) {
-            req.session.flash = {
-                type: "error",
-                title: "No trobat",
-                message: "El curs no existeix.",
-            };
-            return res.redirect("/cursos");
-        }
-
-        res.render("curso-detalle", {
-            titulo: "Busqueda de cursos per ID",
-            usuario: req.session.usuario,
-            css: "cursos.css",
-            js: "cursos.js",
-            curso
-        });
-    } catch (error) {
-        return handleControllerError(error, res, next);
-    }
+const getById = (req, res) => {
+    res.render("curso-detalle", {
+        titulo: "Busqueda de cursos por ID",
+        usuario: req.session.usuario,
+        css: "cursos.css",
+        js: "cursos.js",
+        curso: req.curso
+    });
 };
 
 /** Render del formulario de creación de cursos */
