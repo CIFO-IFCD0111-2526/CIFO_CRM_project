@@ -117,7 +117,6 @@ const editarProfesor = async (req, res, next) => {
                 return res.status(400).json({ ok: false, error: "Ja existeix un professor amb aquest email." });
             }
         }
-
         await profesor.update({ nombre, apellidos, telefono: telefono || null, email });
 
         req.session.flash = {
@@ -131,4 +130,34 @@ const editarProfesor = async (req, res, next) => {
     }
 };
 
-module.exports = { listarProfesores, mostrarFormCrear, crearProfesor, getById, mostrarProfesorEditar, editarProfesor };
+/** DELETE /profesores/:id — eliminar professor */
+const deleteProfesor = async (req, res, next) => {
+    try {
+        const profesor = await Profesor.findByPk(req.params.id);
+
+        if (!profesor) {
+            return res.status(404).json({
+                ok: false,
+                message: "Professor no trobat",
+            });
+        }
+
+        await profesor.destroy();
+
+        req.session.flash = {
+            type: "success",
+            title: "Professor eliminat",
+            message: `El professor ${profesor.nombre} ${profesor.apellidos} s'ha eliminat correctament.`,
+            keepModal: true,
+        };
+
+        return res.json({
+            ok: true,
+            redirect: "/profesores",
+        });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+module.exports = { listarProfesores, mostrarFormCrear, crearProfesor, getById, mostrarProfesorEditar, editarProfesor, deleteProfesor };

@@ -30,6 +30,9 @@ router.put("/:id",
     loadResource(Profesor, { redirectTo: "/profesores" }),
     profesorController.editarProfesor
 );
+router.delete("/:id",
+    loadResource(Profesor),
+    profesorController.deleteProfesor
+);
 
 module.exports = router;
-
