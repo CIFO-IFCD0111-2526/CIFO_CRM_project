@@ -20,33 +20,15 @@ const getAll = async (req, res, next) => {
     }
 };
 // GET /ufs/:id
-
-const getById = async (req, res, next) => {
-    try {
-        const uf = await Uf.findByPk(req.params.id, {
-            include: [Curso],
-        });
-
-        if (!uf) {
-            req.session.flash = {
-                type: "error",
-                title: "No trobada",
-                message: "La UF no existeix.",
-            };
-            return res.redirect("/ufs");
-        }
-
-        res.render("uf-detalle", {
-            titulo: "Detall de UF",
-            usuario: req.session.usuario,
-            css: "ufs.css",
-            js: "ufs.js",
-            paginaActual: "ufs",
-            uf
-        });
-    } catch (error) {
-        return handleControllerError(error, res, next);
-    }
+const getById = (req, res) => {
+    res.render("uf-detalle", {
+        titulo: "Detall de UF",
+        usuario: req.session.usuario,
+        css: "ufs.css",
+        js: "ufs.js",
+        paginaActual: "ufs",
+        uf: req.uf
+    });
 };
 // GET /ufs/nuevo
 const getNuevo = (req, res) => {
@@ -99,12 +81,9 @@ const postCrear = async (req, res, next) => {
 //DELETE/ufs/:id
 const removeUf = async (req, res, next) => {
     try {
-        const uf = await Uf.findByPk(req.params.id);
-        if (!uf) return res.status(404).json({
-            ok: false,
-            message: "UF no trobada."
-        });
+        const uf = req.uf;
         await uf.destroy();
+
         req.session.flash = {
             type: "success",
             title: "UF eliminada",
