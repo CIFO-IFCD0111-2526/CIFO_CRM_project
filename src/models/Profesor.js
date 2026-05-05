@@ -18,15 +18,15 @@ const Profesor = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
       validate: {
-        notEmpty: { msg: "El nombre no puede estar vacío" },
-        len: { args: [2, 100], msg: "El nombre debe tener entre 2 y 100 caracteres" },
+        notEmpty: { msg: "El nom no pot estar buit" },
+        len: { args: [2, 100], msg: "El nom ha de tenir entre 2 i 100 caràcters" },
       },
     },
     apellidos: {
       type: DataTypes.STRING(150),
       allowNull: false,
       validate: {
-        notEmpty: { msg: "Los apellidos no pueden estar vacíos" },
+        notEmpty: { msg: "Els cognoms no poden estar buits" },
         len: { args: [2, 150], msg: "Els cognoms han de tenir entre 2 i 150 caràcters" },
       },
     },
@@ -36,17 +36,17 @@ const Profesor = sequelize.define(
       validate: {
         is: {
             args: /^\+?[0-9\s\-()]{7,20}$/,
-            msg: "Formato de teléfono inválido"
+            msg: "Format de telèfon invàlid"
         },
       },  
     },
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      unique: { msg: "Este email ya está registrado" },
+      unique: { msg: "Aquest email ja està registrat" },
       validate: {
-        notEmpty: {msg: "El email no puede estar vacío"},
-        isEmail: { msg: "Debe ser un email válido" },
+        notEmpty: {msg: "L'email no pot estar buit"},
+        isEmail: { msg: "Ha de ser un email vàlid" },
       },
     },
   },

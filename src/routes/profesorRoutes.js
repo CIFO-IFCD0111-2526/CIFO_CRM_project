@@ -8,12 +8,12 @@ const router = express.Router();
 const profesorController = require("../controllers/profesorController");
 const { authPage } = require("../middlewares/auth");
 
-router.get("/nuevo", authPage, profesorController.mostrarFormCrear);
-router.get("/", authPage, profesorController.listarProfesores);
-router.post("/", authPage, profesorController.crearProfesor);
+router.get("/nuevo", authPage, profesorController.renderNewProfesor);
+router.get("/", authPage, profesorController.getAll);
+router.post("/", authPage, profesorController.createProfesor);
 router.get("/:id", authPage, profesorController.getById);
-router.get("/:id/editar", authPage, profesorController.mostrarProfesorEditar);
-router.put("/:id", authPage, profesorController.editarProfesor);
+router.get("/:id/editar", authPage, profesorController.getEditForm);
+router.put("/:id", authPage, profesorController.updateProfesor);
 router.delete("/:id", authPage, profesorController.deleteProfesor);
 
 module.exports = router;
