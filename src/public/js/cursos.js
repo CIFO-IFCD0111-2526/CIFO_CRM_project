@@ -82,16 +82,37 @@ document.addEventListener("click", async (e) => {
 });
 
 // editar curso 
-document.addEventListener("click", async (e) => { 
-    const btnEditar = e.target.closest("#btn-curso-editar");
-    const btnGuardar = document.querySelector("#btn-curso-guardar"); // seleccionem el boto de guardar
-    const btnCancelar = document.querySelector("#btn-curso-cancelar-edit");
-    const formEdit = document.querySelector("#form-editable");
-    const formShow= document.querySelector("#form-ple");
-        btnGuardar.classList.remove("hidden");  // fem visible el de guardar 
-        btnCancelar.classList.remove("hidden"); // fem visible el de cancelar edició
-        formEdit.classList.remove("hidden");    // fem visible el formulari editable
-        formShow.classList.add("hidden");       // amaguem el que mostrava la info
-        btnEditar.classList.add("hidden");      // ja estem editant, no cal mostrar-lo
-    
+    // seleccionem els botons 
+    const btnEditar     = document.querySelector("#btn-curso-editar");                 
+    const btnGuardar    = document.querySelector("#btn-curso-guardar");
+    const btnCancelar   = document.querySelector("#btn-curso-cancelar-edit");
+    const formEdit      = document.querySelector("#form-editable");
+    const formShow      = document.querySelector("#form-ple");
+    const reqSelect     = document.querySelector("#RegCursoRequisitos");
+
+btnEditar.addEventListener("click", async (e) => {
+
+        btnGuardar  .classList.remove("hidden");    // fem visible el de guardar 
+        btnCancelar .classList.remove("hidden");    // fem visible el de cancelar edició
+        formEdit    .classList.remove("hidden");    // fem visible el formulari editable
+
+        formShow    .classList.add("hidden");       // amaguem el que mostrava la info
+        btnEditar   .classList.add("hidden");       // ja estem editant, no cal mostrar-lo    
+});
+
+btnGuardar.addEventListener("click", async (e) => { 
+// logica de trucada a DB per updatejar les dades del curs
+
+
+});
+
+
+btnCancelar.addEventListener("click", async (e) => { 
+// logica de retorn al curs sense guardar canvis
+        btnGuardar  .classList.add("hidden");    // fem visible el de guardar 
+        btnCancelar .classList.add("hidden");    // fem visible el de cancelar edició
+        formEdit    .classList.add("hidden");    // fem visible el formulari editable
+
+        formShow    .classList.remove("hidden");       // amaguem el que mostrava la info
+        btnEditar   .classList.remove("hidden");       // ja estem editant, no cal mostrar-lo
 });

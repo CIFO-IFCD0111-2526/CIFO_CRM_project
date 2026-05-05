@@ -112,7 +112,7 @@
   </section>
 
 </div>
-
+<!-- ---FORM EDITABLE --- ---FORM EDITABLE --- ---FORM EDITABLE --- ---FORM EDITABLE --- ---FORM EDITABLE --- ---FORM EDITABLE --- ---FORM EDITABLE --- -->
 <div id="form-editable" class="detalle-grid hidden ">
 
   <!-- Datos del curso -->
@@ -132,7 +132,28 @@
       </div>
       <div class="detalle-item">
         <dt>Requisits</dt>
-        <input value="<%= curso.requisitos || '—' %>">
+        <!-- 
+        <input value="<%= curso.requisitos || '—' %>"> 
+        <select id="RegCursoRequisitos" name="requisitos">
+          <option value="">Selecciona nivell</option>
+          <option value="0">Sense estudis</option>
+          <option value="1">Primària</option>
+          <option value="2">Secundària</option>
+          <option value="4">FP Grau Mitjà</option>
+          <option value="5">Batxillerat</option>
+          <option value="6">FP Grau Superior</option>
+        </select>
+        -->
+        <select id="RegCursoRequisitos" name="requisitos">
+          <option value="">Selecciona nivell</option>
+          <option value="0" <%=curso.dataValues.requisitos==0 ? "selected" : "" %>>Sense estudis</option>
+          <option value="1" <%=curso.dataValues.requisitos==1 ? "selected" : "" %>>Primària</option>
+          <option value="2" <%=curso.dataValues.requisitos==2 ? "selected" : "" %>>Secundària</option>
+          <option value="4" <%=curso.dataValues.requisitos==4 ? "selected" : "" %>>FP Grau Mitjà</option>
+          <option value="5" <%=curso.dataValues.requisitos==5 ? "selected" : "" %>>Batxillerat</option>
+          <option value="6" <%=curso.dataValues.requisitos==6 ? "selected" : "" %>>FP Grau Superior</option>
+        </select>
+
       </div>
       <div class="detalle-item">
         <dt>Data fi</dt>
