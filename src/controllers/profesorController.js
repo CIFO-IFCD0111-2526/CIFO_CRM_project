@@ -66,6 +66,12 @@ const createProfesor = async (req, res, next) => {
             email,
         });
 
+        req.session.flash = {
+            type: "success",
+            title: "Professor creat",
+            message: `El professor ${profesor.nombre} ${profesor.apellidos} s'ha creat correctament.`,
+        };
+
         return res.status(201).json({ ok: true, redirect: `/profesores/${profesor.id}` });
     } catch (error) {
         return handleControllerError(error, res, next);
