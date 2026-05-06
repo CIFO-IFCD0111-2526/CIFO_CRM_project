@@ -1,0 +1,61 @@
+<div class="form-container">
+    <div class="form-card">
+
+        <a href="/ufs" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Tornar al llistat
+        </a>
+
+        <h1 class="form-title">
+            <%= uf && uf.id ? "Editar UF" : "Nova UF" %>
+        </h1>
+
+        <p class="form-subtitle">
+            <%= uf && uf.id ? "Modifica les dades de la UF" : "Introdueix les dades de la nova UF" %>
+        </p>
+
+        <form id="ufForm" class="form-grid" novalidate
+            <% if (uf && uf.id) { %>data-id="<%= uf.id %>"<% } %>>
+
+            <div class="form-group">
+                <label>
+                    Codi
+                    <input type="text" id="ufCodigo" name="codigo"
+                        value="<%= uf ? uf.codigo : '' %>" required />
+                </label>
+                <% if (errores && errores.codigo) { %>
+                    <div class="error"><%= errores.codigo %></div>
+                <% } %>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Nom
+                    <input type="text" id="ufNombre" name="nombre"
+                        value="<%= uf ? uf.nombre : '' %>" required />
+                </label>
+                <% if (errores && errores.nombre) { %>
+                    <div class="error"><%= errores.nombre %></div>
+                <% } %>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Hores
+                    <input type="number" id="ufHoras" name="horas" min="1"
+                        value="<%= uf ? uf.horas : '' %>" />
+                </label>
+                <% if (errores && errores.horas) { %>
+                    <div class="error"><%= errores.horas %></div>
+                <% } %>
+            </div>
+
+            <div id="ufMsg" class="form-msg form-full" aria-live="polite"></div>
+
+            <button type="submit" class="btn btn-primario btn-block form-full">
+                <%= uf && uf.id ? "Guardar canvis" : "Crear UF" %>
+            </button>
+
+        </form>
+
+    </div>
+</div>

@@ -43,6 +43,62 @@ const renderNewUf = (req, res) => {
     });
 };
 
+// GET /ufs/:id/editar
+const getEditForm = (req, res) => {
+    const uf = req.uf;
+    res.render("uf-form", {
+        titulo: `Editar ${uf.codigo}`,
+        usuario: req.session.usuario,
+        paginaActual: "ufs",
+        css: "ufs.css",
+        js: "ufs.js",
+        uf,
+        errores: {},
+    });
+};
+
+// PUT /ufs/:id
+const updateUf = async (req, res, next) => {
+    try {
+        const uf = req.uf;
+        const { codigo, nombre, horas } = req.body;
+        const errores = {};
+
+        if (!codigo || codigo.trim() === "") errores.codigo = "El codi és obligatori";
+        if (!nombre || nombre.trim() === "") errores.nombre = "El nom és obligatori";
+        if (horas && isNaN(Number(horas))) errores.horas = "Les hores han de ser numèriques";
+
+        if (codigo && codigo.trim() !== "" && codigo !== uf.codigo && !errores.codigo) {
+            const existente = await Uf.findOne({ where: { codigo } });
+            if (existente) errores.codigo = "El codi ja existeix";
+        }
+
+        if (Object.keys(errores).length > 0) {
+            return res.status(400).json({ ok: false, errores });
+        }
+
+        await uf.update({
+            codigo,
+            nombre,
+            horas: horas ? Number(horas) : null,
+        });
+
+        req.session.flash = {
+            type: "success",
+            title: "UF actualitzada",
+            message: `La UF ${uf.codigo} s'ha actualitzat correctament.`,
+        };
+
+        return res.json({
+            ok: true,
+            redirect: `/ufs/${uf.id}`,
+        });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+
 // POST /ufs
 const createUf = async (req, res, next) => {
     const { codigo, nombre, horas } = req.body;
@@ -70,6 +126,12 @@ const createUf = async (req, res, next) => {
             horas: horas ? Number(horas) : null,
         });
 
+        req.session.flash = {
+            type: "success",
+            title: "UF creada",
+            message: `La UF ${nuevaUF.codigo} s'ha creat correctament.`,
+        };
+
         return res.json({
             ok: true,
             redirect: `/ufs/${nuevaUF.id}`,
@@ -95,4 +157,4 @@ const deleteUf = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, getById, renderNewUf, createUf, deleteUf };
+module.exports = { getAll, getById, renderNewUf, createUf, getEditForm, updateUf, deleteUf };

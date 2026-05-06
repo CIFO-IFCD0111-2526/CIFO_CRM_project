@@ -10,15 +10,19 @@ const router = Router();
 router.use(authPage);
 
 router.get("/", controller.getAll);
-
-// GET /ufs/nuevo
 router.get("/nuevo", controller.renderNewUf);
-
-// POST /ufs
 router.post("/", controller.createUf);
 router.get("/:id",
     loadResource(Uf, { redirectTo: "/ufs", include: [Curso] }),
     controller.getById
+);
+router.get("/:id/editar",
+    loadResource(Uf, { redirectTo: "/ufs" }),
+    controller.getEditForm
+);
+router.put("/:id",
+    loadResource(Uf, { redirectTo: "/ufs" }),
+    controller.updateUf
 );
 router.delete("/:id",
     loadResource(Uf, { redirectTo: "/ufs" }),
