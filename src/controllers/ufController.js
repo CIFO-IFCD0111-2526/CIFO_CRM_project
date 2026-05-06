@@ -140,6 +140,12 @@ const createUf = async (req, res, next) => {
             horas: horas ? Number(horas) : null,
         });
 
+        req.session.flash = {
+            type: "success",
+            title: "UF creada",
+            message: `La UF ${nuevaUF.codigo} s'ha creat correctament.`,
+        };
+
         return res.json({
             ok: true,
             redirect: `/ufs/${nuevaUF.id}`,
