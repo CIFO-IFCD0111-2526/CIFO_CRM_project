@@ -209,3 +209,76 @@ document.addEventListener("click", async (e) => {
         });
     }
 });
+
+// Buscador d'Ufs
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("busquedaUf");
+    const dropdown = document.getElementById("dropdownResultados");
+    if (input && dropdown) initBuscador(input, dropdown);
+});
+
+function initBuscador(input, dropdown) {
+    let debounceTimer = null;
+
+    input.addEventListener("input", () => {
+        const query = input.value.trim();
+        if (query.length < 2) {
+            cerrarDropdown();
+            return;
+        }
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => searchUfs(query), 250);
+    });
+
+    async function searchUfs(query, signal) {
+        try {
+            const res = await fetch(`/ufs/buscar?q=${encodeURIComponent(query)}`, {
+                credentials: "include",
+                signal: signal,
+            });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const data = await res.json();
+            renderResultados(data);
+        } catch (error) {
+            console.error("Error en cerca:", error);
+        }
+    }
+
+    function renderResultados(ufs) {
+        dropdown.innerHTML = "";
+        if (!ufs || !ufs.length) {
+            dropdown.innerHTML = `<div class="item empty">Sense resultats</div>`;
+        } else {
+            ufs.forEach((uf) => {
+                const item = document.createElement("div");
+                item.classList.add("item");
+                item.textContent = `${uf.codigo} — ${uf.nombre}`;
+                item.addEventListener("click", () => {
+                    window.location.href = `/ufs/${uf.id}`;
+                });
+                dropdown.appendChild(item);
+            });
+        }
+        dropdown.classList.remove("hidden");
+    }
+
+    function cerrarDropdown() {
+        dropdown.classList.add("hidden");
+        dropdown.innerHTML = "";
+    }
+
+    input.addEventListener("blur", () => {
+        setTimeout(cerrarDropdown, 150);
+    });
+
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            cerrarDropdown();
+            input.blur();
+        }
+    });
+}
+
+

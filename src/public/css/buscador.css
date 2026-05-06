@@ -33,11 +33,11 @@
     align-self: center;
 }
 
-.buscador-alumnos {
+.buscador {
     width: 100%;
 }
 
-.buscador-alumnos input {
+.buscador input {
     width: 100%;
     box-sizing: border-box;
 }

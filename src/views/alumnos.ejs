@@ -4,19 +4,14 @@
     <p class="page-subtitle">Llistat d'alumnes registrats al centre</p>
   </div>
   <div class="buscador-wrapper">
-    <div class="buscador-alumnos">
-      <input
-        type="text"
-        id="busquedaAlumno"
-        placeholder="Buscar alumne..."
-        autocomplete="off"
-      />
+    <div class="buscador">
+      <input type="text" id="busquedaAlumno" placeholder="Buscar alumne..." autocomplete="off" />
     </div>
     <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
   <a href="/alumnos/nuevo" class="btn btn-primario">Nou alumne</a>
 </div>
-<% if (alumnos && alumnos.length > 0) { %>
+<% if (alumnos && alumnos.length> 0) { %>
   <div class="tabla-container">
     <table id="alumnosTable">
       <thead>
@@ -32,26 +27,35 @@
         </tr>
       </thead>
       <tbody>
-        <% alumnos.forEach(alumno => { %>
+        <% alumnos.forEach(alumno=> { %>
           <tr>
             <td>
               <a class="alumno-nombre" href="/alumnos/<%= alumno.id %>">
                 <%= alumno.apellidos %>, <%= alumno.nombre %>
               </a>
             </td>
-            <td><%= alumno.dni || '—' %></td>
-            <td><%= alumno.email || '—' %></td>
-            <td><%= alumno.telefono || '—' %></td>
-            <td><%= alumno.nivel_estudios || '—' %></td>
+            <td>
+              <%= alumno.dni || '—' %>
+            </td>
+            <td>
+              <%= alumno.email || '—' %>
+            </td>
+            <td>
+              <%= alumno.telefono || '—' %>
+            </td>
+            <td>
+              <%= alumno.nivel_estudios || '—' %>
+            </td>
             <td>
               <span class="badge badge-<%= alumno.tipo %>">
-                <% if (alumno.tipo === 'actual') { %>Actual<% } %>
-                <% if (alumno.tipo === 'antiguo') { %>Antic<% } %>
-                <% if (alumno.tipo === 'futuro') { %>Futur<% } %>
+                <% if (alumno.tipo==='actual' ) { %>Actual<% } %>
+                    <% if (alumno.tipo==='antiguo' ) { %>Antic<% } %>
+                        <% if (alumno.tipo==='futuro' ) { %>Futur<% } %>
               </span>
             </td>
             <td class="col-fecha">
-              <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+              <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit' ,
+                month: '2-digit' , year: 'numeric' }) : '—' %>
             </td>
             <td class="col-accions">
               <div class="acciones">
@@ -59,13 +63,13 @@
               </div>
             </td>
           </tr>
-        <% }) %>
+          <% }) %>
       </tbody>
     </table>
   </div>
-<% } else { %>
-  <div class="empty-state">
-    <p>No hi ha alumnes registrats.</p>
-    <a href="/alumnos/nuevo" class="btn btn-primario">Crear el primer alumne</a>
-  </div>
-<% } %>
+  <% } else { %>
+    <div class="empty-state">
+      <p>No hi ha alumnes registrats.</p>
+      <a href="/alumnos/nuevo" class="btn btn-primario">Crear el primer alumne</a>
+    </div>
+    <% } %>
