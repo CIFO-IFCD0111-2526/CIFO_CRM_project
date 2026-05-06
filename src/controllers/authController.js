@@ -1,5 +1,6 @@
 const { Usuario } = require("../models");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 const { sendMail } = require("../config/mailer.js");
 const { handleControllerError } = require("../middlewares/errorHandler.js");
 
@@ -24,7 +25,6 @@ const forgotPasswordForm = (req, res) => {
     js: "auth.js",
   });
 };
-
 
 // POST /login
 
@@ -162,11 +162,12 @@ const logout = async (req, res) => {
 
 // Función para generar contraseña aleatoria
 
-function createRandomPassword(length = 10) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+function createRandomPassword(length = 12) {
+const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
   let password = '';
   for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
+    const randomIndex = (crypto.randomInt(0, characters.length
+));
     password += characters[randomIndex];
   }
   return password;
@@ -177,60 +178,53 @@ function createRandomPassword(length = 10) {
 const forgotPassword = async (req, res, next) => {
   const { email } = req.body;
 
-  // Validación básica
   if (!email || !email.includes("@")) {
     return res
       .status(400)
       .json({ error: "El correu electrònic és obligatori i ha de ser vàlid." });
   }
 
+  const respuestaGenerica = {
+    ok: true,
+    redirect: "/login",
+  };
+
   try {
-    // Comprobar email único
-    const existe = await Usuario.findOne({ where: { email, activo: true } });
-    if (existe) {
+    const usuario = await Usuario.findOne({ where: { email, activo: true } });
+
+    if (usuario) {
       const nuevoPassword = createRandomPassword();
-      // Hashear nueva contraseña
       const hashedNuevoPassword = bcrypt.hashSync(nuevoPassword, 10);
 
-      //Llamada a SendMail
+      await usuario.update({ password: hashedNuevoPassword });
 
-      const mailError = await sendMail({
-        to: email,
-        subject: "Recuperació de contrasenya - CIFO CRM",
-        html: `
-      <h2>Has sol·licitat recuperar la teva contrasenya</h2>
-      <p>La teva nova contrasenya temporal és:</p>
-      <h3> ${nuevoPassword}</h3>
-      <p>Et recomanem canviar-la després d'iniciar sessió.</p>
-      `,
-      });
-
-      if (mailError) {
+      try {
+        await sendMail({
+          to: usuario.email,
+          subject: "Recuperació de contrasenya - CIFO CRM",
+          html: `
+            <h2>Has sol·licitat recuperar la teva contrasenya</h2>
+            <p>La teva nova contrasenya temporal és:</p>
+            <h3>${nuevoPassword}</h3>
+            <p>Et recomanem canviar-la després d'iniciar sessió.</p>
+          `,
+        });
+      } catch (mailError) {
         console.error("Error enviant el correu de recuperació:", mailError);
-        return res.status(500).json({ error: "Error del servidor de correu." });
       }
-
-      // Actualizar usuario.password en la base de datos
-      await Usuario.update(
-        { password: hashedNuevoPassword },
-        { where: { email, activo: true } },
-      );
-    } else {
-      return res
-        .status(500)
-        .json({ error: "No existeix cap compte registrat amb aquest correu." });
     }
 
     req.session.flash = {
       type: "success",
-      title: "Email enviat.",
-      message: "Ja pots revisar el teu correu.",
+      title: "Correu enviat",
+      message: "Si l'email està registrat, rebràs un correu amb la nova contrasenya.",
     };
 
-    return res.status(200).json({ ok: true, redirect: "/login" });
+    return res.json(respuestaGenerica);
   } catch (error) {
     return handleControllerError(error, res, next);
   }
 };
+
 
 module.exports = { loginForm, login, registerForm, register, logout, forgotPassword, forgotPasswordForm };
