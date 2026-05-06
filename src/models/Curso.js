@@ -29,6 +29,15 @@ const Curso = sequelize.define(
         fecha_fin: {
             type: DataTypes.DATE,
         },
+        estado: { 
+            type: DataTypes.INTEGER,
+            get() {
+                const niveles = {
+                    0: "Finalitzat",
+                    1: "En curs",
+                    2: "A futur",
+                };
+        }, 
         requisitos: {
             type: DataTypes.INTEGER,
             get() {
