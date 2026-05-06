@@ -237,4 +237,41 @@ const deleteAlumnoFromCurso = async (req, res, next) => {
         return handleControllerError(error, res, next);
     }
 };
-module.exports = { getAll, getById, createCurso, renderNewCurso,searchCurso, deleteCurso, updateCurso,addAlumnoToCurso,deleteAlumnoFromCurso };
+// POST /cursos/:id/profesores
+const asignarProfesor = async (req, res, next) => {
+    try {
+        console.log("HOLI");
+        const profesorId  = req.body.profesorId;
+        console.log(profesorId);
+        /* const alrAssigned = await Curso.findOne({ where: { estado: 1, profesor_id: profesorId } });
+        ({ 
+        const alrAssigned = await Curso.findOne({
+            include: [
+            {
+                association: "curso_profesor",
+                required: true,
+                where: {
+                    estado: 1,
+                    profesor_id: profesorId,
+                },
+            },
+            ],
+        }); */
+        const alrAssigned = await Profesor.findAll({
+          include: {
+            model: Curso,
+            required: true,
+            through: { where: { profesor_id: profesorId } },
+            where: {
+              estado: 1,
+            },
+          },
+        });
+        console.log(alrAssigned);
+        return res.json({ ok: true });
+        } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+module.exports = { getAll, getById, createCurso, renderNewCurso, searchCurso, deleteCurso, updateCurso, asignarProfesor, addAlumnoToCurso, deleteAlumnoFromCurso };

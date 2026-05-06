@@ -8,7 +8,7 @@ const router = Router();
 
 
 // Rutas de cursos, todas requieren autenticacion
-router.use(authPage);
+// router.use(authPage);
 
 router.get('/nuevo', controller.renderNewCurso);
 router.post('/', controller.createCurso);
@@ -31,4 +31,6 @@ router.post("/:id/alumnos",
     controller.addAlumnoToCurso
 );
 router.delete("/:cursoId/alumnos/:alumnoId", controller.deleteAlumnoFromCurso);
+router.post('/:id/profesores', controller.asignarProfesor);
+
 module.exports = router;
