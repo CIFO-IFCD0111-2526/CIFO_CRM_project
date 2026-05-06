@@ -37,7 +37,7 @@
       <div class="detalle-item">
         <dt>Data inici</dt>
         <dd>
-          <%= curso.fecha_inicio || '—' %>
+          <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
         </dd>
       </div>
       <div class="detalle-item">
@@ -49,7 +49,7 @@
       <div class="detalle-item">
         <dt>Data fi</dt>
         <dd>
-          <%= curso.fecha_fin || '—' %>
+          <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
         </dd>
       </div>
     </dl>

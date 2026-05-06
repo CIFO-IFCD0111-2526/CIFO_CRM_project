@@ -14,8 +14,8 @@
           <th>Nom</th>
           <th>Codi</th>
           <th>Requisits</th>
-          <th>Data_inici</th>
-          <th>Data_fi</th>
+          <th>Data inici</th>
+          <th>Data fi</th>
         </tr>
       </thead>
       <tbody>
@@ -33,10 +33,10 @@
               <%= curso.requisitos || '—' %>
             </td>
             <td>
-              <%= curso.fecha_inicio || '—' %>
+              <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
             </td>
             <td>
-              <%= curso.fecha_fin || '—' %>
+              <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
             </td>
           </tr>
           <% }) %>
