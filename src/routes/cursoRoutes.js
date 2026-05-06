@@ -21,5 +21,9 @@ router.delete("/:id",
     loadResource(Curso, { redirectTo: "/cursos" }),
     controller.deleteCurso
 );
+router.put("/:id",
+    loadResource(Curso, { redirectTo: "/cursos" }),
+    controller.updateCurso
+);
 
 module.exports = router;

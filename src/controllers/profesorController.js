@@ -2,6 +2,7 @@
 // Controller: Profesores (renderiza vistas)
 // -------------------------------------------------------
 
+const { Op } = require("sequelize");
 const { Profesor, Curso } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
@@ -157,4 +158,36 @@ const deleteProfesor = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, renderNewProfesor, createProfesor, getById, getEditForm, updateProfesor, deleteProfesor };
+const searchProfesor = async (req, res, next) => {
+    const q = (req.query.q || "").trim();
+
+    // Si hi ha menys de 2 caràcters → retornem array buit
+    if (q.length < 2) {
+        return res.json([]);
+    }
+
+    // Construïm el filtre de cerca
+    const where = {
+        [Op.or]: [
+            { nombre: { [Op.like]: `%${q}%` } },
+            { apellidos: { [Op.like]: `%${q}%` } },
+            { email: { [Op.like]: `%${q}%` } }
+        ]
+    };
+
+    try {
+        const profesores = await Profesor.findAll({
+            where,
+            limit: 10,
+            order: [["apellidos", "ASC"]],
+            attributes: ["id", "nombre", "apellidos", "email"]
+        });
+
+        return res.json(profesores);
+
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+module.exports = { getAll, renderNewProfesor, createProfesor, getById, getEditForm, updateProfesor, deleteProfesor, searchProfesor };

@@ -3,19 +3,18 @@
     <h1 class="page-title">Professors</h1>
     <p class="page-subtitle">Llistat de professors registrats al centre</p>
   </div>
-  <a href="/profesores/nuevo" class="btn btn-primario">Nou professor</a>
-</div>
-
-<div class="buscador-wrapper">
-  <div class="buscador-alumnos">
-    <input
-      type="text"
-      id="busquedaProfesor"
-      placeholder="Buscar professor..."
-      autocomplete="off"
-    />
+  <div class="buscador-wrapper">
+    <div class="buscador-alumnos">
+      <input
+        type="text"
+        id="busquedaProfesor"
+        placeholder="Buscar professor..."
+        autocomplete="off"
+      />
+    </div>
+    <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
-  <div id="dropdownResultados" class="dropdown hidden"></div>
+  <a href="/profesores/nuevo" class="btn btn-primario">Nou professor</a>
 </div>
 
 <% if (profesores && profesores.length > 0) { %>
@@ -57,16 +56,9 @@
                   Veure
                 </a> -->
 
-                <a href="/profesores/<%= profesor.id %>/editar" class="btn btn-secundario btn-sm">
+                <a href="/profesores/<%= profesor.id %>" class="btn btn-secundario btn-sm">
                   Editar
                 </a>
-
-                <button
-                  type="button"
-                  class="btn btn-danger btn-sm btn-eliminar"
-                  data-id="<%= profesor.id %>">
-                  Eliminar
-                </button>
               </div>
             </td>
           </tr>

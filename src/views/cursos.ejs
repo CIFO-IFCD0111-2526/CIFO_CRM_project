@@ -16,6 +16,7 @@
           <th>Requisits</th>
           <th>Data inici</th>
           <th>Data fi</th>
+          <th class="col-accions">Accions</th>
         </tr>
       </thead>
       <tbody>
@@ -37,6 +38,11 @@
             </td>
             <td>
               <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+            </td>
+            <td class="col-accions">
+              <div class="acciones">
+                <a href="/cursos/<%= curso.id %>" class="btn btn-secundario btn-sm">Editar</a>
+              </div>
             </td>
           </tr>
           <% }) %>
