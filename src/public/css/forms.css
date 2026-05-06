@@ -105,7 +105,8 @@
   gap: 0 1.5rem;
 }
 
-.form-grid .form-full {
+.form-grid .form-full,
+.detalle-grid .form-full {
   grid-column: 1 / -1;
 }
 

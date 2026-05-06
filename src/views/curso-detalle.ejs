@@ -1,111 +1,132 @@
-<div class="page-header">
-  <div>
-    <a href="/cursos" class="back-link">
-      <i class="fa-solid fa-arrow-left"></i> Tornar al llistat
-    </a>
-    <h1 class="page-title">
-      <%= curso.nombre %>
-    </h1>
-    <p class="page-subtitle">
-      <span class="badge">
-        <%= curso.codigo %>
-      </span>
-    </p>
+<form id="cursoForm" data-id="<%= curso.id %>" novalidate>
+
+  <div class="page-header">
+    <div>
+      <a href="/cursos" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Tornar al llistat
+      </a>
+
+      <h1 class="page-title form-group">
+        <span class="view-mode">
+          <%= curso.nombre %>
+        </span>
+        <div class="edit-mode hidden form-group">
+          <input type="text" name="nombre" value="<%= curso.nombre %>" placeholder="Nom" required />
+        </div>
+      </h1>
+
+      <p class="page-subtitle form-group">
+        <span class="view-mode">
+          <span class="badge"><%= curso.codigo %></span>
+        </span>
+        <input type="text" name="codigo" value="<%= curso.codigo %>" class="edit-mode hidden" placeholder="Codi" required />
+      </p>
+    </div>
+
+    <div class="acciones">
+      <a href="#" id="btnEditar" class="btn btn-secundario">Editar</a>
+      <button type="submit" id="btnGuardar" class="btn btn-secundario edit-mode hidden">Guardar</button>
+      <button type="button" id="btnCancelar" class="btn btn-secundario edit-mode hidden">Cancel·lar</button>
+      <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= curso.id %>" data-nombre="<%= curso.nombre %>">Eliminar</button>
+    </div>
   </div>
 
-  <div class="acciones">
-    <a href="/cursos/<%= curso.id %>/editar" class="btn btn-secundario">Editar</a>
-    <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= curso.id %>" data-nombre="<%= curso.nombre %>">Eliminar</button>
-  </div>
-</div>
+  <div class="detalle-grid form-group">
 
-<div class="detalle-grid">
+    <section class="detalle-card">
+      <h2 class="detalle-card-title">Dades del curs</h2>
+      <dl class="detalle-list">
 
-  <!-- Datos del curso -->
-  <section class="detalle-card">
-    <h2 class="detalle-card-title">Dades del curs</h2>
-    <dl class="detalle-list">
-      <div class="detalle-item">
-        <dt>Codi</dt>
-        <dd>
-          <%= curso.codigo || '—' %>
-        </dd>
-      </div>
-      <div class="detalle-item">
-        <dt>Data inici</dt>
-        <dd>
-          <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
-        </dd>
-      </div>
-      <div class="detalle-item">
-        <dt>Requisits</dt>
-        <dd>
-          <%= curso.requisitos || '—' %>
-        </dd>
-      </div>
-      <div class="detalle-item">
-        <dt>Data fi</dt>
-        <dd>
-          <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
-        </dd>
-      </div>
-    </dl>
-  </section>
-
-  <!-- UFs -->
-  <section class="detalle-card">
-    <h2 class="detalle-card-title">UFs</h2>
-    <% if (curso.Ufs && curso.Ufs.length> 0) { %>
-      <ul class="detalle-cursos">
-        <% curso.Ufs.forEach(uf=> { %>
-          <li>
-            <span class="curso-nombre">
-              <%= uf.nombre %>
+        <div class="detalle-item">
+          <dt>Data inici</dt>
+          <dd>
+            <span class="view-mode">
+              <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
             </span>
-          </li>
+            <input type="date" name="fecha_inicio" class="edit-mode hidden"
+              value="<%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('en-CA') : '' %>" />
+          </dd>
+        </div>
+
+        <div class="detalle-item">
+          <dt>Data fi</dt>
+          <dd>
+            <span class="view-mode">
+              <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+            </span>
+            <input type="date" name="fecha_fin" class="edit-mode hidden"
+              value="<%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('en-CA') : '' %>" />
+          </dd>
+        </div>
+
+        <div class="detalle-item">
+          <dt>Requisits</dt>
+          <dd>
+            <span class="view-mode">
+              <%= curso.requisitos || '—' %>
+            </span>
+            <% const reqRaw = curso.getDataValue ? curso.getDataValue('requisitos') : curso.dataValues?.requisitos; %>
+            <select name="requisitos" class="edit-mode hidden">
+              <option value="">Selecciona nivell</option>
+              <option value="0" <%= reqRaw === 0 ? 'selected' : '' %>>Sense estudis</option>
+              <option value="1" <%= reqRaw === 1 ? 'selected' : '' %>>Primària</option>
+              <option value="2" <%= reqRaw === 2 ? 'selected' : '' %>>Secundària</option>
+              <option value="4" <%= reqRaw === 4 ? 'selected' : '' %>>FP Grau Mitjà</option>
+              <option value="5" <%= reqRaw === 5 ? 'selected' : '' %>>Batxillerat</option>
+              <option value="6" <%= reqRaw === 6 ? 'selected' : '' %>>FP Grau Superior</option>
+            </select>
+          </dd>
+        </div>
+
+      </dl>
+    </section>
+
+    <div id="cursoMsg" class="form-msg form-full" aria-live="polite"></div>
+
+    <section class="detalle-card">
+      <h2 class="detalle-card-title">UFs</h2>
+      <% if (curso.Ufs && curso.Ufs.length > 0) { %>
+        <ul class="detalle-cursos">
+          <% curso.Ufs.forEach(uf => { %>
+            <li>
+              <span class="curso-nombre"><%= uf.nombre %></span>
+            </li>
           <% }) %>
-      </ul>
+        </ul>
       <% } else { %>
         <p class="detalle-empty">No hi ha UFs associades.</p>
-        <% } %>
-  </section>
+      <% } %>
+    </section>
 
-  <!-- Professors -->
-  <section class="detalle-card">
-    <h2 class="detalle-card-title">Professors</h2>
-    <% if (curso.Profesors && curso.Profesors.length> 0) { %>
-      <ul class="detalle-cursos">
-        <% curso.Profesors.forEach(prof=> { %>
-          <li>
-            <span class="curso-nombre">
-              <%= prof.nombre %>
-                <%= prof.apellidos %>
-            </span>
-          </li>
+    <section class="detalle-card">
+      <h2 class="detalle-card-title">Professors</h2>
+      <% if (curso.Profesors && curso.Profesors.length > 0) { %>
+        <ul class="detalle-cursos">
+          <% curso.Profesors.forEach(prof => { %>
+            <li>
+              <span class="curso-nombre"><%= prof.nombre %> <%= prof.apellidos %></span>
+            </li>
           <% }) %>
-      </ul>
+        </ul>
       <% } else { %>
         <p class="detalle-empty">No hi ha professors associats.</p>
-        <% } %>
-  </section>
+      <% } %>
+    </section>
 
-  <!-- Alumnes -->
-  <section class="detalle-card detalle-full">
-    <h2 class="detalle-card-title">Alumnes</h2>
-    <% if (curso.Alumnos && curso.Alumnos.length> 0) { %>
-      <ul class="detalle-cursos">
-        <% curso.Alumnos.forEach(al=> { %>
-          <li>
-            <span class="curso-nombre">
-              <%= al.nombre %>
-                <%= al.apellidos %>
-            </span>
-          </li>
+    <section class="detalle-card detalle-full">
+      <h2 class="detalle-card-title">Alumnes</h2>
+      <% if (curso.Alumnos && curso.Alumnos.length > 0) { %>
+        <ul class="detalle-cursos">
+          <% curso.Alumnos.forEach(al => { %>
+            <li>
+              <span class="curso-nombre"><%= al.nombre %> <%= al.apellidos %></span>
+            </li>
           <% }) %>
-      </ul>
+        </ul>
       <% } else { %>
         <p class="detalle-empty">No hi ha alumnes matriculats.</p>
-        <% } %>
-  </section>
+      <% } %>
+    </section>
 
-</div>
+  </div>
+</form>
