@@ -161,7 +161,6 @@ const deleteUf = async (req, res, next) => {
 
 const searchUfs = async (req, res, next) => {
     const q = (req.query.q || "").trim();
-    const tipo = (req.query.tip || "").trim().toLowerCase();
 
     // Si hi ha menys de 2 caràcters → retornem array buit
     if (q.length < 2) {
