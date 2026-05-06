@@ -28,25 +28,30 @@
 
 .buscador-wrapper {
     position: relative;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin: 0 2rem 1rem;
-    max-width: calc(100% - 4rem);
+    flex: 1;
+    max-width: 400px;
+    align-self: center;
 }
 
 .buscador-alumnos {
-    flex: 1;
+    width: 100%;
+}
+
+.buscador-alumnos input {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #dropdownResultados {
-    flex: 1;
     position: absolute;
-    left: 25%;
-    min-height: 42px;
+    top: 100%;
+    left: 0;
+    width: 100%;
     max-height: 200px;
     overflow-y: auto;
     border: 1px solid #ccc;
     background: white;
     padding: 4px 0;
+    box-sizing: border-box;
+    z-index: 10;
 }
