@@ -64,30 +64,4 @@
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-@media (max-width: 640px) {
-  .page-header,
-  .tabla-container,
-  .empty-state,
-  .detalle-grid {
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
-
-  .page-header {
-    padding: 1.5rem 1rem 1rem;
-  }
-
-  .detalle-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .detalle-list {
-    grid-template-columns: 1fr;
-  }
-}
-.hidden{
-  display:none;
-}
 } */

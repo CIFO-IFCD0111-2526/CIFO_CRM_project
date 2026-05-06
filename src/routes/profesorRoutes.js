@@ -10,15 +10,29 @@ const { authPage } = require("../middlewares/auth");
 const { loadResource } = require("../middlewares/loadResource.js");
 const { Profesor, Curso } = require("../models");
 
-router.get("/nuevo", authPage, profesorController.renderNewProfesor);
-router.get("/", authPage, profesorController.getAll);
-router.post("/", authPage, profesorController.createProfesor);
-router.get("/:id", authPage, profesorController.getById);
-// router.delete("/profesores/:id", authPage, profesorController.deleteProfesor);
-router.delete("/:id", authPage, profesorController.deleteProfesor);
-router.get("/:id/editar", authPage, profesorController.getEditForm);
-router.put("/:id", authPage, profesorController.updateProfesor);
+router.use(authPage);
+
+router.get("/nuevo", profesorController.renderNewProfesor);
+router.get("/", profesorController.getAll);
+router.post("/", profesorController.createProfesor);
+router.get("/:id",
+    loadResource(Profesor, {
+        redirectTo: "/profesores",
+        include: [{ model: Curso, attributes: ["id", "codigo", "nombre"] }]
+    }),
+    profesorController.getById
+);
+router.get("/:id/editar",
+    loadResource(Profesor, { redirectTo: "/profesores" }),
+    profesorController.getEditForm
+);
+router.put("/:id",
+    loadResource(Profesor, { redirectTo: "/profesores" }),
+    profesorController.updateProfesor
+);
+router.delete("/:id",
+    loadResource(Profesor),
+    profesorController.deleteProfesor
+);
 
 module.exports = router;
-
-

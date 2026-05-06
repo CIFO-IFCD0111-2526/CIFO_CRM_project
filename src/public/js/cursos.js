@@ -137,89 +137,76 @@ document.addEventListener("click", async (e) => {
     }
 });
 
-// editar curso  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // seleccionem els botons 
-    const btnEditar     = document.querySelector("#btn-curso-editar");                 
-    const btnGuardar    = document.querySelector("#btn-curso-guardar");
-    const btnCancelar   = document.querySelector("#btn-curso-cancelar-edit");
-    const formEdit      = document.querySelector("#form-editable");
-    const formShow      = document.querySelector("#form-ple");
-    const reqSelect     = document.querySelector("#RegCursoRequisitos");
-// DATOS DEL FORM //
-const curs_codi = document.querySelector("#codi_curs");
-const curs_requisits = document.querySelector("#RegCursoRequisitos");
-const curs_inici = document.querySelector("#data_inici ");
-const curs_final = document.querySelector("#fi_curs");
+// Edició inline de curs (vista detalle)
+document.addEventListener("DOMContentLoaded", () => {
+    const btnEditar = document.querySelector("#btn-curso-editar");
+    const btnGuardar = document.querySelector("#btn-curso-guardar");
+    const btnCancelar = document.querySelector("#btn-curso-cancelar-edit");
+    const formEdit = document.querySelector("#form-editable");
+    const formShow = document.querySelector("#form-ple");
+    const formCurso = document.querySelector("#form-curso");
 
+    if (!btnEditar || !btnGuardar || !btnCancelar || !formEdit || !formShow || !formCurso) return;
 
-    
-//console.log(params);
-   // const id            = btn.dataset.id; // per saber el id del curs
-if (btnEditar ) { 
-    btnEditar.addEventListener("click", async (e) => {
+    const inputNombre = document.querySelector("#nom_curs");
+    const inputCodigo = document.querySelector("#codi_curs");
+    const inputFechaInicio = document.querySelector("#data_inici");
+    const inputFechaFin = document.querySelector("#fi_curs");
+    const selectRequisitos = document.querySelector("#RegCursoRequisitos");
 
-        btnGuardar  .classList.remove("hidden");    // fem visible el de guardar 
-        btnCancelar .classList.remove("hidden");    // fem visible el de cancelar edició
-        formEdit    .classList.remove("hidden");    // fem visible el formulari editable
-
-        formShow    .classList.add("hidden");       // amaguem el que mostrava la info
-        btnEditar   .classList.add("hidden");       // ja estem editant, no cal mostrar-lo    
+    btnEditar.addEventListener("click", (e) => {
+        e.preventDefault();
+        btnGuardar.classList.remove("hidden");
+        btnCancelar.classList.remove("hidden");
+        formEdit.classList.remove("hidden");
+        formShow.classList.add("hidden");
+        btnEditar.classList.add("hidden");
     });
-};
 
-if (btnGuardar ) { 
-    btnGuardar.addEventListener("click", async (e) => { 
-// logica de trucada a DB per updatejar les dades del curs
-//console.log(req.params.id);
-    const id = btnGuardar.dataset.id;
-    const data_curso = {
-      codi: curs_codi.value,
-      data_inici: curs_inici.value,
-      data_fi: curs_final.value,
-      requisits: curs_requisits.value,
-    };
-
-    try {    
- console.log(data_curso);
- 
-    const res = await fetch(`/cursos/${id}`, { 
-            method: "PUT" ,
-            headers: { "Content-Type": "application/json" },
-            body : JSON.stringify(data_curso)
-            // body : data_curso
-        });
-    console.log("PUT_RESPONSE: ",res, "_______");
-        
-    } catch (error) {
-        console.log("ERR:: ", error);
-    }  
-
+    btnCancelar.addEventListener("click", () => {
+        btnGuardar.classList.add("hidden");
+        btnCancelar.classList.add("hidden");
+        formEdit.classList.add("hidden");
+        formShow.classList.remove("hidden");
+        btnEditar.classList.remove("hidden");
     });
-} ;
-if (btnCancelar) { 
-    btnCancelar.addEventListener("click", async (e) => { 
-    // logica de retorn al curs sense guardar canvis, tornem a mostrar l'anterior que ja era ple de les dades correctes
-            btnGuardar  .classList.add("hidden");    // fem invisible el de guardar 
-            btnCancelar .classList.add("hidden");    // fem invisible el de cancelar edició
-            formEdit    .classList.add("hidden");    // fem invisible el formulari editable
 
-            formShow    .classList.remove("hidden"); // mostrem el que mostrava la info
-            btnEditar   .classList.remove("hidden"); // ja no estem editant, cal mostrar-lo altre cop
-    });
-};
+    btnGuardar.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const id = btnGuardar.dataset.id;
 
-/*
-const nuevoCurso = await Curso.create({
-            codigo,
-            nombre,
-            fecha_inicio: fecha_inicio || null,
-            fecha_fin: fecha_fin || null,
-            requisitos: requisitos || null
-        });
-
-        req.session.flash = {
-            type: "success",
-            title: "Curs creat",
-            message: `El curs ${nuevoCurso.nombre} s'ha creat correctament.`,
+        // El backend espera estos nombres exactos (campos del modelo Curso)
+        const data = {
+            codigo: inputCodigo?.value || "",
+            nombre: inputNombre?.value || "",
+            fecha_inicio: inputFechaInicio?.value || null,
+            fecha_fin: inputFechaFin?.value || null,
+            requisitos: selectRequisitos?.value || null,
         };
-*/
+
+        try {
+            const res = await fetch(`/cursos/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                body: JSON.stringify(data),
+            });
+            const json = await res.json();
+
+            if (!json.ok) {
+                const msg = json.errores
+                    ? (Array.isArray(json.errores) ? json.errores.join("\n") : Object.values(json.errores).join("\n"))
+                    : (json.error || "Error desconegut");
+                await window.showModal({ type: "error", title: "Error", message: msg });
+                return;
+            }
+
+            window.location.href = json.redirect;
+        } catch (err) {
+            await window.showModal({
+                type: "error",
+                title: "Error",
+                message: "No s'ha pogut desar el curs.",
+            });
+        }
+    });
+});

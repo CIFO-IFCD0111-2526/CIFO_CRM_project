@@ -121,8 +121,12 @@
       <h2 class="detalle-card-title">Dades del curs</h2>
       <dl class="detalle-list">
         <div class="detalle-item">
+          <dt>Nom</dt>
+          <input value="<%= curso.nombre %>" name="nombre_curso" id="nom_curs">
+        </div>
+        <div class="detalle-item">
           <dt>Codi</dt>
-          <input value="<%= curso.codigo || '—' %>" name="codigo_curso" id="codi_curs">
+          <input value="<%= curso.codigo || '' %>" name="codigo_curso" id="codi_curs">
         </div>
         <div class="detalle-item">
           <dt>Data inici</dt>

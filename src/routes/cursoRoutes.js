@@ -19,12 +19,11 @@ router.get("/:id",
 );
 router.delete("/:id",
     loadResource(Curso, { redirectTo: "/cursos" }),
-    controller.eliminarCurso
+    controller.deleteCurso
 );
-////////////////////////////////////////////////////// AFEGIM ENDPOINT PER EDITAR ( put/update )
-router.put("/:id", controller.updateCurso);
-
-////////////////////////////////////////////////////// AFEGIM ENDPOINT PER EDITAR ( put/update )
-router.put("/:id", controller.updateCurso);
+router.put("/:id",
+    loadResource(Curso, { redirectTo: "/cursos" }),
+    controller.updateCurso
+);
 
 module.exports = router;

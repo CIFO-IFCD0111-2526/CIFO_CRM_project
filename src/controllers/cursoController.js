@@ -17,34 +17,14 @@ const getAll = async (req, res, next) => {
 };
 
 /** GET /cursos/:id */
-const getById = async (req, res, next) => {
-    try {
-        const curso = await Curso.findByPk(req.params.id, {
-            include: [
-                Uf,
-                Profesor,
-                Alumno
-            ],
-        });
-        if (!curso) {
-            req.session.flash = {
-                type: "error",
-                title: "No trobat",
-                message: "El curs no existeix.",
-            };
-            return res.redirect("/cursos");
-        }
-
-        res.render("curso-detalle", {
-            titulo: "Busqueda de cursos per ID",
-            usuario: req.session.usuario,
-            css: "cursos.css",
-            js: "cursos.js",
-            curso
-        });
-    } catch (error) {
-        return handleControllerError(error, res, next);
-    }
+const getById = (req, res) => {
+    res.render("curso-detalle", {
+        titulo: "Busqueda de cursos per ID",
+        usuario: req.session.usuario,
+        css: "cursos.css",
+        js: "cursos.js",
+        curso: req.curso
+    });
 };
 
 /** Render del formulario de creación de cursos */
@@ -102,7 +82,6 @@ const createCurso = async (req, res, next) => {
 };
 
 // DELETE /cursos/:id
-
 const deleteCurso = async (req, res, next) => {
     try {
         const curso = req.curso;
@@ -120,30 +99,43 @@ const deleteCurso = async (req, res, next) => {
     }
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// PUT /cursos/:id
 const updateCurso = async (req, res, next) => {
- try {
-    console.log(req.body);
-    
-    const { data_curso } = req.body ;
-    console.log("DATA?",data_curso);
+    try {
+        const curso = req.curso;
+        const { codigo, nombre, fecha_inicio, fecha_fin, requisitos } = req.body;
 
+        const errores = [];
+        if (!codigo) errores.push("El codi és obligatori");
+        if (!nombre) errores.push("El nom és obligatori");
 
- } catch (error) {
-    console.log("ERR:: ", error , " ::ERR")
- }    
+        if (codigo && codigo !== curso.codigo) {
+            const existe = await Curso.findOne({ where: { codigo } });
+            if (existe) errores.push("El codi ja existeix");
+        }
 
-    
+        if (errores.length > 0) {
+            return res.status(400).json({ ok: false, errores });
+        }
 
-};
-// ho guardem per quan ho necessitem
-/* req.session.flash = {
+        await curso.update({
+            codigo,
+            nombre,
+            fecha_inicio: fecha_inicio || null,
+            fecha_fin: fecha_fin || null,
+            requisitos: requisitos !== undefined && requisitos !== "" ? Number(requisitos) : null,
+        });
+
+        req.session.flash = {
             type: "success",
-            title: "Curs editat",
-            message: `El curs {Curso.nombre} s'ha modificat correctament.`,
-            // keepModal: false, // per si hem de fer recarga quan sortim 
+            title: "Curs actualitzat",
+            message: `El curs ${curso.nombre} s'ha actualitzat correctament.`,
         };
 
-*/
-//////////////////////////////////////////////////////////////////////////////////////////////// editarCurso//////////////////////// EDITAR CURSO /////////////////////////////
-module.exports = { getAll, getById, crearCurso, renderNuevoCurso, eliminarCurso, updateCurso };
+        return res.json({ ok: true, redirect: `/cursos/${curso.id}` });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+module.exports = { getAll, getById, createCurso, renderNewCurso, deleteCurso, updateCurso };

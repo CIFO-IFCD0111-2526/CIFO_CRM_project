@@ -44,17 +44,10 @@ const renderNewUf = (req, res) => {
 };
 
 // GET /ufs/:id/editar
-const getEditar = async (req, res) => {
-    const { id } = req.params;
-
-    const uf = await Uf.findByPk(id);
-
-    if (!uf) {
-        return res.redirect("/ufs");
-    }
-
+const getEditForm = (req, res) => {
+    const uf = req.uf;
     res.render("uf-form", {
-        titulo: "Editar UF",
+        titulo: `Editar ${uf.codigo}`,
         usuario: req.session.usuario,
         paginaActual: "ufs",
         css: "ufs.css",
@@ -65,42 +58,35 @@ const getEditar = async (req, res) => {
 };
 
 // PUT /ufs/:id
-const putActualizar = async (req, res) => {
-    const { id } = req.params;
-    const { codigo, nombre, horas } = req.body;
-    const errores = {};
-
-    const uf = await Uf.findByPk(id);
-    if (!uf) {
-        return res.status(404).json({ ok: false, redirect: "/ufs" });
-    }
-
-    // Validacions
-    if (!codigo || codigo.trim() === "") errores.codigo = "El codi és obligatori";
-    if (!nombre || nombre.trim() === "") errores.nombre = "El nom és obligatori";
-    if (horas && isNaN(Number(horas))) errores.horas = "Les hores han de ser numèriques";
-
-    // Codi únic (només si s'ha proporcionat i ha canviat)
-    if (codigo && codigo.trim() !== "" && codigo !== uf.codigo && !errores.codigo) {
-        const existente = await Uf.findOne({ where: { codigo } });
-        if (existente) errores.codigo = "El codi ja existeix";
-    }
-
-    if (Object.keys(errores).length > 0) {
-        return res.status(400).json({ ok: false, errores });
-    }
+const updateUf = async (req, res, next) => {
     try {
+        const uf = req.uf;
+        const { codigo, nombre, horas } = req.body;
+        const errores = {};
+
+        if (!codigo || codigo.trim() === "") errores.codigo = "El codi és obligatori";
+        if (!nombre || nombre.trim() === "") errores.nombre = "El nom és obligatori";
+        if (horas && isNaN(Number(horas))) errores.horas = "Les hores han de ser numèriques";
+
+        if (codigo && codigo.trim() !== "" && codigo !== uf.codigo && !errores.codigo) {
+            const existente = await Uf.findOne({ where: { codigo } });
+            if (existente) errores.codigo = "El codi ja existeix";
+        }
+
+        if (Object.keys(errores).length > 0) {
+            return res.status(400).json({ ok: false, errores });
+        }
+
         await uf.update({
             codigo,
             nombre,
             horas: horas ? Number(horas) : null,
         });
 
-        // missatge d'èxit
         req.session.flash = {
             type: "success",
             title: "UF actualitzada",
-            message: "Les dades s'han desat correctament."
+            message: `La UF ${uf.codigo} s'ha actualitzat correctament.`,
         };
 
         return res.json({
@@ -108,7 +94,7 @@ const putActualizar = async (req, res) => {
             redirect: `/ufs/${uf.id}`,
         });
     } catch (error) {
-        return res.status(500).json({ ok: false, error: error.message });
+        return handleControllerError(error, res, next);
     }
 };
 
@@ -157,12 +143,9 @@ const createUf = async (req, res, next) => {
 //DELETE/ufs/:id
 const deleteUf = async (req, res, next) => {
     try {
-        const uf = await Uf.findByPk(req.params.id);
-        if (!uf) return res.status(404).json({
-            ok: false,
-            message: "UF no trobada."
-        });
+        const uf = req.uf;
         await uf.destroy();
+
         req.session.flash = {
             type: "success",
             title: "UF eliminada",
@@ -174,4 +157,4 @@ const deleteUf = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, getById, renderNewUf, createUf, deleteUf };
+module.exports = { getAll, getById, renderNewUf, createUf, getEditForm, updateUf, deleteUf };
