@@ -6,7 +6,7 @@ const { handleControllerError } = require("../middlewares/errorHandler");
 const getAll = async (req, res, next) => {
     try {
         const alumnos = await Alumno.findAll({
-            order: [["apellidos", "ASC"]],
+            order: [["created_at", "DESC"]],
         });
         res.render("alumnos", {
             titulo: "Mostrar Alumnes",
@@ -52,13 +52,13 @@ const createAlumno = async (req, res, next) => {
             nombre,
             apellidos,
             dni,
-            telefono,
-            email,
-            nivel_estudios,
+            telefono: telefono || null,
+            email: email || null,
+            nivel_estudios: nivel_estudios || null,
             tipo,
-            derechos_imagen,
-            cesion_material,
-            comentarios,
+            derechos_imagen: derechos_imagen === "true" || derechos_imagen === true,
+            cesion_material: cesion_material === "true" || cesion_material === true,
+            comentarios: comentarios || null,
             ultimo_id_modif: req.session.usuario.id,
         });
 

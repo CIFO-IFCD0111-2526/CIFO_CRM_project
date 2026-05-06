@@ -30,7 +30,6 @@
 } */
 
 #busquedaAlumno {
-  width: 50%;
   padding: 8px !important;
   font-size: 14px;
   color: var(--color-texto-principal);

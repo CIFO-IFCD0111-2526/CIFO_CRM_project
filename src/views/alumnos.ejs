@@ -3,18 +3,18 @@
     <h1 class="page-title">Alumnes</h1>
     <p class="page-subtitle">Llistat d'alumnes registrats al centre</p>
   </div>
-  <a href="/alumnos/nuevo" class="btn btn-primario">Nou alumne</a>
-</div>
-<div class="buscador-wrapper">
-  <div class="buscador-alumnos">
-    <input
-      type="text"
-      id="busquedaAlumno"
-      placeholder="Buscar alumne..."
-      autocomplete="off"
-    />
+  <div class="buscador-wrapper">
+    <div class="buscador-alumnos">
+      <input
+        type="text"
+        id="busquedaAlumno"
+        placeholder="Buscar alumne..."
+        autocomplete="off"
+      />
+    </div>
+    <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
-  <div id="dropdownResultados" class="dropdown hidden"></div>
+  <a href="/alumnos/nuevo" class="btn btn-primario">Nou alumne</a>
 </div>
 <% if (alumnos && alumnos.length > 0) { %>
   <div class="tabla-container">
