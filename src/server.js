@@ -3,6 +3,7 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const session = require("express-session");
+const MySQLStore = require("express-mysql-session")(session);
 const { flash }  = require("./middlewares/flash.js");
 const expressLayouts = require("express-ejs-layouts");
 //seeders
@@ -31,14 +32,25 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true })); // para leer formularios
 
 // -------------------------------------------------------
-// Sesiones
+// Sesiones (persistidas en MySQL)
 // -------------------------------------------------------
-// express-session guarda datos del usuario en el servidor.
+// express-session guarda los datos del usuario en el servidor.
 // El navegador solo recibe una cookie con el ID de la sesión.
-// Así podemos saber si el usuario ha hecho login o no.
+// MySQLStore persiste las sesiones en la BD, así sobreviven a
+// reinicios del proceso Node (sin doble login al reiniciar).
+
+const sessionStore = new MySQLStore({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  createDatabaseTable: true,
+});
 
 server.use(session({
   secret: process.env.SESSION_SECRET,
+  store: sessionStore,
   resave: false,              // no reguardar si no ha cambiado
   saveUninitialized: false,   // no crear sesión para visitantes anónimos
   cookie: {
@@ -92,18 +104,19 @@ async function startServer() {
   try {
     await ensureDatabaseExists();
     await sequelize.authenticate();
-    console.log("Conexión a MySQL OK.");
+    console.log("Conexió a MySQL OK.");
 
     await sequelize.sync();
-    console.log("Modelos sincronizados.");
+    console.log("Models sincronizats.");
     await seeder.seedAlumnos();
     await seeder.seedCursos();
     await seeder.seedUfs();
+    await seeder.seedProfesores();
     server.listen(PORT, () => {
       console.log(`Servidor en http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error("Error al iniciar:", error.message);
+    console.error("Error en iniciar:", error.message);
     process.exit(1);
   }
 }

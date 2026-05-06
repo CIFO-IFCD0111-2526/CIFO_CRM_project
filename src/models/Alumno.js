@@ -19,8 +19,8 @@ const Alumno = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
       validate: {
-        notEmpty: { msg: "El nombre no puede estar vacío" },
-        len: { args: [2, 100], msg: "El nombre debe tener entre 2 y 100 caracteres" },
+        notEmpty: { msg: "El nom no pot estar buit" },
+        len: { args: [2, 100], msg: "El nom ha de tenir entre 2 i 100 caràcters" },
       },
     },
 
@@ -28,7 +28,7 @@ const Alumno = sequelize.define(
       type: DataTypes.STRING(150),
       allowNull: false,
       validate: {
-        notEmpty: { msg: "Los apellidos no pueden estar vacíos" },
+        notEmpty: { msg: "Els cognoms no poden estar buits" },
       },
     },
 
@@ -36,11 +36,11 @@ const Alumno = sequelize.define(
       type: DataTypes.STRING(20),
       allowNull: false,
       unique: {
-        msg: "Este DNI ya está registrado",
+        msg: "Aquest DNI ja està registrat",
       },
       validate: {
         notEmpty: {
-          msg: "El DNI no puede estar vacío",
+          msg: "El DNI no pot estar buit",
         },
       },
     },
@@ -55,7 +55,7 @@ const Alumno = sequelize.define(
       allowNull: true,
       validate: {
         isEmail: {
-          msg: "Debe ser un email válido",
+          msg: "Ha de ser un email vàlid",
         },
       },
     },
@@ -70,7 +70,7 @@ const Alumno = sequelize.define(
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "El tipo es obligatorio",
+          msg: "El tipus és obligatori",
         },
       },
     },

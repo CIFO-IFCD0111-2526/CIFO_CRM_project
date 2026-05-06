@@ -15,8 +15,8 @@ const Curso = sequelize.define(
             type: DataTypes.STRING(100),
             allowNull: false,
             validate: {
-                notEmpty: { msg: "El nombre del curso no puede estar vacío" },
-                len: { args: [2, 100], msg: "El nombre debe tener entre 2 y 100 caracteres" },
+                notEmpty: { msg: "El nom del curs no pot estar buit" },
+                len: { args: [2, 100], msg: "El nom ha de tenir entre 2 i 100 caràcters" },
             },
         },
         codigo: {

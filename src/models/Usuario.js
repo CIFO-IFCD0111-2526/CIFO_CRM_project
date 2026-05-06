@@ -18,23 +18,23 @@ const Usuario = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
       validate: {
-        notEmpty: { msg: "El nombre no puede estar vacío" },
-        len: { args: [2, 100], msg: "El nombre debe tener entre 2 y 100 caracteres" },
+        notEmpty: { msg: "El nom no pot estar buit" },
+        len: { args: [2, 100], msg: "El nom ha de tenir entre 2 i 100 caràcters" },
       },
     },
     apellidos: {
       type: DataTypes.STRING(150),
       allowNull: false,
       validate: {
-        notEmpty: { msg: "Los apellidos no pueden estar vacíos" },
+        notEmpty: { msg: "Els cognoms no poden estar buits" },
       },
     },
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      unique: { msg: "Este email ya está registrado" },
+      unique: { msg: "Aquest email ja està registrat" },
       validate: {
-        isEmail: { msg: "Debe ser un email válido" },
+        isEmail: { msg: "Ha de ser un email vàlid" },
       },
     },
     password: {
