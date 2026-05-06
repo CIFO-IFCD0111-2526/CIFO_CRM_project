@@ -121,3 +121,70 @@ document.addEventListener("click", async (e) => {
     });
   }
 });
+
+// Buscador d'profesores amb autocompletar
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("busquedaProfesor");
+  const dropdown = document.getElementById("dropdownResultados");
+  if (input && dropdown) initBuscador(input, dropdown);
+});
+
+function initBuscador(input, dropdown) {
+  let debounceTimer = null;
+
+  input.addEventListener("input", () => {
+    const query = input.value.trim();
+    if (query.length < 2) {
+      cerrarDropdown();
+      return;
+    }
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => searchProfesores(query), 250);
+  });
+
+  async function searchProfesores(query) {
+    try {
+      const res = await fetch(`/profesores/buscar?q=${encodeURIComponent(query)}`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+      renderResultados(data);
+    } catch (error) {
+      console.error("Error en cerca:", error);
+    }
+  }
+
+  function renderResultados(profesores) {
+    dropdown.innerHTML = "";
+    if (!profesores.length) {
+      dropdown.innerHTML = `<div class="item empty">Sense resultats</div>`;
+    } else {
+      profesores.forEach((profesor) => {
+        const item = document.createElement("div");
+        item.classList.add("item");
+        item.textContent = `${profesor.apellidos}, ${profesor.nombre} — ${profesor.email}`;
+        item.addEventListener("click", () => {
+          window.location.href = `/profesores/${profesor.id}`;
+        });
+        dropdown.appendChild(item);
+      });
+    }
+    dropdown.classList.remove("hidden");
+  }
+
+  function cerrarDropdown() {
+    dropdown.classList.add("hidden");
+    dropdown.innerHTML = "";
+  }
+
+  input.addEventListener("blur", () => {
+    setTimeout(cerrarDropdown, 150);
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      cerrarDropdown();
+      input.blur();
+    }
+  });
+}

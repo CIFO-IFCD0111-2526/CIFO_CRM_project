@@ -12,6 +12,9 @@ const { Profesor, Curso } = require("../models");
 
 router.use(authPage);
 
+// Ruta para buscar profesores por nombre o apellido
+router.get("/buscar", profesorController.searchProfesor);
+
 router.get("/nuevo", profesorController.renderNewProfesor);
 router.get("/", profesorController.getAll);
 router.post("/", profesorController.createProfesor);
