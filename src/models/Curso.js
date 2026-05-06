@@ -37,6 +37,7 @@ const Curso = sequelize.define(
                     1: "En curs",
                     2: "A futur",
                 };
+            },
         }, 
         requisitos: {
             type: DataTypes.INTEGER,
