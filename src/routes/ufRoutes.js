@@ -9,6 +9,9 @@ const router = Router();
 // Todas las rutas de UFs requieren autenticación
 router.use(authPage);
 
+//Ruta para buscar UFs (para el buscador en la vista)
+router.get("/buscar", controller.searchUfs);
+
 router.get("/", controller.getAll);
 router.get("/nuevo", controller.renderNewUf);
 router.post("/", controller.createUf);

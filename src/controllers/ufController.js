@@ -1,5 +1,7 @@
+const { Op } = require("sequelize");
 const { Uf, Curso } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
+
 // GET /ufs
 const getAll = async (req, res, next) => {
     try {
@@ -157,4 +159,36 @@ const deleteUf = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, getById, renderNewUf, createUf, getEditForm, updateUf, deleteUf };
+const searchUfs = async (req, res, next) => {
+    const q = (req.query.q || "").trim();
+    const tipo = (req.query.tip || "").trim().toLowerCase();
+
+    // Si hi ha menys de 2 caràcters → retornem array buit
+    if (q.length < 2) {
+        return res.json([]);
+    }
+
+    // Construïm el filtre de cerca
+    const where = {
+        [Op.or]: [
+            { codigo: { [Op.like]: `%${q}%` } },
+            { nombre: { [Op.like]: `%${q}%` } }
+        ]
+    };
+
+    try {
+        const ufs = await Uf.findAll({
+            where,
+            limit: 10,
+            order: [["codigo", "ASC"]],
+            attributes: ["id", "codigo", "nombre", "horas"]
+        });
+
+        return res.json(ufs);
+
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+module.exports = { getAll, getById, renderNewUf, createUf, getEditForm, updateUf, deleteUf, searchUfs };
