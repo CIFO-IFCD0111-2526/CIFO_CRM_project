@@ -105,17 +105,15 @@ const updateCurso = async (req, res, next) => {
         const curso = req.curso;
         const { codigo, nombre, fecha_inicio, fecha_fin, requisitos } = req.body;
 
-        const errores = [];
-        if (!codigo) errores.push("El codi és obligatori");
-        if (!nombre) errores.push("El nom és obligatori");
-
-        if (codigo && codigo !== curso.codigo) {
-            const existe = await Curso.findOne({ where: { codigo } });
-            if (existe) errores.push("El codi ja existeix");
+        if (!codigo || !nombre) {
+            return res.status(400).json({ ok: false, mensaje: "Tots els camps són obligatoris" });
         }
 
-        if (errores.length > 0) {
-            return res.status(400).json({ ok: false, errores });
+        if (codigo !== curso.codigo) {
+            const existe = await Curso.findOne({ where: { codigo } });
+            if (existe) {
+                return res.status(400).json({ ok: false, error: "Ja existeix un altre curs amb aquest codi" });
+            }
         }
 
         await curso.update({
