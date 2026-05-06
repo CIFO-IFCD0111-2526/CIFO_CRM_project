@@ -1,6 +1,5 @@
 const { Curso, Alumno, CursoAlumno, Uf, Profesor } = require("../models");
 const { Op } = require("sequelize");
-
 const { handleControllerError } = require("../middlewares/errorHandler");
 
 /** GET /cursos con paginacion */
