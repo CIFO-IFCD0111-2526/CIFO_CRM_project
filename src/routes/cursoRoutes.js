@@ -13,6 +13,7 @@ router.use(authPage);
 router.get('/nuevo', controller.renderNewCurso);
 router.post('/', controller.createCurso);
 router.get("/", controller.getAll);
+router.get("/buscar", controller.searchCurso);
 router.get("/:id",
     loadResource(Curso, { redirectTo: "/cursos", include: [Uf, Profesor, Alumno] }),
     controller.getById

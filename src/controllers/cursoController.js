@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Curso, Alumno, Uf, Profesor } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 /** GET /cursos */
@@ -80,6 +81,39 @@ const createCurso = async (req, res, next) => {
         return handleControllerError(error, res, next);
     }
 };
+
+/** GET /cursos/buscar?q=... */
+const searchCurso = async (req, res, next) => {
+    try {
+        const q = (req.query.q || "").trim();
+
+        // Si hi ha menys de 2 caràcters → retornem array buit
+        if (q.length < 2) {
+            return res.json([]);
+        }
+
+        // Construïm el filtre de cerca
+        const where = {
+            [Op.or]: [
+                { nombre: { [Op.like]: `%${q}%` } },
+                { codigo: { [Op.like]: `%${q}%` } }
+            ]
+        };
+
+        const cursos = await Curso.findAll({
+            where,
+            limit: 10,
+            order: [["codigo", "ASC"]],
+            attributes: ["id", "codigo", "nombre", "fecha_inicio", "fecha_fin"]
+        });
+
+        return res.json(cursos);
+
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
 
 // DELETE /cursos/:id
 const deleteCurso = async (req, res, next) => {
