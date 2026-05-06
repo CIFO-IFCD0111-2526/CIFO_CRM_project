@@ -31,14 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
     profesorMsg.classList.remove("error-msg");
   };
 
-  if (sessionStorage.getItem("professorCreat")) {
-    sessionStorage.removeItem("professorCreat");
-    window.showModal?.({
-      type: "success",
-      title: "Professor creat",
-      message: "Has creat el professor correctament.",
-    });
-  }
 
   [nombre, apellidos, email].forEach((input) => {
     if (!input) return;
@@ -94,12 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-  if (profesorId) {
     window.location.href = json.redirect;
-  } else {
-    sessionStorage.setItem("professorCreat", "true");
-    window.location.href = json.redirect;
-  }
   });
 });
 
