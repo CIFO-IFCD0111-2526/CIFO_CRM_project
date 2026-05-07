@@ -277,3 +277,69 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+// Buscador de cursos amb autocompletar
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("busquedaCurso");
+    const dropdown = document.getElementById("dropdownResultados");
+    if (input && dropdown) initBuscador(input, dropdown);
+});
+
+function initBuscador(input, dropdown) {
+    let debounceTimer = null;
+
+    input.addEventListener("input", () => {
+        const query = input.value.trim();
+        if (query.length < 2) {
+            cerrarDropdown();
+            return;
+        }
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => searchCursos(query), 250);
+    });
+
+    async function searchCursos(query) {
+        try {
+            const res = await fetch(`/cursos/buscar?q=${encodeURIComponent(query)}`, {
+                credentials: "include",
+            });
+            const data = await res.json();
+            renderResultados(data);
+        } catch (error) {
+            console.error("Error en cerca:", error);
+        }
+    }
+
+    function renderResultados(cursos) {
+        dropdown.innerHTML = "";
+        if (!cursos.length) {
+            dropdown.innerHTML = `<div class="item empty">Sense resultats</div>`;
+        } else {
+            cursos.forEach((curso) => {
+                const item = document.createElement("div");
+                item.classList.add("item");
+                item.textContent = `${curso.codigo} — ${curso.nombre}`;
+                item.addEventListener("click", () => {
+                    window.location.href = `/cursos/${curso.id}`;
+                });
+                dropdown.appendChild(item);
+            });
+        }
+        dropdown.classList.remove("hidden");
+    }
+
+    function cerrarDropdown() {
+        dropdown.classList.add("hidden");
+        dropdown.innerHTML = "";
+    }
+
+    input.addEventListener("blur", () => {
+        setTimeout(cerrarDropdown, 150);
+    });
+
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            cerrarDropdown();
+            input.blur();
+        }
+    });
+}
