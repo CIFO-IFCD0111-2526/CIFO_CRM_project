@@ -1,4 +1,4 @@
-const { Curso, Alumno,CursoAlumno, Uf, Profesor } = require("../models");
+const { Curso, Alumno, CursoAlumno, Uf, Profesor } = require("../models");
 const { Op } = require("sequelize");
 
 const { handleControllerError } = require("../middlewares/errorHandler");
@@ -240,9 +240,15 @@ const deleteAlumnoFromCurso = async (req, res, next) => {
 // POST /cursos/:id/profesores
 const asignarProfesor = async (req, res, next) => {
     try {
-        console.log("HOLI");
-        const profesorId  = req.body.profesorId;
-        console.log(profesorId);
+        const curso_id = parseInt(req.params.id);
+        const profesor_id  = req.body.profesor_id;
+        console.log(curso_id, profesor_id);
+
+        const cursoInsert = await Curso.findByPk(curso_id);
+        const profesorInsert = await Profesor.findByPk(profesor_id);
+        cursoInsert.addProfesor(profesorInsert);
+
+        // VERIFICACION INNER JOIN MEDIANTE SEQUEALIZE DE PROFESOR ASIGNADO A OTRO CURSO (CONSULTAR DOCS\SQUELIZE-JOINS.MD)
         /* const alrAssigned = await Curso.findOne({ where: { estado: 1, profesor_id: profesorId } });
         ({ 
         const alrAssigned = await Curso.findOne({
@@ -256,7 +262,7 @@ const asignarProfesor = async (req, res, next) => {
                 },
             },
             ],
-        }); */
+        }); 
         const alrAssigned = await Profesor.findAll({
           include: {
             model: Curso,
@@ -269,6 +275,10 @@ const asignarProfesor = async (req, res, next) => {
         });
         console.log(alrAssigned);
         return res.json({ ok: true });
+        */
+       
+        return res.json({ ok: true });
+
         } catch (error) {
         return handleControllerError(error, res, next);
     }
