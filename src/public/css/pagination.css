@@ -1,0 +1,35 @@
+.pagination-wrapper {
+    margin: 0 2rem 2rem;
+    max-width: calc(100% - 4rem);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.5rem 0 1.5rem;
+    flex-wrap: wrap;
+}
+
+.pagination-info {
+    font-size: 14px;
+    color: var(--color-texto-etiquetas);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.pagination a {
+    transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+    transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+    .pagination-wrapper {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+}
