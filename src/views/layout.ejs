@@ -1,31 +1,27 @@
 <!DOCTYPE html>
 <html lang="ca">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= titulo %> | CIFO La Violeta
-    </title>
+    <title><%= titulo %> | CIFO La Violeta</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/modal.css">
     <% if (locals.css) { %>
         <link rel="stylesheet" href="/css/<%= css %>">
-        <% } %>
-            <% if (typeof styles !=='undefined' ) { %>
-                <%- styles %>
-                    <% } %>
-                        <script src="/js/main.js" defer></script>
-                        <script src="/js/modal.js" defer></script>
-                        <% if (locals.js) { %>
-                            <script src="/js/<%= js %>" defer></script>
-                            <% } %>
+    <% } %>
+    <% if (typeof styles !== 'undefined') { %>
+        <%- styles %>
+    <% } %>
+    <script src="/js/main.js" defer></script>
+    <script src="/js/modal.js" defer></script>
+    <% if (locals.js) { %>
+        <script src="/js/<%= js %>" defer></script>
+    <% } %>
 </head>
-
 <body>
     <div class="app-container">
-        <% if (typeof usuario !=='undefined' && usuario) { %>
+        <% if (typeof usuario !== 'undefined' && usuario) { %>
             <nav>
                 <div class="nav-logo">
                     <img src="/images/logo.webp" alt="CIFO La Violeta">
@@ -47,11 +43,11 @@
                     <a href="/profesores" class="<% if (locals.paginaActual === 'profesores') { %>active<% } %>">
                         <i class="fa-solid fa-chalkboard-user"></i> Professors
                     </a>
-                    <% if (usuario.nivel_acceso==='admin' ) { %>
+                    <% if (usuario.nivel_acceso === 'admin') { %>
                         <a href="/usuarios" class="<% if (locals.paginaActual === 'usuarios') { %>active<% } %>">
                             <i class="fa-solid fa-gear"></i> Administració
                         </a>
-                        <% } %>
+                    <% } %>
                 </div>
 
                 <div class="nav-bottom">
@@ -60,33 +56,29 @@
                     </button>
                 </div>
             </nav>
-            <% } %>
-
-    <div class="main-wrapper <%= (typeof usuario !== 'undefined' && usuario) ? 'with-nav' : '' %>">
-        <% if (typeof usuario !=='undefined' && usuario) { %>
-            <header class="topbar">
-                <div class="topbar-right">
-                    <a href="/perfil" class="topbar-user">
-                        <div class="topbar-avatar">
-                            <%= usuario.nombre.charAt(0) %><%= usuario.apellidos.charAt(0) %>
-                        </div>
-                        <div class="topbar-info">
-                            <span class="topbar-nombre">
-                                <%= usuario.nombre %>
-                            </span>
-                            <span class="topbar-rol">
-                                <%= usuario.nivel_acceso %>
-                            </span>
-                        </div>
-                    </a>
-                </div>
-            </header>
         <% } %>
 
-        <main>
-            <%- body %>
-        </main>
-    </div>
+        <div class="main-wrapper <%= (typeof usuario !== 'undefined' && usuario) ? 'with-nav' : '' %>">
+            <% if (typeof usuario !== 'undefined' && usuario) { %>
+                <header class="topbar">
+                    <div class="topbar-right">
+                        <a href="/perfil" class="topbar-user">
+                            <div class="topbar-avatar">
+                                <%= usuario.nombre.charAt(0) %><%= usuario.apellidos.charAt(0) %>
+                            </div>
+                            <div class="topbar-info">
+                                <span class="topbar-nombre"><%= usuario.nombre %></span>
+                                <span class="topbar-rol"><%= usuario.nivel_acceso %></span>
+                            </div>
+                        </a>
+                    </div>
+                </header>
+            <% } %>
+
+            <main>
+                <%- body %>
+            </main>
+        </div>
     </div>
 
     <div id="appModal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
@@ -104,12 +96,11 @@
         </div>
     </div>
     <% if (locals.flash) { %>
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                window.showModal(<%- JSON.stringify(locals.flash) %>);
-            });
-        </script>
-        <% } %>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        window.showModal(<%- JSON.stringify(locals.flash) %>);
+        });
+    </script>
+    <% } %>
 </body>
-
 </html>
