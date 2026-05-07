@@ -1,5 +1,4 @@
-const { Op } = require("sequelize");
-const { Curso, Alumno, Uf, Profesor } = require("../models");
+const { Curso, Alumno,CursoAlumno, Uf, Profesor } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 /** GET /cursos */
 const getAll = async (req, res, next) => {
@@ -169,5 +168,55 @@ const updateCurso = async (req, res, next) => {
         return handleControllerError(error, res, next);
     }
 };
+const addAlumnoToCurso = async (req, res, next) => {
+    try {
+        const cursoId = req.params.id;
+        const { alumnoId } = req.body;
 
-module.exports = { getAll, getById, createCurso, renderNewCurso, searchCurso, deleteCurso, updateCurso };
+        if (!alumnoId) {
+            return res.status(400).json({
+                ok: false,
+                error: "Falta alumnoId"
+            });
+        }
+
+        // comprobar que existe el curso
+        const curso = await Curso.findByPk(cursoId);
+        if (!curso) {
+            return res.status(404).json({
+                ok: false,
+                error: "Curs no trobat"
+            });
+        }
+
+        // comprobar duplicado
+        const exists = await CursoAlumno.findOne({
+            where: {
+                curso_id: cursoId,
+                alumno_id: alumnoId
+            }
+        });
+
+        if (exists) {
+            return res.status(400).json({
+                ok: false,
+                error: "Aquest alumne ja està matriculat en aquest curs"
+            });
+        }
+
+        // crear matrícula
+        await CursoAlumno.create({
+            curso_id: cursoId,
+            alumno_id: alumnoId,
+            estat: false
+        });
+
+        return res.json({
+            ok: true
+        });
+
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+module.exports = { getAll, getById, createCurso, renderNewCurso, deleteCurso, updateCurso,addAlumnoToCurso };

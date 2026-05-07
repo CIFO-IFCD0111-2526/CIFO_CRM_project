@@ -26,5 +26,5 @@ router.put("/:id",
     loadResource(Curso, { redirectTo: "/cursos" }),
     controller.updateCurso
 );
-
+router.post("/:id/alumnos",controller.addAlumnoToCurso);
 module.exports = router;

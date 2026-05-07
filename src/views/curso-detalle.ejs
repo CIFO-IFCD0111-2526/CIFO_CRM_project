@@ -101,7 +101,7 @@
     <section class="detalle-card">
       <h2 class="detalle-card-title">Professors</h2>
       <% if (curso.Profesors && curso.Profesors.length > 0) { %>
-        <ul class="detalle-cursos">
+        <ul class="detalle-cursos" >
           <% curso.Profesors.forEach(prof => { %>
             <li>
               <span class="curso-nombre"><%= prof.nombre %> <%= prof.apellidos %></span>
@@ -114,18 +114,54 @@
     </section>
 
     <section class="detalle-card detalle-full">
+       <div class="card-header-alumnos">
       <h2 class="detalle-card-title">Alumnes</h2>
+      
+    <div class="header-actions"> 
+      <button type = "button" id="btnMostrarBuscador" class="btn btn-secundario js-open-matricula">
+        Inscriure alumne
+      </button>
+      <button type="button" id="btnCancelarMatricula" class="btn btn-secundario cancelar-btn hidden">
+        Cancel·lar
+      </button>
+    </div>
+       </div>
       <% if (curso.Alumnos && curso.Alumnos.length > 0) { %>
-        <ul class="detalle-cursos">
+        <ul class="detalle-cursos" id="listaAlumnosCurso">
           <% curso.Alumnos.forEach(al => { %>
-            <li>
-              <span class="curso-nombre"><%= al.nombre %> <%= al.apellidos %></span>
+            <li class="curso-alumno-item">
+              <span class="alumno-nombre"><%= al.nombre %> <%= al.apellidos %></span>
+            <button
+            type="button"
+            class="btn btn-danger btn-sm btn-desmatricular"
+            data-curso-id="<%= curso.id %>"
+            data-alumno-id="<% al.id %>"
+            >
+            Dar de baixa
+          </button>
+
             </li>
           <% }) %>
         </ul>
       <% } else { %>
         <p class="detalle-empty">No hi ha alumnes matriculats.</p>
       <% } %>
+       <!-- BUSCADOR (SEPARADO FUNCIONALMENTE) -->
+  <div id="matriculaBox" class="matricula-box hidden">
+
+    <div class="buscador-wrapper">
+      <div class="buscador-alumnos">
+        <input
+          type="text"
+          id="busquedaAlumnoCurso"
+          placeholder="Buscar alumne..."
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div id="dropdownAlumnosCurso" class="dropdown hidden"></div>
+  </div>
     </section>
 
   </div>

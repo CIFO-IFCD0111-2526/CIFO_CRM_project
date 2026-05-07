@@ -343,3 +343,235 @@ function initBuscador(input, dropdown) {
         }
     });
 }
+
+//Modo matricular alumno
+document.addEventListener("DOMContentLoaded", () => {
+
+    const btnMostrar = document.querySelector("#btnMostrarBuscador");
+    const btnCancelar = document.querySelector("#btnCancelarMatricula");
+    const box = document.querySelector("#matriculaBox");
+
+    if (btnMostrar && btnCancelar && box) {
+
+        btnMostrar.addEventListener("click", () => {
+
+            box.classList.remove("hidden");
+            btnCancelar.classList.remove("hidden");
+            btnMostrar.classList.add("hidden");
+
+        });
+
+        btnCancelar.addEventListener("click", () => {
+
+            box.classList.add("hidden");
+            btnCancelar.classList.add("hidden");
+            btnMostrar.classList.remove("hidden");
+
+        });
+
+    }
+
+    const input = document.querySelector("#busquedaAlumnoCurso");
+    const dropdown = document.querySelector("#dropdownAlumnosCurso");
+
+    if (!input || !dropdown) return;
+
+    initBuscadorCurso(input, dropdown, async (alumno) => {
+
+        const ok = await window.showConfirm({
+            title: "Inscriure alumne",
+            message:
+                `Segur que vols inscriure ${alumno.nombre} ${alumno.apellidos}?`,
+            confirmText: "Inscriure",
+            cancelText: "Cancel·lar",
+        });
+
+        if (!ok) return;
+        const cursoId = document.querySelector("#cursoForm").dataset.id;
+
+        try {
+
+            const res = await fetch(`/cursos/${cursoId}/alumnos`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    alumnoId: alumno.id,
+                }),
+            });
+
+            const json = await res.json();
+
+            if (!res.ok || !json.ok) {
+
+                await window.showModal({
+                    type: "error",
+                    title: "Error",
+                    message: json.error || "No s'ha pogut inscriure l'alumne",
+                });
+
+                return;
+
+            }
+
+
+            const ul = document.querySelector("#listaAlumnosCurso");
+
+            const li = document.createElement("li");
+            li.classList.add("curso-alumno-item");
+
+            li.innerHTML = `
+        <span class="alumno-nombre">
+          ${alumno.nombre} ${alumno.apellidos}
+        </span>
+        <button
+          type="button"
+          class="btn btn-danger btn-sm btn-desmatricular"
+          data-alumno-id="${alumno.id}"
+          data-curso-id="${cursoId}"
+        >
+          Dar de baixa
+        </button>
+      `;
+
+            ul.appendChild(li);
+
+            input.value = "";
+            await window.showModal({
+                type: "success",
+                title: "Matrícula correcta",
+                message: `${alumno.nombre} ${alumno.apellidos} s'ha inscrit correctament al curs.`,
+            });
+        } catch (err) {
+
+            console.error(err);
+
+            await window.showModal({
+                type: "error",
+                title: "Error",
+                message: "Error de connexió amb el servidor",
+            });
+
+        }
+    });
+
+});
+
+function initBuscadorCurso(input, dropdown, onSelect) {
+
+    let debounceTimer = null;
+
+    input.addEventListener("input", () => {
+
+        const query = input.value.trim();
+
+        if (query.length < 2) {
+
+            cerrarDropdown();
+            return;
+
+        }
+
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+
+            searchAlumnos(query);
+
+        }, 250);
+
+    });
+
+    async function searchAlumnos(query) {
+
+        try {
+            console.log("Buscando:", query);
+            const res = await fetch(
+                `/alumnos/buscar?q=${encodeURIComponent(query)}`,
+                {
+                    credentials: "include",
+                }
+            );
+
+            const data = await res.json();
+            renderResultados(data);
+
+        } catch (error) {
+
+            console.error("Error en cerca:", error);
+
+        }
+
+    }
+
+    function renderResultados(alumnos) {
+
+        dropdown.innerHTML = "";
+
+        if (!alumnos.length) {
+
+            dropdown.innerHTML = `
+        <div class="item empty">
+          Sense resultats
+        </div>
+      `;
+
+        } else {
+
+            alumnos.forEach((alumno) => {
+
+                const item = document.createElement("div");
+
+                item.classList.add("item");
+
+                item.textContent =
+                    `${alumno.apellidos}, ${alumno.nombre} — ${alumno.dni}`;
+
+                item.addEventListener("click", () => {
+
+                    cerrarDropdown();
+
+                    if (typeof onSelect === "function") {
+
+                        onSelect(alumno);
+
+                    }
+
+                });
+
+                dropdown.appendChild(item);
+
+            });
+
+        }
+
+        dropdown.classList.remove("hidden");
+
+    }
+
+    function cerrarDropdown() {
+
+        dropdown.classList.add("hidden");
+        dropdown.innerHTML = "";
+
+    }
+
+    input.addEventListener("blur", () => {
+
+        setTimeout(cerrarDropdown, 150);
+
+    });
+
+    input.addEventListener("keydown", (e) => {
+
+        if (e.key === "Escape") {
+
+            cerrarDropdown();
+            input.blur();
+
+        }
+
+    });
+
+}
