@@ -114,6 +114,7 @@ async function startServer() {
     await seeder.seedProfesores();
     server.listen(PORT, () => {
       console.log(`Servidor en http://localhost:${PORT}`);
+      console.error(`\x1b[33m ${process.env.MOTD} \x1b[0m `);
     });
   } catch (error) {
     console.error("Error en iniciar:", error.message);
