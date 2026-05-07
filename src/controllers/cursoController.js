@@ -221,4 +221,4 @@ const addAlumnoToCurso = async (req, res, next) => {
         return handleControllerError(error, res, next);
     }
 };
-module.exports = { getAll, getById, createCurso, renderNewCurso, deleteCurso, updateCurso,addAlumnoToCurso };
+module.exports = { getAll, getById, createCurso, renderNewCurso,searchCurso, deleteCurso, updateCurso,addAlumnoToCurso };
