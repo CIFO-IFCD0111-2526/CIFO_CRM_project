@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Curso, Alumno, Uf, Profesor } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 /** GET /cursos */
@@ -81,6 +82,39 @@ const createCurso = async (req, res, next) => {
     }
 };
 
+/** GET /cursos/buscar?q=... */
+const searchCurso = async (req, res, next) => {
+    try {
+        const q = (req.query.q || "").trim();
+
+        // Si hi ha menys de 2 caràcters → retornem array buit
+        if (q.length < 2) {
+            return res.json([]);
+        }
+
+        // Construïm el filtre de cerca
+        const where = {
+            [Op.or]: [
+                { nombre: { [Op.like]: `%${q}%` } },
+                { codigo: { [Op.like]: `%${q}%` } }
+            ]
+        };
+
+        const cursos = await Curso.findAll({
+            where,
+            limit: 10,
+            order: [["codigo", "ASC"]],
+            attributes: ["id", "codigo", "nombre", "fecha_inicio", "fecha_fin"]
+        });
+
+        return res.json(cursos);
+
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+
 // DELETE /cursos/:id
 const deleteCurso = async (req, res, next) => {
     try {
@@ -99,41 +133,4 @@ const deleteCurso = async (req, res, next) => {
     }
 };
 
-// PUT /cursos/:id
-const updateCurso = async (req, res, next) => {
-    try {
-        const curso = req.curso;
-        const { codigo, nombre, fecha_inicio, fecha_fin, requisitos } = req.body;
-
-        if (!codigo || !nombre) {
-            return res.status(400).json({ ok: false, mensaje: "Tots els camps són obligatoris" });
-        }
-
-        if (codigo !== curso.codigo) {
-            const existe = await Curso.findOne({ where: { codigo } });
-            if (existe) {
-                return res.status(400).json({ ok: false, error: "Ja existeix un altre curs amb aquest codi" });
-            }
-        }
-
-        await curso.update({
-            codigo,
-            nombre,
-            fecha_inicio: fecha_inicio || null,
-            fecha_fin: fecha_fin || null,
-            requisitos: requisitos !== undefined && requisitos !== "" ? Number(requisitos) : null,
-        });
-
-        req.session.flash = {
-            type: "success",
-            title: "Curs actualitzat",
-            message: `El curs ${curso.nombre} s'ha actualitzat correctament.`,
-        };
-
-        return res.json({ ok: true, redirect: `/cursos/${curso.id}` });
-    } catch (error) {
-        return handleControllerError(error, res, next);
-    }
-};
-
-module.exports = { getAll, getById, createCurso, renderNewCurso, deleteCurso, updateCurso };
+module.exports = { getAll, getById, createCurso, renderNewCurso, searchCurso, deleteCurso };

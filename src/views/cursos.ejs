@@ -3,9 +3,19 @@
     <h1 class="page-title">Cursos</h1>
     <p class="page-subtitle">Llistat d'cursos registrats al centre</p>
   </div>
+  <div class="buscador-wrapper">
+    <div class="buscador">
+      <input
+        type="text"
+        id="busquedaCurso"
+        placeholder="Buscar curs..."
+        autocomplete="off"
+      />
+    </div>
+    <div id="dropdownResultados" class="dropdown hidden"></div>
+  </div>
   <a href="/cursos/nuevo" class="btn btn-primario">Nou curs</a>
 </div>
-
 <% if (cursos && cursos.length> 0) { %>
   <div class="tabla-container">
     <table id="cursosTable">
