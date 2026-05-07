@@ -246,6 +246,10 @@ const asignarProfesor = async (req, res, next) => {
 
         const cursoInsert = await Curso.findByPk(curso_id);
         const profesorInsert = await Profesor.findByPk(profesor_id);
+        //console.log(cursoInsert.nombre, profesorInsert.nombre);
+
+        if (!cursoInsert || !profesorInsert) { console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR."); throw error }
+
         cursoInsert.addProfesor(profesorInsert);
 
         // VERIFICACION INNER JOIN MEDIANTE SEQUEALIZE DE PROFESOR ASIGNADO A OTRO CURSO (CONSULTAR DOCS\SQUELIZE-JOINS.MD)
@@ -276,8 +280,14 @@ const asignarProfesor = async (req, res, next) => {
         console.log(alrAssigned);
         return res.json({ ok: true });
         */
-       
-        return res.json({ ok: true });
+        
+        req.session.flash = {
+            type: "success",
+            title: "Professor assignat correctament.",
+            message: `El curs ${cursoInsert.nombre} s'ha actualitzat correctament.`,
+        };
+
+        return res.json({ ok: true, redirect: `/cursos/${curso_id}` });
 
         } catch (error) {
         return handleControllerError(error, res, next);
