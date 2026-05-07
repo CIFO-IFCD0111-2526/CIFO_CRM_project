@@ -170,4 +170,4 @@ const updateCurso = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, getById, createCurso, renderNewCurso, deleteCurso, updateCurso };
+module.exports = { getAll, getById, createCurso, renderNewCurso, searchCurso, deleteCurso, updateCurso };
