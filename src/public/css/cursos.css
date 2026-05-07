@@ -3,6 +3,15 @@
 @import url('detalle.css');
 @import url('buscador.css');
 
+#busquedaCurso {
+  padding: 8px;
+  font-size: 14px;
+  color: var(--color-texto-principal);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+}
+
+
 .cursos-container {
   min-height: 100vh;
   display: flex;
