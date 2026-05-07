@@ -1,0 +1,59 @@
+<div class="page-header">
+    <div>
+        <a href="/dashboard" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Tornar al dashboard
+        </a>
+
+        <h1 class="page-title">
+            <%= usuario.nombre %> <%= usuario.apellidos %>
+        </h1>
+
+        <p class="page-subtitle">
+            Perfil d'usuari
+        </p>
+    </div>
+</div>
+
+<div class="detalle-grid">
+
+    <section class="detalle-card">
+        <h2 class="detalle-card-title">Dades personals</h2>
+
+        <dl class="detalle-list">
+
+            <div class="detalle-item">
+                <dt>Nom</dt>
+                <dd><%= usuario.nombre || '—' %></dd>
+            </div>
+
+            <div class="detalle-item">
+                <dt>Cognoms</dt>
+                <dd><%= usuario.apellidos || '—' %></dd>
+            </div>
+
+            <div class="detalle-item">
+                <dt>Email</dt>
+                <dd><%= usuario.email || '—' %></dd>
+            </div>
+
+            <div class="detalle-item">
+                <dt>Nivell d'accés</dt>
+                <dd>
+                    <% if (usuario.rol === 'admin') { %>
+                        <span class="badge badge-actual">Admin</span>
+                    <% } %>
+
+                    <% if (usuario.rol === 'editor') { %>
+                        <span class="badge badge-futuro">Editor</span>
+                    <% } %>
+
+                    <% if (usuario.rol === 'lector') { %>
+                        <span class="badge badge-antiguo">Lector</span>
+                    <% } %>
+                </dd>
+            </div>
+
+        </dl>
+    </section>
+
+</div>
