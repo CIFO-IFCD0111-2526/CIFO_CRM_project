@@ -11,6 +11,7 @@
   </div>
   <a href="/alumnos/nuevo" class="btn btn-primario">Nou alumne</a>
 </div>
+
 <% if (alumnos && alumnos.length> 0) { %>
   <div class="tabla-container">
     <table id="alumnosTable">
@@ -48,9 +49,10 @@
             </td>
             <td>
               <span class="badge badge-<%= alumno.tipo %>">
-                <% if (alumno.tipo==='actual' ) { %>Actual<% } %>
-                    <% if (alumno.tipo==='antiguo' ) { %>Antic<% } %>
-                        <% if (alumno.tipo==='futuro' ) { %>Futur<% } %>
+                <% if (alumno.tipo==='actual' ) { %>Actual
+                  <% } else if (alumno.tipo==='antiguo' ) { %>Antic
+                    <% } else if (alumno.tipo==='futuro' ) { %>Futur
+                      <% } %>
               </span>
             </td>
             <td class="col-fecha">
@@ -67,9 +69,37 @@
       </tbody>
     </table>
   </div>
+
   <% } else { %>
     <div class="empty-state">
       <p>No hi ha alumnes registrats.</p>
       <a href="/alumnos/nuevo" class="btn btn-primario">Crear el primer alumne</a>
     </div>
     <% } %>
+
+      <% if (pagination && pagination.totalPages> 1) { %>
+        <div class="pagination-wrapper">
+          <div class="pagination" aria-label="Paginació">
+
+            <% if (pagination.currentPage> 1) { %>
+              <a href="?page=<%= pagination.currentPage - 1 %>&limit=<%= pagination.limit %>"
+                class="btn btn-secundario btn-sm">
+                ← Anterior
+              </a>
+              <% } %>
+
+                <span class="pagination-info">
+                  Pàgina <%= pagination.currentPage %> de <%= pagination.totalPages %>
+                      (<%= pagination.totalItems %> alumnes)
+                </span>
+
+                <% if (pagination.currentPage < pagination.totalPages) { %>
+                  <a href="?page=<%= pagination.currentPage + 1 %>&limit=<%= pagination.limit %>"
+                    class="btn btn-secundario btn-sm">
+                    Següent →
+                  </a>
+                  <% } %>
+
+          </div>
+        </div>
+        <% } %>
