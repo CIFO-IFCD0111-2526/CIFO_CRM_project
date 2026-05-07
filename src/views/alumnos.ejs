@@ -12,7 +12,7 @@
   <a href="/alumnos/nuevo" class="btn btn-primario">Nou alumne</a>
 </div>
 
-<% if (alumnos && alumnos.length> 0) { %>
+<% if (pagination && pagination.totalItems > 0) { %>
   <div class="tabla-container">
     <table id="alumnosTable">
       <thead>
@@ -28,36 +28,26 @@
         </tr>
       </thead>
       <tbody>
-        <% alumnos.forEach(alumno=> { %>
+        <% alumnos.forEach(alumno => { %>
           <tr>
             <td>
               <a class="alumno-nombre" href="/alumnos/<%= alumno.id %>">
                 <%= alumno.apellidos %>, <%= alumno.nombre %>
               </a>
             </td>
-            <td>
-              <%= alumno.dni || '—' %>
-            </td>
-            <td>
-              <%= alumno.email || '—' %>
-            </td>
-            <td>
-              <%= alumno.telefono || '—' %>
-            </td>
-            <td>
-              <%= alumno.nivel_estudios || '—' %>
-            </td>
+            <td><%= alumno.dni || '—' %></td>
+            <td><%= alumno.email || '—' %></td>
+            <td><%= alumno.telefono || '—' %></td>
+            <td><%= alumno.nivel_estudios || '—' %></td>
             <td>
               <span class="badge badge-<%= alumno.tipo %>">
-                <% if (alumno.tipo==='actual' ) { %>Actual
-                  <% } else if (alumno.tipo==='antiguo' ) { %>Antic
-                    <% } else if (alumno.tipo==='futuro' ) { %>Futur
-                      <% } %>
+                <% if (alumno.tipo === 'actual') { %>Actual<% } %>
+                <% if (alumno.tipo === 'antiguo') { %>Antic<% } %>
+                <% if (alumno.tipo === 'futuro') { %>Futur<% } %>
               </span>
             </td>
             <td class="col-fecha">
-              <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit' ,
-                month: '2-digit' , year: 'numeric' }) : '—' %>
+              <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
             </td>
             <td class="col-accions">
               <div class="acciones">
@@ -65,41 +55,37 @@
               </div>
             </td>
           </tr>
-          <% }) %>
+        <% }) %>
       </tbody>
     </table>
   </div>
 
-  <% } else { %>
-    <div class="empty-state">
-      <p>No hi ha alumnes registrats.</p>
-      <a href="/alumnos/nuevo" class="btn btn-primario">Crear el primer alumne</a>
-    </div>
-    <% } %>
-
-      <% if (pagination && pagination.totalPages> 1) { %>
-        <div class="pagination-wrapper">
-          <div class="pagination" aria-label="Paginació">
-
-            <% if (pagination.currentPage> 1) { %>
-              <a href="?page=<%= pagination.currentPage - 1 %>&limit=<%= pagination.limit %>"
-                class="btn btn-secundario btn-sm">
-                ← Anterior
-              </a>
-              <% } %>
-
-                <span class="pagination-info">
-                  Pàgina <%= pagination.currentPage %> de <%= pagination.totalPages %>
-                      (<%= pagination.totalItems %> alumnes)
-                </span>
-
-                <% if (pagination.currentPage < pagination.totalPages) { %>
-                  <a href="?page=<%= pagination.currentPage + 1 %>&limit=<%= pagination.limit %>"
-                    class="btn btn-secundario btn-sm">
-                    Següent →
-                  </a>
-                  <% } %>
-
-          </div>
-        </div>
+  <% if (pagination.totalPages > 1) { %>
+    <div class="pagination-wrapper">
+      <div class="pagination" aria-label="Paginació">
+        <% if (pagination.currentPage > 1) { %>
+          <a href="?page=<%= pagination.currentPage - 1 %>&limit=<%= pagination.limit %>" class="btn btn-secundario btn-sm">
+            ← Anterior
+          </a>
         <% } %>
+
+        <span class="pagination-info">
+          Pàgina <%= pagination.currentPage %> de <%= pagination.totalPages %>
+          (<%= pagination.totalItems %> alumnes)
+        </span>
+
+        <% if (pagination.currentPage < pagination.totalPages) { %>
+          <a href="?page=<%= pagination.currentPage + 1 %>&limit=<%= pagination.limit %>" class="btn btn-secundario btn-sm">
+            Següent →
+          </a>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+
+<% } else { %>
+  <div class="empty-state">
+    <p>No hi ha alumnes registrats.</p>
+    <a href="/alumnos/nuevo" class="btn btn-primario">Crear el primer alumne</a>
+  </div>
+<% } %>
