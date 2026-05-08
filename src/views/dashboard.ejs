@@ -63,19 +63,8 @@
                 </td>
 
                 <td class="col-fecha">
-                  <%= alumno.created_at
-                    ? new Date(alumno.created_at).toLocaleDateString(
-                        'ca-ES',
-                        {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric'
-                        }
-                      )
-                    : '—'
-                  %>
+                  <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
                 </td>
-
               </tr>
             <% }) %>
           </tbody>
