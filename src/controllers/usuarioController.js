@@ -1,10 +1,8 @@
-const { Op } = require("sequelize");
 const { Usuario } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
-
 // GET /perfil
-const getPerfil = async (req, res) => {
+const getPerfil = async (req, res, next) => {
     try {
         const usuario = await Usuario.findByPk(req.session.usuario.id);
 
@@ -21,7 +19,7 @@ const getPerfil = async (req, res) => {
         });
 
     } catch (error) {
-        handleControllerError(res, error, "Error carregant el perfil");
+        return handleControllerError(error, res, next);
     }
 };
 
