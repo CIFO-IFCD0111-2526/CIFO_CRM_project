@@ -697,3 +697,72 @@ function initBuscadorCurso(input, dropdown, onSelect) {
     }
   });
 }
+
+//Desmatricular alumno
+document.addEventListener("click", async (e) => {
+
+  const btn = e.target.closest(".btn-desmatricular");
+  if (!btn) return;
+
+  const cursoId = btn.dataset.cursoId;
+  const alumnoId = btn.dataset.alumnoId;
+
+  const li = btn.closest(".alumno-curso-item");
+
+  const nombreCurso =
+    li?.querySelector(".curso-nombre")?.textContent.trim()
+    || "aquest curs";
+
+  const ok = await window.showConfirm({
+    title: "Confirmar baixa",
+    message: `Segur que vols donar de baixa aquest curs de l'alumne?`,
+    confirmText: "Dar de baixa",
+    cancelText: "Cancel·lar",
+  });
+
+  if (!ok) return;
+
+  try {
+
+    const res = await fetch(
+      `/cursos/${cursoId}/alumnos/${alumnoId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const json = await res.json();
+
+    if (!res.ok || !json.ok) {
+
+      await window.showModal({
+        type: "error",
+        title: "Error",
+        message: json.error || "No s'ha pogut donar de baixa el curs",
+      });
+
+      return;
+
+    }
+
+    li.remove();
+
+    await window.showModal({
+      type: "success",
+      title: "Baixa correcta",
+      message: `El curs s'ha eliminat de l'alumne correctament.`,
+    });
+
+  } catch (err) {
+
+    console.error(err);
+
+    await window.showModal({
+      type: "error",
+      title: "Error",
+      message: "Error de connexió amb el servidor",
+    });
+
+  }
+
+});
