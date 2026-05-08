@@ -32,5 +32,6 @@ router.post("/:id/alumnos",
 );
 router.delete("/:cursoId/alumnos/:alumnoId", controller.deleteAlumnoFromCurso);
 router.post('/:id/profesores', controller.asignarProfesor);
+router.delete('/:id/profesores/:profesorId', controller.desasignarProfesor);
 
 module.exports = router;

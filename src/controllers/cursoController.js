@@ -271,4 +271,37 @@ const asignarProfesor = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, getById, createCurso, renderNewCurso, searchCurso, deleteCurso, updateCurso, asignarProfesor, addAlumnoToCurso, deleteAlumnoFromCurso };
+//DELETE /cursos/:id/profesores/:profesorId
+const desasignarProfesor = async (req, res, next) => {
+
+    try {
+        const curso_id = parseInt(req.params.id);
+        const profesor_id  = parseInt(req.params.profesorId);
+        console.log(curso_id, profesor_id);        
+
+        // LÓGICA DE DESASIGNAR PROFESOR
+
+        const cursoInsert = await Curso.findByPk(curso_id);
+        //console.log(cursoInsert);
+        const profesorInsert = await Profesor.findByPk(profesor_id);
+        //console.log(profesorInsert);
+        //console.log(cursoInsert.nombre, profesorInsert.nombre);
+
+        if (!cursoInsert || !profesorInsert) { console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR."); throw new Error("Curso o profesor no existen") } ;
+        
+        cursoInsert.removeProfesor(profesorInsert);
+
+        req.session.flash = {
+            type: "success",
+            title: "Professor desassignat correctament.",
+            message: `El curs ${cursoInsert.nombre} s'ha actualitzat correctament.`,
+        };
+
+        return res.json({ ok: true, redirect: `/cursos/${curso_id}` });
+
+        } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+module.exports = { getAll, getById, createCurso, renderNewCurso, searchCurso, deleteCurso, updateCurso, asignarProfesor, desasignarProfesor, addAlumnoToCurso, deleteAlumnoFromCurso };
