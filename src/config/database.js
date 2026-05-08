@@ -14,6 +14,7 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   define: {
     timestamps: true,// Añade createdAt y updatedAt automáticamente a TODOS los modelos 
     underscored: true, // Usa snake_case en las columnas de la BD (created_at, updated_at)
+    freezeTableName: true, // Stop the auto-pluralization performed by Sequelize
   },
   pool: {
     max: 5, //conexiones maximas

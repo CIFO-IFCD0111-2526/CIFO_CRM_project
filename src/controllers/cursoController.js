@@ -239,53 +239,25 @@ const deleteAlumnoFromCurso = async (req, res, next) => {
 };
 // POST /cursos/:id/profesores
 const asignarProfesor = async (req, res, next) => {
-const crusos = curso_profesor.findAll();
-console.log(crusos)
 
     try {
         const curso_id = parseInt(req.params.id);
         const profesor_id  = req.body.profesor_id;
         console.log(curso_id, profesor_id);
+        
+
+        // LÓGICA DE ASIGNAR PROFESOR
 
         const cursoInsert = await Curso.findByPk(curso_id);
-        console.log(cursoInsert);
+        //console.log(cursoInsert);
         const profesorInsert = await Profesor.findByPk(profesor_id);
-        console.log(profesorInsert);
+        //console.log(profesorInsert);
         //console.log(cursoInsert.nombre, profesorInsert.nombre);
 
         if (!cursoInsert || !profesorInsert) { console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR."); throw new Error("Curso o profesor no existen") } ;
 
         cursoInsert.addProfesor(profesorInsert);
 
-        // VERIFICACION INNER JOIN MEDIANTE SEQUEALIZE DE PROFESOR ASIGNADO A OTRO CURSO (CONSULTAR DOCS\SQUELIZE-JOINS.MD)
-        /* const alrAssigned = await Curso.findOne({ where: { estado: 1, profesor_id: profesorId } });
-        ({ 
-        const alrAssigned = await Curso.findOne({
-            include: [
-            {
-                association: "curso_profesor",
-                required: true,
-                where: {
-                    estado: 1,
-                    profesor_id: profesorId,
-                },
-            },
-            ],
-        }); 
-        const alrAssigned = await Profesor.findAll({
-          include: {
-            model: Curso,
-            required: true,
-            through: { where: { profesor_id: profesorId } },
-            where: {
-              estado: 1,
-            },
-          },
-        });
-        console.log(alrAssigned);
-        return res.json({ ok: true });
-        */
-        
         req.session.flash = {
             type: "success",
             title: "Professor assignat correctament.",

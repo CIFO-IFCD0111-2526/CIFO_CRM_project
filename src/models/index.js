@@ -36,7 +36,7 @@ const CursoAlumno = sequelize.define('curso_alumno', {   // És el nom que fa se
   }
 }, {
   tableName: 'curso_alumno',  // És el nom a la base de dades SQL ( string ) 
-})
+});
 
 
 const AlumnoUf = sequelize.define('alumno_uf', {
@@ -47,7 +47,13 @@ const AlumnoUf = sequelize.define('alumno_uf', {
   }
 }, {
   tableName: 'alumno_uf',
-})
+});
+
+const curso_profesor = sequelize.define('curso_profesor', {
+  // Aquí iría la definición de columnas extra en caso necesario, si no se ocupa la posición del parámetro con un objeto vacío PETA.
+}, {
+  tableName: 'curso_profesor',
+});
 
 /////////////////////////////////////////////////////////////////////TABLAS INTERMEDIAS ¿ A MOVER ?
 
@@ -124,7 +130,8 @@ const db = {
 
   // tablas intermedias ( objeto JS )
   CursoAlumno,
-  AlumnoUf
+  AlumnoUf,
+  curso_profesor,
 };
 
 module.exports = db;
