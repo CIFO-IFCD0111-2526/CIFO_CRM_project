@@ -253,8 +253,15 @@ const asignarProfesor = async (req, res, next) => {
         const profesorInsert = await Profesor.findByPk(profesor_id);
         //console.log(profesorInsert);
         //console.log(cursoInsert.nombre, profesorInsert.nombre);
+        const relExists = await curso_profesor.findAll({ where: { curso_id: curso_id, profesor_id: profesor_id} });
+        console.log("exist", relExists);
 
-        if (!cursoInsert || !profesorInsert) { console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR."); throw new Error("Curso o profesor no existen") } ;
+        if (!cursoInsert || !profesorInsert) { 
+            console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR.");
+            throw new Error("Curso o profesor no existen");
+        } else if (relExists) {
+            throw new Error(`El profesor ya está asignado al curso ${cursoInsert.nombre}`);
+        };
 
         cursoInsert.addProfesor(profesorInsert);
 
@@ -281,20 +288,27 @@ const desasignarProfesor = async (req, res, next) => {
 
         // LÓGICA DE DESASIGNAR PROFESOR
 
-        const cursoInsert = await Curso.findByPk(curso_id);
-        //console.log(cursoInsert);
-        const profesorInsert = await Profesor.findByPk(profesor_id);
-        //console.log(profesorInsert);
-        //console.log(cursoInsert.nombre, profesorInsert.nombre);
+        const cursoDelete = await Curso.findByPk(curso_id);
+        //console.log(cursoDelete);
+        const profesorDelete = await Profesor.findByPk(profesor_id);
+        //console.log(profesorDelete);
+        //console.log(cursoDelete.nombre, profesorDelete.nombre);
+        const relExists = await curso_profesor.findAll({ where: { curso_id: curso_id, profesor_id: profesor_id} });
+        console.log("exist", relExists);
 
-        if (!cursoInsert || !profesorInsert) { console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR."); throw new Error("Curso o profesor no existen") } ;
+        if (!cursoDelete || !profesorDelete) { 
+            console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR.");
+            throw new Error("Curso o profesor no existen");
+        } else if (!relExists) {
+            throw new Error(`El profesor ya no está asignado al curso ${cursoDelete.nombre}`);
+        };
         
-        cursoInsert.removeProfesor(profesorInsert);
+        cursoDelete.removeProfesor(profesorDelete);
 
         req.session.flash = {
             type: "success",
             title: "Professor desassignat correctament.",
-            message: `El curs ${cursoInsert.nombre} s'ha actualitzat correctament.`,
+            message: `El curs ${cursoDelete.nombre} s'ha actualitzat correctament.`,
         };
 
         return res.json({ ok: true, redirect: `/cursos/${curso_id}` });
