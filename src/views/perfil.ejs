@@ -1,27 +1,3 @@
-<!-- <section id="perfilPassword" class="card mt-4">
-    <h2>Canviar contrasenya</h2>
-
-    <form id="perfilPasswordForm" class="form">
-        <div class="form-group">
-            <label for="passwordActual">Contrasenya actual</label>
-            <input type="password" id="passwordActual" name="passwordActual" required>
-        </div>
-
-        <div class="form-group">
-            <label for="passwordNova">Contrasenya nova</label>
-            <input type="password" id="passwordNova" name="passwordNova" required minlength="6">
-        </div>
-
-        <div class="form-group">
-            <label for="passwordConfirmar">Confirmar contrasenya nova</label>
-            <input type="password" id="passwordConfirmar" name="passwordConfirmar" required minlength="6">
-        </div>
-
-        <div id="perfilPasswordMsg" class="msg"></div>
-
-        <button type="submit" class="btn btn-primary">Canviar contrasenya</button>
-    </form>
-</section> -->
 <div class="page-header">
     <div>
         <a href="/dashboard" class="back-link">
@@ -81,3 +57,30 @@
     </section>
 
 </div>
+<section id="perfilPassword" class="card mt-4">
+    <button id="togglePasswordForm" class="btn btn-secondary" type="button">
+    Canviar contrasenya
+</button>
+    <!-- <h2>Canviar contrasenya</h2> -->
+
+    <form id="perfilPasswordForm" class="form" style="display:none;">
+        <div class="form-group">
+            <label for="passwordActual">Contrasenya actual</label>
+            <input type="password" id="passwordActual" name="passwordActual" required>
+        </div>
+
+        <div class="form-group">
+            <label for="passwordNova">Contrasenya nova</label>
+            <input type="password" id="passwordNova" name="passwordNova" required minlength="6">
+        </div>
+
+        <div class="form-group">
+            <label for="passwordConfirmar">Confirmar contrasenya nova</label>
+            <input type="password" id="passwordConfirmar" name="passwordConfirmar" required minlength="6">
+        </div>
+
+        <div id="perfilPasswordMsg" class="msg"></div>
+
+        <button type="submit" class="btn btn-primary">Canviar contrasenya</button>
+    </form>
+</section>

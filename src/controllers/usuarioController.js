@@ -54,8 +54,8 @@
 //     }
 // };
 
-module.exports = usuarioController;
 const { Usuario } = require("../models");
+const bcrypt = require("bcrypt");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
 // GET /perfil
@@ -72,7 +72,8 @@ const getPerfil = async (req, res, next) => {
         res.render("perfil", {
             titulo: "El meu perfil",
             usuario,
-            css: "usuarios.css"
+            css: "usuarios.css",
+            js: "perfil.js" 
         });
 
     } catch (error) {
@@ -80,6 +81,41 @@ const getPerfil = async (req, res, next) => {
     }
 };
 
-module.exports = {
-    getPerfil
+// PUT /perfil/password
+const changePassword = async (req, res, next) => {
+    try {
+        const { passwordActual, passwordNova } = req.body;
+        const usuarioId = req.session.usuario.id;
+
+        const usuario = await Usuario.findByPk(usuarioId);
+
+        if (!usuario) {
+            return res.status(404).json({ message: "Usuari no trobat" });
+        }
+
+        const match = bcrypt.compareSync(passwordActual, usuario.password);
+        if (!match) {
+            return res.status(400).json({ message: "La contrasenya actual no és correcta" });
+        }
+
+        const hashed = bcrypt.hashSync(passwordNova, 10);
+        usuario.password = hashed;
+        await usuario.save();
+
+        req.session.flash = {
+            type: "success",
+            msg: "Contrasenya canviada correctament"
+        };
+
+        return res.json({ ok: true, redirect: "/perfil" });
+
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
 };
+
+module.exports = {
+    getPerfil,
+    changePassword
+};
+

@@ -1,4 +1,13 @@
+const toggleBtn = document.getElementById("togglePasswordForm");
 const form = document.getElementById("perfilPasswordForm");
+
+if (toggleBtn && form) {
+    toggleBtn.addEventListener("click", () => {
+        form.style.display = "block";   // només mostra el formulari de canvi de contrasenya
+        toggleBtn.style.display = "none"; // amaga el botó de toggle.
+    });
+}
+
 
 if (form) {
 
@@ -64,20 +73,39 @@ if (form) {
 
             const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(data.message);
+            // ERROR DEL BACKEND
+            if (!data.ok) {
+                msg.textContent = data.message || "Error inesperat";
+                msg.classList.add("error");
+                return;
             }
 
+            // ÈXIT → REDIRECT (el missatge sortirà a /perfil via flash)
             if (data.redirect) {
                 window.location.href = data.redirect;
             }
 
+            // if (!response.ok) {
+            //     throw new Error(data.message);
+            // }
+
+            // if (data.redirect) {
+            //     window.location.href = data.redirect;
+            // }
+
         } catch (error) {
+            showModal({
+                type: "error",
+                title: "Error",
+                message: error.message || "Error inesperat"
+            });
 
-            msg.textContent =
-                error.message || "Error inesperat";
+            // msg.textContent =
+            //     error.message || "Error inesperat";
 
-            msg.classList.add("error");
+            // msg.classList.add("error");
         }
+
+
     });
 }
