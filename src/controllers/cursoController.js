@@ -216,4 +216,41 @@ const addAlumnoToCurso = async (req, res, next) => {
         return handleControllerError(error, res, next);
     }
 };
-module.exports = { getAll, getById, createCurso, renderNewCurso,searchCurso, deleteCurso, updateCurso,addAlumnoToCurso };
+
+// DELETE /cursos/:cursoId/alumnos/:alumnoId
+const deleteAlumnoFromCurso = async (req, res, next) => {
+
+    try {
+
+        const { cursoId, alumnoId } = req.params;
+
+        const matricula = await CursoAlumno.findOne({
+            where: {
+                curso_id: cursoId,
+                alumno_id: alumnoId,
+            }
+        });
+
+        if (!matricula) {
+
+            return res.status(404).json({
+                ok: false,
+                error: "La matrícula no existeix"
+            });
+
+        }
+
+        await matricula.destroy();
+
+        return res.json({
+            ok: true
+        });
+
+    } catch (error) {
+
+        return handleControllerError(error, res, next);
+
+    }
+
+};
+module.exports = { getAll, getById, createCurso, renderNewCurso,searchCurso, deleteCurso, updateCurso,addAlumnoToCurso,deleteAlumnoFromCurso };

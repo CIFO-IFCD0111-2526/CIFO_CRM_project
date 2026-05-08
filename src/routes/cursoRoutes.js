@@ -27,4 +27,8 @@ router.put("/:id",
     controller.updateCurso
 );
 router.post("/:id/alumnos",controller.addAlumnoToCurso);
+router.delete(
+    "/:cursoId/alumnos/:alumnoId",
+    controller.deleteAlumnoFromCurso
+);
 module.exports = router;
