@@ -2,6 +2,7 @@
 @import url('listing.css');
 @import url('detalle.css');
 @import url('buscador.css');
+@import url('pagination.css');
 
 #alumnosTable {
   min-width: 960px;

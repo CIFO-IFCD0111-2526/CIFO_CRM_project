@@ -1,13 +1,16 @@
-const express = require("express");
-const router = express.Router();
-
+const { Router } = require("express");
+const { authPage } = require("../middlewares/auth.js");
 const usuarioController = require("../controllers/usuarioController");
-const authPage = require("../middlewares/authPage");
 
-router.get("/perfil", authPage, usuarioController.perfil);
+const router = Router();
 
+router.use(authPage);
+
+router.get("/", usuarioController.getPerfil);
 router.put(
     "/perfil/password",
     authPage,
     usuarioController.changePassword
 );
+
+module.exports = router;
