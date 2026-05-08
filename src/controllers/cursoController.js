@@ -170,6 +170,7 @@ const updateCurso = async (req, res, next) => {
         return handleControllerError(error, res, next);
     }
 };
+// Post/:id/alumnos
 const addAlumnoToCurso = async (req, res, next) => {
     try {
         const cursoId = req.params.id;
@@ -181,8 +182,6 @@ const addAlumnoToCurso = async (req, res, next) => {
                 error: "Falta alumnoId"
             });
         }
-
-        // comprobar que existe el curso
         const curso = await Curso.findByPk(cursoId);
         if (!curso) {
             return res.status(404).json({
@@ -190,8 +189,6 @@ const addAlumnoToCurso = async (req, res, next) => {
                 error: "Curs no trobat"
             });
         }
-
-        // comprobar duplicado
         const exists = await CursoAlumno.findOne({
             where: {
                 curso_id: cursoId,
@@ -205,8 +202,6 @@ const addAlumnoToCurso = async (req, res, next) => {
                 error: "Aquest alumne ja està matriculat en aquest curs"
             });
         }
-
-        // crear matrícula
         await CursoAlumno.create({
             curso_id: cursoId,
             alumno_id: alumnoId,

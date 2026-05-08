@@ -510,13 +510,11 @@ function initBuscador(input, dropdown) {
   });
 }
 
-// =====================================================
-// ✅ NUEVO: MATRICULAR ALUMNO EN CURSO
-// =====================================================
+//Matricular alumno en un curso
 document.addEventListener("DOMContentLoaded", () => {
 
   const section = document.querySelector(".matricula-section");
-  if (!section) return; // solo en detalle alumno
+  if (!section) return; 
 
   const alumnoId = section.dataset.alumnoId;
 
@@ -527,9 +525,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("buscarCurso");
   const resultados = document.getElementById("resultadosCursos");
 
-  // =========================
-  // Mostrar / ocultar
-  // =========================
   btnMostrar?.addEventListener("click", () => {
     box.classList.remove("hidden");
     btnMostrar.classList.add("hidden");
@@ -543,9 +538,6 @@ document.addEventListener("DOMContentLoaded", () => {
     resultados.classList.add("hidden");
   });
 
-  // =========================
-  // 🔍 BUSCAR CURSOS
-  // =========================
   let debounceTimer = null;
 
   input?.addEventListener("input", () => {
@@ -588,9 +580,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // =========================
-  // ➕ MATRICULAR
-  // =========================
   resultados?.addEventListener("click", async (e) => {
     const item = e.target.closest(".item");
     if (!item) return;
