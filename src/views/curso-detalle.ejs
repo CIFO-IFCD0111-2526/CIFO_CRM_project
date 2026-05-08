@@ -116,9 +116,9 @@
           Cancel·lar
         </button>
       </div>
-      <% if (curso.Profesors && curso.Profesors.length> 0) { %>
+      <% if (curso.Profesors && curso.Profesors.length > 0) { %>
         <ul class="detalle-cursos">
-          <% curso.Profesors.forEach(prof=> { %>
+          <% curso.Profesors.forEach(prof => { %>
             <li>
               <span class="curso-nombre">
                 <%= prof.nombre %>
@@ -144,6 +144,7 @@
     </section>
 
     <section class="detalle-card detalle-full">
+       <div class="card-header-alumnos">
       <h2 class="detalle-card-title">Alumnes</h2>
       <div class="card-header-alumnos">
         <div class="header-actions">
