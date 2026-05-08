@@ -1,70 +1,132 @@
-main {
-    /* A REVISAR SI APLICAN EN MAIN.CSS */
-    height: 100vh;
-    overflow: hidden;
-    background-color: var(--color-fondo-tarjeta);
+@import url('forms.css');
+@import url('listing.css');
+@import url('detalle.css');
+@import url('buscador.css');
+@import url('pagination.css');
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-top: 25px;
 }
 
-.bienvenida {
-    color: var(--color-primario);
-    text-align: center;
-    padding: 20px;
+.dashboard-card {
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  padding: 20px;
 }
 
-.mostra-info {
-    display: flex;
-    flex-direction: row;
-    text-align: center;    
-    margin: 25px;
-    min-height: 200px;
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-pequeno);
-    background-color: var(--color-fondo-sidebar);
-
-    & .mostra-alumn {
-        width: 60%;
-        height: auto;
-    }
-
-    & .mostra-curs {
-        width: 40%;
-        height: auto;
-    }
-
-    div {
-        margin: 25px;
-        padding: 0.5%;
-        border: 1px solid var(--color-borde);
-        border-radius: var(--radio-pequeno);
-    }
+.dashboard-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
+
+.dashboard-card-title {
+  color: var(--color-primario);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* =========================
+   ALUMNOS
+========================= */
+
+#dashboardAlumnosTable .alumno-nombre {
+  color: var(--color-texto-principal);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#dashboardAlumnosTable .alumno-nombre:hover {
+  color: var(--color-primario);
+}
+
+/* =========================
+   CURSOS
+========================= */
+
+#dashboardCursosTable .curso-nombre {
+  color: var(--color-texto-principal);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#dashboardCursosTable .curso-nombre:hover {
+  color: var(--color-primario);
+}
+
+#dashboardCursosTable .curso-codigo {
+  color: var(--color-primario);
+  font-weight: 700;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-state {
+  padding: 25px;
+  text-align: center;
+
+  border: 1px dashed var(--color-borde);
+  border-radius: var(--radio-pequeno);
+
+  background-color: var(--color-fondo-pagina);
+}
+
+.empty-state p {
+  color: var(--color-texto-secundario);
+}
+
+/* =========================
+   NOTES
+========================= */
 
 .mostra-notes {
-    display: flex;
-    flex-direction: row;
-    height: auto;    
-    margin: 25px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-top: 25px;
+}
 
-    & .notes-pag {
-        width: 25%;
-    }
+.notes-pag {
+  width: 25%;
+}
 
-    & .notes-text {
-        resize: none;
-        min-height: 200px;
-        width: 75%;
-    }
+.notes-text {
+  width: 75%;
+  min-height: 200px;
+  resize: none;
+  background-color: var(--color-fondo-pagina);
+}
 
-    div,
-    textarea {
-        padding: 0.5%;
-        text-align: center;      
-        border: 1px solid var(--color-borde);
-        border-radius: var(--radio-pequeno);
-        background-color: var(--color-fondo-sidebar);
-    }
+.notes-pag,
+.notes-text {
+  padding: 15px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  color: var(--color-texto-principal);
+}
 
-    textarea {
-        background-color: var(--color-fondo-pagina);
-    }
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mostra-notes {
+    flex-direction: column;
+  }
+
+  .notes-pag,
+  .notes-text {
+    width: 100%;
+  }
 }
