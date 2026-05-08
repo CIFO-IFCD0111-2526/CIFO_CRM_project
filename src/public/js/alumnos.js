@@ -402,10 +402,9 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.disabled = false;
       return;
     }
-    // ─────────────────────────────────────────────────────────────    
-
+// ─────────────────────────────────────────────────────────────  
     const id = form.dataset.id;
-    
+
     try {
       const res = await fetch(`/alumnos/${id}`, {
         method: "PUT",
@@ -510,84 +509,56 @@ function initBuscador(input, dropdown) {
   });
 }
 
-//Matricular alumno en un curso
+
+// Matricular alumnos en curso 
 document.addEventListener("DOMContentLoaded", () => {
 
-  const section = document.querySelector(".matricula-section");
-  if (!section) return; 
+  const btnMostrar = document.querySelector("#btnMostrarBuscador");
+  const btnCancelar = document.querySelector("#btnCancelarMatricula");
+  const box = document.querySelector("#matriculaBox");
 
-  const alumnoId = section.dataset.alumnoId;
+  const input = document.querySelector("#buscarCurso");
+  const dropdown = document.querySelector("#resultadosCursos");
 
-  const btnMostrar = document.getElementById("btnMostrarBuscador");
-  const btnCancelar = document.getElementById("btnCancelarMatricula");
-  const box = document.getElementById("matriculaBox");
+  const alumnoId = document.querySelector("#alumnoForm")?.dataset?.id;
+  const ul = document.querySelector("#listaCursos");
 
-  const input = document.getElementById("buscarCurso");
-  const resultados = document.getElementById("resultadosCursos");
+  if (btnMostrar && btnCancelar && box) {
 
-  btnMostrar?.addEventListener("click", () => {
-    box.classList.remove("hidden");
-    btnMostrar.classList.add("hidden");
-  });
+    btnMostrar.addEventListener("click", () => {
+      box.classList.remove("hidden");
+      btnCancelar.classList.remove("hidden");
+      btnMostrar.classList.add("hidden");
+      input?.focus();
+    });
 
-  btnCancelar?.addEventListener("click", () => {
-    box.classList.add("hidden");
-    btnMostrar.classList.remove("hidden");
-    input.value = "";
-    resultados.innerHTML = "";
-    resultados.classList.add("hidden");
-  });
+    btnCancelar.addEventListener("click", () => {
+      box.classList.add("hidden");
+      btnCancelar.classList.add("hidden");
+      btnMostrar.classList.remove("hidden");
 
-  let debounceTimer = null;
-
-  input?.addEventListener("input", () => {
-    const q = input.value.trim();
-
-    if (q.length < 2) {
-      resultados.innerHTML = "";
-      resultados.classList.add("hidden");
-      return;
-    }
-
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => buscarCursos(q), 250);
-  });
-
-  async function buscarCursos(q) {
-    try {
-      const res = await fetch(
-        `/cursos/buscar-disponibles?q=${encodeURIComponent(q)}&alumnoId=${alumnoId}`
-      );
-
-      const cursos = await res.json();
-
-      if (!cursos.length) {
-        resultados.innerHTML = `<div class="item empty">Sense resultats</div>`;
-        resultados.classList.remove("hidden");
-        return;
-      }
-
-      resultados.innerHTML = cursos.map(c => `
-        <div class="item" data-id="${c.id}">
-          ${c.nombre} (${c.codigo})
-        </div>
-      `).join("");
-
-      resultados.classList.remove("hidden");
-
-    } catch (err) {
-      console.error("Error buscant cursos:", err);
-    }
+      input.value = "";
+      dropdown.innerHTML = "";
+      dropdown.classList.add("hidden");
+    });
   }
 
-  resultados?.addEventListener("click", async (e) => {
-    const item = e.target.closest(".item");
-    if (!item) return;
+  if (!input || !dropdown) return;
+  if (!ul) return;
 
-    const cursoId = item.dataset.id;
+  initBuscadorCurso(input, dropdown, async (curso) => {
+
+    const ok = await window.showConfirm({
+      title: "Matricular alumne",
+      message: `Segur que vols matricular l'alumne en el curs ${curso.nombre}?`,
+      confirmText: "Matricular",
+      cancelText: "Cancel·lar",
+    });
+
+    if (!ok) return;
 
     try {
-      const res = await fetch(`/cursos/${cursoId}/alumnos`, {
+      const res = await fetch(`/cursos/${curso.id}/alumnos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ alumnoId }),
@@ -595,17 +566,134 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const json = await res.json();
 
-      if (!json.ok) throw new Error("Error matriculant");
+      if (!res.ok || !json.ok) {
+        await window.showModal({
+          type: "error",
+          title: "Error",
+          message: json.error || "Error en la matrícula",
+        });
+        return;
+      }
 
-      location.reload(); // ✔ simple (igual que cursos)
+      const li = document.createElement("li");
+      li.classList.add("alumno-curso-item");
+
+      li.innerHTML = `
+        <span class="curso-codigo">${curso.codigo}</span>
+        <span class="curso-nombre">${curso.nombre}</span>
+        <button
+          type="button"
+          class="btn btn-danger btn-desmatricular"
+          data-curso-id="${curso.id}"
+          data-alumno-id="${alumnoId}"
+        >
+          Dar de baixa
+        </button>
+      `;
+
+      ul.appendChild(li);
+
+      document.getElementById("emptyCursos")?.remove();
+
+      input.value = "";
+      dropdown.innerHTML = "";
+      dropdown.classList.add("hidden");
+
+      await window.showModal({
+        type: "success",
+        title: "Matrícula correcta",
+        message: "Alumne matriculat correctament",
+      });
 
     } catch (err) {
+      console.error(err);
+
       await window.showModal({
         type: "error",
         title: "Error",
-        message: "No s'ha pogut matricular l'alumne.",
+        message: "Error de connexió amb el servidor",
       });
     }
   });
 
 });
+
+
+function initBuscadorCurso(input, dropdown, onSelect) {
+
+  let debounceTimer = null;
+
+  input.addEventListener("input", () => {
+
+    const query = input.value.trim();
+
+    if (query.length < 2) {
+      cerrarDropdown();
+      return;
+    }
+
+    clearTimeout(debounceTimer);
+
+    debounceTimer = setTimeout(() => {
+      search(query);
+    }, 250);
+  });
+
+  async function search(query) {
+    try {
+      const res = await fetch(
+        `/cursos/buscar?q=${encodeURIComponent(query)}`
+      );
+
+      const data = await res.json();
+      render(data);
+
+    } catch (err) {
+      console.error("Error buscant cursos:", err);
+    }
+  }
+
+  function render(cursos) {
+
+    dropdown.innerHTML = "";
+
+    if (!cursos.length) {
+      dropdown.innerHTML = `<div class="item empty">Sense resultats</div>`;
+      dropdown.classList.remove("hidden");
+      return;
+    }
+
+    cursos.forEach(curso => {
+
+      const div = document.createElement("div");
+      div.classList.add("item");
+
+      div.textContent = `${curso.nombre} (${curso.codigo})`;
+
+      div.addEventListener("click", () => {
+        cerrarDropdown();
+        onSelect(curso);
+      });
+
+      dropdown.appendChild(div);
+    });
+
+    dropdown.classList.remove("hidden");
+  }
+
+  function cerrarDropdown() {
+    dropdown.innerHTML = "";
+    dropdown.classList.add("hidden");
+  }
+
+  input.addEventListener("blur", () => {
+    setTimeout(cerrarDropdown, 150);
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      cerrarDropdown();
+      input.blur();
+    }
+  });
+}
