@@ -39,15 +39,15 @@
             <div class="detalle-item">
                 <dt>Nivell d'accés</dt>
                 <dd>
-                    <% if (usuario.rol === 'admin') { %>
+                    <% if (usuario.nivel_acceso === 'admin') { %>
                         <span class="badge badge-actual">Admin</span>
                     <% } %>
 
-                    <% if (usuario.rol === 'editor') { %>
+                    <% if (usuario.nivel_acceso === 'editor') { %>
                         <span class="badge badge-futuro">Editor</span>
                     <% } %>
 
-                    <% if (usuario.rol === 'lector') { %>
+                    <% if (usuario.nivel_acceso === 'lector') { %>
                         <span class="badge badge-antiguo">Lector</span>
                     <% } %>
                 </dd>
