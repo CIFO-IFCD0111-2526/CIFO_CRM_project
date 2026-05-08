@@ -62,7 +62,7 @@
             <% if (typeof usuario !== 'undefined' && usuario) { %>
                 <header class="topbar">
                     <div class="topbar-right">
-                        <div class="topbar-user">
+                        <a href="/perfil" class="topbar-user">
                             <div class="topbar-avatar">
                                 <%= usuario.nombre.charAt(0) %><%= usuario.apellidos.charAt(0) %>
                             </div>
@@ -70,7 +70,7 @@
                                 <span class="topbar-nombre"><%= usuario.nombre %></span>
                                 <span class="topbar-rol"><%= usuario.nivel_acceso %></span>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </header>
             <% } %>
