@@ -8,13 +8,20 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 25px;
-  margin-top: 25px;
+  margin: 0 2rem;
 }
 
 .dashboard-card {
-  border: 1px solid var(--color-borde);
   border-radius: var(--radio-pequeno);
-  padding: 20px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-card .tabla-container {
+  margin: 0;
+  max-width: 100%;
+  flex: 1;
 }
 
 .dashboard-card-header {
