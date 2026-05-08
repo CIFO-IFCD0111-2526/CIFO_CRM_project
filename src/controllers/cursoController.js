@@ -239,16 +239,21 @@ const deleteAlumnoFromCurso = async (req, res, next) => {
 };
 // POST /cursos/:id/profesores
 const asignarProfesor = async (req, res, next) => {
+const crusos = curso_profesor.findAll();
+console.log(crusos)
+
     try {
         const curso_id = parseInt(req.params.id);
         const profesor_id  = req.body.profesor_id;
         console.log(curso_id, profesor_id);
 
         const cursoInsert = await Curso.findByPk(curso_id);
+        console.log(cursoInsert);
         const profesorInsert = await Profesor.findByPk(profesor_id);
+        console.log(profesorInsert);
         //console.log(cursoInsert.nombre, profesorInsert.nombre);
 
-        if (!cursoInsert || !profesorInsert) { console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR."); throw error }
+        if (!cursoInsert || !profesorInsert) { console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR."); throw new Error("Curso o profesor no existen") } ;
 
         cursoInsert.addProfesor(profesorInsert);
 
