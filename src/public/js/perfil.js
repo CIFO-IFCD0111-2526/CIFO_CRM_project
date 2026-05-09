@@ -26,9 +26,10 @@ if (form) {
 
         const msg =
             document.getElementById("perfilPasswordMsg");
-
+        msg.classList.add("perfil-password-flash");
         msg.innerHTML = "";
-        msg.className = "";
+        msg.classList.remove("error", "success");
+        // msg.className = "";
 
         // Validacions client
 
@@ -85,25 +86,12 @@ if (form) {
                 window.location.href = data.redirect;
             }
 
-            // if (!response.ok) {
-            //     throw new Error(data.message);
-            // }
-
-            // if (data.redirect) {
-            //     window.location.href = data.redirect;
-            // }
-
         } catch (error) {
             showModal({
                 type: "error",
                 title: "Error",
                 message: error.message || "Error inesperat"
             });
-
-            // msg.textContent =
-            //     error.message || "Error inesperat";
-
-            // msg.classList.add("error");
         }
 
 

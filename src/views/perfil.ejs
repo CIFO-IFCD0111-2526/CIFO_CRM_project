@@ -5,7 +5,8 @@
         </a>
 
         <h1 class="page-title">
-            <%= usuario.nombre %> <%= usuario.apellidos %>
+            <%= usuario.nombre %>
+                <%= usuario.apellidos %>
         </h1>
 
         <p class="page-subtitle">
@@ -23,33 +24,39 @@
 
             <div class="detalle-item">
                 <dt>Nom</dt>
-                <dd><%= usuario.nombre || '—' %></dd>
+                <dd>
+                    <%= usuario.nombre || '—' %>
+                </dd>
             </div>
 
             <div class="detalle-item">
                 <dt>Cognoms</dt>
-                <dd><%= usuario.apellidos || '—' %></dd>
+                <dd>
+                    <%= usuario.apellidos || '—' %>
+                </dd>
             </div>
 
             <div class="detalle-item">
                 <dt>Email</dt>
-                <dd><%= usuario.email || '—' %></dd>
+                <dd>
+                    <%= usuario.email || '—' %>
+                </dd>
             </div>
 
             <div class="detalle-item">
                 <dt>Nivell d'accés</dt>
                 <dd>
-                    <% if (usuario.nivel_acceso === 'admin') { %>
+                    <% if (usuario.nivel_acceso==='admin' ) { %>
                         <span class="badge badge-actual">Admin</span>
-                    <% } %>
+                        <% } %>
 
-                    <% if (usuario.nivel_acceso === 'editor') { %>
-                        <span class="badge badge-futuro">Editor</span>
-                    <% } %>
+                            <% if (usuario.nivel_acceso==='editor' ) { %>
+                                <span class="badge badge-futuro">Editor</span>
+                                <% } %>
 
-                    <% if (usuario.nivel_acceso === 'lector') { %>
-                        <span class="badge badge-antiguo">Lector</span>
-                    <% } %>
+                                    <% if (usuario.nivel_acceso==='lector' ) { %>
+                                        <span class="badge badge-antiguo">Lector</span>
+                                        <% } %>
                 </dd>
             </div>
 
@@ -58,29 +65,37 @@
 
 </div>
 <section id="perfilPassword" class="card mt-4">
-    <button id="togglePasswordForm" class="btn btn-secondary" type="button">
-    Canviar contrasenya
-</button>
-    <!-- <h2>Canviar contrasenya</h2> -->
-
-    <form id="perfilPasswordForm" class="form" style="display:none;">
-        <div class="form-group">
-            <label for="passwordActual">Contrasenya actual</label>
-            <input type="password" id="passwordActual" name="passwordActual" required>
-        </div>
-
-        <div class="form-group">
-            <label for="passwordNova">Contrasenya nova</label>
-            <input type="password" id="passwordNova" name="passwordNova" required minlength="6">
-        </div>
-
-        <div class="form-group">
-            <label for="passwordConfirmar">Confirmar contrasenya nova</label>
-            <input type="password" id="passwordConfirmar" name="passwordConfirmar" required minlength="6">
-        </div>
-
-        <div id="perfilPasswordMsg" class="msg"></div>
-
-        <button type="submit" class="btn btn-primary">Canviar contrasenya</button>
-    </form>
+    <div class="perfil-password-container">
+        <button id="togglePasswordForm" class="btn btn-secondary perfil-password-btn" type="button">
+            Canviar contrasenya
+        </button>
+    </div>
 </section>
+
+<form id="perfilPasswordForm" class="form perfil-password-form" style="display:none;">
+    <div class="form-group">
+        <label for="passwordActual">Contrasenya actual</label>
+        <input type="password" id="passwordActual" name="passwordActual" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="passwordNova">Contrasenya nova</label>
+        <input type="password" id="passwordNova" name="passwordNova" class="form-control" required minlength="6">
+    </div>
+
+    <div class="form-group">
+        <label for="passwordConfirmar">Confirmar contrasenya nova</label>
+        <input type="password" id="passwordConfirmar" name="passwordConfirmar" class="form-control" required
+            minlength="6">
+    </div>
+
+    <div id="perfilPasswordMsg" class="msg"></div>
+
+    <button type="submit" class="btn btn-primary">Canviar contrasenya</button>
+</form>
+<% if (flash && flash.msg) { %>
+    <div id="perfilPasswordMsg" class="perfil-password-flash <%= flash.type %>">
+        <%= flash.msg %>
+    </div>
+    <% } %>
+        </section>
