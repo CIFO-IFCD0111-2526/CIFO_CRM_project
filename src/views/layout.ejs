@@ -98,7 +98,7 @@
             </div>
         </div>
     </div>
-    <% if (locals.flash) { %>
+    <% if (locals.flash && !locals.flash.noModal) { %>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
         window.showModal(<%- JSON.stringify(locals.flash) %>);
