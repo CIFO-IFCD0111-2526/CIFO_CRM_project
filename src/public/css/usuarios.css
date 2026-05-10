@@ -9,7 +9,8 @@
 
 .perfil-password-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
 }
 
@@ -21,15 +22,16 @@
 
 .perfil-password-btn {
   display: inline-block;
-  margin: 0 auto 1rem auto; /* centrat i amb espai inferior */
-  width: fit-content;       
+  margin: 0 auto 1rem auto;
+  /* centrat i amb espai inferior */
+  width: fit-content;
 }
 
 /*Donem format als missatges*/
 .perfil-password-flash {
   text-align: center;
   margin: 1rem auto;
-  width: 70%; 
+  width: 70%;
   font-weight: 600;
 }
 

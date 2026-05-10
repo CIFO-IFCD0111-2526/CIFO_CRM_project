@@ -69,30 +69,31 @@
         <button id="togglePasswordForm" class="btn btn-secondary perfil-password-btn" type="button">
             Canviar contrasenya
         </button>
+
+        <form id="perfilPasswordForm" class="form perfil-password-form" style="display:none;">
+            <div class="form-group">
+                <label for="passwordActual">Contrasenya actual</label>
+                <input type="password" id="passwordActual" name="passwordActual" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="passwordNova">Contrasenya nova</label>
+                <input type="password" id="passwordNova" name="passwordNova" class="form-control" required
+                    minlength="6">
+            </div>
+
+            <div class="form-group">
+                <label for="passwordConfirmar">Confirmar contrasenya nova</label>
+                <input type="password" id="passwordConfirmar" name="passwordConfirmar" class="form-control" required
+                    minlength="6">
+            </div>
+
+            <div id="perfilPasswordMsg" class="msg"></div>
+
+            <button type="submit" class="btn btn-primary">Canviar contrasenya</button>
+        </form>
     </div>
 </section>
-
-<form id="perfilPasswordForm" class="form perfil-password-form" style="display:none;">
-    <div class="form-group">
-        <label for="passwordActual">Contrasenya actual</label>
-        <input type="password" id="passwordActual" name="passwordActual" class="form-control" required>
-    </div>
-
-    <div class="form-group">
-        <label for="passwordNova">Contrasenya nova</label>
-        <input type="password" id="passwordNova" name="passwordNova" class="form-control" required minlength="6">
-    </div>
-
-    <div class="form-group">
-        <label for="passwordConfirmar">Confirmar contrasenya nova</label>
-        <input type="password" id="passwordConfirmar" name="passwordConfirmar" class="form-control" required
-            minlength="6">
-    </div>
-
-    <div id="perfilPasswordMsg" class="msg"></div>
-
-    <button type="submit" class="btn btn-primary">Canviar contrasenya</button>
-</form>
 <% if (flash && flash.msg) { %>
     <div id="perfilPasswordMsg" class="perfil-password-flash <%= flash.type %>">
         <%= flash.msg %>
