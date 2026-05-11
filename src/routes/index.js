@@ -7,6 +7,7 @@ const cursoRoutes = require("./cursoRoutes");
 const ufRoutes = require("./ufRoutes");
 const profesorRoutes = require("./profesorRoutes");
 const usuarioRoutes = require("./usuarioRoutes");
+const anotacionRoutes = require("./anotacionRoutes");
 
 router.use("/", authRoutes, dashboardRoutes);
 
@@ -16,6 +17,7 @@ router.use("/cursos", cursoRoutes);
 router.use("/ufs", ufRoutes);
 router.use("/profesores", profesorRoutes);
 router.use("/perfil", usuarioRoutes);
+router.use("/anotaciones", anotacionRoutes);
 
 router.get("/", (req, res) => {
   if (req.session.usuario) return res.redirect("/dashboard");
