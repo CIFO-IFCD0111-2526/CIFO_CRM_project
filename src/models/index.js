@@ -15,6 +15,7 @@ const Curso = require("./Curso");
 const Profesor = require("./Profesor");
 const Alumno = require("./Alumno");
 const Uf = require("./Uf");
+const Anotacion = require("./Anotacion");
 
 
 
@@ -100,6 +101,16 @@ Alumno.belongsToMany(Uf, {
 Alumno.belongsTo(Usuario, { foreignKey: "ultimo_id_modif" });
 Usuario.hasMany(Alumno, { foreignKey: "ultimo_id_modif" });
 
+//Anotacion
+
+Usuario.hasMany(Anotacion, {
+    foreignKey: "usuario_id",
+    onDelete: "CASCADE",
+});
+
+Anotacion.belongsTo(Usuario, {
+    foreignKey: "usuario_id",
+});
 
 const db = {
   // taules SQL per nom JS ( objeto JS )
@@ -109,10 +120,14 @@ const db = {
   Profesor,
   Alumno,
   Uf,
+  Anotacion,
 
   // tablas intermedias ( objeto JS )
   CursoAlumno,
   AlumnoUf
 };
+
+
+
 
 module.exports = db;
