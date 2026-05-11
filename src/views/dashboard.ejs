@@ -1,12 +1,172 @@
-<label class="bienvenida">
-  <h1>Benvingut, <%= usuario.nombre %> <%= usuario.apellidos %></h1>
-</label>
+<div class="page-header">
+  <div>
+    <h1 class="page-title">
+      Benvingut, <%= usuario.nombre %> <%= usuario.apellidos %>
+    </h1>
 
-<div class="mostra-info">
-  <div class="mostra-alumn">Aqui es mostren els alumnes</div>
-  <div class="mostra-curs">Aqui es mostren els cursos</div>
+    <p class="page-subtitle">
+      Resum de l'activitat:
+    </p>
+  </div>
 </div>
+
+<div class="dashboard-grid">
+
+  <!-- ÚLTIMS ALUMNES -->
+  <div class="dashboard-card">
+
+    <div class="dashboard-card-header">
+      <h2 class="dashboard-card-title">Últims alumnes</h2>
+    </div>
+
+    <% if (alumnos && alumnos.length > 0) { %>
+
+      <div class="tabla-container">
+        <table id="dashboardAlumnosTable">
+          <thead>
+            <tr>
+              <th>Cognoms, Nom</th>
+              <th>Tipus</th>
+              <th>Data d'alta</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% alumnos.forEach(alumno => { %>
+              <tr>
+
+                <td>
+                  <a
+                    class="alumno-nombre"
+                    href="/alumnos/<%= alumno.id %>"
+                  >
+                    <%= alumno.apellidos %>, <%= alumno.nombre %>
+                  </a>
+                </td>
+
+                <td>
+                  <span class="badge badge-<%= alumno.tipo %>">
+
+                    <% if (alumno.tipo === 'actual') { %>
+                      Actual
+                    <% } %>
+
+                    <% if (alumno.tipo === 'antiguo') { %>
+                      Antic
+                    <% } %>
+
+                    <% if (alumno.tipo === 'futuro') { %>
+                      Futur
+                    <% } %>
+
+                  </span>
+                </td>
+
+                <td class="col-fecha">
+                  <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+    <% } else { %>
+
+      <div class="empty-state">
+        <p>No hi ha alumnes registrats.</p>
+
+        <a href="/alumnos/nuevo" class="btn btn-primario">
+          Crear el primer alumne
+        </a>
+      </div>
+
+    <% } %>
+
+  </div>
+
+  <!-- ÚLTIMS CURSOS -->
+  <div class="dashboard-card">
+
+    <div class="dashboard-card-header">
+      <h2 class="dashboard-card-title">Últims cursos</h2>
+    </div>
+
+    <% if (cursos && cursos.length > 0) { %>
+
+      <div class="tabla-container">
+        <table id="dashboardCursosTable">
+          <thead>
+            <tr>
+              <th>Codi</th>
+              <th>Nom</th>
+              <th>Data inici</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% cursos.forEach(curso => { %>
+              <tr>
+
+                <td>
+                  <span class="curso-codigo">
+                    <%= curso.codigo || '—' %>
+                  </span>
+                </td>
+
+                <td>
+                  <a
+                    class="curso-nombre"
+                    href="/cursos/<%= curso.id %>"
+                  >
+                    <%= curso.nombre %>
+                  </a>
+                </td>
+
+                <td class="col-fecha">
+                  <%= curso.fecha_inicio
+                    ? new Date(curso.fecha_inicio).toLocaleDateString(
+                        'ca-ES',
+                        {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric'
+                        }
+                      )
+                    : '—'
+                  %>
+                </td>
+
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+    <% } else { %>
+
+      <div class="empty-state">
+        <p>No hi ha cursos registrats.</p>
+
+        <a href="/cursos/nuevo" class="btn btn-primario">
+          Crear el primer curs
+        </a>
+      </div>
+
+    <% } %>
+
+  </div>
+
+</div>
+
 <div class="mostra-notes">
-  <div class="notes-pag">Aqui es paginen les anotacions de l'usuari</div>
-  <textarea class="notes-text">Aqui es mostren les anotacions de l'usuari</textarea>
+
+  <div class="notes-pag">
+    Aqui es paginen les anotacions de l'usuari
+  </div>
+
+  <textarea class="notes-text">
+Aqui es mostren les anotacions de l'usuari
+  </textarea>
+
 </div>
