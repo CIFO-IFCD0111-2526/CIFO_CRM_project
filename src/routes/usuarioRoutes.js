@@ -7,5 +7,6 @@ const router = Router();
 router.use(authPage);
 
 router.get("/", usuarioController.getPerfil);
+router.put("/password", usuarioController.changePassword);
 
 module.exports = router;
