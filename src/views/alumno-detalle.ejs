@@ -150,15 +150,16 @@
     </section>
 
     <section class="detalle-card detalle-full">
+      <h2 class="detalle-card-title">Cursos</h2>
       <div class="card-header-cursos">
-        <h2 class="detalle-card-title">Cursos</h2>
+        <!-- <h2 class="detalle-card-title">Cursos</h2> -->
 
-        <div class="header-actions">
+        <div class="header-actions" position="absolute">
 
-          <button type="button" id="btnMostrarBuscador" class="btn btn-secundario js-open-matricula">
+          <button type="button" id="btnMostrarBuscador" class="btn btn-secundario js-open-matricula" margin=0>
             Matricular en un curs
           </button>
-          <button type="button" id="btnCancelarMatricula" class="btn btn-secundario cancelar-btn hidden">
+          <button type="button" id="btnCancelarMatricula" class="btn btn-secundario cancelar-btn hidden" margin=0>
             Cancel·lar
           </button>
 
@@ -173,7 +174,8 @@
               <%= curso.codigo %>
             </span>
             <span class="curso-nombre">
-              <%= curso.nombre %>
+              <a class="curso-nombre-nuevo" href="/cursos/<%= curso.id %>">
+              <%= curso.nombre %></a>
             </span>
 
             <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"

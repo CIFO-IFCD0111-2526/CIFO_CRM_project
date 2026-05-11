@@ -140,14 +140,12 @@
           </div>
         </div>
 
-        <div id="dropdownAlumnosCurso" class="dropdown hidden"></div>
-      </div>
+
     </section>
 
     <section class="detalle-card detalle-full">
+      <h2 class="detalle-card-title">Alumnes</h2>
       <div class="card-header-alumnos">
-        <h2 class="detalle-card-title">Alumnes</h2>
-
         <div class="header-actions">
           <button type="button" id="btnMostrarBuscador" class="btn btn-secundario js-open-matricula">
             Inscriure alumne
@@ -161,9 +159,9 @@
         <% if (curso.Alumnos && curso.Alumnos.length> 0) { %>
           <% curso.Alumnos.forEach(al=> { %>
             <li class="curso-alumno-item">
-              <span class="alumno-nombre">
+              <span  class="alumno-nombre"><a  class="alumno-nombre" href="/alumnos/<%= al.id %>" >
                 <%= al.nombre %>
-                  <%= al.apellidos %>
+                  <%= al.apellidos %></a>
               </span>
               <button type="button" class="btn btn-danger btn-sm btn-desmatricular" data-curso-id="<%= curso.id %>"
                 data-alumno-id="<%= al.id %>">

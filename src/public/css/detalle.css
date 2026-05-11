@@ -90,3 +90,12 @@
     color: var(--color-texto-etiquetas);
     font-style: italic;
 }
+
+a {
+  text-decoration: none;
+  color: var(--color-texto-principal);
+ }
+a:hover {
+  color: var(--color-secundario);
+  font-weight: 600;
+}
