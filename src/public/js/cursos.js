@@ -378,7 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!input || !dropdown) return;
 
-    initBuscadorCurso(input, dropdown, async (alumno) => {
+    initBuscadorAlumno(input, dropdown, async (alumno) => {
 
         const ok = await window.showConfirm({
             title: "Inscriure alumne",
@@ -460,7 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-function initBuscadorCurso(input, dropdown, onSelect) {
+function initBuscadorAlumno(input, dropdown, onSelect) {
 
     let debounceTimer = null;
 
@@ -488,7 +488,6 @@ function initBuscadorCurso(input, dropdown, onSelect) {
     async function searchAlumnos(query) {
 
         try {
-            console.log("Buscando:", query);
             const res = await fetch(
                 `/alumnos/buscar?q=${encodeURIComponent(query)}`,
                 {

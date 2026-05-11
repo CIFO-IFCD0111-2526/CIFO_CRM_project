@@ -170,48 +170,31 @@ const updateCurso = async (req, res, next) => {
         return handleControllerError(error, res, next);
     }
 };
-// Post/:id/alumnos
+// POST /cursos/:id/alumnos
 const addAlumnoToCurso = async (req, res, next) => {
     try {
-        const cursoId = req.params.id;
+        const curso = req.curso;
         const { alumnoId } = req.body;
 
         if (!alumnoId) {
-            return res.status(400).json({
-                ok: false,
-                error: "Falta alumnoId"
-            });
+            return res.status(400).json({ ok: false, error: "Falta alumnoId" });
         }
-        const curso = await Curso.findByPk(cursoId);
-        if (!curso) {
-            return res.status(404).json({
-                ok: false,
-                error: "Curs no trobat"
-            });
-        }
+
         const exists = await CursoAlumno.findOne({
-            where: {
-                curso_id: cursoId,
-                alumno_id: alumnoId
-            }
+            where: { curso_id: curso.id, alumno_id: alumnoId }
         });
 
         if (exists) {
-            return res.status(400).json({
-                ok: false,
-                error: "Aquest alumne ja està matriculat en aquest curs"
-            });
+            return res.status(400).json({ ok: false, error: "Aquest alumne ja està matriculat en aquest curs" });
         }
+
         await CursoAlumno.create({
-            curso_id: cursoId,
+            curso_id: curso.id,
             alumno_id: alumnoId,
             estat: false
         });
 
-        return res.json({
-            ok: true
-        });
-
+        return res.json({ ok: true });
     } catch (error) {
         return handleControllerError(error, res, next);
     }
@@ -219,38 +202,21 @@ const addAlumnoToCurso = async (req, res, next) => {
 
 // DELETE /cursos/:cursoId/alumnos/:alumnoId
 const deleteAlumnoFromCurso = async (req, res, next) => {
-
     try {
-
         const { cursoId, alumnoId } = req.params;
 
         const matricula = await CursoAlumno.findOne({
-            where: {
-                curso_id: cursoId,
-                alumno_id: alumnoId,
-            }
+            where: { curso_id: cursoId, alumno_id: alumnoId }
         });
 
         if (!matricula) {
-
-            return res.status(404).json({
-                ok: false,
-                error: "La matrícula no existeix"
-            });
-
+            return res.status(404).json({ ok: false, error: "La matrícula no existeix" });
         }
 
         await matricula.destroy();
-
-        return res.json({
-            ok: true
-        });
-
+        return res.json({ ok: true });
     } catch (error) {
-
         return handleControllerError(error, res, next);
-
     }
-
 };
 module.exports = { getAll, getById, createCurso, renderNewCurso,searchCurso, deleteCurso, updateCurso,addAlumnoToCurso,deleteAlumnoFromCurso };
