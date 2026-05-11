@@ -643,3 +643,44 @@ document.addEventListener("click", async (e) => {
     }
 
 });
+// Desasignar profesor (vista detalle)
+document.addEventListener("DOMContentLoaded", () => {
+    const btnDesasignProf = document.querySelectorAll("#btnDesasignarProfesor");
+
+    btnDesasignProf.forEach((e) => {
+        e.addEventListener("click", async (b) => {
+        //console.log("curso id", b.srcElement.dataset.cursoId, "profe id", b.srcElement.dataset.profesorId);
+        try {
+            const res = await fetch(`/cursos/${b.srcElement.dataset.cursoId}/profesores/${b.srcElement.dataset.profesorId}`, {
+                method: "DELETE",
+                // headers: { "Content-Type": "application/json", "Accept": "application/json" },                
+            });
+            const json = await res.json();
+
+            if (!json.ok) {
+                if (json.errores) {
+                    const msgs = Array.isArray(json.errores)
+                        ? json.errores
+                        : Object.values(json.errores);
+                    showMsg(msgs.join("<br>"));
+                } else if (json.error) {
+                    showMsg(json.error);
+                } else {
+                    showMsg("Error desconegut");
+                }
+                return;
+            }
+
+            window.location.href = json.redirect;
+        } catch (err) {
+            await window.showModal({
+                type: "error",
+                title: "Error",
+                message: "Error del servidor.",
+            });
+        }
+
+    });
+    });
+
+});
