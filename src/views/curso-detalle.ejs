@@ -106,7 +106,7 @@
       <% } %>
     </section>    
     <section class="detalle-card">
-    <button type = "button" id="btnMostrarBuscador"  class="btn btn-secundario edit-mode hidden">
+    <button type = "button" id="btnMostrarBuscador"  class="btn btn-secundario">
         Inscriure professor
       </button>
       <h2 class="detalle-card-title">Professors</h2>
@@ -126,9 +126,11 @@
               <button
             type="button"
             id="btnDesasignarProfesor"
-            class="btn btn-danger btn-sm btn-desmatricular edit-mode hidden"
+            class="btn btn-danger btn-sm btn-desmatricular"
             data-curso-id="<%= curso.id %>"
             data-profesor-id="<%= prof.id %>"
+            data-profesor-name="<%= prof.nombre %> <%= prof.apellidos %>"
+            data-curso-nombre="<%= curso.nombre %>"
             >
             Donar de baixa
           </button>

@@ -648,14 +648,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnDesasignProf = document.querySelectorAll("#btnDesasignarProfesor");
 
     btnDesasignProf.forEach((e) => {
-        e.addEventListener("click", async (b) => {
+        e.addEventListener("click", async(b) => {
         //console.log("curso id", b.srcElement.dataset.cursoId, "profe id", b.srcElement.dataset.profesorId);
+
+        const ok = await window.showConfirm({
+          title: "Confirmar desassignació",
+          message: `Segur que vols desassignar ${b.srcElement.dataset.profesorName} del curs ${b.srcElement.dataset.cursoNombre}.`,
+          confirmText: "Desassignar",
+          cancelText: "Cancel·lar",
+        });
+
+        if (!ok) return;
+
         try {
             const res = await fetch(`/cursos/${b.srcElement.dataset.cursoId}/profesores/${b.srcElement.dataset.profesorId}`, {
                 method: "DELETE",
                 // headers: { "Content-Type": "application/json", "Accept": "application/json" },                
             });
-            const json = await res.json();
+            const json = await res.json();            
 
             if (!json.ok) {
                 if (json.errores) {
