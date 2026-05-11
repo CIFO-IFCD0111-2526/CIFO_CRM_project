@@ -127,7 +127,4 @@ const db = {
   AlumnoUf
 };
 
-
-
-
 module.exports = db;
