@@ -1,6 +1,7 @@
 const { Curso, Alumno, CursoAlumno, Uf, Profesor } = require("../models");
 const { Op } = require("sequelize");
 const { handleControllerError } = require("../middlewares/errorHandler");
+const { ValidationError, UniqueConstraintError } = require("sequelize");
 
 /** GET /cursos con paginacion */
 const getAll = async (req, res, next) => {
@@ -258,8 +259,9 @@ const asignarProfesor = async (req, res, next) => {
         if (!cursoInsert || !profesorInsert) { 
             console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR.");
             throw new Error("Curso o profesor no existen");
-        } else if (relExists) {
+        } else if (relExists.length > 0) {
             throw new Error(`El profesor ya está asignado al curso ${cursoInsert.nombre}`);
+            // throw new UniqueConstraintError({ message: `El profesor ya está asignado al curso ${cursoInsert.nombre}` }); // A UTILIZAR CUANDO EL MIDDLEWARE ERRORHANDLER.JS FUNCIONE.
         };
 
         cursoInsert.addProfesor(profesorInsert);
@@ -298,7 +300,7 @@ const desasignarProfesor = async (req, res, next) => {
         if (!cursoDelete || !profesorDelete) { 
             console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR.");
             throw new Error("Curso o profesor no existen");
-        } else if (!relExists) {
+        } else if (relExists.length === 0) {
             throw new Error(`El profesor ya no está asignado al curso ${cursoDelete.nombre}`);
         };
         
