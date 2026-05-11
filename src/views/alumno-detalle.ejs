@@ -40,7 +40,8 @@
     <div class="acciones">
       <a href="#" id="btnEditar" class="btn btn-secundario">Editar</a>
       <button type="submit" id="btnGuardar" class="btn btn-secundario edit-mode hidden">Guardar</button>
-      <button type="button" id="btnCancelar" class="btn btn-secundario cancelar-btn edit-mode hidden">Cancel·lar</button>
+      <button type="button" id="btnCancelar"
+        class="btn btn-secundario cancelar-btn edit-mode hidden">Cancel·lar</button>
       <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= alumno.id %>">Eliminar</button>
     </div>
   </div>
@@ -150,23 +151,57 @@
 
     <section class="detalle-card detalle-full">
       <h2 class="detalle-card-title">Cursos</h2>
-      <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
-        <ul class="detalle-cursos">
-          <% alumno.Cursos.forEach(curso=> { %>
-            <li>
-              <span class="curso-codigo">
-                <%= curso.codigo %>
-              </span>
-              <span class="curso-nombre">
-                <%= curso.nombre %>
-              </span>
-            </li>
-            <% }) %>
-        </ul>
-        <% } else { %>
-          <p class="detalle-empty">No està matriculat en cap curs.</p>
-          <% } %>
-    </section>
+      <div class="card-header-cursos">
+        <div class="header-actions">
 
+          <button type="button" id="btnMostrarBuscador" class="btn btn-secundario js-open-matricula">
+            Matricular en un curs
+          </button>
+          <button type="button" id="btnCancelarMatricula" class="btn btn-secundario cancelar-btn hidden">
+            Cancel·lar
+          </button>
+
+        </div>
+      </div>
+
+      <ul class="detalle-cursos" id="listaCursos">
+      <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
+        <% alumno.Cursos.forEach(curso=> { %>
+          <li class="alumno-curso-item">
+            <span class="curso-codigo">
+              <%= curso.codigo %>
+            </span>
+            <span class="curso-nombre">
+              <a class="curso-nombre-nuevo" href="/cursos/<%= curso.id %>">
+              <%= curso.nombre %></a>
+            </span>
+
+            <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
+              data-alumno-id="<%= alumno.id %>">
+              Dar de baixa
+            </button>
+
+          </li>
+          <% }) %>
+            <% } else { %>
+              <p class="detalle-empty" id="emptyCursos">
+                No està matriculat en cap curs.
+              </p>
+              <% } %>
+                </ul>
+                
+                <div id="matriculaBox" class="matricula-box hidden">
+
+                  <div class="buscador-wrapper">
+                    <div class="buscador-alumnos">
+                      <input type="text" id="buscarCurso" placeholder="Buscar curs..." autocomplete="off" />
+                    </div>
+                  </div>
+
+                  <div id="resultadosCursos" class="dropdown hidden"></div>
+
+                </div>
+
+    </section>
   </div>
 </form>

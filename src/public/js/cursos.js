@@ -343,209 +343,303 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
-// Buscador de cursos amb autocompletar
+
+
+
+//Modo matricular alumno
 document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("busquedaCurso");
-    const dropdown = document.getElementById("dropdownResultados");
-    if (input && dropdown) initBuscador(input, dropdown);
-});
 
-function initBuscador(input, dropdown) {
-    let debounceTimer = null;
+    const btnMostrar = document.querySelector("#btnMostrarBuscador");
+    const btnCancelar = document.querySelector("#btnCancelarMatricula");
+    const box = document.querySelector("#matriculaBox");
 
-    input.addEventListener("input", () => {
-        const query = input.value.trim();
-        if (query.length < 2) {
-            cerrarDropdown();
-            return;
-        }
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => searchCursos(query), 250);
-    });
+    if (btnMostrar && btnCancelar && box) {
 
-    async function searchCursos(query) {
-        try {
-            const res = await fetch(`/cursos/buscar?q=${encodeURIComponent(query)}`, {
-                credentials: "include",
-            });
-            const data = await res.json();
-            renderResultados(data);
-        } catch (error) {
-            console.error("Error en cerca:", error);
-        }
-    }
+        btnMostrar.addEventListener("click", () => {
 
-    function renderResultados(cursos) {
-        dropdown.innerHTML = "";
-        if (!cursos.length) {
-            dropdown.innerHTML = `<div class="item empty">Sense resultats</div>`;
-        } else {
-            cursos.forEach((curso) => {
-                const item = document.createElement("div");
-                item.classList.add("item");
-                item.textContent = `${curso.codigo} — ${curso.nombre}`;
-                item.addEventListener("click", () => {
-                    window.location.href = `/cursos/${curso.id}`;
-                });
-                dropdown.appendChild(item);
-            });
-        }
-        dropdown.classList.remove("hidden");
-    }
+            box.classList.remove("hidden");
+            btnCancelar.classList.remove("hidden");
+            btnMostrar.classList.add("hidden");
 
-    function cerrarDropdown() {
-        dropdown.classList.add("hidden");
-        dropdown.innerHTML = "";
-    }
-
-    input.addEventListener("blur", () => {
-        setTimeout(cerrarDropdown, 150);
-    });
-
-    input.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-            cerrarDropdown();
-            input.blur();
-        }
-    });
-}
-
-// Edició inline de curs (vista detalle)
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("#cursoForm");
-    if (!form || !form.dataset.id) return;
-
-    const cursoMsg = document.querySelector("#cursoMsg");
-    const btnEditar = document.querySelector("#btnEditar");
-    const btnCancelar = document.querySelector("#btnCancelar");
-
-    const SELECTOR = ".edit-mode input, .edit-mode select, .edit-mode textarea, input.edit-mode, select.edit-mode, textarea.edit-mode";
-
-    let snapshot = {};
-
-    const saveSnapshot = () => {
-        snapshot = {};
-        form.querySelectorAll(SELECTOR).forEach(el => {
-            snapshot[el.name] = el.value;
         });
-    };
 
-    const restoreSnapshot = () => {
-        form.querySelectorAll(SELECTOR).forEach(el => {
-            if (el.name in snapshot) el.value = snapshot[el.name];
+        btnCancelar.addEventListener("click", () => {
+
+            box.classList.add("hidden");
+            btnCancelar.classList.add("hidden");
+            btnMostrar.classList.remove("hidden");
+
         });
-    };
 
-    const showMsg = (html, isError = true) => {
-        if (!cursoMsg) return;
-        cursoMsg.innerHTML = html;
-        cursoMsg.style.display = "block";
-        cursoMsg.classList.toggle("error-msg", isError);
-    };
+    }
 
-    const clearMsg = () => {
-        if (!cursoMsg) return;
-        cursoMsg.innerHTML = "";
-        cursoMsg.style.display = "none";
-        cursoMsg.classList.remove("error-msg");
-    };
+    const input = document.querySelector("#busquedaAlumnoCurso");
+    const dropdown = document.querySelector("#dropdownAlumnosCurso");
 
-    btnEditar?.addEventListener("click", (e) => {
-        e.preventDefault();
-        clearMsg();
-        form.querySelectorAll(".error").forEach(el => el.classList.remove("error"));
-        saveSnapshot();
-        document.querySelectorAll(".view-mode").forEach(el => el.classList.add("hidden"));
-        document.querySelectorAll(".edit-mode").forEach(el => el.classList.remove("hidden"));
-        btnEditar.classList.add("hidden");
-    });
+    if (!input || !dropdown) return;
 
-    btnCancelar?.addEventListener("click", () => {
-        restoreSnapshot();
-        form.querySelectorAll(".error").forEach(el => el.classList.remove("error"));
-        clearMsg();
-        document.querySelectorAll(".view-mode").forEach(el => el.classList.remove("hidden"));
-        document.querySelectorAll(".edit-mode").forEach(el => el.classList.add("hidden"));
-        btnEditar.classList.remove("hidden");
-    });
+    initBuscadorAlumno(input, dropdown, async (alumno) => {
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        clearMsg();
+        const ok = await window.showConfirm({
+            title: "Inscriure alumne",
+            message:
+                `Segur que vols inscriure ${alumno.nombre} ${alumno.apellidos}?`,
+            confirmText: "Inscriure",
+            cancelText: "Cancel·lar",
+        });
 
-        const submitBtn = form.querySelector('button[type="submit"]');
-        if (submitBtn) submitBtn.disabled = true;
-
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-        data.fecha_inicio = data.fecha_inicio || null;
-        data.fecha_fin = data.fecha_fin || null;
-        data.requisitos = data.requisitos !== "" ? data.requisitos : null;
-
-        const errors = [];
-        const nombreInput = form.querySelector('[name="nombre"]');
-        const codigoInput = form.querySelector('[name="codigo"]');
-        const fechaInicioInput = form.querySelector('[name="fecha_inicio"]');
-        const fechaFinInput = form.querySelector('[name="fecha_fin"]');
-
-        if (!data.nombre) {
-            errors.push("El nom és obligatori.");
-            setError(nombreInput);
-        } else {
-            clearError(nombreInput);
-        }
-
-        if (!data.codigo) {
-            errors.push("El codi és obligatori.");
-            setError(codigoInput);
-        } else {
-            clearError(codigoInput);
-        }
-
-        if (data.fecha_inicio && data.fecha_fin && data.fecha_fin < data.fecha_inicio) {
-            errors.push("La data fi no pot ser anterior a la data inici.");
-            setError(fechaInicioInput);
-            setError(fechaFinInput);
-        }
-
-        if (errors.length > 0) {
-            showMsg(errors.join("<br>"));
-            if (submitBtn) submitBtn.disabled = false;
-            return;
-        }
+        if (!ok) return;
+        const cursoId = document.querySelector("#cursoForm").dataset.id;
 
         try {
-            const res = await fetch(`/cursos/${form.dataset.id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json", "Accept": "application/json" },
-                body: JSON.stringify(data),
+
+            const res = await fetch(`/cursos/${cursoId}/alumnos`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    alumnoId: alumno.id,
+                }),
             });
+
             const json = await res.json();
 
-            if (submitBtn) submitBtn.disabled = false;
+            if (!res.ok || !json.ok) {
 
-            if (!json.ok) {
-                if (json.errores) {
-                    const msgs = Array.isArray(json.errores)
-                        ? json.errores
-                        : Object.values(json.errores);
-                    showMsg(msgs.join("<br>"));
-                } else if (json.error) {
-                    showMsg(json.error);
-                } else {
-                    showMsg("Error desconegut");
-                }
+                await window.showModal({
+                    type: "error",
+                    title: "Error",
+                    message: json.error || "No s'ha pogut inscriure l'alumne",
+                });
+
                 return;
+
             }
 
-            window.location.href = json.redirect;
+
+            const ul = document.querySelector("#listaAlumnosCurso");
+
+            const li = document.createElement("li");
+            li.classList.add("curso-alumno-item");
+
+            li.innerHTML = `
+        <span class="alumno-nombre">
+          ${alumno.nombre} ${alumno.apellidos}
+        </span>
+        <button
+          type="button"
+          class="btn btn-danger btn-sm btn-desmatricular"
+          data-alumno-id="${alumno.id}"
+          data-curso-id="${cursoId}"
+        >
+          Dar de baixa
+        </button>
+      `;
+
+            ul.appendChild(li);
+
+            input.value = "";
+            await window.showModal({
+                type: "success",
+                title: "Matrícula correcta",
+                message: `${alumno.nombre} ${alumno.apellidos} s'ha inscrit correctament al curs.`,
+            });
         } catch (err) {
-            if (submitBtn) submitBtn.disabled = false;
+
+            console.error(err);
+
             await window.showModal({
                 type: "error",
                 title: "Error",
-                message: "No s'ha pogut desar el curs.",
+                message: "Error de connexió amb el servidor",
             });
+
         }
     });
+
+});
+
+function initBuscadorAlumno(input, dropdown, onSelect) {
+
+    let debounceTimer = null;
+
+    input.addEventListener("input", () => {
+
+        const query = input.value.trim();
+
+        if (query.length < 2) {
+
+            cerrarDropdown();
+            return;
+
+        }
+
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+
+            searchAlumnos(query);
+
+        }, 250);
+
+    });
+
+    async function searchAlumnos(query) {
+
+        try {
+            const res = await fetch(
+                `/alumnos/buscar?q=${encodeURIComponent(query)}`,
+                {
+                    credentials: "include",
+                }
+            );
+
+            const data = await res.json();
+            renderResultados(data);
+
+        } catch (error) {
+
+            console.error("Error en cerca:", error);
+
+        }
+
+    }
+
+    function renderResultados(alumnos) {
+
+        dropdown.innerHTML = "";
+
+        if (!alumnos.length) {
+
+            dropdown.innerHTML = `
+        <div class="item empty">
+          Sense resultats
+        </div>
+      `;
+
+        } else {
+
+            alumnos.forEach((alumno) => {
+
+                const item = document.createElement("div");
+
+                item.classList.add("item");
+
+                item.textContent =
+                    `${alumno.apellidos}, ${alumno.nombre} — ${alumno.dni}`;
+
+                item.addEventListener("click", () => {
+
+                    cerrarDropdown();
+
+                    if (typeof onSelect === "function") {
+
+                        onSelect(alumno);
+
+                    }
+
+                });
+
+                dropdown.appendChild(item);
+
+            });
+
+        }
+
+        dropdown.classList.remove("hidden");
+
+    }
+
+    function cerrarDropdown() {
+
+        dropdown.classList.add("hidden");
+        dropdown.innerHTML = "";
+
+    }
+
+    input.addEventListener("blur", () => {
+
+        setTimeout(cerrarDropdown, 150);
+
+    });
+
+    input.addEventListener("keydown", (e) => {
+
+        if (e.key === "Escape") {
+
+            cerrarDropdown();
+            input.blur();
+
+        }
+
+    });
+
+}
+// Dar de baixa alumne d'un curs
+document.addEventListener("click", async (e) => {
+
+    const btn = e.target.closest(".btn-desmatricular");
+    if (!btn) return;
+
+    const alumnoId = btn.dataset.alumnoId;
+    const cursoId = btn.dataset.cursoId;
+
+    const li = btn.closest(".curso-alumno-item");
+
+    const nombreAlumno =
+        li?.querySelector(".alumno-nombre")?.textContent.trim()
+        || "aquest alumne";
+
+    const ok = await window.showConfirm({
+        title: "Confirmar baixa",
+        message: `Segur que vols donar de baixa ${nombreAlumno} d'aquest curs?`,
+        confirmText: "Dar de baixa",
+        cancelText: "Cancel·lar",
+    });
+
+    if (!ok) return;
+
+    try {
+
+        const res = await fetch(
+            `/cursos/${cursoId}/alumnos/${alumnoId}`,
+            {
+                method: "DELETE",
+            }
+        );
+
+        const json = await res.json();
+
+        if (!res.ok || !json.ok) {
+
+            await window.showModal({
+                type: "error",
+                title: "Error",
+                message: json.error || "No s'ha pogut donar de baixa l'alumne",
+            });
+
+            return;
+
+        }
+        li.remove();
+
+        await window.showModal({
+            type: "success",
+            title: "Baixa correcta",
+            message: `${nombreAlumno} s'ha donat de baixa correctament.`,
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        await window.showModal({
+            type: "error",
+            title: "Error",
+            message: "Error de connexió amb el servidor",
+        });
+
+    }
+
 });
