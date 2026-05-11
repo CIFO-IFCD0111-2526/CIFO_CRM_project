@@ -101,12 +101,14 @@
             </li>
             <% }) %>
         </ul>
-        <% } else { %>
-          <p class="detalle-empty">No hi ha UFs associades.</p>
-          <% } %>
-    </section>
-
+      <% } else { %>
+        <p class="detalle-empty">No hi ha UFs associades.</p>
+      <% } %>
+    </section>    
     <section class="detalle-card">
+    <button type = "button" id="btnMostrarBuscador"  class="btn btn-secundario edit-mode hidden">
+        Inscriure professor
+      </button>
       <h2 class="detalle-card-title">Professors</h2>
       <div class="header-actions">
         <button type="button" id="btnMostrarProfesores" class="btn btn-secundario js-open-matricula">
@@ -120,13 +122,16 @@
         <ul class="detalle-cursos">
           <% curso.Profesors.forEach(prof => { %>
             <li>
-              <span class="curso-nombre">
-                <%= prof.nombre %>
-                  <%= prof.apellidos %>
+              <span class="curso-nombre"><%= prof.nombre %> <%= prof.apellidos %>
+              <button
+            type="button"
+            class="btn btn-danger btn-sm btn-desmatricular edit-mode hidden"
+            data-curso-id="<%= curso.id %>"
+            data-profesor-id="<%= prof.id %>"
+            >
+            Donar de baixa
+          </button>
               </span>
-              <button type="button" class="btn btn-danger btn-sm btn-desmatricular" data-curso-id="<%= curso.id %>">
-                Dar de baixa
-              </button>
             </li>
             <% }) %>
         </ul>
