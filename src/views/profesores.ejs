@@ -6,14 +6,12 @@
   <div class="buscador-wrapper">
     <div class="buscador">
       <input type="text" id="busquedaProfesor" placeholder="Buscar professor..." autocomplete="off" />
-      <input type="text" id="busquedaProfesor" placeholder="Buscar professor..." autocomplete="off" />
     </div>
     <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
   <a href="/profesores/nuevo" class="btn btn-primario">Nou professor</a>
 </div>
 
-<% if (profesores && profesores.length> 0) { %>
 <% if (profesores && profesores.length> 0) { %>
   <div class="tabla-container">
     <table id="profesoresTable">
@@ -29,7 +27,6 @@
 
       <tbody>
         <% profesores.forEach(profesor=> { %>
-        <% profesores.forEach(profesor=> { %>
           <tr>
             <td>
               <a class="profesor-nombre" href="/profesores/<%= profesor.id %>">
@@ -37,12 +34,6 @@
               </a>
             </td>
 
-            <td>
-              <%= profesor.email || '—' %>
-            </td>
-            <td>
-              <%= profesor.telefono || '—' %>
-            </td>
             <td>
               <%= profesor.email || '—' %>
             </td>
@@ -66,7 +57,6 @@
               </div>
             </td>
           </tr>
-          <% }) %>
           <% }) %>
       </tbody>
     </table>
@@ -95,14 +85,6 @@
     </div>
   <% } %>
 
-      <% } else { %>
-        <div class="empty-state">
-          <p>No hi ha professors registrats.</p>
-          <a href="/profesores/nuevo" class="btn btn-primario">
-            Crear el primer professor
-          </a>
-        </div>
-        <% } %>
       <% } else { %>
         <div class="empty-state">
           <p>No hi ha professors registrats.</p>
