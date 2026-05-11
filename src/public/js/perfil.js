@@ -1,4 +1,3 @@
-const toggleBtn = document.getElementById("togglePasswordForm");
 const form = document.getElementById("perfilPasswordForm");
 const msg = document.getElementById("perfilPasswordMsg");
 

@@ -18,29 +18,23 @@
         <dl class="detalle-list">
             <div class="detalle-item">
                 <dt>Nom</dt>
-                <dd>
-                    <%= usuario.nombre || '—' %>
-                </dd>
+                <dd><%= usuario.nombre || '—' %></dd>
             </div>
 
             <div class="detalle-item">
                 <dt>Cognoms</dt>
-                <dd>
-                    <%= usuario.apellidos || '—' %>
-                </dd>
+                <dd><%= usuario.apellidos || '—' %></dd>
             </div>
 
             <div class="detalle-item">
                 <dt>Email</dt>
-                <dd>
-                    <%= usuario.email || '—' %>
-                </dd>
+                <dd><%= usuario.email || '—' %></dd>
             </div>
 
             <div class="detalle-item">
                 <dt>Nivell d'accés</dt>
                 <dd>
-                    <% if (usuario.nivel_acceso==='admin' ) { %>
+                    <% if (usuario.nivel_acceso === 'admin') { %>
                         <span class="badge badge-actual">Admin</span>
                     <% } %>
                     <% if (usuario.nivel_acceso === 'editor') { %>
