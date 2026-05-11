@@ -2,16 +2,34 @@ const { Curso, Alumno,CursoAlumno, Uf, Profesor } = require("../models");
 const { Op } = require("sequelize");
 
 const { handleControllerError } = require("../middlewares/errorHandler");
-/** GET /cursos */
+
+/** GET /cursos con paginacion */
 const getAll = async (req, res, next) => {
     try {
-        const cursos = await Curso.findAll();
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 20));
+        const offset = (page - 1) * limit;
+
+        const { count, rows: cursos } = await Curso.findAndCountAll({
+            order: [["created_at", "DESC"]],
+            limit,
+            offset
+        });
+
+        const totalPages = Math.ceil(count / limit);
+
         res.render("cursos", {
             titulo: "Busqueda de cursos",
             usuario: req.session.usuario,
             css: "cursos.css",
             js: "cursos.js",
-            cursos
+            cursos,
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalItems: count,
+                limit,
+            }
         });
     } catch (error) {
         return handleControllerError(error, res, next);

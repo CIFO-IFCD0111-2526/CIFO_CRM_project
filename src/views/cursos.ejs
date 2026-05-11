@@ -44,10 +44,12 @@
               <%= curso.requisitos || '—' %>
             </td>
             <td>
-              <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+              <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit' ,
+                month: '2-digit' , year: 'numeric' }) : '—' %>
             </td>
             <td>
-              <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+              <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit' ,
+                month: '2-digit' , year: 'numeric' }) : '—' %>
             </td>
             <td class="col-accions">
               <div class="acciones">
@@ -59,9 +61,33 @@
       </tbody>
     </table>
   </div>
-  <% } else { %>
-    <div class="empty-state">
-      <p>No hi ha cursos registrats.</p>
-      <a href="/cursos/nuevo" class="btn btn-primario">Crear el primer curs</a>
+
+  <% if (pagination.totalPages > 1) { %>
+    <div class="pagination-wrapper">
+      <div class="pagination" aria-label="Paginació">
+        <% if (pagination.currentPage > 1) { %>
+          <a href="?page=<%= pagination.currentPage - 1 %>&limit=<%= pagination.limit %>" class="btn btn-secundario btn-sm">
+            ← Anterior
+          </a>
+        <% } %>
+
+        <span class="pagination-info">
+          Pàgina <%= pagination.currentPage %> de <%= pagination.totalPages %>
+          (<%= pagination.totalItems %> cursos)
+        </span>
+
+        <% if (pagination.currentPage < pagination.totalPages) { %>
+          <a href="?page=<%= pagination.currentPage + 1 %>&limit=<%= pagination.limit %>" class="btn btn-secundario btn-sm">
+            Següent →
+          </a>
+        <% } %>
+      </div>
     </div>
-    <% } %>
+  <% } %>
+
+<% } else { %>
+  <div class="empty-state">
+    <p>No hi ha cursos registrats.</p>
+    <a href="/cursos/nuevo" class="btn btn-primario">Crear el primer curs</a>
+  </div>
+<% } %>
