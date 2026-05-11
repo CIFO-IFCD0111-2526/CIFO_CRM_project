@@ -6,16 +6,24 @@ const { Op } = require("sequelize");
 const { Profesor, Curso } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
-/** GET /profesores — listar todos */
+/** GET /profesores — listar todos con paginación */
 const getAll = async (req, res, next) => {
     try {
-        const profesores = await Profesor.findAll({
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 20));
+        const offset = (page - 1) * limit;
+
+        const { count, rows: profesores } = await Profesor.findAndCountAll({
             include: [{
                 model: Curso,
                 attributes: ["nombre"]
             }],
-            order: [["id", "ASC"]],
+            order: [["created_at", "DESC"]],
+            limit,
+            offset,
         });
+
+        const totalPages = Math.ceil(count / limit);
 
         res.render("profesores", {
             titulo: "Professors",
@@ -24,6 +32,12 @@ const getAll = async (req, res, next) => {
             js: "profesores.js",
             paginaActual: "profesores",
             profesores,
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalItems: count,
+                limit,
+            }
         });
     } catch (error) {
         return handleControllerError(error, res, next);
