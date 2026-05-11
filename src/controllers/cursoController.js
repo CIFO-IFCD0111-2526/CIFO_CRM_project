@@ -11,7 +11,7 @@ const getAll = async (req, res, next) => {
         const offset = (page - 1) * limit;
 
         const { count, rows: cursos } = await Curso.findAndCountAll({
-            order: [["codigo", "ASC"]],
+            order: [["created_at", "DESC"]],
             limit,
             offset
         });
