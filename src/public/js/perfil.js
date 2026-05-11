@@ -1,99 +1,58 @@
-const toggleBtn = document.getElementById("togglePasswordForm");
 const form = document.getElementById("perfilPasswordForm");
+const msg = document.getElementById("perfilPasswordMsg");
 
-if (toggleBtn && form) {
-    toggleBtn.addEventListener("click", () => {
-        form.style.display = "block";   // només mostra el formulari de canvi de contrasenya
-        toggleBtn.style.display = "none"; // amaga el botó de toggle.
-    });
-}
+const showMsg = (text, isError = true) => {
+    if (!msg) return;
+    msg.textContent = text;
+    msg.style.display = "block";
+    msg.classList.toggle("error-msg", isError);
+};
 
+const clearMsg = () => {
+    if (!msg) return;
+    msg.textContent = "";
+    msg.style.display = "none";
+    msg.classList.remove("error-msg");
+};
 
-if (form) {
+form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    clearMsg();
 
-    form.addEventListener("submit", async (e) => {
+    const passwordActual = document.getElementById("passwordActual").value;
+    const passwordNova = document.getElementById("passwordNova").value;
+    const passwordConfirmar = document.getElementById("passwordConfirmar").value;
 
-        e.preventDefault();
+    if (!passwordActual || !passwordNova || !passwordConfirmar) {
+        return showMsg("Tots els camps són obligatoris.");
+    }
 
-        const passwordActual =
-            document.getElementById("passwordActual").value;
+    if (passwordNova.length < 6) {
+        return showMsg("La contrasenya nova ha de tenir mínim 6 caràcters.");
+    }
 
-        const passwordNova =
-            document.getElementById("passwordNova").value;
+    if (passwordNova !== passwordConfirmar) {
+        return showMsg("Les contrasenyes no coincideixen.");
+    }
 
-        const passwordConfirmar =
-            document.getElementById("passwordConfirmar").value;
+    try {
+        const res = await fetch("/perfil/password", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify({ passwordActual, passwordNova }),
+        });
+        const json = await res.json();
 
-        const msg =
-            document.getElementById("perfilPasswordMsg");
-        msg.classList.add("perfil-password-flash");
-        msg.innerHTML = "";
-        msg.classList.remove("error", "success");
-        // msg.className = "";
-
-        // Validacions client
-
-        if (
-            !passwordActual ||
-            !passwordNova ||
-            !passwordConfirmar
-        ) {
-            msg.textContent = "Tots els camps són obligatoris";
-            msg.classList.add("error");
-            return;
+        if (!json.ok) {
+            return showMsg(json.error || "Error desconegut");
         }
 
-        if (passwordNova.length < 6) {
-            msg.textContent =
-                "La contrasenya ha de tenir mínim 6 caràcters";
-
-            msg.classList.add("error");
-            return;
-        }
-
-        if (passwordNova !== passwordConfirmar) {
-            msg.textContent =
-                "Les contrasenyes no coincideixen";
-
-            msg.classList.add("error");
-            return;
-        }
-
-        try {
-
-            const response = await fetch("/perfil/password", {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    passwordActual,
-                    passwordNova
-                })
-            });
-
-            const data = await response.json();
-
-            // ERROR DEL BACKEND
-            if (!data.ok) {
-                msg.textContent = data.message || "Error inesperat";
-                msg.classList.add("error");
-                return;
-            }
-
-            // ÈXIT → REDIRECT (el missatge sortirà a /perfil via flash)
-            if (data.redirect) {
-                window.location.href = data.redirect;
-            }
-
-        } catch (error) {
-            showModal({
-                type: "error",
-                title: "Error",
-                message: error.message || "Error inesperat"
-            });
-        }
-
-
-    });
-}
+        window.location.href = json.redirect;
+    } catch (err) {
+        await window.showModal({
+            type: "error",
+            title: "Error",
+            message: "No s'ha pogut canviar la contrasenya.",
+        });
+    }
+});

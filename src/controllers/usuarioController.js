@@ -8,9 +8,7 @@ const getPerfil = async (req, res, next) => {
         const usuario = await Usuario.findByPk(req.session.usuario.id);
 
         if (!usuario) {
-            return res.status(404).render("404", {
-                titulo: "Usuari no trobat"
-            });
+            return res.status(404).render("404", { titulo: "Usuari no trobat" });
         }
 
         res.render("perfil", {
@@ -18,10 +16,7 @@ const getPerfil = async (req, res, next) => {
             usuario,
             css: "usuarios.css",
             js: "perfil.js",
-            flash: res.locals.flash,
-
         });
-
     } catch (error) {
         return handleControllerError(error, res, next);
     }
@@ -31,46 +26,38 @@ const getPerfil = async (req, res, next) => {
 const changePassword = async (req, res, next) => {
     try {
         const { passwordActual, passwordNova } = req.body;
-        const usuarioId = req.session.usuario.id;
 
-        const usuario = await Usuario.findByPk(usuarioId);
+        if (!passwordActual || !passwordNova) {
+            return res.status(400).json({ ok: false, error: "Tots els camps són obligatoris" });
+        }
+
+        if (passwordNova.length < 6) {
+            return res.status(400).json({ ok: false, error: "La contrasenya nova ha de tenir mínim 6 caràcters" });
+        }
+
+        const usuario = await Usuario.findByPk(req.session.usuario.id);
 
         if (!usuario) {
-            return res.status(404).json({ message: "Usuari no trobat" });
+            return res.status(404).json({ ok: false, error: "Usuari no trobat" });
         }
 
-        const match = bcrypt.compareSync(passwordActual, usuario.password);
-        if (!match) {
-            if (!match) {
-                req.session.flash = {
-                    type: "error",
-                    msg: "La contrasenya actual no és correcta",
-                    noModal: true
-                };
-
-                return res.json({ ok: false, redirect: "/perfil" });
-            }
+        if (!bcrypt.compareSync(passwordActual, usuario.password)) {
+            return res.status(400).json({ ok: false, error: "La contrasenya actual no és correcta" });
         }
 
-        const hashed = bcrypt.hashSync(passwordNova, 10);
-        usuario.password = hashed;
+        usuario.password = bcrypt.hashSync(passwordNova, 10);
         await usuario.save();
 
         req.session.flash = {
             type: "success",
-            msg: "Contrasenya canviada correctament",
-            noModal: true
+            title: "Contrasenya canviada",
+            message: "La contrasenya s'ha actualitzat correctament.",
         };
 
         return res.json({ ok: true, redirect: "/perfil" });
-
     } catch (error) {
         return handleControllerError(error, res, next);
     }
 };
 
-module.exports = {
-    getPerfil,
-    changePassword
-};
-
+module.exports = { getPerfil, changePassword };
