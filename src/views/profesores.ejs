@@ -51,11 +51,11 @@
             </td>
 
             <td>
-              <% if (profesor.Cursos && profesor.Cursos.length> 0) { %>
-                <%= profesor.Cursos.map(c=> c.nombre).join(', ') %>
-                  <% } else { %>
-                    —
-                    <% } %>
+              <% if (profesor.Cursos && profesor.Cursos.length > 0) { %>
+                <%= profesor.Cursos.map(c => c.nombre).join(', ') %>
+              <% } else { %>
+                —
+              <% } %>
             </td>
 
             <td class="col-accions">
@@ -72,31 +72,28 @@
     </table>
   </div>
 
-  <% if (pagination && pagination.totalItems> 0) { %>
+  <% if (pagination && pagination.totalPages > 1) { %>
     <div class="pagination-wrapper">
       <div class="pagination" aria-label="Paginació">
-
-        <% if (pagination.currentPage> 1) { %>
-          <a href="/profesores?page=<%= pagination.currentPage - 1 %>&limit=<%= pagination.limit %>"
-            class="btn btn-secundario btn-sm">
+        <% if (pagination.currentPage > 1) { %>
+          <a href="/profesores?page=<%= pagination.currentPage - 1 %>&limit=<%= pagination.limit %>" class="btn btn-secundario btn-sm">
             ← Anterior
           </a>
-          <% } %>
+        <% } %>
 
-            <span class="pagination-info">
-              Pàgina <%= pagination.currentPage %> de <%= pagination.totalPages %>
-            </span>
+        <span class="pagination-info">
+          Pàgina <%= pagination.currentPage %> de <%= pagination.totalPages %>
+          (<%= pagination.totalItems %> professors)
+        </span>
 
-            <% if (pagination.currentPage < pagination.totalPages) { %>
-              <a href="/profesores?page=<%= pagination.currentPage + 1 %>&limit=<%= pagination.limit %>"
-                class="btn btn-secundario btn-sm">
-                Següent →
-              </a>
-              <% } %>
-
+        <% if (pagination.currentPage < pagination.totalPages) { %>
+          <a href="/profesores?page=<%= pagination.currentPage + 1 %>&limit=<%= pagination.limit %>" class="btn btn-secundario btn-sm">
+            Següent →
+          </a>
+        <% } %>
       </div>
     </div>
-    <% } %>
+  <% } %>
 
       <% } else { %>
         <div class="empty-state">
