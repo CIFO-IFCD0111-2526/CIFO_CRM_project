@@ -1,4 +1,4 @@
-const { Curso, Alumno,CursoAlumno, Uf, Profesor } = require("../models");
+const { Curso, Alumno,CursoAlumno, Profesor } = require("../models");
 const { Op } = require("sequelize");
 
 const { handleControllerError } = require("../middlewares/errorHandler");
