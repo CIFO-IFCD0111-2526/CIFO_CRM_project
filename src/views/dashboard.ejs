@@ -101,6 +101,7 @@
               <th>Codi</th>
               <th>Nom</th>
               <th>Data inici</th>
+              <th>Data fi</th>
             </tr>
           </thead>
 
@@ -124,17 +125,11 @@
                 </td>
 
                 <td class="col-fecha">
-                  <%= curso.fecha_inicio
-                    ? new Date(curso.fecha_inicio).toLocaleDateString(
-                        'ca-ES',
-                        {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric'
-                        }
-                      )
-                    : '—'
-                  %>
+                  <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+                </td>
+
+                <td class="col-fecha">
+                  <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
                 </td>
 
               </tr>
@@ -159,39 +154,18 @@
 
 </div>
 
-<!-- <div class="mostra-notes">
-
-  <div class="notes-pag">
-    Aqui es paginen les anotacions de l'usuari
-  </div>
-
-  <textarea class="notes-text" placeholder="Aqui es mostren les anotacions de l'usuari"></textarea>  
-
-</div> -->
-
-<!-- <div class="dashboard-card anotaciones-card"> -->
-<div class="dashboard-card-title">
-  <h2 class="dashboard-card-title-anotacions">Anotacions</h2>
-
-<div class="dashboard-card-header">
-    
-  </div>
+<section class="dashboard-card anotaciones-card">
+  <h2 class="dashboard-card-title">Anotacions</h2>
 
   <form id="anotacionForm" class="anotacion-form">
-
     <textarea
       name="contenido"
       id="contenidoAnotacio"
-      class="notes-text"
       placeholder="Escriu una anotació..."
       rows="3"
       required
     ></textarea>
 
-    
-
+    <button id="btnAfegirAnotacio" type="submit" class="btn btn-primario">Afegir</button>
   </form>
-
-  <button id="btnAfegirAnotacio" type="submit" class="btn btn-primario-anotacions">Afegir</button>
-
-</div>
+</section>
