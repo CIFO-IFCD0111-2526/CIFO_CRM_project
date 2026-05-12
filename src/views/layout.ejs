@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= titulo %> | CIFO La Violeta</title>
+     <link rel="icon" type="image/png" href="/images/Minilogo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/modal.css">
@@ -36,9 +37,6 @@
                     </a>
                     <a href="/cursos" class="<% if (locals.paginaActual === 'cursos') { %>active<% } %>">
                         <i class="fa-solid fa-book"></i> Cursos
-                    </a>
-                    <a href="/ufs" class="<% if (locals.paginaActual === 'ufs') { %>active<% } %>">
-                        <i class="fa-solid fa-layer-group"></i> UF's
                     </a>
                     <a href="/profesores" class="<% if (locals.paginaActual === 'profesores') { %>active<% } %>">
                         <i class="fa-solid fa-chalkboard-user"></i> Professors

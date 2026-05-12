@@ -1,4 +1,4 @@
-const { Curso, Alumno,CursoAlumno, Uf, Profesor } = require("../models");
+const { Curso, Alumno,CursoAlumno, Profesor } = require("../models");
 const { Op } = require("sequelize");
 
 const { handleControllerError } = require("../middlewares/errorHandler");
@@ -7,7 +7,7 @@ const { handleControllerError } = require("../middlewares/errorHandler");
 const getAll = async (req, res, next) => {
     try {
         const page = Math.max(1, parseInt(req.query.page) || 1);
-        const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 20));
+        const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 10));
         const offset = (page - 1) * limit;
 
         const { count, rows: cursos } = await Curso.findAndCountAll({

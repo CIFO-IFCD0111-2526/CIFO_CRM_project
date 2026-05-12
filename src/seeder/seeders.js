@@ -1,6 +1,5 @@
 const Alumno = require("../models/Alumno.js");
 const Curso = require("../models/Curso.js");
-const Uf = require("../models/Uf.js");
 const Profesor = require("../models/Profesor.js");
 
 async function seedAlumnos() {
@@ -107,12 +106,102 @@ async function seedAlumnos() {
         email: "elena@test.com",
         nivel_estudios: "6",
         tipo: "actual",
+      },
+      {
+        nombre: "Raúl",
+        apellidos: "Méndez Flores",
+        dni: "12121212K",
+        telefono: "600121212",
+        email: "raul@test.com",
+        nivel_estudios: "3",
+        tipo: "actual",
+      },
+      {
+        nombre: "Claudia",
+        apellidos: "Herrera León",
+        dni: "13131313L",
+        telefono: "600131313",
+        email: "claudia@test.com",
+        nivel_estudios: "5",
+        tipo: "futuro",
+      },
+      {
+        nombre: "Iván",
+        apellidos: "Peña Rubio",
+        dni: "14141414M",
+        telefono: "600141414",
+        email: "ivan@test.com",
+        nivel_estudios: "1",
+        tipo: "actual",
+      },
+      {
+        nombre: "Patricia",
+        apellidos: "Cano Molina",
+        dni: "15151515N",
+        telefono: "600151515",
+        email: "patricia@test.com",
+        nivel_estudios: "6",
+        tipo: "antiguo",
+      },
+      {
+        nombre: "Hugo",
+        apellidos: "Delgado Serrano",
+        dni: "16161616O",
+        telefono: "600161616",
+        email: "hugo@test.com",
+        nivel_estudios: "2",
+        tipo: "actual",
+      },
+      {
+        nombre: "Marta",
+        apellidos: "Vidal Ramos",
+        dni: "17171717P",
+        telefono: "600171717",
+        email: "marta@test.com",
+        nivel_estudios: "4",
+        tipo: "futuro",
+      },
+      {
+        nombre: "Diego",
+        apellidos: "Iglesias Núñez",
+        dni: "18181818Q",
+        telefono: "600181818",
+        email: "diego@test.com",
+        nivel_estudios: "3",
+        tipo: "actual",
+      },
+      {
+        nombre: "Nuria",
+        apellidos: "Campos Prieto",
+        dni: "19191919R",
+        telefono: "600191919",
+        email: "nuria@test.com",
+        nivel_estudios: "5",
+        tipo: "actual",
+      },
+      {
+        nombre: "Adrián",
+        apellidos: "Reyes Blanco",
+        dni: "20202020S",
+        telefono: "600202020",
+        email: "adrian@test.com",
+        nivel_estudios: "1",
+        tipo: "antiguo",
+      },
+      {
+        nombre: "Cristina",
+        apellidos: "Fuentes Cabrera",
+        dni: "21212121T",
+        telefono: "600212121",
+        email: "cristina@test.com",
+        nivel_estudios: "6",
+        tipo: "actual",
       }
     ];
 
     await Alumno.bulkCreate(alumnos);
 
-    console.log("10 alumnes inserits correctament");
+    console.log("20 alumnes inserits correctament");
 
   } catch (error) {
     console.error("Error inserint alumnes:", error.message);
@@ -178,37 +267,6 @@ async function seedCursos() {
   }
 }
 
-async function seedUfs() {
-  try {
-    const total = await Uf.count();
-    if (total > 0) {
-      console.log("Les UFs ja existeixen. Seed cancel·lat.");
-      return;
-    }
-    console.log("Inserint UFs de prova...");
-    const ufs = [
-      { codigo: "UF001", nombre: "HTML i CSS", horas: 40 },
-      { codigo: "UF002", nombre: "JavaScript bàsic", horas: 50 },
-      { codigo: "UF003", nombre: "JavaScript avançat", horas: 60 },
-      { codigo: "UF004", nombre: "Node.js", horas: 60 },
-      { codigo: "UF005", nombre: "Express i APIs", horas: 50 },
-      { codigo: "UF006", nombre: "Bases de dades SQL", horas: 60 },
-      { codigo: "UF007", nombre: "MongoDB", horas: 40 },
-      { codigo: "UF008", nombre: "Git i control de versions", horas: 30 },
-      { codigo: "UF009", nombre: "Testing i debugging", horas: 30 },
-      { codigo: "UF010", nombre: "Seguretat web", horas: 40 },
-      { codigo: "UF011", nombre: "React bàsic", horas: 60 },
-      { codigo: "UF012", nombre: "React avançat", horas: 60 },
-      { codigo: "UF013", nombre: "UX/UI", horas: 30 },
-      { codigo: "UF014", nombre: "Deploy i DevOps bàsic", horas: 40 },
-      { codigo: "UF015", nombre: "Projecte final", horas: 80 }
-    ];
-    await Uf.bulkCreate(ufs);
-    console.log("15 UFs inserides correctament");
-  } catch (error){
-    console.error("Error inserint UFs",error.message);
-  }
-}
 async function seedProfesores() { // 2. Nueva función de seed
   try {
     const total = await Profesor.count();
@@ -257,4 +315,4 @@ async function seedProfesores() { // 2. Nueva función de seed
 }
 
 // 3. Exportar la nueva función
-module.exports = { seedAlumnos, seedCursos, seedUfs, seedProfesores };
+module.exports = { seedAlumnos, seedCursos, seedProfesores };
