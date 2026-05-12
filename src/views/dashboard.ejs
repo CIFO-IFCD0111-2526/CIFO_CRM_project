@@ -159,14 +159,39 @@
 
 </div>
 
-<div class="mostra-notes">
+<!-- <div class="mostra-notes">
 
   <div class="notes-pag">
     Aqui es paginen les anotacions de l'usuari
   </div>
 
-  <textarea class="notes-text">
-Aqui es mostren les anotacions de l'usuari
-  </textarea>
+  <textarea class="notes-text" placeholder="Aqui es mostren les anotacions de l'usuari"></textarea>  
+
+</div> -->
+
+<!-- <div class="dashboard-card anotaciones-card"> -->
+<div class="dashboard-card-title">
+  <h2 class="dashboard-card-title-anotacions">Anotacions</h2>
+
+<div class="dashboard-card-header">
+    
+  </div>
+
+  <form id="anotacionForm" class="anotacion-form">
+
+    <textarea
+      name="contenido"
+      id="contenidoAnotacio"
+      class="notes-text"
+      placeholder="Escriu una anotació..."
+      rows="3"
+      required
+    ></textarea>
+
+    
+
+  </form>
+
+  <button id="btnAfegirAnotacio" type="submit" class="btn btn-primario-anotacions">Afegir</button>
 
 </div>
