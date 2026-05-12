@@ -2,7 +2,7 @@ const { Router } = require("express");
 const controller = require("../controllers/cursoController");
 const { authPage } = require("../middlewares/auth.js");
 const { loadResource } = require("../middlewares/loadResource.js");
-const { Curso, Uf, Profesor, Alumno } = require("../models");
+const { Curso, Profesor, Alumno } = require("../models");
 
 const router = Router();
 
@@ -15,7 +15,7 @@ router.post('/', controller.createCurso);
 router.get("/", controller.getAll);
 router.get("/buscar", controller.searchCurso);
 router.get("/:id",
-    loadResource(Curso, { redirectTo: "/cursos", include: [Uf, Profesor, Alumno] }),
+    loadResource(Curso, { redirectTo: "/cursos", include: [Profesor, Alumno] }),
     controller.getById
 );
 router.delete("/:id",
