@@ -100,8 +100,7 @@
               <th>Codi</th>
               <th>Nom</th>
               <th>Data inici</th>
-              <th>Data fi</th>
-             </tr>
+            </tr>
           </thead>
 
           <tbody>
@@ -150,21 +149,35 @@
 
 </div>
 
-<!-- ANOTACION USUARI -->
+<!-- <div class="mostra-notes">
 
-<section class="dashboard-card anotaciones-card">
-  <form id="anotacionForm" class="anotacion-form" novalidate>
-    <div class="anotacion-header">
-      <h2 class="dashboard-card-title">Anotacions</h2>
-      <button id="btnAfegirAnotacio" type="submit" class="btn btn-primario">Afegir</button>
-    </div>
-    <div id="anotacionMsg" class="form-msg" aria-live="polite"></div>
+  <div class="notes-pag">
+    Aqui es paginen les anotacions de l'usuari
+  </div>
+
+  <textarea class="notes-text" placeholder="Aqui es mostren les anotacions de l'usuari"></textarea>  
+
+</div> -->
+
+<!-- <div class="dashboard-card anotaciones-card"> -->
+<div class="dashboard-card-title">
+  <h2 class="dashboard-card-title-anotacions">Anotacions</h2>
+
+<div class="dashboard-card-header">
+    
+  </div>
+
+  <form id="anotacionForm" class="anotacion-form">
+
     <textarea
       name="contenido"
       id="contenidoAnotacio"
       placeholder="Escriu una anotació..."
       rows="3"
     ></textarea>
+
+    
+
   </form>
 </section>
 
