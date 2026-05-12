@@ -136,7 +136,9 @@ document.addEventListener("DOMContentLoaded", () => {
       form.querySelector('[name="derechos_imagen"]')?.checked || false;
     data.cesion_material =
       form.querySelector('[name="cesion_material"]')?.checked || false;
-
+    data.accion_difusion =
+      form.querySelector('[name="accion_difusion"]')?.checked || false;
+      
     const errors = [];
 
     if (!data.nombre) {
@@ -340,6 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
     data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
+    data.accion_difusion = form.querySelector('[name="accion_difusion"]')?.checked || false;
 
     // ── Validacions ──────────────────────────────────────────────
     const errors = [];
@@ -402,7 +405,7 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.disabled = false;
       return;
     }
-// ─────────────────────────────────────────────────────────────  
+    // ─────────────────────────────────────────────────────────────  
     const id = form.dataset.id;
 
     try {

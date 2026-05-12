@@ -124,6 +124,16 @@
                 <% } %>
           </dd>
         </div>
+        <div class="detalle-item">
+          <dt>Acció de difusió</dt>
+          <dd>
+            <% if (alumno.accion_difusion) { %>
+              <span class="badge badge-actual">Sí</span>
+              <% } else { %>
+                <span class="badge badge-antiguo">No</span>
+                <% } %>
+          </dd>
+        </div>
       </dl>
 
     </section>
