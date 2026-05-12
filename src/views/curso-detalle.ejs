@@ -104,19 +104,14 @@
       <% } else { %>
         <p class="detalle-empty">No hi ha UFs associades.</p>
       <% } %>
-    </section>    
+    </section>
+
     <section class="detalle-card">
     <button type = "button" id="btnBuscadorProfes"  class="btn btn-secundario">
-        Inscriure professor
+        Assignar professor
       </button>
       <h2 class="detalle-card-title">Professors</h2>
       <div class="header-actions">
-        <button type="button" id="btnMostrarProfesores" class="btn btn-secundario js-open-matricula">
-          Asignar profesors
-        </button>
-        <button type="button" id="btnCancelarProfesores" class="btn btn-secundario cancelar-btn hidden">
-          Cancel·lar
-        </button>
       </div>
       <% if (curso.Profesors && curso.Profesors.length > 0) { %>
         <ul class="detalle-cursos">
@@ -147,12 +142,9 @@
             <input type="text" id="busquedaProfesorCurso" placeholder="Buscar profesor..." autocomplete="off" />
           </div>
         </div>
-
-
     </section>
 
-    <section class="detalle-card detalle-full">
-       <div class="card-header-alumnos">
+    <section class="detalle-card detalle-full">       
       <h2 class="detalle-card-title">Alumnes</h2>
       <div class="card-header-alumnos">
         <div class="header-actions">
@@ -176,10 +168,8 @@
                 data-alumno-id="<%= al.id %>">
                 Dar de baixa
               </button>
-
             </li>
             <% }) %>
-
               <% } else { %>
                 <p class="detalle-empty">No hi ha alumnes matriculats.</p>
                 <% } %>
