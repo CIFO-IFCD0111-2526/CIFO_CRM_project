@@ -1,36 +1,48 @@
+/* A DEFINIR EN ISSUES POSTERIORES:
+
+    - Lógica de fetching de la DB de alumnos, cursos, y anotaciones para mostrar en 'public/dashboard.ejs'.
+
+*/
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("#anotacionForm");
-    if (!form) return;
+  const form = document.querySelector("#anotacionForm");
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+  if (!form) return;
 
-        const contenido = form.contenido.value.trim();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-        try {
-            const res = await fetch("/anotaciones", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ contenido }),
-            });
+    const contenido = form.contenido.value.trim();
 
-            const data = await res.json();
+    try {
+      const res = await fetch("/anotaciones", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ contenido }),
+      });
 
-            if (!res.ok || !data.ok) {
-                return window.showModal({
-                    type: "error",
-                    title: "Error",
-                    message: data.error || "Error al crear l'anotació",
-                });
-            }
+      const data = await res.json();
 
-            window.location.href = data.redirect;
-        } catch (error) {
-            window.showModal({
-                type: "error",
-                title: "Error",
-                message: "Error de connexió amb el servidor",
-            });
-        }
-    });
+      if (!res.ok || !data.ok) {
+        return window.showModal({
+          title: "Error",
+          text: data.error || "Error al crear anotació",
+          icon: "error",
+        });
+      }
+
+      // recarga dashboard para ver flash + lista actualizada
+      window.location.href = data.redirect;
+
+    } catch (error) {
+      console.error(error);
+
+      window.showModal({
+        title: "Error",
+        text: "Error de connexió amb el servidor",
+        icon: "error",
+      });
+    }
+  });
 });
