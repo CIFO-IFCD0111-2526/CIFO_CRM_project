@@ -114,4 +114,6 @@ const db = {
   CursoAlumno
 };
 
+
+
 module.exports = db;
