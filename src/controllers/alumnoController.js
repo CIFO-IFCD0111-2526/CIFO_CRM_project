@@ -51,7 +51,7 @@ const renderNewAlumno = async (req, res) => {
 // POST /alumnos
 
 const createAlumno = async (req, res, next) => {
-    const { nombre, apellidos, dni, telefono, email, nivel_estudios, tipo, derechos_imagen, cesion_material,accion_difusion, comentarios } = req.body;
+    const { nombre, apellidos, dni, telefono, email, nivel_estudios, tipo, derechos_imagen, cesion_material, accion_difusion, comentarios } = req.body;
 
     if (!nombre || !apellidos || !dni || !tipo) {
         return res.status(400).json({ error: "Tots els camps són obligatoris." });
@@ -169,7 +169,7 @@ const updateAlumno = async (req, res, next) => {
 
         const {
             nombre, apellidos, dni, telefono, email,
-            nivel_estudios, tipo, derechos_imagen, cesion_material,accion_difusion, comentarios,
+            nivel_estudios, tipo, derechos_imagen, cesion_material, accion_difusion, comentarios,
         } = req.body;
 
         if (!nombre || !apellidos || !dni || !tipo) {
