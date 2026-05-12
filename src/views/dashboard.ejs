@@ -101,7 +101,7 @@
               <th>Codi</th>
               <th>Nom</th>
               <th>Data inici</th>
-              <th>Data fin</th>
+              <th>Data fi</th>
             </tr>
           </thead>
 
@@ -125,17 +125,11 @@
                 </td>
 
                 <td class="col-fecha">
-                  <%= curso.fecha_inicio
-                    ? new Date(curso.fecha_inicio).toLocaleDateString(
-                        'ca-ES',
-                        {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric'
-                        }
-                      )
-                    : '—'
-                  %>
+                  <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+                </td>
+
+                <td class="col-fecha">
+                  <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
                 </td>
                 <td class="col-fecha">
                   <%= curso.fecha_fin
@@ -172,14 +166,18 @@
 
 </div>
 
-<div class="mostra-notes">
+<section class="dashboard-card anotaciones-card">
+  <h2 class="dashboard-card-title">Anotacions</h2>
 
-  <div class="notes-pag">
-    Aqui es paginen les anotacions de l'usuari
-  </div>
+  <form id="anotacionForm" class="anotacion-form">
+    <textarea
+      name="contenido"
+      id="contenidoAnotacio"
+      placeholder="Escriu una anotació..."
+      rows="3"
+      required
+    ></textarea>
 
-  <textarea class="notes-text">
-Aqui es mostren les anotacions de l'usuari
-  </textarea>
-
-</div>
+    <button id="btnAfegirAnotacio" type="submit" class="btn btn-primario">Afegir</button>
+  </form>
+</section>

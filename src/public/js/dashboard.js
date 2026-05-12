@@ -1,5 +1,36 @@
-/* A DEFINIR EN ISSUES POSTERIORES:
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("#anotacionForm");
+    if (!form) return;
 
-    - Lógica de fetching de la DB de alumnos, cursos, y anotaciones para mostrar en 'public/dashboard.ejs'.
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-*/
+        const contenido = form.contenido.value.trim();
+
+        try {
+            const res = await fetch("/anotaciones", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contenido }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || !data.ok) {
+                return window.showModal({
+                    type: "error",
+                    title: "Error",
+                    message: data.error || "Error al crear l'anotació",
+                });
+            }
+
+            window.location.href = data.redirect;
+        } catch (error) {
+            window.showModal({
+                type: "error",
+                title: "Error",
+                message: "Error de connexió amb el servidor",
+            });
+        }
+    });
+});
