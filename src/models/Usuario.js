@@ -19,7 +19,7 @@ const Usuario = sequelize.define(
       allowNull: false,
       validate: {
         notEmpty: { msg: "El nom no pot estar buit" },
-        len: { args: [2, 100], msg: "El nom ha de tenir entre 2 i 100 caràcters" },
+        // len: { args: [2, 100], msg: "El nom ha de tenir entre 2 i 100 caràcters" },
       },
     },
     apellidos: {

@@ -107,12 +107,102 @@ async function seedAlumnos() {
         email: "elena@test.com",
         nivel_estudios: "6",
         tipo: "actual",
+      },
+      {
+        nombre: "Raúl",
+        apellidos: "Méndez Flores",
+        dni: "12121212K",
+        telefono: "600121212",
+        email: "raul@test.com",
+        nivel_estudios: "3",
+        tipo: "actual",
+      },
+      {
+        nombre: "Claudia",
+        apellidos: "Herrera León",
+        dni: "13131313L",
+        telefono: "600131313",
+        email: "claudia@test.com",
+        nivel_estudios: "5",
+        tipo: "futuro",
+      },
+      {
+        nombre: "Iván",
+        apellidos: "Peña Rubio",
+        dni: "14141414M",
+        telefono: "600141414",
+        email: "ivan@test.com",
+        nivel_estudios: "1",
+        tipo: "actual",
+      },
+      {
+        nombre: "Patricia",
+        apellidos: "Cano Molina",
+        dni: "15151515N",
+        telefono: "600151515",
+        email: "patricia@test.com",
+        nivel_estudios: "6",
+        tipo: "antiguo",
+      },
+      {
+        nombre: "Hugo",
+        apellidos: "Delgado Serrano",
+        dni: "16161616O",
+        telefono: "600161616",
+        email: "hugo@test.com",
+        nivel_estudios: "2",
+        tipo: "actual",
+      },
+      {
+        nombre: "Marta",
+        apellidos: "Vidal Ramos",
+        dni: "17171717P",
+        telefono: "600171717",
+        email: "marta@test.com",
+        nivel_estudios: "4",
+        tipo: "futuro",
+      },
+      {
+        nombre: "Diego",
+        apellidos: "Iglesias Núñez",
+        dni: "18181818Q",
+        telefono: "600181818",
+        email: "diego@test.com",
+        nivel_estudios: "3",
+        tipo: "actual",
+      },
+      {
+        nombre: "Nuria",
+        apellidos: "Campos Prieto",
+        dni: "19191919R",
+        telefono: "600191919",
+        email: "nuria@test.com",
+        nivel_estudios: "5",
+        tipo: "actual",
+      },
+      {
+        nombre: "Adrián",
+        apellidos: "Reyes Blanco",
+        dni: "20202020S",
+        telefono: "600202020",
+        email: "adrian@test.com",
+        nivel_estudios: "1",
+        tipo: "antiguo",
+      },
+      {
+        nombre: "Cristina",
+        apellidos: "Fuentes Cabrera",
+        dni: "21212121T",
+        telefono: "600212121",
+        email: "cristina@test.com",
+        nivel_estudios: "6",
+        tipo: "actual",
       }
     ];
 
     await Alumno.bulkCreate(alumnos);
 
-    console.log("10 alumnes inserits correctament");
+    console.log("20 alumnes inserits correctament");
 
   } catch (error) {
     console.error("Error inserint alumnes:", error.message);
@@ -205,8 +295,8 @@ async function seedUfs() {
     ];
     await Uf.bulkCreate(ufs);
     console.log("15 UFs inserides correctament");
-  } catch (error){
-    console.error("Error inserint UFs",error.message);
+  } catch (error) {
+    console.error("Error inserint UFs", error.message);
   }
 }
 async function seedProfesores() { // 2. Nueva función de seed
