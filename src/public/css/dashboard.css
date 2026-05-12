@@ -93,29 +93,67 @@
 ========================= */
 
 .mostra-notes {
+  margin: 25px 2rem;
+}
+
+/* HEADER (título + botón) */
+.notes-header {
   display: flex;
-  flex-direction: row;
-  gap: 20px;
-  margin-top: 25px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-.notes-pag {
-  width: 25%;
+.notes-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primario);
 }
 
-.notes-text {
-  width: 75%;
-  min-height: 200px;
-  resize: none;
+/* ANOTACIONES */
+.anotaciones-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.anotacion-item {
   background-color: var(--color-fondo-pagina);
-}
-
-.notes-pag,
-.notes-text {
-  padding: 15px;
   border: 1px solid var(--color-borde);
   border-radius: var(--radio-pequeno);
+  padding: 12px 15px;
+  transition: box-shadow 0.2s ease;
+}
+
+.anotacion-item:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.anotacion-texto {
+  font-size: 14px;
   color: var(--color-texto-principal);
+  margin-bottom: 5px;
+}
+
+.anotacion-fecha {
+  font-size: 12px;
+  color: var(--color-texto-secundario);
+}
+
+/* PAGINACIÓN */
+.notes-pag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+/* EMPTY STATE específico */
+.mostra-notes .empty-state {
+  margin-top: 10px;
 }
 
 /* =========================

@@ -1,7 +1,8 @@
 <div class="page-header">
   <div>
     <h1 class="page-title">
-      Benvingut, <%= usuario.nombre %> <%= usuario.apellidos %>
+      Benvingut, <%= usuario.nombre %>
+        <%= usuario.apellidos %>
     </h1>
 
     <p class="page-subtitle">
@@ -19,7 +20,7 @@
       <h2 class="dashboard-card-title">Últims alumnes</h2>
     </div>
 
-    <% if (alumnos && alumnos.length > 0) { %>
+    <% if (alumnos && alumnos.length> 0) { %>
 
       <div class="tabla-container">
         <table id="dashboardAlumnosTable">
@@ -32,14 +33,11 @@
           </thead>
 
           <tbody>
-            <% alumnos.forEach(alumno => { %>
+            <% alumnos.forEach(alumno=> { %>
               <tr>
 
                 <td>
-                  <a
-                    class="alumno-nombre"
-                    href="/alumnos/<%= alumno.id %>"
-                  >
+                  <a class="alumno-nombre" href="/alumnos/<%= alumno.id %>">
                     <%= alumno.apellidos %>, <%= alumno.nombre %>
                   </a>
                 </td>
@@ -47,41 +45,42 @@
                 <td>
                   <span class="badge badge-<%= alumno.tipo %>">
 
-                    <% if (alumno.tipo === 'actual') { %>
+                    <% if (alumno.tipo==='actual' ) { %>
                       Actual
-                    <% } %>
+                      <% } %>
 
-                    <% if (alumno.tipo === 'antiguo') { %>
-                      Antic
-                    <% } %>
+                        <% if (alumno.tipo==='antiguo' ) { %>
+                          Antic
+                          <% } %>
 
-                    <% if (alumno.tipo === 'futuro') { %>
-                      Futur
-                    <% } %>
+                            <% if (alumno.tipo==='futuro' ) { %>
+                              Futur
+                              <% } %>
 
                   </span>
                 </td>
 
                 <td class="col-fecha">
-                  <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+                  <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit' ,
+                    month: '2-digit' , year: 'numeric' }) : '—' %>
                 </td>
               </tr>
-            <% }) %>
+              <% }) %>
           </tbody>
         </table>
       </div>
 
-    <% } else { %>
+      <% } else { %>
 
-      <div class="empty-state">
-        <p>No hi ha alumnes registrats.</p>
+        <div class="empty-state">
+          <p>No hi ha alumnes registrats.</p>
 
-        <a href="/alumnos/nuevo" class="btn btn-primario">
-          Crear el primer alumne
-        </a>
-      </div>
+          <a href="/alumnos/nuevo" class="btn btn-primario">
+            Crear el primer alumne
+          </a>
+        </div>
 
-    <% } %>
+        <% } %>
 
   </div>
 
@@ -92,7 +91,7 @@
       <h2 class="dashboard-card-title">Últims cursos</h2>
     </div>
 
-    <% if (cursos && cursos.length > 0) { %>
+    <% if (cursos && cursos.length> 0) { %>
 
       <div class="tabla-container">
         <table id="dashboardCursosTable">
@@ -105,7 +104,7 @@
           </thead>
 
           <tbody>
-            <% cursos.forEach(curso => { %>
+            <% cursos.forEach(curso=> { %>
               <tr>
 
                 <td>
@@ -115,58 +114,101 @@
                 </td>
 
                 <td>
-                  <a
-                    class="curso-nombre"
-                    href="/cursos/<%= curso.id %>"
-                  >
+                  <a class="curso-nombre" href="/cursos/<%= curso.id %>">
                     <%= curso.nombre %>
                   </a>
                 </td>
 
                 <td class="col-fecha">
-                  <%= curso.fecha_inicio
-                    ? new Date(curso.fecha_inicio).toLocaleDateString(
-                        'ca-ES',
-                        {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric'
-                        }
-                      )
-                    : '—'
-                  %>
+                  <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString( 'ca-ES' , { day: '2-digit' ,
+                    month: '2-digit' , year: 'numeric' } ) : '—' %>
                 </td>
 
               </tr>
-            <% }) %>
+              <% }) %>
           </tbody>
         </table>
       </div>
 
-    <% } else { %>
+      <% } else { %>
 
-      <div class="empty-state">
-        <p>No hi ha cursos registrats.</p>
+        <div class="empty-state">
+          <p>No hi ha cursos registrats.</p>
 
-        <a href="/cursos/nuevo" class="btn btn-primario">
-          Crear el primer curs
-        </a>
-      </div>
+          <a href="/cursos/nuevo" class="btn btn-primario">
+            Crear el primer curs
+          </a>
+        </div>
 
-    <% } %>
+        <% } %>
 
   </div>
 
 </div>
 
+<!-- ANOTACION USUARI -->
+
 <div class="mostra-notes">
 
-  <div class="notes-pag">
-    Aqui es paginen les anotacions de l'usuari
+
+  <div class="notes-header">
+    <h3 class="notes-title">Les meves anotacions</h3>
+
+    <a href="/anotaciones/nueva" class="btn btn-primario">
+      + Nova anotació
+    </a>
   </div>
 
-  <textarea class="notes-text">
-Aqui es mostren les anotacions de l'usuari
-  </textarea>
+  <% if (anotaciones && anotaciones.length> 0) { %>
+
+    <ul class="anotaciones-list">
+      <% anotaciones.forEach(a=> { %>
+        <li class="anotacion-item">
+
+          <div class="anotacion-texto">
+            <%= a.contenido %>
+          </div>
+
+          <div class="anotacion-fecha col-fecha">
+            <%= new Date(a.created_at).toLocaleDateString('ca-ES', { day: '2-digit' , month: '2-digit' , year: 'numeric'
+              }) %>
+          </div>
+
+        </li>
+        <% }) %>
+    </ul>
+
+    <% } else { %>
+
+      <div class="empty-state">
+        <p>No hi ha anotacions encara.</p>
+      </div>
+
+      <% } %>
+
+        <!-- PAGINACIÓN -->
+        <% if (pagination && pagination.totalPages> 1) { %>
+
+          <div class="notes-pag">
+
+            <% if (pagination.currentPage> 1) { %>
+              <a href="/dashboard?page=<%= pagination.currentPage - 1 %>" class="btn-sm">
+                ← Anterior
+              </a>
+              <% } %>
+
+                <span>
+                  Página <%= pagination.currentPage %> de <%= pagination.totalPages %>
+                </span>
+
+                <% if (pagination.currentPage < pagination.totalPages) { %>
+                  <a href="/dashboard?page=<%= pagination.currentPage + 1 %>" class="btn-sm">
+                    Següent →
+                  </a>
+                  <% } %>
+
+          </div>
+
+          <% } %>
 
 </div>
