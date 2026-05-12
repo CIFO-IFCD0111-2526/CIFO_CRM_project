@@ -90,23 +90,6 @@
     <div id="cursoMsg" class="form-msg form-full" aria-live="polite"></div>
 
     <section class="detalle-card">
-      <h2 class="detalle-card-title">UFs</h2>
-      <% if (curso.Ufs && curso.Ufs.length> 0) { %>
-        <ul class="detalle-cursos">
-          <% curso.Ufs.forEach(uf=> { %>
-            <li>
-              <span class="curso-nombre">
-                <%= uf.nombre %>
-              </span>
-            </li>
-            <% }) %>
-        </ul>
-        <% } else { %>
-          <p class="detalle-empty">No hi ha UFs associades.</p>
-          <% } %>
-    </section>
-
-    <section class="detalle-card">
       <h2 class="detalle-card-title">Professors</h2>
       <div class="header-actions">
         <button type="button" id="btnMostrarProfesores" class="btn btn-secundario js-open-matricula">

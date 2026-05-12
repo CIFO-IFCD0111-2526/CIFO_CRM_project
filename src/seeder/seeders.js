@@ -1,6 +1,5 @@
 const Alumno = require("../models/Alumno.js");
 const Curso = require("../models/Curso.js");
-const Uf = require("../models/Uf.js");
 const Profesor = require("../models/Profesor.js");
 
 async function seedAlumnos() {
@@ -268,37 +267,6 @@ async function seedCursos() {
   }
 }
 
-async function seedUfs() {
-  try {
-    const total = await Uf.count();
-    if (total > 0) {
-      console.log("Les UFs ja existeixen. Seed cancel·lat.");
-      return;
-    }
-    console.log("Inserint UFs de prova...");
-    const ufs = [
-      { codigo: "UF001", nombre: "HTML i CSS", horas: 40 },
-      { codigo: "UF002", nombre: "JavaScript bàsic", horas: 50 },
-      { codigo: "UF003", nombre: "JavaScript avançat", horas: 60 },
-      { codigo: "UF004", nombre: "Node.js", horas: 60 },
-      { codigo: "UF005", nombre: "Express i APIs", horas: 50 },
-      { codigo: "UF006", nombre: "Bases de dades SQL", horas: 60 },
-      { codigo: "UF007", nombre: "MongoDB", horas: 40 },
-      { codigo: "UF008", nombre: "Git i control de versions", horas: 30 },
-      { codigo: "UF009", nombre: "Testing i debugging", horas: 30 },
-      { codigo: "UF010", nombre: "Seguretat web", horas: 40 },
-      { codigo: "UF011", nombre: "React bàsic", horas: 60 },
-      { codigo: "UF012", nombre: "React avançat", horas: 60 },
-      { codigo: "UF013", nombre: "UX/UI", horas: 30 },
-      { codigo: "UF014", nombre: "Deploy i DevOps bàsic", horas: 40 },
-      { codigo: "UF015", nombre: "Projecte final", horas: 80 }
-    ];
-    await Uf.bulkCreate(ufs);
-    console.log("15 UFs inserides correctament");
-  } catch (error) {
-    console.error("Error inserint UFs", error.message);
-  }
-}
 async function seedProfesores() { // 2. Nueva función de seed
   try {
     const total = await Profesor.count();
@@ -347,4 +315,4 @@ async function seedProfesores() { // 2. Nueva función de seed
 }
 
 // 3. Exportar la nueva función
-module.exports = { seedAlumnos, seedCursos, seedUfs, seedProfesores };
+module.exports = { seedAlumnos, seedCursos, seedProfesores };
