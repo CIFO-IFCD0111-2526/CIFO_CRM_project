@@ -158,18 +158,16 @@
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
-}
 
-.anotaciones-card {
-  margin: 25px 2rem;
-  padding: 0;
-}
+  .mostra-notes {
+    flex-direction: column;
+  }
 
   .notes-pag,
   .notes-text {
     width: 100%;
   }
-
+}
 
 .dashboard-card-title-anotacions {
   color: var(--color-primario);
@@ -185,39 +183,23 @@
     margin-left: 30px;
 }
 
-.btn-primario-anotacions:hover {
-    background-color: var(--color-primario-hover);
-    margin-left: 30px;
-}
-
-#anotacionForm {
-  margin-top: 20px;
-  margin-left: 30px;
-} 
-
-#btnAfegirAnotacio {
-  margin-top: 10px;
-  background-color: var(--color-primario);
-  color: var(--color-texto-blanco);
-  margin-left: 30px;
-}
-
-#btnAfegirAnotacio:hover {
-  background-color: var(--color-primario-hover);
-  color: var(--color-texto-principal);
-  margin-left: 30px;
+.anotacion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 #contenidoAnotacio {
-  width: 98%;
+  width: 100%;
   min-height: 100px;
   resize: none;
-  background-color: var(--color-fondo-pagina);
-  margin-top: 5px;
-  /* margin-left: 20px; */
-  margin-right: 30px;
-  /* max-width: 950px; */
-  /* padding: 5px; */
+  padding: 10px;
   border: 1px solid var(--color-borde);
   border-radius: var(--radio-pequeno);
+  background-color: var(--color-fondo-pagina);
+  box-sizing: border-box;
+}
+
+#btnAfegirAnotacio {
+  align-self: flex-start;
 }
