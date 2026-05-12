@@ -169,7 +169,7 @@ const updateAlumno = async (req, res, next) => {
 
         const {
             nombre, apellidos, dni, telefono, email,
-            nivel_estudios, tipo, derechos_imagen, cesion_material, accion_difusion, comentarios,
+            nivel_estudios, tipo, derechos_imagen, cesion_material,accion_difusion, comentarios,
         } = req.body;
 
         if (!nombre || !apellidos || !dni || !tipo) {
