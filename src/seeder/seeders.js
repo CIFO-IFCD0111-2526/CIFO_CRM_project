@@ -223,35 +223,35 @@ async function seedCursos() {
     const cursos = [
       {
         nombre: "Desenvolupament Web Frontend",
-        codigo: "DWFE-2025",
+        codigo_curso: "DWFE-2025",
         fecha_inicio: new Date("2025-02-10"),
         fecha_fin: new Date("2025-06-30"),
         nivel: 2
       },
       {
         nombre: "Desenvolupament Web Backend",
-        codigo: "DWBE-2025",
+        codigo_curso: "DWBE-2025",
         fecha_inicio: new Date("2025-03-01"),
         fecha_fin: new Date("2025-07-15"),
         nivel: 4
       },
       {
         nombre: "Introducció a la Programació",
-        codigo: "INTRO-PROG",
+        codigo_curso: "INTRO-PROG",
         fecha_inicio: new Date("2025-01-15"),
         fecha_fin: new Date("2025-04-15"),
         nivel: 1
       },
       {
         nombre: "Administració de Sistemes Linux",
-        codigo: "ASIX-LINUX",
+        codigo_curso: "ASIX-LINUX",
         fecha_inicio: new Date("2025-04-01"),
         fecha_fin: new Date("2025-09-01"),
         nivel: 4
       },
       {
         nombre: "Bases de Dades SQL",
-        codigo: "BBDD-SQL",
+        codigo_curso: "BBDD-SQL",
         fecha_inicio: new Date("2025-05-05"),
         fecha_fin: new Date("2025-08-20"),
         nivel: 2
