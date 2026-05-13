@@ -195,5 +195,6 @@
 }
 
 #btnAfegirAnotacio:hover {
-  background-color: var(--color-primario-hover);
+  align-self: flex-start;
+  color: var(--color-texto-secundario);
 }
