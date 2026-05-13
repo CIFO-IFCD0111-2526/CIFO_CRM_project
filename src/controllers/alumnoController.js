@@ -51,7 +51,7 @@ const renderNewAlumno = async (req, res) => {
 // POST /alumnos
 
 const createAlumno = async (req, res, next) => {
-    const { nombre, apellidos, dni, telefono, email, nivel_estudios, tipo, derechos_imagen, cesion_material } = req.body;
+    const { nombre, apellidos, dni, telefono, email, nivel_estudios, tipo, derechos_imagen, cesion_material, accion_difusion } = req.body;
 
     if (!nombre || !apellidos || !dni || !tipo) {
         return res.status(400).json({ error: "Tots els camps són obligatoris." });
@@ -73,6 +73,7 @@ const createAlumno = async (req, res, next) => {
             tipo,
             derechos_imagen: derechos_imagen === "true" || derechos_imagen === true,
             cesion_material: cesion_material === "true" || cesion_material === true,
+            accion_difusion: accion_difusion === "true" || accion_difusion === true,
             ultimo_id_modif: req.session.usuario.id,
         });
 
@@ -167,7 +168,7 @@ const updateAlumno = async (req, res, next) => {
 
         const {
             nombre, apellidos, dni, telefono, email,
-            nivel_estudios, tipo, derechos_imagen, cesion_material
+            nivel_estudios, tipo, derechos_imagen, cesion_material, accion_difusion
         } = req.body;
 
         if (!nombre || !apellidos || !dni || !tipo) {
@@ -191,6 +192,7 @@ const updateAlumno = async (req, res, next) => {
             tipo,
             derechos_imagen: derechos_imagen === "true" || derechos_imagen === true,
             cesion_material: cesion_material === "true" || cesion_material === true,
+            accion_difusion: accion_difusion === "true" || accion_difusion === true,
             ultimo_id_modif: req.session.usuario.id,
         });
 
