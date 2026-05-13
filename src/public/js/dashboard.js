@@ -57,20 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             window.location.href = data.redirect;
-
         } catch (error) {
-            console.error(error);
-        /*  window.location.href = data.redirect;
-        } catch (error) { */
-            window.showModal?.({
+            window.showModal({
                 type: "error",
                 title: "Error",
                 message: "Error de connexió amb el servidor",
             });
         }
-    });
-textarea.addEventListener("input", () => {
-        clearError(textarea);
-        clearMsg();
     });
 });
