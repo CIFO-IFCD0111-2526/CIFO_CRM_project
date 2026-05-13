@@ -59,8 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
             setError(codigo);
         }
         if (!data.codigo_accion_formativa) {
-            errors.push("El codi és obligatori.");
-            setError(codigo);
+            errors.push("El codi d'acció formativa és obligatori.");
+            setError(codigoAccionFormativa);
         }
         if (data.fecha_inicio && data.fecha_fin && data.fecha_fin < data.fecha_inicio) {
             errors.push("La data fi no pot ser anterior a la data inici.");
@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
             errors.push("El codi d'acció formativa és obligatori.");
             setError(codigoAccionFormativaInput);
         } else {
-            clearError(codigoInput);
+            clearError(codigoAccionFormativaInput);
         }
         if (data.fecha_inicio && data.fecha_fin && data.fecha_fin < data.fecha_inicio) {
             errors.push("La data fi no pot ser anterior a la data inici.");
