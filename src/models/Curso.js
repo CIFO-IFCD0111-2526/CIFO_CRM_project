@@ -19,9 +19,13 @@ const Curso = sequelize.define(
                 len: { args: [2, 100], msg: "El nom ha de tenir entre 2 i 100 caràcters" },
             },
         },
-        codigo: {
+        codigo_curso: {
             type: DataTypes.STRING(32),
             allowNull: false,
+        },
+        codigo_accion_formativa: {
+            type: DataTypes.STRING(16),
+            allowNull: true,
         },
         fecha_inicio: {
             type: DataTypes.DATE,
@@ -29,29 +33,17 @@ const Curso = sequelize.define(
         fecha_fin: {
             type: DataTypes.DATE,
         },
-        estado: { 
+        nivel: {
             type: DataTypes.INTEGER,
+            validate: {min: 1, max: 4},
             get() {
                 const niveles = {
-                    0: "Finalitzat",
-                    1: "En curs",
-                    2: "A futur",
+                    1: "Nivell 1",
+                    2: "Nivell 2",
+                    3: "Nivell 3",
+                    4: "Nivell 4"
                 };
-            },
-        }, 
-        requisitos: {
-            type: DataTypes.INTEGER,
-            get() {
-                const niveles = {
-                    0: "Sense estudis",
-                    1: "Primària",
-                    2: "Secundària",
-                    4: "FP Grau Mitjà",
-                    5: "Batxillerat",
-                    6: "FP Grau Superior"
-                };
-
-                return niveles[this.getDataValue("requisitos")] ?? "—";
+                return niveles[this.getDataValue("nivel")] ?? "—";
             }
         },
     },

@@ -1,4 +1,4 @@
-const { Curso, Alumno, CursoAlumno, Uf, Profesor } = require("../models");
+const { Curso, Alumno,CursoAlumno, Profesor } = require("../models");
 const { Op } = require("sequelize");
 const { handleControllerError } = require("../middlewares/errorHandler");
 const { ValidationError, UniqueConstraintError } = require("sequelize");
@@ -62,15 +62,16 @@ const renderNewCurso = (req, res) => {
 
 const createCurso = async (req, res, next) => {
     try {
-        const { codigo, nombre, fecha_inicio, fecha_fin, requisitos } = req.body;
+        const { codigo_curso,codigo_accion_formativa, nombre, fecha_inicio, fecha_fin, nivel } = req.body;
 
         let errores = [];
 
-        if (!codigo) errores.push('El codi és obligatori');
+        if (!codigo_curso) errores.push('El codi és obligatori');
+        if (!codigo_accion_formativa) errores.push("El codi d'acció formativa és obligatori");
         if (!nombre) errores.push('El nom és obligatori');
 
         // Validar código único
-        const existe = await Curso.findOne({ where: { codigo } });
+        const existe = await Curso.findOne({ where: { codigo_accion_formativa } });
         if (existe) errores.push('El codi ja existeix');
 
         if (errores.length > 0) {
@@ -78,11 +79,12 @@ const createCurso = async (req, res, next) => {
         }
 
         const nuevoCurso = await Curso.create({
-            codigo,
+            codigo_curso,
+            codigo_accion_formativa,
             nombre,
             fecha_inicio: fecha_inicio || null,
             fecha_fin: fecha_fin || null,
-            requisitos: requisitos || null
+            nivel: nivel || null
         });
 
         req.session.flash = {
@@ -115,15 +117,16 @@ const searchCurso = async (req, res, next) => {
         const where = {
             [Op.or]: [
                 { nombre: { [Op.like]: `%${q}%` } },
-                { codigo: { [Op.like]: `%${q}%` } }
+                { codigo_curso: { [Op.like]: `%${q}%` } },
+                { codigo_accion_formativa: { [Op.like]: `%${q}%` } }
             ]
         };
 
         const cursos = await Curso.findAll({
             where,
             limit: 10,
-            order: [["codigo", "ASC"]],
-            attributes: ["id", "codigo", "nombre", "fecha_inicio", "fecha_fin"]
+            order: [["codigo_accion_formativa", "DESC"]],
+            attributes: ["id", "codigo_curso","codigo_accion_formativa", "nombre", "fecha_inicio", "fecha_fin"]
         });
 
         return res.json(cursos);
@@ -156,25 +159,25 @@ const deleteCurso = async (req, res, next) => {
 const updateCurso = async (req, res, next) => {
     try {
         const curso = req.curso;
-        const { codigo, nombre, fecha_inicio, fecha_fin, requisitos } = req.body;
+        const { codigo_curso,codigo_accion_formativa, nombre, fecha_inicio, fecha_fin, nivel } = req.body;
 
-        if (!codigo || !nombre) {
+        if (!codigo_curso || !nombre || !codigo_accion_formativa) {
             return res.status(400).json({ ok: false, mensaje: "Tots els camps són obligatoris" });
         }
 
-        if (codigo !== curso.codigo) {
-            const existe = await Curso.findOne({ where: { codigo } });
-            if (existe) {
+        if (codigo_accion_formativa !== curso.codigo_accion_formativa) {
+            const existe_fecha = await Curso.findOne({ where: { codigo_accion_formativa } });
+            if (existe_fecha) {
                 return res.status(400).json({ ok: false, error: "Ja existeix un altre curs amb aquest codi" });
             }
         }
-
         await curso.update({
-            codigo,
+            codigo_curso,
+            codigo_accion_formativa,
             nombre,
             fecha_inicio: fecha_inicio || null,
             fecha_fin: fecha_fin || null,
-            requisitos: requisitos !== undefined && requisitos !== "" ? Number(requisitos) : null,
+            nivel: nivel !== undefined && nivel !== "" ? Number(nivel) : null,
         });
 
         req.session.flash = {

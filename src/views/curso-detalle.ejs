@@ -18,10 +18,19 @@
       <p class="page-subtitle form-group">
         <span class="view-mode">
           <span class="badge">
-            <%= curso.codigo %>
+            <%= curso.codigo_curso %>
           </span>
         </span>
-        <input type="text" name="codigo" value="<%= curso.codigo %>" class="edit-mode hidden" placeholder="Codi"
+        <input type="text" name="codigo_curso" value="<%= curso.codigo_curso %>" class="edit-mode hidden" placeholder="Codi del curs"
+          required />
+      </p>
+      <p class="page-subtitle form-group">
+        <span class="view-mode">
+          <span class="badge">
+            <%= curso.codigo_accion_formativa %>
+          </span>
+        </span>
+        <input type="text" name="codigo_accion_formativa" value="<%= curso.codigo_accion_formativa %>" class="edit-mode hidden" placeholder="Codi d'acció formativa"
           required />
       </p>
     </div>
@@ -54,7 +63,7 @@
         </div>
 
         <div class="detalle-item">
-          <dt>Data fi</dt>
+          <dt>Data final</dt>
           <dd>
             <span class="view-mode">
               <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit' ,
@@ -66,20 +75,18 @@
         </div>
 
         <div class="detalle-item">
-          <dt>Requisits</dt>
+          <dt>Nivell</dt>
           <dd>
             <span class="view-mode">
-              <%= curso.requisitos || '—' %>
+              <%= curso.nivel || '—' %>
             </span>
-            <% const reqRaw=curso.getDataValue ? curso.getDataValue('requisitos') : curso.dataValues?.requisitos; %>
-              <select name="requisitos" class="edit-mode hidden">
+            <% const reqRaw=curso.getDataValue ? curso.getDataValue('nivel') : curso.dataValues?.nivel; %>
+              <select name="nivel" class="edit-mode hidden">
                 <option value="">Selecciona nivell</option>
-                <option value="0" <%=reqRaw===0 ? 'selected' : '' %>>Sense estudis</option>
-                <option value="1" <%=reqRaw===1 ? 'selected' : '' %>>Primària</option>
-                <option value="2" <%=reqRaw===2 ? 'selected' : '' %>>Secundària</option>
-                <option value="4" <%=reqRaw===4 ? 'selected' : '' %>>FP Grau Mitjà</option>
-                <option value="5" <%=reqRaw===5 ? 'selected' : '' %>>Batxillerat</option>
-                <option value="6" <%=reqRaw===6 ? 'selected' : '' %>>FP Grau Superior</option>
+                <option value="1" <%=reqRaw===1 ? 'selected' : '' %>>Nivell 1</option>
+                <option value="2" <%=reqRaw===2 ? 'selected' : '' %>>Nivell 2</option>
+                <option value="3" <%=reqRaw===3 ? 'selected' : '' %>>Nivell 3</option>
+                <option value="4" <%=reqRaw===4 ? 'selected' : '' %>>Nivell 4</option>
               </select>
           </dd>
         </div>
@@ -90,26 +97,6 @@
     <div id="cursoMsg" class="form-msg form-full" aria-live="polite"></div>
 
     <section class="detalle-card">
-      <h2 class="detalle-card-title">UFs</h2>
-      <% if (curso.Ufs && curso.Ufs.length> 0) { %>
-        <ul class="detalle-cursos">
-          <% curso.Ufs.forEach(uf=> { %>
-            <li>
-              <span class="curso-nombre">
-                <%= uf.nombre %>
-              </span>
-            </li>
-            <% }) %>
-        </ul>
-      <% } else { %>
-        <p class="detalle-empty">No hi ha UFs associades.</p>
-      <% } %>
-    </section>
-
-    <section class="detalle-card">
-    <button type = "button" id="btnBuscadorProfes"  class="btn btn-secundario">
-        Assignar professor
-      </button>
       <h2 class="detalle-card-title">Professors</h2>
       <div class="header-actions">
       </div>

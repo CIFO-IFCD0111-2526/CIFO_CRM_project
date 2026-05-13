@@ -25,7 +25,9 @@
         <% if (typeof usuario !== 'undefined' && usuario) { %>
             <nav>
                 <div class="nav-logo">
-                    <img src="/images/logo.webp" alt="CIFO La Violeta">
+                    <a href="/dashboard">
+                        <img src="/images/logo.webp" alt="CIFO La Violeta">
+                    </a>
                 </div>
 
                 <div class="nav-links">
@@ -37,9 +39,6 @@
                     </a>
                     <a href="/cursos" class="<% if (locals.paginaActual === 'cursos') { %>active<% } %>">
                         <i class="fa-solid fa-book"></i> Cursos
-                    </a>
-                    <a href="/ufs" class="<% if (locals.paginaActual === 'ufs') { %>active<% } %>">
-                        <i class="fa-solid fa-layer-group"></i> UF's
                     </a>
                     <a href="/profesores" class="<% if (locals.paginaActual === 'profesores') { %>active<% } %>">
                         <i class="fa-solid fa-chalkboard-user"></i> Professors

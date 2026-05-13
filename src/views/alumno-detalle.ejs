@@ -124,30 +124,21 @@
                 <% } %>
           </dd>
         </div>
+        <div class="detalle-item">
+          <dt>Acció de difusió</dt>
+          <dd>
+            <% if (alumno.accion_difusion) { %>
+              <span class="badge badge-actual">Sí</span>
+              <% } else { %>
+                <span class="badge badge-antiguo">No</span>
+                <% } %>
+          </dd>
+        </div>
       </dl>
 
     </section>
 
     <div id="AlDetMsg" class="form-msg form-full" aria-live="polite"></div>
-
-    <section class="detalle-card detalle-full">
-      <h2 class="detalle-card-title">Comentaris</h2>
-      <!-- MODO VISTA -->
-      <div class="view-mode">
-        <% if (alumno.comentarios) { %>
-          <p class="detalle-text">
-            <%= alumno.comentarios %>
-          </p>
-          <% } else { %>
-            <p class="detalle-empty">—</p>
-            <% } %>
-      </div>
-
-      <!-- MODO EDICIÓN -->
-      <div class="edit-mode hidden">
-        <textarea name="comentarios" class="form-full"><%= alumno.comentarios || '' %></textarea>
-      </div>
-    </section>
 
     <section class="detalle-card detalle-full">
       <h2 class="detalle-card-title">Cursos</h2>

@@ -4,7 +4,7 @@
     <p class="page-subtitle">Llistat d'cursos registrats al centre</p>
   </div>
   <div class="buscador-wrapper">
-    <div class="buscador-cursos">
+    <div class="buscador">
       <input
         type="text"
         id="busquedaCurso"
@@ -22,10 +22,11 @@
       <thead>
         <tr>
           <th>Nom</th>
-          <th>Codi</th>
-          <th>Requisits</th>
+          <th>Codi del curs</th>
+          <th>Codi acció formativa </th>
+          <th>Nivell</th>
           <th>Data inici</th>
-          <th>Data fi</th>
+          <th>Data final</th>
           <th class="col-accions">Accions</th>
         </tr>
       </thead>
@@ -38,10 +39,13 @@
               </a>
             </td>
             <td>
-              <%= curso.codigo || '—' %>
+              <%= curso.codigo_curso || '—' %>
             </td>
             <td>
-              <%= curso.requisitos || '—' %>
+              <%= curso.codigo_accion_formativa || '—' %>
+            </td>
+            <td>
+              <%= curso.nivel || '—' %>
             </td>
             <td>
               <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit' ,

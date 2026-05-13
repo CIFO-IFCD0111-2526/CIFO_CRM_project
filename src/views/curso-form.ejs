@@ -16,11 +16,16 @@
 
                 <div class="form-group">
                     <label>
-                        Codi
-                        <input type="text" name="codigo" id="RegCursoCodigo" placeholder="Codi" required />
+                        Codi del curs
+                        <input type="text" name="codigo_curso" id="RegCursoCodigo" placeholder="Codi del curs" required />
                     </label>
                 </div>
-
+                <div class="form-group">
+                    <label>
+                        Codi acció formativa 
+                        <input type="text" name="codigo_accion_formativa" id="RegCursocodigoAccionFormativa" placeholder="Codi acció formativa" required />
+                    </label>
+                </div>
                 <div class="form-group">
                     <label>
                         Data inici
@@ -30,22 +35,20 @@
 
                 <div class="form-group">
                     <label>
-                        Data fi
+                        Data final
                         <input type="date" name="fecha_fin" id="RegCursoFechaFin" required />
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label>
-                        Requisits mínims
-                        <select id="RegCursoRequisitos" name="requisitos">
+                        Nivell
+                        <select id="RegCursoNivel" name="nivel">
                             <option value="">Selecciona nivell</option>
-                            <option value="0">Sense estudis</option>
-                            <option value="1">Primària</option>
-                            <option value="2">Secundària</option>
-                            <option value="4">FP Grau Mitjà</option>
-                            <option value="5">Batxillerat</option>
-                            <option value="6">FP Grau Superior</option>
+                            <option value="1">Nivell 1</option>
+                            <option value="2">Nivell 2</option>
+                            <option value="3">Nivell 3</option>
+                            <option value="4">Nivell 4</option>
                         </select>
                     </label>
                 </div>

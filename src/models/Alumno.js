@@ -86,10 +86,10 @@ const Alumno = sequelize.define(
       allowNull: true,
       defaultValue: false,
     },
-
-    comentarios: {
-      type: DataTypes.TEXT,
+    accion_difusion: {
+      type: DataTypes.BOOLEAN,
       allowNull: true,
+      defaultValue: false,
     },
 
     ultimo_id_modif: {

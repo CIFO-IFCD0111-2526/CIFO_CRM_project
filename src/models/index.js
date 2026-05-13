@@ -14,8 +14,8 @@ const Usuario = require("./Usuario");
 const Curso = require("./Curso");
 const Profesor = require("./Profesor");
 const Alumno = require("./Alumno");
-const Uf = require("./Uf");
 const Anotacion = require("./Anotacion");
+const Comentario = require("./Comentario");
 
 
 
@@ -38,35 +38,8 @@ const CursoAlumno = sequelize.define('curso_alumno', {   // És el nom que fa se
   tableName: 'curso_alumno',  // És el nom a la base de dades SQL ( string ) 
 });
 
-
-const AlumnoUf = sequelize.define('alumno_uf', {
-  estat: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false, // false = pendent, true = aprovada/feta
-    allowNull: false
-  }
-}, {
-  tableName: 'alumno_uf',
-});
-
-const curso_profesor = sequelize.define('curso_profesor', {
-  // Aquí iría la definición de columnas extra en caso necesario, si no se ocupa la posición del parámetro con un objeto vacío PETA.
-}, {
-  tableName: 'curso_profesor',
-});
-
 /////////////////////////////////////////////////////////////////////TABLAS INTERMEDIAS ¿ A MOVER ?
 
-
-// los cursos tienen varias Uf, y las mismas Uf pueden estar en mas de un curso
-Curso.belongsToMany(Uf, {
-  through: 'curso_uf',
-  onDelete: "CASCADE"
-});
-Uf.belongsToMany(Curso, {
-  through: 'curso_uf',
-  onDelete: "CASCADE"
-});
 
 // los profesores pueden estar en varios cursos y algunos cursos pueden tener mas de un profe
 Profesor.belongsToMany(Curso, {
@@ -91,17 +64,6 @@ Curso.belongsToMany(Alumno, {
   onDelete: "CASCADE",
 });
 
-// las UF estan en varios cursos y los cursos tiene varias Uf
-Uf.belongsToMany(Alumno, {
-  through: AlumnoUf,
-  foreignKey: "alumno_id",
-  onDelete: "CASCADE",
-});
-Alumno.belongsToMany(Uf, {
-  through: AlumnoUf,
-  foreignKey: "uf_id",
-  onDelete: "CASCADE"
-});
 
 // Alumno belongsTo Usuario (FK ultimo_id_modif)
 Alumno.belongsTo(Usuario, { foreignKey: "ultimo_id_modif" });
@@ -118,6 +80,26 @@ Anotacion.belongsTo(Usuario, {
     foreignKey: "usuario_id",
 });
 
+// Comentario
+
+Alumno.hasMany(Comentario, {
+    foreignKey: "alumno_id",
+    onDelete: "CASCADE",
+});
+
+Comentario.belongsTo(Alumno, {
+    foreignKey: "alumno_id",
+});
+
+Usuario.hasMany(Comentario, {
+    foreignKey: "usuario_id",
+    onDelete: "CASCADE",
+});
+
+Comentario.belongsTo(Usuario, {
+    foreignKey: "usuario_id",
+});
+
 const db = {
   // taules SQL per nom JS ( objeto JS )
   sequelize,
@@ -125,12 +107,11 @@ const db = {
   Curso,
   Profesor,
   Alumno,
-  Uf,
   Anotacion,
+  Comentario,
 
   // tablas intermedias ( objeto JS )
   CursoAlumno,
-  AlumnoUf,
   curso_profesor,
 };
 
