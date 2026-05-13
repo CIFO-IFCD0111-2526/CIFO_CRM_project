@@ -154,9 +154,11 @@
 </div>
 
 <section class="dashboard-card anotaciones-card">
-  <h2 class="dashboard-card-title">Anotacions</h2>
-
   <form id="anotacionForm" class="anotacion-form">
+    <div class="anotacion-header">
+      <h2 class="dashboard-card-title">Anotacions</h2>
+      <button id="btnAfegirAnotacio" type="submit" class="btn btn-primario">Afegir</button>
+    </div>
     <textarea
       name="contenido"
       id="contenidoAnotacio"
@@ -164,7 +166,5 @@
       rows="3"
       required
     ></textarea>
-
-    <button id="btnAfegirAnotacio" type="submit" class="btn btn-primario">Afegir</button>
   </form>
 </section>
