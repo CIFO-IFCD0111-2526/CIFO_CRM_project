@@ -19,8 +19,7 @@
 }
 
 #busquedaProfesor {
-  width: 50%;
-  padding: 8px !important;
+  padding: 8px;
   font-size: 14px;
   color: var(--color-texto-principal);
   border: 1px solid var(--color-borde);
