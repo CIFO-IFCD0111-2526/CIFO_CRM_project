@@ -173,6 +173,12 @@
   gap: 10px;
 }
 
+.anotacion-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 #contenidoAnotacio {
   width: 100%;
   min-height: 100px;
