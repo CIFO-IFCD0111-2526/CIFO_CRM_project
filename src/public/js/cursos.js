@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        data.requisitos = data.requisitos ? parseInt(data.requisitos) : null;
+        data.nivel = data.nivel ? parseInt(data.nivel) : null;
         data.fecha_inicio = data.fecha_inicio || null;
         data.fecha_fin = data.fecha_fin || null;
 
@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = Object.fromEntries(formData.entries());
         data.fecha_inicio = data.fecha_inicio || null;
         data.fecha_fin = data.fecha_fin || null;
-        data.requisitos = data.requisitos !== "" ? data.requisitos : null;
+        data.nivel = data.nivel !== "" ? data.nivel : null;
 
         const errors = [];
         const nombreInput = form.querySelector('[name="nombre"]');
