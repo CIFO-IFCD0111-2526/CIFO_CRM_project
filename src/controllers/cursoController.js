@@ -62,7 +62,7 @@ const renderNewCurso = (req, res) => {
 
 const createCurso = async (req, res, next) => {
     try {
-        const { codigo, nombre, fecha_inicio, fecha_fin, requisitos } = req.body;
+        const { codigo, nombre, fecha_inicio, fecha_fin, nivel } = req.body;
 
         let errores = [];
 
@@ -82,7 +82,7 @@ const createCurso = async (req, res, next) => {
             nombre,
             fecha_inicio: fecha_inicio || null,
             fecha_fin: fecha_fin || null,
-            requisitos: requisitos || null
+            nivel: nivel || null
         });
 
         req.session.flash = {
@@ -156,7 +156,7 @@ const deleteCurso = async (req, res, next) => {
 const updateCurso = async (req, res, next) => {
     try {
         const curso = req.curso;
-        const { codigo, nombre, fecha_inicio, fecha_fin, requisitos } = req.body;
+        const { codigo, nombre, fecha_inicio, fecha_fin, nivel } = req.body;
 
         if (!codigo || !nombre) {
             return res.status(400).json({ ok: false, mensaje: "Tots els camps són obligatoris" });
@@ -174,7 +174,7 @@ const updateCurso = async (req, res, next) => {
             nombre,
             fecha_inicio: fecha_inicio || null,
             fecha_fin: fecha_fin || null,
-            requisitos: requisitos !== undefined && requisitos !== "" ? Number(requisitos) : null,
+            nivel: nivel !== undefined && nivel !== "" ? Number(nivel) : null,
         });
 
         req.session.flash = {

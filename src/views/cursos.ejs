@@ -23,7 +23,7 @@
         <tr>
           <th>Nom</th>
           <th>Codi</th>
-          <th>Requisits</th>
+          <th>Nivell</th>
           <th>Data inici</th>
           <th>Data fi</th>
           <th class="col-accions">Accions</th>
@@ -41,7 +41,7 @@
               <%= curso.codigo || '—' %>
             </td>
             <td>
-              <%= curso.requisitos || '—' %>
+              <%= curso.nivel || '—' %>
             </td>
             <td>
               <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit' ,
