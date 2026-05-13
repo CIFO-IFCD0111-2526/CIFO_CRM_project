@@ -16,6 +16,7 @@ const Profesor = require("./Profesor");
 const Alumno = require("./Alumno");
 const Anotacion = require("./Anotacion");
 const Comentario = require("./Comentario");
+const Documento = require("./Documento");
 
 
 
@@ -100,6 +101,16 @@ Comentario.belongsTo(Usuario, {
     foreignKey: "usuario_id",
 });
 
+// Documento
+
+Documento.belongsTo(Usuario, {
+  foreignKey: "usuario_id",
+});
+
+Usuario.hasMany(Documento, {
+  foreignKey: "usuario_id",
+});
+
 const db = {
   // taules SQL per nom JS ( objeto JS )
   sequelize,
@@ -109,6 +120,7 @@ const db = {
   Alumno,
   Anotacion,
   Comentario,
+  Documento,
 
   // tablas intermedias ( objeto JS )
   CursoAlumno
