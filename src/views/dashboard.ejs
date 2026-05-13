@@ -154,11 +154,12 @@
 </div>
 
 <section class="dashboard-card anotaciones-card">
-  <form id="anotacionForm" class="anotacion-form">
+  <form id="anotacionForm" class="anotacion-form" novalidate>
     <div class="anotacion-header">
       <h2 class="dashboard-card-title">Anotacions</h2>
       <button id="btnAfegirAnotacio" type="submit" class="btn btn-primario">Afegir</button>
     </div>
+    <div id="anotacionMsg" class="form-msg" aria-live="polite"></div>
     <textarea
       name="contenido"
       id="contenidoAnotacio"
