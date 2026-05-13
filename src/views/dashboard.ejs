@@ -131,19 +131,6 @@
                 <td class="col-fecha">
                   <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
                 </td>
-                <td class="col-fecha">
-                  <%= curso.fecha_fin
-                    ? new Date(curso.fecha_fin).toLocaleDateString(
-                        'ca-ES',
-                        {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric'
-                        }
-                      )
-                    : '—'
-                  %>
-                </td>
               </tr>
             <% }) %>
           </tbody>
