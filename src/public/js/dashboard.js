@@ -6,7 +6,6 @@ const clearError = (input) => {
     input.classList.remove("error");
 };
 
-
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("#anotacionForm");
     if (!form) return;
@@ -25,6 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
         anotacionMsg.style.display = "none";
         anotacionMsg.classList.remove("error-msg");
     };
+
+    textarea.addEventListener("input", () => {
+        clearError(textarea);
+        clearMsg();
+    });
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -53,20 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             window.location.href = data.redirect;
-
         } catch (error) {
-            console.error(error);
-        /*  window.location.href = data.redirect;
-        } catch (error) { */
-            window.showModal?.({
+            window.showModal({
                 type: "error",
                 title: "Error",
                 message: "Error de connexió amb el servidor",
             });
         }
-    });
-textarea.addEventListener("input", () => {
-        clearError(textarea);
-        clearMsg();
     });
 });
