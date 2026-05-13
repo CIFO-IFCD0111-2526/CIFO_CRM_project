@@ -91,10 +91,6 @@ const Alumno = sequelize.define(
       allowNull: true,
       defaultValue: false,
     },
-    comentarios: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
 
     ultimo_id_modif: {
       type: DataTypes.INTEGER.UNSIGNED,
