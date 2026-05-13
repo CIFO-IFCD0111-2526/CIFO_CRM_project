@@ -232,92 +232,67 @@ const searchProfesor = async (req, res, next) => {
 };
 
 const getAvailable = async (req, res, next) => {
-  // Endpoint GET /profesores/buscar-disponibles?q=&cursoId=:
-  //                          exemple           ?q=car&cursoId=5
-  //                          buscaria profes amb nom *car*
-  // retorna professors que coincideixen amb q (mínim 2 caràcters)
-  //              i que no estan ja assignats al curs cursoId.
-  //  Patró similar a searchAlumno
-  // verifiquem arribada al endpoint de les dades
-  //
-  //const objprv = { a: "hola", b: "adeu" }; // obkj de prueba para responder
-  //
-  //console.log("endpoint rep query[:: ", req.query, " ::]\n-----------------\n");
-  // guardem la cadena a buscar
+  /*
+  retorna 400 + ok: false 
+quan és array buida
+o array de busqueda ( q= ) inferior a 2 char
 
-  // muntem un criteri de busqueda pel sequelize
-  // Op son Op_eracions de sequelize
+200 OK quan retorna alguna cosa */
 
-  /*   0: "Finalitzat",
-       1: "En curs",
-       2: "A futur", */
   const q = (req.query.q || "").trim();
-  const cursoId = req.query.cursoId || "";
 
-  if (q.length < 3 || !cursoId || !q) {
-   
-    return res.json([]);
+  if (q.length < 3 || !req.query.cursoId || !q) {
+    return res.status(400).json({ ok: false });
   } else {
-    const profWhere = {
-      [Op.and]: [
-        // profesores QUE una de dos
-        {
-          // A) cumpleixin ALGUNA o ( OR ) més de les condiciones  ( or )
-          [Op.or]: [
-            { nombre: { [Op.like]: `%${q}%` } },    // o el nombre contiene q ( cadena a buscar )
-            { apellidos: { [Op.like]: `%${q}%` } }, // o el apellidos contiene q ( cadena a buscar )
-            { telefono: { [Op.like]: `%${q}%` } },  // o el telefono contiene q ( cadena a buscar )
-            { email: { [Op.like]: `%${q}%` } },     // o el email contiene q ( cadena a buscar )
-          ],
-        },
-        // Y  que  B)   (  que  ve per l' "and" de dalt )
-        {
-          id: {
-            // (id del profe) NO  estingui  asignats a aquest cursoId a la taula CursoProfe .
-            [Op.notIn]: Sequelize.literal(
-              `(SELECT profesor_id FROM curso_profesor WHERE curso_id = ${cursoId})`,
-            ),
-          },
-        },
-      ],
-    };
-    // faltaria asignar un camp als profes per mirar si estan disponibles o no i que tampoc els mostrés pero no estava a la issue
-
+    // faltaria asignar un camp als profes per mirar si estan disponibles o no
+    // i que tampoc els mostrés ( pero no estava a la issue )
     try {
+      // const cursoId = req.query.cursoId || "";  // modificado para evitar SQL injection,
+      // la declaracio ha destar DINS el TRY !!!
+      const cursoId = Number(req.query.cursoId);
+      if (!Number.isInteger(cursoId)) {
+        throw new Error("Invalid cursoId, ha de ser un valor numèric");
+      }
+      const profWhere = {
+        [Op.and]: [
+          // profesores QUE una de dos ( and )
+          {
+            // A) cumpleixin ALGUNA o ( OR ) més de les condiciones  ( or )
+            [Op.or]: [
+              { nombre: { [Op.like]: `%${q}%` } }, // o el nombre contiene q ( cadena a buscar )
+              { apellidos: { [Op.like]: `%${q}%` } }, // o el apellidos contiene q ( cadena a buscar )
+              { telefono: { [Op.like]: `%${q}%` } }, // o el telefono contiene q ( cadena a buscar )
+              { email: { [Op.like]: `%${q}%` } }, // o el email contiene q ( cadena a buscar )
+            ],
+          },
+          // Y  que  B)   (  que  ve per l' "and" de dalt )
+          {
+            id: {
+              // (id del profe) NO  estingui  asignats a aquest cursoId a la taula CursoProfe .
+              [Op.notIn]: Sequelize.literal(
+                // el mètode literal no gestiona SQL injection !!!!
+                `(SELECT profesor_id FROM curso_profesor WHERE curso_id = ${cursoId})`,
+              ),
+            },
+          },
+        ],
+      };
       const profesores = await Profesor.findAll({
         where: profWhere,
         limit: 10,
         order: [["apellidos", "ASC"]],
         attributes: ["id", "nombre", "apellidos", "telefono", "email"],
       });
-
-      return res.json(profesores);
+      if (profesores.length == 0) {
+        return res.status(400).json({ profesores, ok: false });
+      } else {
+        return res.json(profesores);
+      }
     } catch (error) {
       return handleControllerError(error, res, next);
     }
   }
 };
-
-/*
-    const MEUprofWhere = [
-    // array de objetos
-    { nombre: { [Op.like]: `%${q}%` } }, // el nombre contiene q ( cadena a buscar )
-    { apellidos: { [Op.like]: `%${q}%` } },
-    { telefono: { [Op.like]: `%${q}%` } },
-    { email: { [Op.like]: `%${q}%` } },
-    { cursoId: cursoId }, // curso que estamos editando no hace falta mostrar el profe que ya tiene
-]
-    console.log( profWhere ) ;
-    if ( q.length < 3 || !cursoId || !q ) {
-        console.log(objprv.b);
-        return res.json([]);
-    } else {
-        console.log("la busqueda es farà");
-        objprv.a = "busqueda efectuada"
-        res.status(200).json(objprv);
-    };
-    //  res.status(333).json(objprv);  // resposta amb codi aleatori i objecte de prova 
-*/
 
 module.exports = {
   getAll,
