@@ -51,7 +51,7 @@ const dashboardPrint = async (req, res, next) => {
     });
 
   } catch (error) {
-    handleControllerError(error, req, next);
+    return handleControllerError(error, res, next);
   }
 
 };
