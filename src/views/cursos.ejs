@@ -22,10 +22,11 @@
       <thead>
         <tr>
           <th>Nom</th>
-          <th>Codi</th>
+          <th>Codi del curs</th>
+          <th>Codi acció formativa </th>
           <th>Nivell</th>
           <th>Data inici</th>
-          <th>Data fi</th>
+          <th>Data final</th>
           <th class="col-accions">Accions</th>
         </tr>
       </thead>
@@ -38,7 +39,10 @@
               </a>
             </td>
             <td>
-              <%= curso.codigo || '—' %>
+              <%= curso.codigo_curso || '—' %>
+            </td>
+            <td>
+              <%= curso.codigo_accion_formativa || '—' %>
             </td>
             <td>
               <%= curso.nivel || '—' %>

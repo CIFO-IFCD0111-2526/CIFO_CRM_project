@@ -19,9 +19,13 @@ const Curso = sequelize.define(
                 len: { args: [2, 100], msg: "El nom ha de tenir entre 2 i 100 caràcters" },
             },
         },
-        codigo: {
+        codigo_curso: {
             type: DataTypes.STRING(32),
             allowNull: false,
+        },
+        codigo_accion_formativa: {
+            type: DataTypes.STRING(16),
+            allowNull: true,
         },
         fecha_inicio: {
             type: DataTypes.DATE,
