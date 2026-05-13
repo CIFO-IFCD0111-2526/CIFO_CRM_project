@@ -145,14 +145,6 @@
   color: var(--color-texto-secundario);
 }
 
-/* PAGINACIÓN */
-.notes-pag {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-}
-
 /* EMPTY STATE específico */
 .mostra-notes .empty-state {
   margin-top: 10px;

@@ -121,11 +121,13 @@
                 </td>
 
                 <td class="col-fecha">
-                  <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+                  <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit' ,
+                    month: '2-digit' , year: 'numeric' }) : '—' %>
                 </td>
 
                 <td class="col-fecha">
-                  <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+                  <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit' ,
+                    month: '2-digit' , year: 'numeric' }) : '—' %>
                 </td>
               </tr>
               <% }) %>
@@ -151,15 +153,22 @@
 
 <!-- ANOTACION USUARI -->
 
+<section class="dashboard-card anotaciones-card">
+  <form id="anotacionForm" class="anotacion-form">
+    <div class="anotacion-header">
+      <h2 class="dashboard-card-title">Anotacions</h2>
+      <button id="btnAfegirAnotacio" type="submit" class="btn btn-primario">Afegir</button>
+    </div>
+    <textarea name="contenido" id="contenidoAnotacio" placeholder="Escriu una anotació..." rows="3" required></textarea>
+  </form>
+</section>
+
 <div class="mostra-notes">
 
 
   <div class="notes-header">
     <h3 class="notes-title">Les meves anotacions</h3>
 
-    <a href="/anotaciones/nueva" class="btn btn-primario">
-      + Nova anotació
-    </a>
   </div>
 
   <% if (anotaciones && anotaciones.length> 0) { %>
@@ -173,8 +182,8 @@
           </div>
 
           <div class="anotacion-fecha col-fecha">
-            <%= new Date(a.created_at).toLocaleDateString('ca-ES', { day: '2-digit' , month: '2-digit' , year: 'numeric'
-              }) %>
+            <%= a.createdAt ? new Date(a.createdAt).toLocaleDateString('ca-ES', { day: '2-digit' , month: '2-digit' ,
+              year: 'numeric' }) : '—' %>
           </div>
 
         </li>
@@ -192,41 +201,28 @@
         <!-- PAGINACIÓN -->
         <% if (pagination && pagination.totalPages> 1) { %>
 
-          <div class="notes-pag">
+          <div class="pagination-wrapper">
+            <div class="pagination">
 
-            <% if (pagination.currentPage> 1) { %>
-              <a href="/dashboard?page=<%= pagination.currentPage - 1 %>" class="btn-sm">
-                ← Anterior
-              </a>
-              <% } %>
+              <% if (pagination.currentPage> 1) { %>
+                <a href="/dashboard?page=<%= pagination.currentPage - 1 %>" class="btn btn-secundario btn-sm">
+                  ← Anterior
+                </a>
+                <% } %>
 
-                <span>
-                  Página <%= pagination.currentPage %> de <%= pagination.totalPages %>
-                </span>
+                  <span class="pagination-info">
+                    Página <%= pagination.currentPage %> de <%= pagination.totalPages %>
+                  </span>
 
-                <% if (pagination.currentPage < pagination.totalPages) { %>
-                  <a href="/dashboard?page=<%= pagination.currentPage + 1 %>" class="btn-sm">
-                    Següent →
-                  </a>
-                  <% } %>
+                  <% if (pagination.currentPage < pagination.totalPages) { %>
+                    <a href="/dashboard?page=<%= pagination.currentPage + 1 %>" class="btn btn-secundario btn-sm">
+                      Següent →
+                    </a>
+                    <% } %>
 
+            </div>
           </div>
 
           <% } %>
 
 </div>
-<section class="dashboard-card anotaciones-card">
-  <form id="anotacionForm" class="anotacion-form">
-    <div class="anotacion-header">
-      <h2 class="dashboard-card-title">Anotacions</h2>
-      <button id="btnAfegirAnotacio" type="submit" class="btn btn-primario">Afegir</button>
-    </div>
-    <textarea
-      name="contenido"
-      id="contenidoAnotacio"
-      placeholder="Escriu una anotació..."
-      rows="3"
-      required
-    ></textarea>
-  </form>
-</section>
