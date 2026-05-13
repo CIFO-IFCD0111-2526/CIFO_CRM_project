@@ -75,20 +75,18 @@
         </div>
 
         <div class="detalle-item">
-          <dt>Requisits</dt>
+          <dt>Nivell</dt>
           <dd>
             <span class="view-mode">
-              <%= curso.requisitos || '—' %>
+              <%= curso.nivel || '—' %>
             </span>
-            <% const reqRaw=curso.getDataValue ? curso.getDataValue('requisitos') : curso.dataValues?.requisitos; %>
-              <select name="requisitos" class="edit-mode hidden">
+            <% const reqRaw=curso.getDataValue ? curso.getDataValue('nivel') : curso.dataValues?.nivel; %>
+              <select name="nivel" class="edit-mode hidden">
                 <option value="">Selecciona nivell</option>
-                <option value="0" <%=reqRaw===0 ? 'selected' : '' %>>Sense estudis</option>
-                <option value="1" <%=reqRaw===1 ? 'selected' : '' %>>Primària</option>
-                <option value="2" <%=reqRaw===2 ? 'selected' : '' %>>Secundària</option>
-                <option value="4" <%=reqRaw===4 ? 'selected' : '' %>>FP Grau Mitjà</option>
-                <option value="5" <%=reqRaw===5 ? 'selected' : '' %>>Batxillerat</option>
-                <option value="6" <%=reqRaw===6 ? 'selected' : '' %>>FP Grau Superior</option>
+                <option value="1" <%=reqRaw===1 ? 'selected' : '' %>>Nivell 1</option>
+                <option value="2" <%=reqRaw===2 ? 'selected' : '' %>>Nivell 2</option>
+                <option value="3" <%=reqRaw===3 ? 'selected' : '' %>>Nivell 3</option>
+                <option value="4" <%=reqRaw===4 ? 'selected' : '' %>>Nivell 4</option>
               </select>
           </dd>
         </div>
