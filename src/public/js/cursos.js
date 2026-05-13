@@ -8,11 +8,12 @@ const clearError = (input) => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("#cursoForm");
-    if (!form) return;
+    if (!form || form.dataset.id) return;
 
     const cursoMsg = document.querySelector("#RegCursoMsg");
     const nombre = document.querySelector("#RegCursoNombre");
     const codigo = document.querySelector("#RegCursoCodigo");
+    const codigoAccionFormativa = document.querySelector("#RegCursocodigoAccionFormativa");
     const fechaInicio = document.querySelector("#RegCursoFechaInicio");
     const fechaFin = document.querySelector("#RegCursoFechaFin");
 
@@ -30,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cursoMsg.classList.remove("error-msg");
     };
 
-    [nombre, codigo, fechaInicio, fechaFin].forEach((input) => {
+    [nombre, codigo,codigoAccionFormativa, fechaInicio, fechaFin].forEach((input) => {
         if (!input) return;
         input.addEventListener("input", () => clearError(input));
     });
@@ -53,11 +54,14 @@ document.addEventListener("DOMContentLoaded", () => {
             setError(nombre);
         }
 
-        if (!data.codigo) {
+        if (!data.codigo_curso) {
             errors.push("El codi és obligatori.");
             setError(codigo);
         }
-
+        if (!data.codigo_accion_formativa) {
+            errors.push("El codi és obligatori.");
+            setError(codigo);
+        }
         if (data.fecha_inicio && data.fecha_fin && data.fecha_fin < data.fecha_inicio) {
             errors.push("La data fi no pot ser anterior a la data inici.");
             setError(fechaInicio);
@@ -177,7 +181,7 @@ function initBuscador(input, dropdown) {
             cursos.forEach((curso) => {
                 const item = document.createElement("div");
                 item.classList.add("item");
-                item.textContent = `${curso.codigo} — ${curso.nombre}`;
+                item.textContent = `${curso.codigo_accion_formativa}-${curso.codigo_curso} — ${curso.nombre}`;
                 item.addEventListener("click", () => {
                     window.location.href = `/cursos/${curso.id}`;
                 });
@@ -278,7 +282,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const errors = [];
         const nombreInput = form.querySelector('[name="nombre"]');
-        const codigoInput = form.querySelector('[name="codigo"]');
+        const codigoInput = form.querySelector('[name="codigo_curso"]');
+        const codigoAccionFormativaInput = form.querySelector('[name= "codigo_accion_formativa"]');
         const fechaInicioInput = form.querySelector('[name="fecha_inicio"]');
         const fechaFinInput = form.querySelector('[name="fecha_fin"]');
 
@@ -289,13 +294,18 @@ document.addEventListener("DOMContentLoaded", () => {
             clearError(nombreInput);
         }
 
-        if (!data.codigo) {
+        if (!data.codigo_curso) {
             errors.push("El codi és obligatori.");
             setError(codigoInput);
         } else {
             clearError(codigoInput);
         }
-
+        if (!data.codigo_accion_formativa) {
+            errors.push("El codi d'acció formativa és obligatori.");
+            setError(codigoAccionFormativaInput);
+        } else {
+            clearError(codigoInput);
+        }
         if (data.fecha_inicio && data.fecha_fin && data.fecha_fin < data.fecha_inicio) {
             errors.push("La data fi no pot ser anterior a la data inici.");
             setError(fechaInicioInput);

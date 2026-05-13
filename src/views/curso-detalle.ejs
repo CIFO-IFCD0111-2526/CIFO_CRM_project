@@ -18,10 +18,19 @@
       <p class="page-subtitle form-group">
         <span class="view-mode">
           <span class="badge">
-            <%= curso.codigo %>
+            <%= curso.codigo_curso %>
           </span>
         </span>
-        <input type="text" name="codigo" value="<%= curso.codigo %>" class="edit-mode hidden" placeholder="Codi"
+        <input type="text" name="codigo_curso" value="<%= curso.codigo_curso %>" class="edit-mode hidden" placeholder="Codi del curs"
+          required />
+      </p>
+      <p class="page-subtitle form-group">
+        <span class="view-mode">
+          <span class="badge">
+            <%= curso.codigo_accion_formativa %>
+          </span>
+        </span>
+        <input type="text" name="codigo_accion_formativa" value="<%= curso.codigo_accion_formativa %>" class="edit-mode hidden" placeholder="Codi d'acció formativa"
           required />
       </p>
     </div>

@@ -98,7 +98,8 @@
         <table id="dashboardCursosTable">
           <thead>
             <tr>
-              <th>Codi</th>
+              <th>Codi del curs</th>
+              <th>Codi acció formativa</th>
               <th>Nom</th>
               <th>Data inici</th>
               <th>Data fi</th>
@@ -111,7 +112,13 @@
 
                 <td>
                   <span class="curso-codigo">
-                    <%= curso.codigo || '—' %>
+                    <%= curso.codigo_curso || '—' %>
+                  </span>
+                </td>
+
+                <td>
+                  <span class="curso-accion-formativa">
+                    <%= curso.codigo_accion_formativa || '—' %>
                   </span>
                 </td>
 

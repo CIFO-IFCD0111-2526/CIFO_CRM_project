@@ -14,7 +14,7 @@ const dashboardPrint = async (req, res, next) => {
     const cursos = await Curso.findAll({
       order: [["created_at", "DESC"]],
       limit: 5,
-      attributes: ["id", "codigo", "nombre", "fecha_inicio","fecha_fin"],
+      attributes: ["id", "codigo_curso","codigo_accion_formativa", "nombre", "fecha_inicio","fecha_fin"],
     });
 
     res.render("dashboard", {
