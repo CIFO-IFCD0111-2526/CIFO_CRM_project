@@ -219,7 +219,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (data.ok) {
-        window.location.href = data.redirect;
+        window.showModal?.({
+          type: "success",
+          title: "Registre rebut",
+          message: data.message,
+        });
+
+        registerForm.reset();
       } else {
         window.showModal?.({
           type: "error",

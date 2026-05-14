@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
 const db = require("../config/database"); // Assegura't que la ruta a la teva config de DB és correcta
 const { handleControllerError } = require("../middlewares/errorHandler");
+const { sendMail } = require("../config/mailer.js");
 
 // GET /perfil
 const getPerfil = async (req, res, next) => {
@@ -62,4 +63,54 @@ const changePassword = async (req, res, next) => {
     }
 };
 
-module.exports = { getPerfil, changePassword };
+// PUT /usuarios/:id/aprovar
+const aprovarUsuario = async (req, res, next) => {
+    try {
+        const usuario = await Usuario.findByPk(req.params.id);
+
+        if (!usuario) {
+            return res.status(404).json({
+                ok: false,
+                error: "Usuari no trobat",
+            });
+        }
+
+        if (usuario.activo) {
+            return res.status(400).json({
+                ok: false,
+                error: "L'usuari ja està aprovat",
+            });
+        }
+
+        usuario.activo = true;
+
+        await usuario.save();
+
+        try {
+            await sendMail({
+                to: usuario.email,
+                subject: "Compte aprovat",
+                html: `
+                    <h2>El teu compte ha estat aprovat</h2>
+                    <p>
+                        Ja pots iniciar sessió a:
+                    </p>
+                    <p>
+                        <a href="${process.env.URL_BASE}/login">
+                            ${process.env.URL_BASE}/login
+                        </a>
+                    </p>
+                `,
+            });
+        } catch (mailError) {
+            console.error("Error enviant correu aprovació:", mailError);
+        }
+
+        return res.json({ ok: true });
+
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+module.exports = { getPerfil, changePassword, aprovarUsuario };
