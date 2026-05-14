@@ -12,6 +12,24 @@
         autocomplete="off"
       />
     </div>
+
+    <select id="filtroAnyCurso" class="select-any">
+      <option value="">Tots els anys</option>
+
+      <% if (añosDisponibles && añosDisponibles.length > 0) { %>
+        <% añosDisponibles.forEach(año => { %>
+
+          <option
+            value="<%= año %>"
+            <%= añoSeleccionado == año ? "selected" : "" %>
+          >
+            <%= año %>
+          </option>
+
+        <% }) %>
+      <% } %>
+    </select>
+
     <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
   <a href="/cursos/nuevo" class="btn btn-primario">Nou curs</a>
@@ -81,7 +99,8 @@
         </span>
 
         <% if (pagination.currentPage < pagination.totalPages) { %>
-          <a href="?page=<%= pagination.currentPage + 1 %>&limit=<%= pagination.limit %>" class="btn btn-secundario btn-sm">
+          <a href="?page=<%= pagination.currentPage + 1 %>&limit=<%= pagination.limit %><%= añoSeleccionado ? `&año=${añoSeleccionado}` : '' %>"
+            class="btn btn-secundario btn-sm">
             Següent →
           </a>
         <% } %>
