@@ -3,14 +3,43 @@ const { Op } = require("sequelize");
 const { handleControllerError } = require("../middlewares/errorHandler");
 const { ValidationError, UniqueConstraintError } = require("sequelize");
 
-/** GET /cursos con paginacion */
+/** GET /cursos amb paginacio */
 const getAll = async (req, res, next) => {
     try {
         const page = Math.max(1, parseInt(req.query.page) || 1);
         const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 10));
         const offset = (page - 1) * limit;
 
+        const año = req.query.año;
+
+        const where = {};
+
+        if (año) {
+            where.fecha_inicio = {
+                [Op.between]: [
+                    `${año}-01-01`,
+                    `${año}-12-31`
+                ]
+            };
+        }
+
+        const sequelize = Curso.sequelize;
+
+        const añosRaw = await Curso.findAll({
+            attributes: [
+                [sequelize.fn("YEAR", sequelize.col("fecha_inicio")), "anio"]
+            ],
+            group: ["anio"],
+            raw: true,
+            order: [[sequelize.literal("anio"), "DESC"]]
+        });
+
+        const añosDisponibles = añosRaw
+            .map(a => a.anio)
+            .filter(Boolean);
+
         const { count, rows: cursos } = await Curso.findAndCountAll({
+            where: where,
             order: [["created_at", "DESC"]],
             limit,
             offset
@@ -25,6 +54,8 @@ const getAll = async (req, res, next) => {
             js: "cursos.js",
             paginaActual: "cursos",
             cursos,
+            añosDisponibles,
+            añoSeleccionado: año || "",
             pagination: {
                 currentPage: page,
                 totalPages,
@@ -49,7 +80,7 @@ const getById = (req, res) => {
     });
 };
 
-/** Render del formulario de creación de cursos */
+/** Render del formulari de creació dels cursos */
 const renderNewCurso = (req, res) => {
     res.render("curso-form", {
         titulo: "Nou curs",

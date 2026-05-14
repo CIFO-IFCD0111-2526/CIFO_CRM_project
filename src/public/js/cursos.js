@@ -147,7 +147,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdown = document.getElementById("dropdownResultados");
     if (input && dropdown) initBuscador(input, dropdown);
 });
+document.addEventListener("DOMContentLoaded", () => {
+    const select = document.getElementById("filtroAnyCurso");
 
+    if (!select) return;
+
+    select.addEventListener("change", () => {
+        const year = select.value;
+
+        const url = new URL(window.location.href);
+
+        if (year) {
+            url.searchParams.set("año", year);
+        } else {
+            url.searchParams.delete("año");
+        }
+
+        url.searchParams.set("page", "1");
+
+        window.location.href = url.toString();
+    });
+});
 function initBuscador(input, dropdown) {
     let debounceTimer = null;
 
