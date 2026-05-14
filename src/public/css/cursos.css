@@ -117,3 +117,20 @@
 .dropdown {
   position: relative;
 }
+
+#filtroAnyCurso {
+  margin-top: 20px;
+  padding: 8px;
+  font-size: 14px;
+  color: var(--color-texto-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  background-color: var(--color-primario);
+}
+
+#filtroAnyCurso:hover {
+  border-color: var(--color-primario);
+  color: var(--color-blanco);
+  background-color: var(--color-secundario-hover);
+  text-align: center;
+}
