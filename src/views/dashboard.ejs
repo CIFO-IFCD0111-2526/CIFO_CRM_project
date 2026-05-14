@@ -187,18 +187,12 @@
     <ul class="anotaciones-list">
       <% anotaciones.forEach(a=> { %>
         <li class="anotacion-item">
-
-          <div class="anotacion-texto">
-            <%= a.contenido %>
-          </div>
-
-          <div class="anotacion-fecha col-fecha">
-            <%= a.createdAt ? new Date(a.createdAt).toLocaleDateString('ca-ES', { day: '2-digit' , month: '2-digit' ,
-              year: 'numeric' }) : '—' %>
-          </div>
-
+          <span class="anotacion-fecha">
+            <%= a.createdAt ? new Date(a.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+          </span>
+          <span class="anotacion-texto"><%= a.contenido %></span>
         </li>
-        <% }) %>
+      <% }) %>
     </ul>
 
     <% } else { %>

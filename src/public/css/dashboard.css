@@ -38,6 +38,25 @@
 }
 
 /* =========================
+   TABLAS DEL DASHBOARD (más compactas)
+========================= */
+
+#dashboardAlumnosTable,
+#dashboardCursosTable {
+  min-width: 0;
+  font-size: 13px;
+  width: 100%;
+}
+
+#dashboardAlumnosTable th,
+#dashboardAlumnosTable td,
+#dashboardCursosTable th,
+#dashboardCursosTable td {
+  padding: 6px 8px;
+  white-space: nowrap;
+}
+
+/* =========================
    ALUMNOS
 ========================= */
 
@@ -115,32 +134,29 @@
   list-style: none;
   padding: 0;
   margin: 0 0 15px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .anotacion-item {
-  background-color: var(--color-fondo-pagina);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio-pequeno);
-  padding: 12px 15px;
-  transition: box-shadow 0.2s ease;
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-borde);
 }
 
-.anotacion-item:hover {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+.anotacion-item:last-child {
+  border-bottom: none;
+}
+
+.anotacion-fecha {
+  font-size: 13px;
+  color: var(--color-texto-secundario);
+  white-space: nowrap;
+  min-width: 80px;
 }
 
 .anotacion-texto {
   font-size: 14px;
   color: var(--color-texto-principal);
-  margin-bottom: 5px;
-}
-
-.anotacion-fecha {
-  font-size: 12px;
-  color: var(--color-texto-secundario);
 }
 
 /* EMPTY STATE específico */

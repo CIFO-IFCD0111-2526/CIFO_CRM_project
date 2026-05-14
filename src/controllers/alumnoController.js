@@ -23,6 +23,7 @@ const getAll = async (req, res, next) => {
             usuario: req.session.usuario,
             css: "alumnos.css",
             js: "alumnos.js",
+            paginaActual: "alumnos",
             alumnos,
             pagination: {
                 currentPage: page,
@@ -98,6 +99,7 @@ const getById = (req, res) => {
         usuario: req.session.usuario,
         css: "alumnos.css",
         js: "alumnos.js",
+        paginaActual: "alumnos",
         alumno: req.alumno
     });
 };

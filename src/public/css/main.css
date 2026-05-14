@@ -95,7 +95,7 @@ nav {
     padding: 0.6rem 1rem;
     border-radius: var(--radio-pequeno);
     font-family: var(--fuente-titulos);
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
     transition: background-color 0.2s, color 0.2s;
 }
@@ -144,7 +144,7 @@ nav {
     padding: 0.6rem 1rem;
     border-radius: var(--radio-pequeno);
     font-family: var(--fuente-titulos);
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
     width: 100%;
     transition: background-color 0.2s, color 0.2s;
