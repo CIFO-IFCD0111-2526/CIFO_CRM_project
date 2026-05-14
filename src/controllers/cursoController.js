@@ -23,36 +23,17 @@ const getAll = async (req, res, next) => {
             };
         }
 
-        /* const añosRaw = await Curso.findAll({
+        const sequelize = Curso.sequelize;
+
+        const añosRaw = await Curso.findAll({
             attributes: [
-                [
-                    Curso.sequelize.fn(
-                        "YEAR",
-                        Curso.sequelize.col("fecha_inicio")
-                    ),
-                    "anio"
-                ]
+                [sequelize.fn("YEAR", sequelize.col("fecha_inicio")), "anio"]
             ],
             group: ["anio"],
             raw: true,
-            order: [[Curso.sequelize.literal("anio"), "DESC"]]
-        }); */
-        const sequelize = Curso.sequelize;
+            order: [[sequelize.literal("anio"), "DESC"]]
+        });
 
-const añosRaw = await Curso.findAll({
-    attributes: [
-        [
-            sequelize.fn(
-                "YEAR",
-                sequelize.col("fecha_inicio")
-            ),
-            "anio"
-        ]
-    ],
-    group: ["anio"],
-    raw: true,
-    order: [[sequelize.literal("anio"), "DESC"]]
-});
         const añosDisponibles = añosRaw
             .map(a => a.anio)
             .filter(Boolean);

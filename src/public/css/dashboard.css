@@ -202,7 +202,7 @@
 
 #btnAfegirAnotacio:hover {
   background-color: var(--color-primario-hover);
-  color: var(--color-blanco);
+  color: var(--color-texto-blanco);
 }
 
 /* =========================

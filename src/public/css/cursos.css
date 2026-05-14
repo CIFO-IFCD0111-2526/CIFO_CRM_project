@@ -119,7 +119,6 @@
 }
 
 #filtroAnyCurso {
-  margin-top: 20px;
   padding: 8px;
   font-size: 14px;
   color: var(--color-texto-blanco);
@@ -129,8 +128,7 @@
 }
 
 #filtroAnyCurso:hover {
-  border-color: var(--color-primario);
-  color: var(--color-blanco);
-  background-color: var(--color-secundario-hover);
-  text-align: center;
+  border-color: var(--color-primario-hover);
+  color: var(--color-texto-blanco);
+  background-color: var(--color-primario-hover);
 }
