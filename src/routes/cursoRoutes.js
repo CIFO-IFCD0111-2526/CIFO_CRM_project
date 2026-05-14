@@ -8,7 +8,7 @@ const router = Router();
 
 
 // Rutas de cursos, todas requieren autenticacion
-// router.use(authPage);
+router.use(authPage);
 
 router.get('/nuevo', controller.renderNewCurso);
 router.post('/', controller.createCurso);

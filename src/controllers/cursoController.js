@@ -242,82 +242,70 @@ const deleteAlumnoFromCurso = async (req, res, next) => {
 };
 // POST /cursos/:id/profesores
 const asignarProfesor = async (req, res, next) => {
-
     try {
         const curso_id = parseInt(req.params.id);
-        const profesor_id  = req.body.profesor_id;
-        console.log(curso_id, profesor_id);
-        
+        const profesor_id = parseInt(req.body.profesor_id);
 
-        // LÓGICA DE ASIGNAR PROFESOR
+        if (!Number.isInteger(curso_id) || !Number.isInteger(profesor_id)) {
+            return res.status(400).json({ ok: false, error: "Paràmetres invàlids" });
+        }
 
-        const cursoInsert = await Curso.findByPk(curso_id);
-        //console.log(cursoInsert);
-        const profesorInsert = await Profesor.findByPk(profesor_id);
-        //console.log(profesorInsert);
-        //console.log(cursoInsert.nombre, profesorInsert.nombre);
-        const relExists = await curso_profesor.findAll({ where: { curso_id: curso_id, profesor_id: profesor_id} });
-        console.log("exist", relExists);
+        const curso = await Curso.findByPk(curso_id);
+        const profesor = await Profesor.findByPk(profesor_id);
 
-        if (!cursoInsert || !profesorInsert) { 
-            console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR.");
-            throw new Error("Curso o profesor no existen");
-        } else if (relExists.length > 0) {
-            throw new Error(`El profesor ya está asignado al curso ${cursoInsert.nombre}`);
-            // throw new UniqueConstraintError({ message: `El profesor ya está asignado al curso ${cursoInsert.nombre}` }); // A UTILIZAR CUANDO EL MIDDLEWARE ERRORHANDLER.JS FUNCIONE.
-        };
+        if (!curso || !profesor) {
+            return res.status(404).json({ ok: false, error: "Curs o profesor no existeixen" });
+        }
 
-        cursoInsert.addProfesor(profesorInsert);
+        if (await curso.hasProfesor(profesor)) {
+            return res.status(400).json({ ok: false, error: `El profesor ja està assignat al curs ${curso.nombre}` });
+        }
+
+        await curso.addProfesor(profesor);
 
         req.session.flash = {
             type: "success",
-            title: "Professor assignat correctament.",
-            message: `El curs ${cursoInsert.nombre} s'ha actualitzat correctament.`,
+            title: "Professor assignat",
+            message: `${profesor.nombre} ${profesor.apellidos} s'ha assignat al curs ${curso.nombre}.`,
         };
 
         return res.json({ ok: true, redirect: `/cursos/${curso_id}` });
-
-        } catch (error) {
+    } catch (error) {
         return handleControllerError(error, res, next);
     }
 };
 
-//DELETE /cursos/:id/profesores/:profesorId
+// DELETE /cursos/:id/profesores/:profesorId
 const desasignarProfesor = async (req, res, next) => {
-
     try {
         const curso_id = parseInt(req.params.id);
-        const profesor_id  = parseInt(req.params.profesorId);
-        console.log(curso_id, profesor_id);        
+        const profesor_id = parseInt(req.params.profesorId);
 
-        // LÓGICA DE DESASIGNAR PROFESOR
+        if (!Number.isInteger(curso_id) || !Number.isInteger(profesor_id)) {
+            return res.status(400).json({ ok: false, error: "Paràmetres invàlids" });
+        }
 
-        const cursoDelete = await Curso.findByPk(curso_id);
-        //console.log(cursoDelete);
-        const profesorDelete = await Profesor.findByPk(profesor_id);
-        //console.log(profesorDelete);
-        //console.log(cursoDelete.nombre, profesorDelete.nombre);
-        const relExists = await curso_profesor.findAll({ where: { curso_id: curso_id, profesor_id: profesor_id} });
-        console.log("exist", relExists);
+        const curso = await Curso.findByPk(curso_id);
+        const profesor = await Profesor.findByPk(profesor_id);
 
-        if (!cursoDelete || !profesorDelete) { 
-            console.log("PARAMETROS INCORRECTOS, RESPONSE A DEFINIR.");
-            throw new Error("Curso o profesor no existen");
-        } else if (relExists.length === 0) {
-            throw new Error(`El profesor ya no está asignado al curso ${cursoDelete.nombre}`);
-        };
-        
-        cursoDelete.removeProfesor(profesorDelete);
+        if (!curso || !profesor) {
+            return res.status(404).json({ ok: false, error: "Curs o profesor no existeixen" });
+        }
+
+        if (!(await curso.hasProfesor(profesor))) {
+            return res.status(400).json({ ok: false, error: `El profesor no està assignat al curs ${curso.nombre}` });
+        }
+
+        await curso.removeProfesor(profesor);
 
         req.session.flash = {
             type: "success",
-            title: "Professor desassignat correctament.",
-            message: `El curs ${cursoDelete.nombre} s'ha actualitzat correctament.`,
+            title: "Professor desassignat",
+            message: `${profesor.nombre} ${profesor.apellidos} s'ha desassignat del curs ${curso.nombre}.`,
         };
 
         return res.json({ ok: true, redirect: `/cursos/${curso_id}` });
-
-        } catch (error) {
+    } catch (error) {
         return handleControllerError(error, res, next);
     }
 };

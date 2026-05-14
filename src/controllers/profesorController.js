@@ -3,7 +3,7 @@
 // -------------------------------------------------------
 
 const { Op, Sequelize } = require("sequelize");
-const { Profesor, Curso, curso_profesor } = require("../models");
+const { Profesor, Curso } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
 /** GET /profesores — listar todos con paginación */

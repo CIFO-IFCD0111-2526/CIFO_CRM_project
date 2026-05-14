@@ -112,7 +112,6 @@ const db = {
 
   // tablas intermedias ( objeto JS )
   CursoAlumno,
-  curso_profesor,
 };
 
 module.exports = db;
