@@ -99,3 +99,20 @@ a:hover {
   color: var(--color-secundario);
   font-weight: 600;
 }
+/* Radio group con badges (autoritzacions inline edit) */
+.radio-group {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.radio-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.radio-option input[type="radio"] {
+  cursor: pointer;
+}

@@ -340,9 +340,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    data.derechos_imagen = form.querySelector('[name="derechos_imagen"]')?.checked || false;
-    data.cesion_material = form.querySelector('[name="cesion_material"]')?.checked || false;
-    data.accion_difusion = form.querySelector('[name="accion_difusion"]')?.checked || false;
+    data.derechos_imagen = form.querySelector('[name="derechos_imagen"]:checked')?.value === "true";
+    data.cesion_material = form.querySelector('[name="cesion_material"]:checked')?.value === "true";
+    data.accion_difusion = form.querySelector('[name="accion_difusion"]:checked')?.value === "true";
 
     // ── Validacions ──────────────────────────────────────────────
     const errors = [];
