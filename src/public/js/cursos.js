@@ -147,26 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdown = document.getElementById("dropdownResultados");
     if (input && dropdown) initBuscador(input, dropdown);
 });
-/* document.addEventListener("DOMContentLoaded", () => {
-    const filtroAnyCurso =
-        document.querySelector("#filtroAnyCurso");
-    if (!filtroAnyCurso) return;
-    filtroAnyCurso.addEventListener("change", () => {
-        const año = filtroAnyCurso.value;
-        const params =
-            new URLSearchParams(window.location.search);
-        if (año) {
-            params.set("año", año);
-        } else {
-            params.delete("año");
-        }
-        params.set("page", 1);
-        window.location.href =
-            `/cursos?${params.toString()}`;
-    });
-
-}); */
-
 document.addEventListener("DOMContentLoaded", () => {
     const select = document.getElementById("filtroAnyCurso");
 

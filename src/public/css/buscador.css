@@ -29,8 +29,11 @@
 .buscador-wrapper {
     position: relative;
     flex: 1;
-    max-width: 400px;
+    max-width: 600px;
     align-self: center;
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .buscador {
