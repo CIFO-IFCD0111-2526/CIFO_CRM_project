@@ -1,9 +1,14 @@
--- Migration 003: En la tabla cursos renombrar la columna codigo por codigo_curso, tambien agregar la columna codigo_fecha
+-- Migration 003: En la tabla cursos renombrar la columna codigo por codigo_curso
+-- y añadir la columna codigo_accion_formativa.
 -- Issue: #150, PR: #171
 -- Fecha: 2026-05-13
 --
--- sequelize.sync({ alter: true }) añadirá la columna nivel, pero no eliminará automáticamente requisitos.
--- Ejecutar manualmente:
-ALTER TABLE cursos rename codigo to codigo_curso;
--- No es necesario modificar más el codigo_curso porque ya es VARCHAR(32) y NOT NULL
-ALTER TABLE cursos ADD COLUMN codigo_accion_formativa VARCHAR(16) NOT NULL;
+-- sequelize.sync() no modifica columnas existentes. Ejecutar manualmente:
+
+-- Renombrar la columna codigo a codigo_curso.
+-- Usamos CHANGE (compatible con MySQL 5.7+ y MariaDB) en vez de RENAME COLUMN (solo MySQL 8+).
+ALTER TABLE cursos CHANGE codigo codigo_curso VARCHAR(32) NOT NULL;
+
+-- Añadir codigo_accion_formativa.
+-- Allow NULL para no romper las filas existentes; el modelo lo marca como allowNull: true.
+ALTER TABLE cursos ADD COLUMN codigo_accion_formativa VARCHAR(16) NULL;

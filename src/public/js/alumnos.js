@@ -582,7 +582,7 @@ document.addEventListener("DOMContentLoaded", () => {
       li.classList.add("alumno-curso-item");
 
       li.innerHTML = `
-        <span class="curso-codigo">${curso.codigo}</span>
+        <span class="curso-codigo">${curso.codigo_curso}</span>
         <span class="curso-nombre">${curso.nombre}</span>
         <button
           type="button"
@@ -671,7 +671,7 @@ function initBuscadorCurso(input, dropdown, onSelect) {
       const div = document.createElement("div");
       div.classList.add("item");
 
-      div.textContent = `${curso.nombre} (${curso.codigo})`;
+      div.textContent = `${curso.nombre} (${curso.codigo_curso})`;
 
       div.addEventListener("click", () => {
         cerrarDropdown();
