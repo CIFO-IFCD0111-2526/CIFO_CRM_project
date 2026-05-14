@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
       form.querySelector('[name="cesion_material"]')?.checked || false;
     data.accion_difusion =
       form.querySelector('[name="accion_difusion"]')?.checked || false;
-      
+
     const errors = [];
 
     if (!data.nombre) {
@@ -449,27 +449,82 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("busquedaAlumno");
   const dropdown = document.getElementById("dropdownResultados");
-  if (input && dropdown) initBuscador(input, dropdown);
+  const filtroButtons = document.querySelectorAll(".filtroTipoAlumno button");
+
+  if (!input) return;
+
+  let tipoActivo = "";
+
+  // Detectar activo inicial
+  const activeBtn = document.querySelector(".filtroTipoAlumno button.active");
+  if (activeBtn) {
+    tipoActivo = activeBtn.dataset.tipo;
+  }
+
+  // BOTONES
+  filtroButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filtroButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      tipoActivo = btn.dataset.tipo;
+
+      aplicarFiltros();
+    });
+  });
+
+  // INPUT
+  let timer = null;
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      aplicarFiltros();
+    }
+  });
+
+  function aplicarFiltros() {
+    const query = input.value.trim();
+
+    const url = new URL(window.location.href);
+
+    if (query) {
+      url.searchParams.set("q", query);
+    } else {
+      url.searchParams.delete("q");
+    }
+
+    if (tipoActivo) {
+      url.searchParams.set("tipo", tipoActivo);
+    } else {
+      url.searchParams.delete("tipo");
+    }
+
+    url.searchParams.set("page", 1);
+
+    window.location.href = url.toString();
+  }
 });
 
 function initBuscador(input, dropdown) {
   let debounceTimer = null;
+  let tipoActivo = "";
 
   input.addEventListener("input", () => {
     const query = input.value.trim();
-    if (query.length < 2) {
+    if (query.length < 2 && !tipoActivo) {
       cerrarDropdown();
       return;
     }
+
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => searchAlumnos(query), 250);
   });
 
   async function searchAlumnos(query) {
     try {
-      const res = await fetch(`/alumnos/buscar?q=${encodeURIComponent(query)}`, {
-        credentials: "include",
-      });
+      const res = await fetch(`/alumnos/buscar?q=${encodeURIComponent(query)}&tipo=${(tipoActivo)}`,
+        { credentials: "include", });
+
       const data = await res.json();
       renderResultados(data);
     } catch (error) {

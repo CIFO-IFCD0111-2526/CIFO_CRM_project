@@ -10,10 +10,32 @@ const getAll = async (req, res, next) => {
         const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 10));
         const offset = (page - 1) * limit;
 
+        const q = (req.query.q || "").trim();
+        const tipo = (req.query.tipo || "").trim().toLowerCase();
+
+        const where = {};
+
+        // filtro texto
+        if (q) {
+            where[Op.or] = [
+                { nombre: { [Op.like]: `%${q}%` } },
+                { apellidos: { [Op.like]: `%${q}%` } },
+                { dni: { [Op.like]: `%${q}%` } }
+            ];
+        }
+
+        // filtro tipo (VALIDADO)
+        const tiposValidos = ["actual", "antiguo", "futuro"];
+        if (tiposValidos.includes(tipo)) {
+            where.tipo = tipo;
+        }
+
         const { count, rows: alumnos } = await Alumno.findAndCountAll({
+            where,
             order: [["created_at", "DESC"]],
             limit,
             offset,
+            
         });
 
         const totalPages = Math.ceil(count / limit);
@@ -25,6 +47,8 @@ const getAll = async (req, res, next) => {
             js: "alumnos.js",
             paginaActual: "alumnos",
             alumnos,
+            q,
+            tipo,
             pagination: {
                 currentPage: page,
                 totalPages,
@@ -128,7 +152,7 @@ const searchAlumno = async (req, res, next) => {
     const tipo = (req.query.tipo || "").trim().toLowerCase();
 
     // Si hi ha menys de 2 caràcters → retornem array buit
-    if (q.length < 2) {
+    if (q.length < 2 && !tipo) {
         return res.json([]);
     }
     // Filtres per tipus d'alumne

@@ -5,14 +5,21 @@
   </div>
   <div class="buscador-wrapper">
     <div class="buscador">
-      <input type="text" id="busquedaAlumno" placeholder="Buscar alumne..." autocomplete="off" />
+      <input type="text" id="busquedaAlumno" placeholder="Buscar alumne..." autocomplete="off"
+        value="<%= typeof q !== 'undefined' ? q : '' %>" />
+      <div class="filtroTipoAlumno">
+        <button class="<%= !tipo ? 'active' : '' %>" data-tipo="">Tots els tipus</button>
+        <button class="<%= tipo === 'actual' ? 'active' : '' %>" data-tipo="actual">Actual</button>
+        <button class="<%= tipo === 'antiguo' ? 'active' : '' %>" data-tipo="antiguo">Antic</button>
+        <button class="<%= tipo === 'futuro' ? 'active' : '' %>" data-tipo="futuro">Futur</button>
+      </div>
     </div>
     <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
   <a href="/alumnos/nuevo" class="btn btn-primario">Nou alumne</a>
 </div>
 
-<% if (pagination && pagination.totalItems > 0) { %>
+<% if (pagination && pagination.totalItems> 0) { %>
   <div class="tabla-container">
     <table id="alumnosTable">
       <thead>
@@ -28,26 +35,35 @@
         </tr>
       </thead>
       <tbody>
-        <% alumnos.forEach(alumno => { %>
+        <% alumnos.forEach(alumno=> { %>
           <tr>
             <td>
               <a class="alumno-nombre" href="/alumnos/<%= alumno.id %>">
                 <%= alumno.apellidos %>, <%= alumno.nombre %>
               </a>
             </td>
-            <td><%= alumno.dni || '—' %></td>
-            <td><%= alumno.email || '—' %></td>
-            <td><%= alumno.telefono || '—' %></td>
-            <td><%= alumno.nivel_estudios || '—' %></td>
+            <td>
+              <%= alumno.dni || '—' %>
+            </td>
+            <td>
+              <%= alumno.email || '—' %>
+            </td>
+            <td>
+              <%= alumno.telefono || '—' %>
+            </td>
+            <td>
+              <%= alumno.nivel_estudios || '—' %>
+            </td>
             <td>
               <span class="badge badge-<%= alumno.tipo %>">
-                <% if (alumno.tipo === 'actual') { %>Actual<% } %>
-                <% if (alumno.tipo === 'antiguo') { %>Antic<% } %>
-                <% if (alumno.tipo === 'futuro') { %>Futur<% } %>
+                <% if (alumno.tipo==='actual' ) { %>Actual<% } %>
+                    <% if (alumno.tipo==='antiguo' ) { %>Antic<% } %>
+                        <% if (alumno.tipo==='futuro' ) { %>Futur<% } %>
               </span>
             </td>
             <td class="col-fecha">
-              <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+              <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit' ,
+                month: '2-digit' , year: 'numeric' }) : '—' %>
             </td>
             <td class="col-accions">
               <div class="acciones">
@@ -55,37 +71,41 @@
               </div>
             </td>
           </tr>
-        <% }) %>
+          <% }) %>
       </tbody>
     </table>
   </div>
 
-  <% if (pagination.totalPages > 1) { %>
+  <% if (pagination.totalPages> 1) { %>
     <div class="pagination-wrapper">
       <div class="pagination" aria-label="Paginació">
-        <% if (pagination.currentPage > 1) { %>
-          <a href="?page=<%= pagination.currentPage - 1 %>&limit=<%= pagination.limit %>" class="btn btn-secundario btn-sm">
+
+        <% if (pagination.currentPage> 1) { %>
+          <a href="?page=<%= pagination.currentPage - 1 %>&limit=<%= pagination.limit %><%= q ? '&q=' + q : '' %><%= tipo ? '&tipo=' + tipo : '' %>"
+            class="btn btn-secundario btn-sm">
             ← Anterior
           </a>
-        <% } %>
+          <% } %>
 
-        <span class="pagination-info">
-          Pàgina <%= pagination.currentPage %> de <%= pagination.totalPages %>
-          (<%= pagination.totalItems %> alumnes)
-        </span>
+            <span class="pagination-info">
+              Pàgina <%= pagination.currentPage %> de <%= pagination.totalPages %>
+                  (<%= pagination.totalItems %> alumnes)
+            </span>
 
-        <% if (pagination.currentPage < pagination.totalPages) { %>
-          <a href="?page=<%= pagination.currentPage + 1 %>&limit=<%= pagination.limit %>" class="btn btn-secundario btn-sm">
-            Següent →
-          </a>
-        <% } %>
+            <% if (pagination.currentPage < pagination.totalPages) { %>
+              <a href="?page=<%= pagination.currentPage + 1 %>&limit=<%= pagination.limit %><%= q ? '&q=' + q : '' %><%= tipo ? '&tipo=' + tipo : '' %>"
+                class="btn btn-secundario btn-sm">
+                Següent →
+              </a>
+              <% } %>
+
       </div>
     </div>
-  <% } %>
+    <% } %>
 
-<% } else { %>
-  <div class="empty-state">
-    <p>No hi ha alumnes registrats.</p>
-    <a href="/alumnos/nuevo" class="btn btn-primario">Crear el primer alumne</a>
-  </div>
-<% } %>
+      <% } else { %>
+        <div class="empty-state">
+          <p>No hi ha alumnes registrats.</p>
+          <a href="/alumnos/nuevo" class="btn btn-primario">Crear el primer alumne</a>
+        </div>
+        <% } %>
