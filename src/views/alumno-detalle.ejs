@@ -107,37 +107,55 @@
         <div class="detalle-item">
           <dt>Drets d'imatge</dt>
           <dd>
-            <% if (alumno.derechos_imagen) { %>
-              <span class="badge badge-actual">Sí</span>
-              <% } else { %>
+            <span class="view-mode badge badge-<%= alumno.derechos_imagen ? 'actual' : 'antiguo' %>">
+              <%= alumno.derechos_imagen ? 'Sí' : 'No' %>
+            </span>
+            <span class="edit-mode hidden radio-group">
+              <label class="radio-option">
+                <input type="radio" name="derechos_imagen" value="true" <%= alumno.derechos_imagen ? 'checked' : '' %> />
+                <span class="badge badge-actual">Sí</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="derechos_imagen" value="false" <%= !alumno.derechos_imagen ? 'checked' : '' %> />
                 <span class="badge badge-antiguo">No</span>
-                <% } %>
-                  <input id="DetAlderechos_imagen" type="checkbox" name="derechos_imagen" <%=alumno.derechos_imagen
-                    ? "checked" : "" %> class="edit-mode hidden" />
+              </label>
+            </span>
           </dd>
         </div>
         <div class="detalle-item">
           <dt>Cessió material</dt>
           <dd>
-            <% if (alumno.cesion_material) { %>
-              <span class="badge badge-actual">Sí</span>
-              <% } else { %>
+            <span class="view-mode badge badge-<%= alumno.cesion_material ? 'actual' : 'antiguo' %>">
+              <%= alumno.cesion_material ? 'Sí' : 'No' %>
+            </span>
+            <span class="edit-mode hidden radio-group">
+              <label class="radio-option">
+                <input type="radio" name="cesion_material" value="true" <%= alumno.cesion_material ? 'checked' : '' %> />
+                <span class="badge badge-actual">Sí</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="cesion_material" value="false" <%= !alumno.cesion_material ? 'checked' : '' %> />
                 <span class="badge badge-antiguo">No</span>
-                <% } %>
-                  <input id="DetAlcesion_material" type="checkbox" name="cesion_material" <%=alumno.cesion_material
-                    ? "checked" : "" %> class="edit-mode hidden" />
+              </label>
+            </span>
           </dd>
         </div>
         <div class="detalle-item">
           <dt>Acció de difusió</dt>
           <dd>
-            <% if (alumno.accion_difusion) { %>
-              <span class="badge badge-actual">Sí</span>
-              <% } else { %>
+            <span class="view-mode badge badge-<%= alumno.accion_difusion ? 'actual' : 'antiguo' %>">
+              <%= alumno.accion_difusion ? 'Sí' : 'No' %>
+            </span>
+            <span class="edit-mode hidden radio-group">
+              <label class="radio-option">
+                <input type="radio" name="accion_difusion" value="true" <%= alumno.accion_difusion ? 'checked' : '' %> />
+                <span class="badge badge-actual">Sí</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="accion_difusion" value="false" <%= !alumno.accion_difusion ? 'checked' : '' %> />
                 <span class="badge badge-antiguo">No</span>
-                <% } %>
-                  <input id="DetAlAccionDifusion" type="checkbox" name="accion_difusion" <%=alumno.accion_difusion
-                    ? "checked" : "" %> class="edit-mode hidden" />
+              </label>
+            </span>
           </dd>
         </div>
       </dl>
