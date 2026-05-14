@@ -107,31 +107,55 @@
         <div class="detalle-item">
           <dt>Drets d'imatge</dt>
           <dd>
-            <% if (alumno.derechos_imagen) { %>
-              <span class="badge badge-actual">Sí</span>
-              <% } else { %>
+            <span class="view-mode badge badge-<%= alumno.derechos_imagen ? 'actual' : 'antiguo' %>">
+              <%= alumno.derechos_imagen ? 'Sí' : 'No' %>
+            </span>
+            <span class="edit-mode hidden radio-group">
+              <label class="radio-option">
+                <input type="radio" name="derechos_imagen" value="true" <%= alumno.derechos_imagen ? 'checked' : '' %> />
+                <span class="badge badge-actual">Sí</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="derechos_imagen" value="false" <%= !alumno.derechos_imagen ? 'checked' : '' %> />
                 <span class="badge badge-antiguo">No</span>
-                <% } %>
+              </label>
+            </span>
           </dd>
         </div>
         <div class="detalle-item">
           <dt>Cessió material</dt>
           <dd>
-            <% if (alumno.cesion_material) { %>
-              <span class="badge badge-actual">Sí</span>
-              <% } else { %>
+            <span class="view-mode badge badge-<%= alumno.cesion_material ? 'actual' : 'antiguo' %>">
+              <%= alumno.cesion_material ? 'Sí' : 'No' %>
+            </span>
+            <span class="edit-mode hidden radio-group">
+              <label class="radio-option">
+                <input type="radio" name="cesion_material" value="true" <%= alumno.cesion_material ? 'checked' : '' %> />
+                <span class="badge badge-actual">Sí</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="cesion_material" value="false" <%= !alumno.cesion_material ? 'checked' : '' %> />
                 <span class="badge badge-antiguo">No</span>
-                <% } %>
+              </label>
+            </span>
           </dd>
         </div>
         <div class="detalle-item">
           <dt>Acció de difusió</dt>
           <dd>
-            <% if (alumno.accion_difusion) { %>
-              <span class="badge badge-actual">Sí</span>
-              <% } else { %>
+            <span class="view-mode badge badge-<%= alumno.accion_difusion ? 'actual' : 'antiguo' %>">
+              <%= alumno.accion_difusion ? 'Sí' : 'No' %>
+            </span>
+            <span class="edit-mode hidden radio-group">
+              <label class="radio-option">
+                <input type="radio" name="accion_difusion" value="true" <%= alumno.accion_difusion ? 'checked' : '' %> />
+                <span class="badge badge-actual">Sí</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="accion_difusion" value="false" <%= !alumno.accion_difusion ? 'checked' : '' %> />
                 <span class="badge badge-antiguo">No</span>
-                <% } %>
+              </label>
+            </span>
           </dd>
         </div>
       </dl>
@@ -156,42 +180,43 @@
       </div>
 
       <ul class="detalle-cursos" id="listaCursos">
-      <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
-        <% alumno.Cursos.forEach(curso=> { %>
-          <li class="alumno-curso-item">
-            <span class="curso-codigo">
-              <%= curso.codigo_curso %>
-            </span>
-            <span class="curso-nombre">
-              <a class="curso-nombre-nuevo" href="/cursos/<%= curso.id %>">
-              <%= curso.nombre %></a>
-            </span>
+        <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
+          <% alumno.Cursos.forEach(curso=> { %>
+            <li class="alumno-curso-item">
+              <span class="curso-codigo">
+                <%= curso.codigo_curso %>
+              </span>
+              <span class="curso-nombre">
+                <a class="curso-nombre-nuevo" href="/cursos/<%= curso.id %>">
+                  <%= curso.nombre %>
+                </a>
+              </span>
 
-            <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
-              data-alumno-id="<%= alumno.id %>">
-              Dar de baixa
-            </button>
+              <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
+                data-alumno-id="<%= alumno.id %>">
+                Dar de baixa
+              </button>
 
-          </li>
-          <% }) %>
-            <% } else { %>
-              <p class="detalle-empty" id="emptyCursos">
-                No està matriculat en cap curs.
-              </p>
-              <% } %>
-                </ul>
-                
-                <div id="matriculaBox" class="matricula-box hidden">
+            </li>
+            <% }) %>
+              <% } else { %>
+                <p class="detalle-empty" id="emptyCursos">
+                  No està matriculat en cap curs.
+                </p>
+                <% } %>
+      </ul>
 
-                  <div class="buscador-wrapper">
-                    <div class="buscador-alumnos">
-                      <input type="text" id="buscarCurso" placeholder="Buscar curs..." autocomplete="off" />
-                    </div>
-                  </div>
+      <div id="matriculaBox" class="matricula-box hidden">
 
-                  <div id="resultadosCursos" class="dropdown hidden"></div>
+        <div class="buscador-wrapper">
+          <div class="buscador-alumnos">
+            <input type="text" id="buscarCurso" placeholder="Buscar curs..." autocomplete="off" />
+          </div>
+        </div>
 
-                </div>
+        <div id="resultadosCursos" class="dropdown hidden"></div>
+
+      </div>
 
     </section>
   </div>
