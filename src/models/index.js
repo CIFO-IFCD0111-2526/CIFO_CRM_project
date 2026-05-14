@@ -36,7 +36,7 @@ const CursoAlumno = sequelize.define('curso_alumno', {   // És el nom que fa se
   }
 }, {
   tableName: 'curso_alumno',  // És el nom a la base de dades SQL ( string ) 
-})
+});
 
 /////////////////////////////////////////////////////////////////////TABLAS INTERMEDIAS ¿ A MOVER ?
 
@@ -111,7 +111,7 @@ const db = {
   Comentario,
 
   // tablas intermedias ( objeto JS )
-  CursoAlumno
+  CursoAlumno,
 };
 
 module.exports = db;

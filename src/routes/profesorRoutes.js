@@ -18,6 +18,13 @@ router.get("/buscar", profesorController.searchProfesor);
 router.get("/nuevo", profesorController.renderNewProfesor);
 router.get("/", profesorController.getAll);
 router.post("/", profesorController.createProfesor);
+
+router.get("/buscar-disponibles", profesorController.getAvailable);
+
+
+// las que dependen de /:id hacen que TODO pase por esos endpoints y ya no llega a 
+// esos endpoints y ya no llega a los siguientes. ( intenta leer cualquir cosa como id i no los "encuentra")
+// xk ya has entrado a ésta categoria 
 router.get("/:id",
     loadResource(Profesor, {
         redirectTo: "/profesores",

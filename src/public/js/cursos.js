@@ -653,3 +653,125 @@ document.addEventListener("click", async (e) => {
     }
 
 });
+// Asignar profesor a curso (vista detalle)
+document.addEventListener("DOMContentLoaded", () => {
+    const btnMostrar = document.querySelector("#btnMostrarProfesores");
+    const btnCancelar = document.querySelector("#btnCancelarProfesores");
+    const box = document.querySelector("#inscripcionBox");
+    const input = document.querySelector("#busquedaProfesorCurso");
+    const dropdown = document.querySelector("#dropdownProfesoresCurso");
+    const cursoForm = document.querySelector("#cursoForm");
+
+    if (!btnMostrar || !box || !input || !dropdown || !cursoForm) return;
+
+    const cursoId = cursoForm.dataset.id;
+
+    btnMostrar.addEventListener("click", () => {
+        box.classList.remove("hidden");
+        btnCancelar?.classList.remove("hidden");
+        btnMostrar.classList.add("hidden");
+        input.focus();
+    });
+
+    btnCancelar?.addEventListener("click", () => {
+        box.classList.add("hidden");
+        btnCancelar.classList.add("hidden");
+        btnMostrar.classList.remove("hidden");
+        input.value = "";
+        dropdown.innerHTML = "";
+        dropdown.classList.add("hidden");
+    });
+
+    let debounceTimer = null;
+    input.addEventListener("input", () => {
+        const q = input.value.trim();
+        if (q.length < 3) {
+            dropdown.innerHTML = "";
+            dropdown.classList.add("hidden");
+            return;
+        }
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => searchProfesores(q), 250);
+    });
+
+    async function searchProfesores(q) {
+        try {
+            const res = await fetch(`/profesores/buscar-disponibles?q=${encodeURIComponent(q)}&cursoId=${cursoId}`);
+            const data = await res.json();
+            renderResultados(data);
+        } catch (err) {
+            console.error("Error en cerca:", err);
+        }
+    }
+
+    function renderResultados(profesores) {
+        dropdown.innerHTML = "";
+        if (!profesores || !profesores.length) {
+            dropdown.innerHTML = `<div class="item empty">Sense resultats</div>`;
+            dropdown.classList.remove("hidden");
+            return;
+        }
+        profesores.forEach((p) => {
+            const item = document.createElement("div");
+            item.classList.add("item");
+            item.textContent = `${p.apellidos}, ${p.nombre}`;
+            item.addEventListener("click", () => asignar(p));
+            dropdown.appendChild(item);
+        });
+        dropdown.classList.remove("hidden");
+    }
+
+    async function asignar(profesor) {
+        const ok = await window.showConfirm({
+            title: "Assignar professor",
+            message: `Segur que vols assignar ${profesor.nombre} ${profesor.apellidos} al curs?`,
+            confirmText: "Assignar",
+            cancelText: "Cancel·lar",
+        });
+        if (!ok) return;
+        try {
+            const res = await fetch(`/cursos/${cursoId}/profesores`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ profesor_id: profesor.id }),
+            });
+            const json = await res.json();
+            if (!res.ok || !json.ok) {
+                return window.showModal({ type: "error", title: "Error", message: json.error || "No s'ha pogut assignar el profesor" });
+            }
+            window.location.href = json.redirect;
+        } catch (err) {
+            window.showModal({ type: "error", title: "Error", message: "Error de connexió amb el servidor" });
+        }
+    }
+});
+
+// Desasignar profesor (vista detalle)
+document.addEventListener("click", async (e) => {
+    const btn = e.target.closest(".btn-desasignar-profesor");
+    if (!btn) return;
+
+    const cursoId = btn.dataset.cursoId;
+    const profesorId = btn.dataset.profesorId;
+    const profesorName = btn.dataset.profesorName;
+    const cursoNombre = btn.dataset.cursoNombre;
+
+    const ok = await window.showConfirm({
+        title: "Confirmar desassignació",
+        message: `Segur que vols desassignar ${profesorName} del curs ${cursoNombre}?`,
+        confirmText: "Desassignar",
+        cancelText: "Cancel·lar",
+    });
+    if (!ok) return;
+
+    try {
+        const res = await fetch(`/cursos/${cursoId}/profesores/${profesorId}`, { method: "DELETE" });
+        const json = await res.json();
+        if (!res.ok || !json.ok) {
+            return window.showModal({ type: "error", title: "Error", message: json.error || "No s'ha pogut desassignar el profesor" });
+        }
+        window.location.href = json.redirect;
+    } catch (err) {
+        window.showModal({ type: "error", title: "Error", message: "Error de connexió amb el servidor" });
+    }
+});

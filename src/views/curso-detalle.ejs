@@ -100,37 +100,41 @@
       <h2 class="detalle-card-title">Professors</h2>
       <div class="header-actions">
         <button type="button" id="btnMostrarProfesores" class="btn btn-secundario js-open-matricula">
-          Asignar profesors
+          Assignar professor
         </button>
         <button type="button" id="btnCancelarProfesores" class="btn btn-secundario cancelar-btn hidden">
           Cancel·lar
         </button>
       </div>
-      <% if (curso.Profesors && curso.Profesors.length> 0) { %>
+      <% if (curso.Profesors && curso.Profesors.length > 0) { %>
         <ul class="detalle-cursos">
-          <% curso.Profesors.forEach(prof=> { %>
+          <% curso.Profesors.forEach(prof => { %>
             <li>
-              <span class="curso-nombre">
-                <%= prof.nombre %>
-                  <%= prof.apellidos %>
-              </span>
-              <button type="button" class="btn btn-danger btn-sm btn-desmatricular" data-curso-id="<%= curso.id %>">
-                Dar de baixa
+              <span class="curso-nombre"><%= prof.nombre %> <%= prof.apellidos %></span>
+              <button
+                type="button"
+                class="btn btn-danger btn-sm btn-desasignar-profesor"
+                data-curso-id="<%= curso.id %>"
+                data-profesor-id="<%= prof.id %>"
+                data-profesor-name="<%= prof.nombre %> <%= prof.apellidos %>"
+                data-curso-nombre="<%= curso.nombre %>"
+              >
+                Donar de baixa
               </button>
             </li>
-            <% }) %>
+          <% }) %>
         </ul>
-        <% } else { %>
-          <p class="detalle-empty">No hi ha professors associats.</p>
-          <% } %>
-          <div id="inscripcionBox" class="matricula-box hidden">
+      <% } else { %>
+        <p class="detalle-empty">No hi ha professors associats.</p>
+      <% } %>
+      <div id="inscripcionBox" class="matricula-box hidden">
         <div class="buscador-wrapper">
           <div class="buscador-profesores">
             <input type="text" id="busquedaProfesorCurso" placeholder="Buscar profesor..." autocomplete="off" />
           </div>
+          <div id="dropdownProfesoresCurso" class="dropdown hidden"></div>
         </div>
-
-
+      </div>
     </section>
 
     <section class="detalle-card detalle-full">
@@ -157,10 +161,8 @@
                 data-alumno-id="<%= al.id %>">
                 Dar de baixa
               </button>
-
             </li>
             <% }) %>
-
               <% } else { %>
                 <p class="detalle-empty">No hi ha alumnes matriculats.</p>
                 <% } %>

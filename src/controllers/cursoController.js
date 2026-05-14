@@ -1,7 +1,7 @@
 const { Curso, Alumno,CursoAlumno, Profesor } = require("../models");
 const { Op } = require("sequelize");
-
 const { handleControllerError } = require("../middlewares/errorHandler");
+const { ValidationError, UniqueConstraintError } = require("sequelize");
 
 /** GET /cursos con paginacion */
 const getAll = async (req, res, next) => {
@@ -240,4 +240,74 @@ const deleteAlumnoFromCurso = async (req, res, next) => {
         return handleControllerError(error, res, next);
     }
 };
-module.exports = { getAll, getById, createCurso, renderNewCurso,searchCurso, deleteCurso, updateCurso,addAlumnoToCurso,deleteAlumnoFromCurso };
+// POST /cursos/:id/profesores
+const asignarProfesor = async (req, res, next) => {
+    try {
+        const curso_id = parseInt(req.params.id);
+        const profesor_id = parseInt(req.body.profesor_id);
+
+        if (!Number.isInteger(curso_id) || !Number.isInteger(profesor_id)) {
+            return res.status(400).json({ ok: false, error: "Paràmetres invàlids" });
+        }
+
+        const curso = await Curso.findByPk(curso_id);
+        const profesor = await Profesor.findByPk(profesor_id);
+
+        if (!curso || !profesor) {
+            return res.status(404).json({ ok: false, error: "Curs o profesor no existeixen" });
+        }
+
+        if (await curso.hasProfesor(profesor)) {
+            return res.status(400).json({ ok: false, error: `El profesor ja està assignat al curs ${curso.nombre}` });
+        }
+
+        await curso.addProfesor(profesor);
+
+        req.session.flash = {
+            type: "success",
+            title: "Professor assignat",
+            message: `${profesor.nombre} ${profesor.apellidos} s'ha assignat al curs ${curso.nombre}.`,
+        };
+
+        return res.json({ ok: true, redirect: `/cursos/${curso_id}` });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+// DELETE /cursos/:id/profesores/:profesorId
+const desasignarProfesor = async (req, res, next) => {
+    try {
+        const curso_id = parseInt(req.params.id);
+        const profesor_id = parseInt(req.params.profesorId);
+
+        if (!Number.isInteger(curso_id) || !Number.isInteger(profesor_id)) {
+            return res.status(400).json({ ok: false, error: "Paràmetres invàlids" });
+        }
+
+        const curso = await Curso.findByPk(curso_id);
+        const profesor = await Profesor.findByPk(profesor_id);
+
+        if (!curso || !profesor) {
+            return res.status(404).json({ ok: false, error: "Curs o profesor no existeixen" });
+        }
+
+        if (!(await curso.hasProfesor(profesor))) {
+            return res.status(400).json({ ok: false, error: `El profesor no està assignat al curs ${curso.nombre}` });
+        }
+
+        await curso.removeProfesor(profesor);
+
+        req.session.flash = {
+            type: "success",
+            title: "Professor desassignat",
+            message: `${profesor.nombre} ${profesor.apellidos} s'ha desassignat del curs ${curso.nombre}.`,
+        };
+
+        return res.json({ ok: true, redirect: `/cursos/${curso_id}` });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+module.exports = { getAll, getById, createCurso, renderNewCurso, searchCurso, deleteCurso, updateCurso, asignarProfesor, desasignarProfesor, addAlumnoToCurso, deleteAlumnoFromCurso };
