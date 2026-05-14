@@ -33,16 +33,25 @@ const login = async (req, res, next) => {
 
   try {
     const userLogin = await Usuario.findOne({
-      where: { email: loginEmail, activo: true },
+      where: { email: loginEmail },
     });
 
     if (!userLogin) {
       return res.status(400).json({ error: "L'usuari no existeix." });
     }
 
+    if (!userLogin.activo) {
+      return res.status(403).json({
+        ok: false,
+        error: "El teu compte encara està pendent d'aprovació per un administrador.",
+      });
+    }
+
     if (!bcrypt.compareSync(loginPassword, userLogin.password)) {
       return res.status(400).json({ error: "Contrasenya incorrecta." });
     }
+
+    
 
     req.session.usuario = {
       id: userLogin.id,
@@ -105,37 +114,50 @@ const register = async (req, res, next) => {
     const hashedPassword = bcrypt.hashSync(password, 10);
 
     // Crear usuario
-    await Usuario.create({
+
+    const nuevoUsuario = await Usuario.create({
       nombre,
       apellidos,
       email,
       password: hashedPassword,
       nivel_acceso: "editor",
-      activo: true,
+      activo: false,
     });
 
-    // AÑADIR CREACION DE SESSION PARA PODER IR DIRECTO A DASHBOARD ////////////////////////////////
-    const userLogin = await Usuario.findOne({
-      where: { email: email, activo: true },
+    const admins = await Usuario.findAll({
+      where: {
+        nivel_acceso: "admin",
+        activo: true,
+      },
     });
 
-    req.session.usuario = {
-      id: userLogin.id,
-      nombre: userLogin.nombre,
-      apellidos: userLogin.apellidos,
-      email: userLogin.email,
-      nivel_acceso: userLogin.nivel_acceso,
-    };
-    req.session.cookie.maxAge = 60 * 60 * 1000;  //  60 minutos per defecte, en registre no es guarda el ""recordar sessió""
-    // req.session.flash = ""; //  añadir para la logica que muestra el modal("flash") de "Jose"
+    for (const admin of admins) {
+      try {
+        await sendMail({
+          to: admin.email,
+          subject: "Nou registre pendent d'aprovació",
+          html: `
+        <h2>Nou registre pendent d'aprovació</h2>
+        <p>
+          ${nuevoUsuario.nombre} ${nuevoUsuario.apellidos}
+          (${nuevoUsuario.email})
+        </p>
+        <p>
+          Accedeix a /usuarios/pendents per aprovar.
+        </p>
+      `,
+        });
+      } catch (mailError) {
+        console.error("Error enviant correu a admin:", mailError);
+      }
+    }
 
-    req.session.flash = {
-      type: "success",
-      title: "Compte creat.",
-      message: `Benvingut, ${userLogin.nombre} ${userLogin.apellidos}.`,
-    };
-    ///////////////////////////////////////////////////////////////////////
-    return res.status(200).json({ ok: true, redirect: "/dashboard" });
+
+    
+    return res.status(200).json({
+      ok: true,
+      message: "Registre rebut. Pendent d'aprovació per admin.",
+    });
 
   } catch (error) {
     return handleControllerError(error, res, next);
