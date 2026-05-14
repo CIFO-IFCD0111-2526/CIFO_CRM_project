@@ -112,6 +112,8 @@
               <% } else { %>
                 <span class="badge badge-antiguo">No</span>
                 <% } %>
+                  <input id="DetAlderechos_imagen" type="checkbox" name="derechos_imagen" <%=alumno.derechos_imagen
+                    ? "checked" : "" %> class="edit-mode hidden" />
           </dd>
         </div>
         <div class="detalle-item">
@@ -122,6 +124,8 @@
               <% } else { %>
                 <span class="badge badge-antiguo">No</span>
                 <% } %>
+                  <input id="DetAlcesion_material" type="checkbox" name="cesion_material" <%=alumno.cesion_material
+                    ? "checked" : "" %> class="edit-mode hidden" />
           </dd>
         </div>
         <div class="detalle-item">
@@ -132,6 +136,8 @@
               <% } else { %>
                 <span class="badge badge-antiguo">No</span>
                 <% } %>
+                  <input id="DetAlAccionDifusion" type="checkbox" name="accion_difusion" <%=alumno.accion_difusion
+                    ? "checked" : "" %> class="edit-mode hidden" />
           </dd>
         </div>
       </dl>
@@ -156,42 +162,43 @@
       </div>
 
       <ul class="detalle-cursos" id="listaCursos">
-      <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
-        <% alumno.Cursos.forEach(curso=> { %>
-          <li class="alumno-curso-item">
-            <span class="curso-codigo">
-              <%= curso.codigo_curso %>
-            </span>
-            <span class="curso-nombre">
-              <a class="curso-nombre-nuevo" href="/cursos/<%= curso.id %>">
-              <%= curso.nombre %></a>
-            </span>
+        <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
+          <% alumno.Cursos.forEach(curso=> { %>
+            <li class="alumno-curso-item">
+              <span class="curso-codigo">
+                <%= curso.codigo_curso %>
+              </span>
+              <span class="curso-nombre">
+                <a class="curso-nombre-nuevo" href="/cursos/<%= curso.id %>">
+                  <%= curso.nombre %>
+                </a>
+              </span>
 
-            <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
-              data-alumno-id="<%= alumno.id %>">
-              Dar de baixa
-            </button>
+              <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
+                data-alumno-id="<%= alumno.id %>">
+                Dar de baixa
+              </button>
 
-          </li>
-          <% }) %>
-            <% } else { %>
-              <p class="detalle-empty" id="emptyCursos">
-                No està matriculat en cap curs.
-              </p>
-              <% } %>
-                </ul>
-                
-                <div id="matriculaBox" class="matricula-box hidden">
+            </li>
+            <% }) %>
+              <% } else { %>
+                <p class="detalle-empty" id="emptyCursos">
+                  No està matriculat en cap curs.
+                </p>
+                <% } %>
+      </ul>
 
-                  <div class="buscador-wrapper">
-                    <div class="buscador-alumnos">
-                      <input type="text" id="buscarCurso" placeholder="Buscar curs..." autocomplete="off" />
-                    </div>
-                  </div>
+      <div id="matriculaBox" class="matricula-box hidden">
 
-                  <div id="resultadosCursos" class="dropdown hidden"></div>
+        <div class="buscador-wrapper">
+          <div class="buscador-alumnos">
+            <input type="text" id="buscarCurso" placeholder="Buscar curs..." autocomplete="off" />
+          </div>
+        </div>
 
-                </div>
+        <div id="resultadosCursos" class="dropdown hidden"></div>
+
+      </div>
 
     </section>
   </div>
