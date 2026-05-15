@@ -35,6 +35,11 @@ router.get("/:id",
     }),
     controller.getById
 );
+
+// router.get("/:id",
+//     loadResource(Alumno, { redirectTo: "/alumnos", include: [Curso] }),
+//     controller.getById
+// );
 router.put("/:id",
     loadResource(Alumno, { notFoundMessage: "L'alumne no existeix." }),
     controller.updateAlumno
