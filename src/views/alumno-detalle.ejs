@@ -112,11 +112,12 @@
             </span>
             <span class="edit-mode hidden radio-group">
               <label class="radio-option">
-                <input type="radio" name="derechos_imagen" value="true" <%= alumno.derechos_imagen ? 'checked' : '' %> />
+                <input type="radio" name="derechos_imagen" value="true" <%=alumno.derechos_imagen ? 'checked' : '' %> />
                 <span class="badge badge-actual">Sí</span>
               </label>
               <label class="radio-option">
-                <input type="radio" name="derechos_imagen" value="false" <%= !alumno.derechos_imagen ? 'checked' : '' %> />
+                <input type="radio" name="derechos_imagen" value="false" <%=!alumno.derechos_imagen ? 'checked' : '' %>
+                />
                 <span class="badge badge-antiguo">No</span>
               </label>
             </span>
@@ -130,11 +131,12 @@
             </span>
             <span class="edit-mode hidden radio-group">
               <label class="radio-option">
-                <input type="radio" name="cesion_material" value="true" <%= alumno.cesion_material ? 'checked' : '' %> />
+                <input type="radio" name="cesion_material" value="true" <%=alumno.cesion_material ? 'checked' : '' %> />
                 <span class="badge badge-actual">Sí</span>
               </label>
               <label class="radio-option">
-                <input type="radio" name="cesion_material" value="false" <%= !alumno.cesion_material ? 'checked' : '' %> />
+                <input type="radio" name="cesion_material" value="false" <%=!alumno.cesion_material ? 'checked' : '' %>
+                />
                 <span class="badge badge-antiguo">No</span>
               </label>
             </span>
@@ -148,11 +150,12 @@
             </span>
             <span class="edit-mode hidden radio-group">
               <label class="radio-option">
-                <input type="radio" name="accion_difusion" value="true" <%= alumno.accion_difusion ? 'checked' : '' %> />
+                <input type="radio" name="accion_difusion" value="true" <%=alumno.accion_difusion ? 'checked' : '' %> />
                 <span class="badge badge-actual">Sí</span>
               </label>
               <label class="radio-option">
-                <input type="radio" name="accion_difusion" value="false" <%= !alumno.accion_difusion ? 'checked' : '' %> />
+                <input type="radio" name="accion_difusion" value="false" <%=!alumno.accion_difusion ? 'checked' : '' %>
+                />
                 <span class="badge badge-antiguo">No</span>
               </label>
             </span>
@@ -192,6 +195,11 @@
                 <a class="curso-nombre-nuevo" href="/cursos/<%= curso.id %>">
                   <%= curso.nombre %>
                 </a>
+              </span>
+
+              <span class="curso-fecha">
+                Matrícula:
+                <%= new Date(curso.curso_alumno.createdAt).toLocaleDateString("ca-ES") %>
               </span>
 
               <span class="curso-fecha">
