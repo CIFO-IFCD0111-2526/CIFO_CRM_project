@@ -18,10 +18,10 @@ function redirectIfLogged(req, res, next) {
 }
 
 function requireAdmin(req, res, next) {
-    if (req.session.usuario?.nivel_acceso !== "admin") {
-        return res.status(403).json({ ok: false, error: "Cal ser admin" });
-    }
-    next();
+  if (req.session.usuario.nivel_acceso !== "admin") {
+    return res.status(403).json({ ok: false, error: "Cal ser admin" });
+  }
+  next();
 }
 
 module.exports = { authPage, redirectIfLogged, requireAdmin };

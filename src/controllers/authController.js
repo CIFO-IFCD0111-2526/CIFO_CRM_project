@@ -51,8 +51,6 @@ const login = async (req, res, next) => {
       return res.status(400).json({ error: "Contrasenya incorrecta." });
     }
 
-    
-
     req.session.usuario = {
       id: userLogin.id,
       nombre: userLogin.nombre,
@@ -143,7 +141,9 @@ const register = async (req, res, next) => {
           (${nuevoUsuario.email})
         </p>
         <p>
-          Accedeix a /usuarios/pendents per aprovar.
+          <a href="${process.env.URL_BASE}/usuarios/pendents">
+            ${process.env.URL_BASE}/usuarios/pendents
+          </a>
         </p>
       `,
         });
@@ -152,8 +152,6 @@ const register = async (req, res, next) => {
       }
     }
 
-
-    
     return res.status(200).json({
       ok: true,
       message: "Registre rebut. Pendent d'aprovació per admin.",

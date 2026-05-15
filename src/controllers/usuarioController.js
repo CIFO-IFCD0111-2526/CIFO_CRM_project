@@ -66,14 +66,7 @@ const changePassword = async (req, res, next) => {
 // PUT /usuarios/:id/aprovar
 const aprovarUsuario = async (req, res, next) => {
     try {
-        const usuario = await Usuario.findByPk(req.params.id);
-
-        if (!usuario) {
-            return res.status(404).json({
-                ok: false,
-                error: "Usuari no trobat",
-            });
-        }
+        const usuario = req.usuario;
 
         if (usuario.activo) {
             return res.status(400).json({
