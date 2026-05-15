@@ -55,18 +55,87 @@
     <section class="detalle-card detalle-full">
       <h2 class="detalle-card-title">Cursos que imparteix</h2>
       <% if (profesor.Cursos && profesor.Cursos.length > 0) { %>
-        <ul class="detalle-cursos">
-          <% profesor.Cursos.forEach(curso => { %>
-            <li>
-              <span class="curso-codigo"><%= curso.codigo %></span>
-              <span class="curso-nombre"><%= curso.nombre %></span>
-            </li>
-          <% }) %>
-        </ul>
-      <% } else { %>
-        <p class="detalle-empty">No imparteix cap curs.</p>
-      <% } %>
+        <!-- ordenem  per futurs,presents, passats   -->
+        <% profesor.Cursos.sort((a, b) => b.dataValues.estado - a.dataValues.estado) %>
+    <ul class="detalle-cursos">
+      <% profesor.Cursos.forEach(curso => { %>
+            <% console.log("[CRS", curso.dataValues, "::CRS]") 
+              let dataInici = curso.fecha_inicio.toLocaleDateString('es-ES')
+              let dataFinal = curso.fecha_fin.toLocaleDateString('es-ES')
+              // guardem les dates en el format que ens agrada
+              let color = "";
+            switch (curso.dataValues.estado) {
+              case 1:  
+                    color = "var(--badge-antiguo-color)";  // passats// passat 
+              %> 
+              <li>
+                <span class="curso-codigo" style="width: 100px;">
+                  <%= curso.codigo_curso %>
+                </span>
+                <span class="curso-codigo" style="width: 100px;">
+                  <%= curso.codigo_accion_formativa %>
+                </span>
+              
+                <span class="curso-nombre" style="color:<%= color %>">
+                  Finalitzat: <%= dataFinal %>  <%= curso.dataValues.nombre %>
+                </span>
+              </li>
+              <% break;  
+              case 2:  
+                    color = "var(--color-primario-hover)";%> // EN CURS
+              <li>
+                <span class="curso-codigo" style="width: 100px;" >
+                  <%= curso.codigo_curso %>
+                </span>
+                <span class="curso-codigo" style="width: 100px;">
+                  <%= curso.codigo_accion_formativa %>
+                </span>
+              
+                <span class="curso-nombre" style="color:<%= color %> ">
+                  Finalitza <%= dataFinal %>
+                </span>
+              </li>
+              
+              <% break;  // en curs 
+              case 3:  
+                    color = "var(--badge-actual-color)";   
+              %>
+              <li>
+                <span class="curso-codigo" style="width: 120px;" >
+                  <%= curso.codigo_curso %>
+                </span>
+                <span class="curso-codigo" style="width: 120px;">
+                  <%= curso.codigo_accion_formativa %>
+                </span>
+              
+                <span class="curso-nombre" style="color:<%= color %> ">
+                  Finalitza <%= dataFinal %>
+                </span>
+              </li>
+            <%    
+              break;  // pendent iniciar           
+              } 
+            %>
+            
+        <li>
+          <span class="curso-codigo"><%= curso.codigo_curso %></span>
+          <span class="curso-codigo"><%= curso.codigo_accion_formativa %></span>
+          <span class="curso-nombre" style="color:<%= color %>">
+            <%= curso.dataValues.nombre %> del <%= dataInici %> al <%= dataFinal %>
+          </span>
+        </li>
+
+      <% }) %>
+    </ul>
+<% } else { %>
+  <p class="detalle-empty">No imparteix cap curs.</p>
+<% } %>
+
     </section>
 
   </div>
 </form>
+
+<!-- 
+    color: var(--color-primario);
+    background-color: var(--color-primario-suave); -->
