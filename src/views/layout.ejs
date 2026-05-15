@@ -17,8 +17,14 @@
     <script src="/js/main.js" defer></script>
     <script src="/js/modal.js" defer></script>
     <% if (locals.js) { %>
-        <script src="/js/<%= js %>" defer></script>
-    <% } %>
+        <% if (Array.isArray(js)) { %>
+            <% js.forEach(file=> { %>
+                <script src="/js/<%= file %>" defer></script>
+                <% }) %>
+                    <% } else { %>
+                        <script src="/js/<%= js %>" defer></script>
+                        <% } %>
+                            <% } %>
 </head>
 <body>
     <div class="app-container">
