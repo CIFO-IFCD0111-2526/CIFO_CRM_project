@@ -51,8 +51,6 @@ const login = async (req, res, next) => {
       return res.status(400).json({ error: "Contrasenya incorrecta." });
     }
 
-    
-
     req.session.usuario = {
       id: userLogin.id,
       nombre: userLogin.nombre,
