@@ -17,6 +17,14 @@ router.get("/buscar", controller.searchAlumno);
 router.get("/", controller.getAll);
 router.get("/nuevo", controller.renderNewAlumno);
 router.post("/", controller.createAlumno);
+router.get("/export.csv", controller.exportCsv);
+
+router.post(
+    "/import.csv",
+    controller.upload.single("archivo"),
+    controller.importCsv
+);
+
 router.get("/:id",
     loadResource(Alumno, {
         redirectTo: "/alumnos",
