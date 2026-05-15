@@ -74,46 +74,59 @@
   position: relative;
 }
 
-/* BASE FILTROS */
-.filtroTipoAlumno button {
-  padding: 4px 10px;
-  font-size: 12px;
-  border-radius: 999px;
-  border: 1px solid var(--color-borde);
-  background: var(--color-fondo-tarjeta);
-  color: var(--color-texto-etiquetas);
-  cursor: pointer;
-  transition: all 0.2s ease;
+/* Modal import CSV */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
 }
 
-/* COLORES POR TIPO (como badges) */
-.filtroTipoAlumno button[data-tipo="Tots els tipus"] {
-  background: var(--color-fondo-tarjeta);
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: white;
+  border-radius: var(--radio-grande);
+
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+
   color: var(--color-texto-principal);
 }
 
-.filtroTipoAlumno button[data-tipo="actual"] {
-  background: var(--badge-actual-bg);
-  color: var(--badge-actual-color);
+#importForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.filtroTipoAlumno button[data-tipo="futuro"] {
-  background: var(--badge-futuro-bg);
-  color: var(--badge-futuro-color);
+#archivoCsv {
+  padding: 0.75rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  background: var(--color-fondo-pagina);
 }
 
-.filtroTipoAlumno button[data-tipo="antiguo"] {
-  background: var(--badge-antiguo-bg);
-  color: var(--badge-antiguo-color);
-}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
 
-/* HOVER */
-.filtroTipoAlumno button:hover {
-  opacity: 0.85;
-}
-
-/* ACTIVO → solo cambia el borde */
-.filtroTipoAlumno button.active {
-  border: 1px solid var(--color-primario);
-  box-shadow: 0 0 0 1px var(--color-primario-hover);
+  margin-top: 1rem;
 }
