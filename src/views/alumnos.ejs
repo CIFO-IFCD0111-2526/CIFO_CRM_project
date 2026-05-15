@@ -9,7 +9,19 @@
     </div>
     <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
-  <a href="/alumnos/nuevo" class="btn btn-primario">Nou alumne</a>
+  <div class="header-actions">
+    <a href="/alumnos/export.csv" class="btn btn-secundario">
+      Exportar
+    </a>
+  
+    <button type="button" class="btn btn-secundario" id="btnImportarCsv">
+      Importar
+    </button>
+  
+    <a href="/alumnos/nuevo" class="btn btn-primario">
+      Nou alumne
+    </a>
+  </div>
 </div>
 
 <% if (pagination && pagination.totalItems > 0) { %>
@@ -89,3 +101,23 @@
     <a href="/alumnos/nuevo" class="btn btn-primario">Crear el primer alumne</a>
   </div>
 <% } %>
+
+<div id="importModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Importar alumnes</h2>
+
+    <form id="importForm">
+      <input type="file" name="archivo" id="archivoCsv" accept=".csv" required />
+
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-primario">
+          Importar
+        </button>
+
+        <button type="button" class="btn btn-secundario" id="cerrarImportModal">
+          Cancel·lar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

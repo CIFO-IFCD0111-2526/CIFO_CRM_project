@@ -769,3 +769,91 @@ document.addEventListener("click", async (e) => {
   }
 
 });
+
+// Import CSV
+document.addEventListener("DOMContentLoaded", () => {
+
+  const btnImportar = document.querySelector("#btnImportarCsv");
+  const modal = document.querySelector("#importModal");
+  const cerrarModal = document.querySelector("#cerrarImportModal");
+  const form = document.querySelector("#importForm");
+
+  if (!btnImportar || !modal || !form) return;
+
+  btnImportar.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+  });
+
+  cerrarModal?.addEventListener("click", () => {
+    modal.classList.add("hidden");
+    form.reset();
+  });
+
+  form.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    try {
+
+      const res = await fetch("/alumnos/import.csv", {
+        method: "POST",
+        body: formData,
+      });
+
+      const json = await res.json();
+
+      console.log(json);
+
+      if (!json.ok) {
+        await window.showModal({
+          type: "error",
+          title: "Error",
+          message: json.error || "Error important CSV",
+        });
+
+        return;
+      }
+
+      await window.showModal({
+        type: json.errores.length ? "warning" : "success",
+        title: "Importació completada",
+        message: `
+          <p><strong>Creats:</strong> ${json.creados}</p>
+          <p><strong>Errors:</strong> ${json.errores.length}</p>
+
+          ${json.errores.length
+            ? `
+            <hr>
+            <ul style="text-align:left">
+              ${json.errores.map(err => `
+                <li>
+                  <strong>Fila ${err.fila}:</strong>
+                  ${err.error}
+                </li>
+              `).join("")}
+            </ul>
+            `
+            : ""
+          }
+        `,
+      });
+
+      modal.classList.add("hidden");
+      form.reset();
+
+      window.location.reload();
+
+    } catch (err) {
+
+      console.error(err);
+
+      await window.showModal({
+        type: "error",
+        title: "Error",
+        message: "Error de connexió",
+      });
+    }
+  });
+});

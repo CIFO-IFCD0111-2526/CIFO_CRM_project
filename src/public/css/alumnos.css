@@ -83,3 +83,60 @@
 .dropdown {
   position: relative;
 }
+
+/* Modal import CSV */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: white;
+  border-radius: var(--radio-grande);
+
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+
+  color: var(--color-texto-principal);
+}
+
+#importForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#archivoCsv {
+  padding: 0.75rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  background: var(--color-fondo-pagina);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+
+  margin-top: 1rem;
+}
