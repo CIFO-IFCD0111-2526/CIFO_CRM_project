@@ -183,13 +183,20 @@
         <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
           <% alumno.Cursos.forEach(curso=> { %>
             <li class="alumno-curso-item">
+
               <span class="curso-codigo">
                 <%= curso.codigo_curso %>
               </span>
+
               <span class="curso-nombre">
                 <a class="curso-nombre-nuevo" href="/cursos/<%= curso.id %>">
                   <%= curso.nombre %>
                 </a>
+              </span>
+
+              <span class="curso-fecha">
+                Matrícula:
+                <%= new Date(curso.curso_alumno.createdAt).toLocaleDateString("ca-ES") %>
               </span>
 
               <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
