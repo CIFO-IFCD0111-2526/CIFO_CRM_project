@@ -135,7 +135,7 @@ const getById = (req, res) => {
         titulo: "Busqueda d'alumne per ID",
         usuario: req.session.usuario,
         css: "alumnos.css",
-        js: "alumnos.js",
+        js: ["alumnos.js", "documento.js"],
         paginaActual: "alumnos",
         alumno: req.alumno
     });
