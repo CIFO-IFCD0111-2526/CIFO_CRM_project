@@ -26,9 +26,20 @@ router.post(
 );
 
 router.get("/:id",
-    loadResource(Alumno, { redirectTo: "/alumnos", include: [Curso] }),
+    loadResource(Alumno, {
+        redirectTo: "/alumnos",
+        include: [{
+            model: Curso,
+            through: { attributes: ["estat", "createdAt"] }
+        }]
+    }),
     controller.getById
 );
+
+// router.get("/:id",
+//     loadResource(Alumno, { redirectTo: "/alumnos", include: [Curso] }),
+//     controller.getById
+// );
 router.put("/:id",
     loadResource(Alumno, { notFoundMessage: "L'alumne no existeix." }),
     controller.updateAlumno
