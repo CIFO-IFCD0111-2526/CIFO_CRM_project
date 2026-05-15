@@ -162,8 +162,8 @@
 
     </section>
 
-    <div id="AlDetMsg" class="form-msg form-full" aria-live="polite"></div>
-
+      <div id="AlDetMsg" class="form-msg form-full" aria-live="polite"></div>
+      
     <section class="detalle-card detalle-full">
       <h2 class="detalle-card-title">Cursos</h2>
       <div class="card-header-cursos">
@@ -221,3 +221,19 @@
     </section>
   </div>
 </form>
+
+
+    <section class="detalle-card detalle-full">
+        <h2 class="detalle-card-title">Documents</h2>
+      
+        <form class="document-form" data-entidad-tipo="Alumno" data-entidad-id="<%= alumno.id %>">
+          <input type="file" name="archivo" required />
+          <button type="submit" class="btn btn-secundario">
+            Pujar document
+          </button>
+        </form>
+
+        <ul id="listaDocumentos" class="detalle-lista-documentos">
+          <p class="detalle-empty">Encara no hi ha documents.</p>
+        </ul>
+      </section>

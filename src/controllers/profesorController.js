@@ -113,7 +113,7 @@ const getById = (req, res) => {
     titulo: `${profesor.nombre} ${profesor.apellidos}`,
     usuario: req.session.usuario,
     css: "profesores.css",
-    js: "profesores.js",
+    js: ["profesores.js","documento.js"],
     paginaActual: "profesores",
     profesor,
   });
