@@ -112,11 +112,12 @@
             </span>
             <span class="edit-mode hidden radio-group">
               <label class="radio-option">
-                <input type="radio" name="derechos_imagen" value="true" <%= alumno.derechos_imagen ? 'checked' : '' %> />
+                <input type="radio" name="derechos_imagen" value="true" <%=alumno.derechos_imagen ? 'checked' : '' %> />
                 <span class="badge badge-actual">Sí</span>
               </label>
               <label class="radio-option">
-                <input type="radio" name="derechos_imagen" value="false" <%= !alumno.derechos_imagen ? 'checked' : '' %> />
+                <input type="radio" name="derechos_imagen" value="false" <%=!alumno.derechos_imagen ? 'checked' : '' %>
+                />
                 <span class="badge badge-antiguo">No</span>
               </label>
             </span>
@@ -130,11 +131,12 @@
             </span>
             <span class="edit-mode hidden radio-group">
               <label class="radio-option">
-                <input type="radio" name="cesion_material" value="true" <%= alumno.cesion_material ? 'checked' : '' %> />
+                <input type="radio" name="cesion_material" value="true" <%=alumno.cesion_material ? 'checked' : '' %> />
                 <span class="badge badge-actual">Sí</span>
               </label>
               <label class="radio-option">
-                <input type="radio" name="cesion_material" value="false" <%= !alumno.cesion_material ? 'checked' : '' %> />
+                <input type="radio" name="cesion_material" value="false" <%=!alumno.cesion_material ? 'checked' : '' %>
+                />
                 <span class="badge badge-antiguo">No</span>
               </label>
             </span>
@@ -148,11 +150,12 @@
             </span>
             <span class="edit-mode hidden radio-group">
               <label class="radio-option">
-                <input type="radio" name="accion_difusion" value="true" <%= alumno.accion_difusion ? 'checked' : '' %> />
+                <input type="radio" name="accion_difusion" value="true" <%=alumno.accion_difusion ? 'checked' : '' %> />
                 <span class="badge badge-actual">Sí</span>
               </label>
               <label class="radio-option">
-                <input type="radio" name="accion_difusion" value="false" <%= !alumno.accion_difusion ? 'checked' : '' %> />
+                <input type="radio" name="accion_difusion" value="false" <%=!alumno.accion_difusion ? 'checked' : '' %>
+                />
                 <span class="badge badge-antiguo">No</span>
               </label>
             </span>
@@ -162,8 +165,8 @@
 
     </section>
 
-      <div id="AlDetMsg" class="form-msg form-full" aria-live="polite"></div>
-      
+    <div id="AlDetMsg" class="form-msg form-full" aria-live="polite"></div>
+
     <section class="detalle-card detalle-full">
       <h2 class="detalle-card-title">Cursos</h2>
       <div class="card-header-cursos">
@@ -199,19 +202,11 @@
                 <%= new Date(curso.curso_alumno.createdAt).toLocaleDateString("ca-ES") %>
               </span>
 
-              <span class="curso-fecha">
-                Matrícula:
-                <%= new Date(curso.curso_alumno.createdAt).toLocaleDateString("ca-ES") %>
-              </span>
+              <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
+                data-alumno-id="<%= alumno.id %>">
+                Dar de baixa
+              </button>
 
-              <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
-                data-alumno-id="<%= alumno.id %>">
-                Dar de baixa
-              </button>
-              <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
-                data-alumno-id="<%= alumno.id %>">
-                Dar de baixa
-              </button>
 
             </li>
             <% }) %>
@@ -253,19 +248,3 @@
     </section>
   </div>
 </form>
-
-
-    <section class="detalle-card detalle-full">
-        <h2 class="detalle-card-title">Documents</h2>
-      
-        <form class="document-form" data-entidad-tipo="Alumno" data-entidad-id="<%= alumno.id %>">
-          <input type="file" name="archivo" required />
-          <button type="submit" class="btn btn-secundario">
-            Pujar document
-          </button>
-        </form>
-
-        <ul id="listaDocumentos" class="detalle-lista-documentos">
-          <p class="detalle-empty">Encara no hi ha documents.</p>
-        </ul>
-      </section>
