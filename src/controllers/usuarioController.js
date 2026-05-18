@@ -141,4 +141,4 @@ const getPendents =async (req, res, next) => {
     }
 };
 
-module.exports = { getPerfil, changePassword, aprovarUsuario };
+module.exports = { getPerfil, changePassword, aprovarUsuario, getPendents };

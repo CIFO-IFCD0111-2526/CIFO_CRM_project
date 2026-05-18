@@ -16,4 +16,11 @@ router.put("/:id/aprovar",
     usuarioController.aprovarUsuario
 );
 
+router.get(
+  "pendents",
+  loadResource(Usuario, { redirectTo: "/dashboard" }),
+  requireAdmin,
+  usuarioController.getPendents,
+);
+
 module.exports = router;
