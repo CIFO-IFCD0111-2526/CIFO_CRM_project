@@ -113,7 +113,7 @@ const getPendents =async (req, res, next) => {
         const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 10));
         const offset = (page - 1) * limit;
 
-        const { count, rows: alumnos } = await Usuario.findAndCountAll({
+        const { count, rows: usuarios } = await Usuario.findAndCountAll({
             where: { activo: false },
             order: [["created_at", "DESC"]],
             limit,
@@ -128,7 +128,7 @@ const getPendents =async (req, res, next) => {
             css: "usuarios.css",
             js: "usuarios.js",
             paginaActual: "usuarios-pendents",
-            alumnos,
+            usuarios,
             pagination: {
                 currentPage: page,
                 totalPages,
