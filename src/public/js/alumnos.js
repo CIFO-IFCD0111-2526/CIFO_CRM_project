@@ -473,9 +473,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // INPUT
-  let timer = null;
-
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       aplicarFiltros();
@@ -503,6 +500,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.location.href = url.toString();
   }
+  if (dropdown) initBuscador(input, dropdown);
 });
 
 function initBuscador(input, dropdown) {

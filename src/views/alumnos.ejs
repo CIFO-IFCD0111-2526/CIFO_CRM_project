@@ -7,14 +7,14 @@
     <div class="buscador">
       <input type="text" id="busquedaAlumno" placeholder="Buscar alumne..." autocomplete="off"
         value="<%= typeof q !== 'undefined' ? q : '' %>" />
-      <div class="filtroTipoAlumno">
-        <button class="<%= !tipo ? 'active' : '' %>" data-tipo="">Tots els tipus</button>
-        <button class="<%= tipo === 'actual' ? 'active' : '' %>" data-tipo="actual">Actual</button>
-        <button class="<%= tipo === 'antiguo' ? 'active' : '' %>" data-tipo="antiguo">Antic</button>
-        <button class="<%= tipo === 'futuro' ? 'active' : '' %>" data-tipo="futuro">Futur</button>
-      </div>
+      <div id="dropdownResultados" class="dropdown hidden"></div>
     </div>
-    <div id="dropdownResultados" class="dropdown hidden"></div>
+    <div class="filtroTipoAlumno">
+      <button class="<%= !tipo ? 'active' : '' %>" data-tipo="">Tots els tipus</button>
+      <button class="<%= tipo === 'actual' ? 'active' : '' %>" data-tipo="actual">Actual</button>
+      <button class="<%= tipo === 'antiguo' ? 'active' : '' %>" data-tipo="antiguo">Antic</button>
+      <button class="<%= tipo === 'futuro' ? 'active' : '' %>" data-tipo="futuro">Futur</button>
+    </div>
   </div>
   <a href="/alumnos/nuevo" class="btn btn-primario">Nou alumne</a>
 </div>
