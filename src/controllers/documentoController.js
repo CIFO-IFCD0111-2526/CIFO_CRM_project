@@ -1,7 +1,8 @@
 const multer = require("multer");
 const path = require("path");
 const { v4: uuid } = require("uuid");
-const { Documento } = require("../models");
+const { Documento, Alumno, Curso, Profesor } = require("../models");
+const fs = require("fs");
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -53,5 +54,94 @@ const uploadDocument = async (req, res, next) => {
         next(error);
     }
 };
+// GET /documentos/:entidadTipo/:entidadId
+const getDocuments = async (req, res, next) => {
+    try {
+        const { entidadTipo, entidadId } = req.params;
 
-module.exports = { uploadMiddleware, uploadDocument };
+        if (!["Alumno", "Curso", "Profesor"].includes(entidadTipo)) {
+            return res.status(400).json({
+                ok: false,
+                error: "Tipus d'entitat invàlid",
+            });
+        }
+
+        const documentos = await Documento.findAll({
+            where: {
+                entidad_tipo: entidadTipo,
+                entidad_id: entidadId,
+            },
+            order: [["createdAt", "DESC"]],
+        });
+
+        return res.json({
+            ok: true,
+            documentos,
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+//GET /documentos/:entidadTipo/:entidadId/:id/descarregar
+const downloadDocument = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const documento = await Documento.findByPk(id);
+        if (!documento) {
+            return res.status(404).json({
+                ok: false,
+                error: "Document no trobat",
+            });
+        }
+        const filePath = path.join(
+            __dirname,
+            "../../uploads",
+            documento.nombre_fichero
+        );
+        return res.download(
+            filePath,
+            documento.nombre_original
+        );
+    } catch (error) {
+        next(error);
+    }
+};
+
+//DELETE /documentos/:id
+const deleteDocument = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const documento = await Documento.findByPk(id);
+
+        if (!documento) {
+            return res.status(404).json({
+                ok: false,
+                error: "Document no trobat",
+            });
+        }
+
+        const filePath = path.join(
+            __dirname,
+            "../../uploads",
+            documento.nombre_fichero
+        );
+
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+        }
+
+        await documento.destroy();
+
+        return res.json({
+            ok: true,
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { uploadMiddleware, uploadDocument, getDocuments, downloadDocument, deleteDocument };
