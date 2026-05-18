@@ -14,6 +14,7 @@ router.use("/", authRoutes, dashboardRoutes);
 router.use("/alumnos", alumnoRoutes);
 router.use("/cursos", cursoRoutes);
 router.use("/profesores", profesorRoutes);
+router.use("/usuarios", usuarioRoutes);
 router.use("/perfil", usuarioRoutes);
 router.use("/anotaciones", anotacionRoutes);
 

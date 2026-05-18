@@ -17,15 +17,13 @@ router.put("/:id/aprovar",
 );
 
 router.get(
-  "pendents",
-  loadResource(Usuario, { redirectTo: "/dashboard" }),
+  "/pendents",  
   requireAdmin,
   usuarioController.getPendents,
 );
 
 router.delete(
-  "/usuarios/:id",
-  loadResource(Usuario, { redirectTo: "/dashboard" }),
+  "/:id",
   requireAdmin,
   usuarioController.rebutjarUsuario,
 );
