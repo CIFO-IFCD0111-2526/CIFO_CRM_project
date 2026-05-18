@@ -1,6 +1,19 @@
 const { Op } = require("sequelize");
 const { Alumno, Curso } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
+const multer = require("multer");
+
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+        const isCsv = file.mimetype === "text/csv"
+            || file.mimetype === "application/vnd.ms-excel"
+            || file.originalname.toLowerCase().endsWith(".csv");
+        if (!isCsv) return cb(new Error("Només s'accepten arxius CSV"));
+        cb(null, true);
+    },
+});
 
 //GET /alumnos con paginación
 
@@ -162,6 +175,139 @@ const searchAlumno = async (req, res, next) => {
     }
 };
 
+// GET /alumnos/export.csv
+
+const exportCsv = async (req, res, next) => {
+    try {
+        const alumnos = await Alumno.findAll({
+            order: [["created_at", "DESC"]],
+        });
+
+        const rows = alumnos.map((alumno) => [
+            escapeCsvValue(alumno.nombre),
+            escapeCsvValue(alumno.apellidos),
+            escapeCsvValue(alumno.dni),
+            escapeCsvValue(alumno.telefono),
+            escapeCsvValue(alumno.email),
+            escapeCsvValue(alumno.nivel_estudios),
+            escapeCsvValue(alumno.tipo),
+            escapeCsvValue(alumno.derechos_imagen),
+            escapeCsvValue(alumno.cesion_material),
+            escapeCsvValue(alumno.accion_difusion),
+        ].join(","));
+
+        const csv = [
+            CSV_HEADERS.join(","),
+            ...rows,
+        ].join("\n");
+
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader(
+            "Content-Disposition",
+            'attachment; filename="alumnos.csv"'
+        );
+
+        return res.send(csv);
+
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+// POST /alumnos/import.csv
+
+const importCsv = async (req, res, next) => {
+    try {
+
+        if (!req.file) {
+            return res.status(400).json({
+                ok: false,
+                error: "No s'ha pujat cap arxiu",
+            });
+        }
+
+        const content = req.file.buffer.toString("utf-8");
+
+        const lines = content
+            .split(/\r?\n/)
+            .map(line => line.trim())
+            .filter(Boolean);
+
+        if (lines.length < 2) {
+            return res.status(400).json({
+                ok: false,
+                error: "CSV buit",
+            });
+        }
+
+        const headers = parseCsvLine(lines[0]);
+
+        const headersValid =
+            JSON.stringify(headers) === JSON.stringify(CSV_HEADERS);
+
+        if (!headersValid) {
+            return res.status(400).json({
+                ok: false,
+                error: "El header del CSV no és correcte",
+            });
+        }
+
+        let creados = 0;
+        const errores = [];
+
+        const existentes = await Alumno.findAll({ attributes: ["dni"] });
+        const dnisExistentes = new Set(existentes.map(a => a.dni));
+
+        for (let i = 1; i < lines.length; i++) {
+
+            try {
+
+                const values = parseCsvLine(lines[i]);
+
+                const alumnoData = {};
+
+                CSV_HEADERS.forEach((header, index) => {
+                    alumnoData[header] = values[index] || "";
+                });
+
+                const result = await createAlumnoFromCsv(
+                    alumnoData,
+                    req.session.usuario.id,
+                    dnisExistentes
+                );
+
+                if (result.error) {
+                    errores.push({
+                        fila: i + 1,
+                        error: result.error,
+                    });
+                    continue;
+                }
+
+                dnisExistentes.add(result.alumno.dni);
+                creados++;
+
+            } catch (err) {
+
+                const mensaje = err.errors?.[0]?.message || err.message;
+                errores.push({
+                    fila: i + 1,
+                    error: mensaje,
+                });
+            }
+        }
+
+        return res.json({
+            ok: true,
+            creados,
+            errores,
+        });
+
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
 //PUT /alumnos/:id
 
 const updateAlumno = async (req, res, next) => {
@@ -211,4 +357,95 @@ const updateAlumno = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, renderNewAlumno, createAlumno, getById, deleteAlumno, searchAlumno, updateAlumno };
+const CSV_HEADERS = [
+    "nombre",
+    "apellidos",
+    "dni",
+    "telefono",
+    "email",
+    "nivel_estudios",
+    "tipo",
+    "derechos_imagen",
+    "cesion_material",
+    "accion_difusion",
+];
+
+const escapeCsvValue = (value) => {
+    if (value === null || value === undefined) return "";
+
+    return `"${String(value).replace(/"/g, '""')}"`;
+};
+
+const parseBoolean = (value) => {
+    return value === "true" || value === true;
+};
+
+const parseCsvLine = (line) => {
+    const values = [];
+    let current = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const next = line[i + 1];
+
+        if (char === '"') {
+            if (inQuotes && next === '"') {
+                current += '"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (char === "," && !inQuotes) {
+            values.push(current);
+            current = "";
+        } else {
+            current += char;
+        }
+    }
+
+    values.push(current);
+
+    return values;
+};
+
+const createAlumnoFromCsv = async (data, usuarioId, dnisExistentes) => {
+    const {
+        nombre,
+        apellidos,
+        dni,
+        telefono,
+        email,
+        nivel_estudios,
+        tipo,
+        derechos_imagen,
+        cesion_material,
+        accion_difusion,
+    } = data;
+
+    if (!nombre || !apellidos || !dni || !tipo) {
+        return { error: "Falten camps obligatoris" };
+    }
+
+    if (dnisExistentes.has(dni)) {
+        return { error: `Ja existeix un alumne amb DNI ${dni}` };
+    }
+
+    const alumno = await Alumno.create({
+        nombre,
+        apellidos,
+        dni,
+        telefono: telefono || null,
+        email: email || null,
+        nivel_estudios: nivel_estudios || null,
+        tipo,
+        derechos_imagen: parseBoolean(derechos_imagen),
+        cesion_material: parseBoolean(cesion_material),
+        accion_difusion: parseBoolean(accion_difusion),
+        ultimo_id_modif: usuarioId,
+    });
+
+    return { alumno };
+};
+
+module.exports = { getAll, renderNewAlumno, createAlumno, getById, deleteAlumno, searchAlumno, updateAlumno, exportCsv, importCsv, upload};
