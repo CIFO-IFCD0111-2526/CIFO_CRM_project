@@ -23,4 +23,11 @@ router.get(
   usuarioController.getPendents,
 );
 
+router.delete(
+  "/usuarios/:id",
+  loadResource(Usuario, { redirectTo: "/dashboard" }),
+  requireAdmin,
+  usuarioController.rebutjarUsuario,
+);
+
 module.exports = router;

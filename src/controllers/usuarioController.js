@@ -141,4 +141,23 @@ const getPendents =async (req, res, next) => {
     }
 };
 
-module.exports = { getPerfil, changePassword, aprovarUsuario, getPendents };
+// DELETE /usuarios/:id
+const rebutjarUsuario =async (req, res, next) => {
+    try {
+        const usuario = req.usuario;
+        await usuario.destroy();
+
+        req.session.flash = {
+            type: "success",
+            title: "Usuari eliminat",
+            message: `L'usuari: ${usuario.nombre} ${usuario.apellidos} s'ha eliminat correctament.`,
+            keepModal: true,
+        };
+
+        return res.json({ ok: true, redirect: "/usuarios/pendents" });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+module.exports = { getPerfil, changePassword, aprovarUsuario, getPendents, rebutjarUsuario };
