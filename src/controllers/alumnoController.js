@@ -436,4 +436,4 @@ const validateAlumnoData = async (data, usuarioId) => {
     return { alumno };
 };
 
-module.exports = { getAll, renderNewAlumno, createAlumno, getById, deleteAlumno, searchAlumno, updateAlumno, exportCsv,importCsv, upload};
+module.exports = { getAll, renderNewAlumno, createAlumno, getById, deleteAlumno, searchAlumno, updateAlumno, exportCsv, importCsv, upload};
