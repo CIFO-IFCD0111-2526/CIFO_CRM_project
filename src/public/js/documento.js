@@ -25,17 +25,13 @@ async function initDocuments() {
           }
         );
 
-        if (!res.ok) {
-          throw new Error("Error HTTP");
-        }
-
         const json = await res.json();
 
-        if (!json.ok) {
+        if (!res.ok || !json.ok) {
           await window.showModal({
             type: "error",
             title: "Error",
-            message: json.error || "Error al subir document",
+            message: json.error || "Error al pujar document",
           });
 
           return;
@@ -200,7 +196,7 @@ function bindDeleteEvents(form) {
 function formatBytes(bytes) {
   if (!bytes) return "0 B";
 
-  const sizes = ["B", "KB", "MB", "GB"];
+  const sizes = ["B", "KB", "MB"];
 
   const i = Math.floor(
     Math.log(bytes) / Math.log(1024)
