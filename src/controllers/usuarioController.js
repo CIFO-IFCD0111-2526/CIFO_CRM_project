@@ -106,4 +106,39 @@ const aprovarUsuario = async (req, res, next) => {
     }
 };
 
+// GET /usuarios/pendents
+const getPendents =async (req, res, next) => {
+    try {
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 10));
+        const offset = (page - 1) * limit;
+
+        const { count, rows: alumnos } = await Usuario.findAndCountAll({
+            where: { activo: false },
+            order: [["created_at", "DESC"]],
+            limit,
+            offset,
+        });
+
+        const totalPages = Math.ceil(count / limit);
+
+        res.render("usuarios-pendents", {
+            titulo: "Usuaris pendents d'activació",
+            usuario: req.session.usuario,
+            css: "usuarios.css",
+            js: "usuarios.js",
+            paginaActual: "usuarios-pendents",
+            alumnos,
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalItems: count,
+                limit,
+            }
+        });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
 module.exports = { getPerfil, changePassword, aprovarUsuario };
