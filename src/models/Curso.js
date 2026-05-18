@@ -45,19 +45,7 @@ const Curso = sequelize.define(
                 };
                 return niveles[this.getDataValue("nivel")] ?? "—";
             }
-        }, estado: {
-            type: DataTypes.INTEGER,
-            validate: {min: 1, max: 3},
-            get() {
-                const estados = {
-                    1: "Curso Terminado",
-                    2: "En curso",
-                    3: "Pendiende iniciar",
-                };
-                return estados[this.getDataValue("estado")] ?? "—";
-            }
         },
-
     },
     {
         tableName: "cursos",
