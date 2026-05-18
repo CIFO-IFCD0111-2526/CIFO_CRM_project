@@ -5,6 +5,14 @@ const multer = require("multer");
 
 const upload = multer({
     storage: multer.memoryStorage(),
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+        const isCsv = file.mimetype === "text/csv"
+            || file.mimetype === "application/vnd.ms-excel"
+            || file.originalname.toLowerCase().endsWith(".csv");
+        if (!isCsv) return cb(new Error("Només s'accepten arxius CSV"));
+        cb(null, true);
+    },
 });
 
 //GET /alumnos con paginación
@@ -271,6 +279,9 @@ const importCsv = async (req, res, next) => {
         let creados = 0;
         const errores = [];
 
+        const existentes = await Alumno.findAll({ attributes: ["dni"] });
+        const dnisExistentes = new Set(existentes.map(a => a.dni));
+
         for (let i = 1; i < lines.length; i++) {
 
             try {
@@ -283,9 +294,10 @@ const importCsv = async (req, res, next) => {
                     alumnoData[header] = values[index] || "";
                 });
 
-                const result = await validateAlumnoData(
+                const result = await createAlumnoFromCsv(
                     alumnoData,
-                    req.session.usuario.id
+                    req.session.usuario.id,
+                    dnisExistentes
                 );
 
                 if (result.error) {
@@ -296,13 +308,15 @@ const importCsv = async (req, res, next) => {
                     continue;
                 }
 
+                dnisExistentes.add(result.alumno.dni);
                 creados++;
 
             } catch (err) {
 
+                const mensaje = err.errors?.[0]?.message || err.message;
                 errores.push({
                     fila: i + 1,
-                    error: err.message,
+                    error: mensaje,
                 });
             }
         }
@@ -419,7 +433,7 @@ const parseCsvLine = (line) => {
     return values;
 };
 
-const validateAlumnoData = async (data, usuarioId) => {
+const createAlumnoFromCsv = async (data, usuarioId, dnisExistentes) => {
     const {
         nombre,
         apellidos,
@@ -437,9 +451,7 @@ const validateAlumnoData = async (data, usuarioId) => {
         return { error: "Falten camps obligatoris" };
     }
 
-    const existe = await Alumno.findOne({ where: { dni } });
-
-    if (existe) {
+    if (dnisExistentes.has(dni)) {
         return { error: `Ja existeix un alumne amb DNI ${dni}` };
     }
 
