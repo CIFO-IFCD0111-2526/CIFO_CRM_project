@@ -55,11 +55,31 @@
     <section class="detalle-card detalle-full">
       <h2 class="detalle-card-title">Cursos que imparteix</h2>
       <% if (profesor.Cursos && profesor.Cursos.length > 0) { %>
+        <%
+          const ahora = new Date();
+          const formato = (d) => d ? new Date(d).toLocaleDateString('ca-ES') : '—';
+          const estadoCurso = (c) => {
+            if (!c.fecha_inicio || !c.fecha_fin) return { orden: 0, clase: 'curso-estat-desconegut', etiqueta: 'Sense dates' };
+            const ini = new Date(c.fecha_inicio);
+            const fin = new Date(c.fecha_fin);
+            if (fin < ahora) return { orden: 1, clase: 'curso-estat-passat', etiqueta: `Finalitzat: ${formato(fin)}` };
+            if (ini > ahora) return { orden: 3, clase: 'curso-estat-futur', etiqueta: `Previst: ${formato(ini)} → ${formato(fin)}` };
+            return { orden: 2, clase: 'curso-estat-present', etiqueta: `Finalitza: ${formato(fin)}` };
+          };
+          const cursosOrdenados = [...profesor.Cursos].sort((a, b) => estadoCurso(b).orden - estadoCurso(a).orden);
+        %>
         <ul class="detalle-cursos">
-          <% profesor.Cursos.forEach(curso => { %>
-            <li>
-              <span class="curso-codigo"><%= curso.codigo %></span>
-              <span class="curso-nombre"><%= curso.nombre %></span>
+          <% cursosOrdenados.forEach(curso => { const est = estadoCurso(curso); %>
+            <li class="<%= est.clase %>">
+              <a href="/cursos/<%= curso.id %>">
+                <span class="curso-codigo"><%= curso.codigo_curso %></span>
+                <% if (curso.codigo_accion_formativa) { %>
+                  <span class="curso-codigo"><%= curso.codigo_accion_formativa %></span>
+                <% } %>
+                <span class="curso-nombre">
+                  <%= est.etiqueta %><br><%= curso.nombre %>
+                </span>
+              </a>
             </li>
           <% }) %>
         </ul>
