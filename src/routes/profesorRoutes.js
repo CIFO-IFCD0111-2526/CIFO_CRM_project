@@ -28,7 +28,7 @@ router.get("/buscar-disponibles", profesorController.getAvailable);
 router.get("/:id",
     loadResource(Profesor, {
         redirectTo: "/profesores",
-        include: [{ model: Curso, attributes: ["id", "codigo_curso", "codigo_accion_formativa", "nombre", "estado" , "fecha_inicio", "fecha_fin"] }]
+        include: [{ model: Curso, attributes: ["id", "codigo_curso", "codigo_accion_formativa", "nombre", "fecha_inicio", "fecha_fin"] }]
     }),
     profesorController.getById
 );
