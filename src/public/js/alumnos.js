@@ -804,8 +804,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const json = await res.json();
 
-      console.log(json);
-
       if (!json.ok) {
         await window.showModal({
           type: "error",
@@ -816,8 +814,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      const modalType = json.creados === 0
+        ? "error"
+        : (json.errores.length ? "warning" : "success");
+
       await window.showModal({
-        type: json.errores.length ? "warning" : "success",
+        type: modalType,
         title: "Importació completada",
         message: `
           <p><strong>Creats:</strong> ${json.creados}</p>
