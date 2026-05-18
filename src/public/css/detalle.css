@@ -85,6 +85,23 @@
     color: var(--color-texto-principal);
 }
 
+.curso-estat-passat .curso-nombre {
+    color: var(--badge-antiguo-color);
+}
+
+.curso-estat-present .curso-nombre {
+    color: var(--badge-actual-color);
+}
+
+.curso-estat-futur .curso-nombre {
+    color: var(--badge-futuro-color);
+}
+
+.curso-estat-desconegut .curso-nombre {
+    color: var(--color-texto-etiquetas);
+    font-style: italic;
+}
+
 .detalle-empty {
     font-size: 14px;
     color: var(--color-texto-etiquetas);
