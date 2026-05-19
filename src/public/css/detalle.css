@@ -108,6 +108,104 @@
     font-style: italic;
 }
 
+/* Documents */
+.document-form {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 1rem;
+    background-color: var(--color-fondo-tarjeta);
+    border: 1px dashed var(--color-borde);
+    border-radius: var(--radio-grande);
+    margin-bottom: 1rem;
+}
+
+.file-picker {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.file-picker-btn {
+    display: inline-block;
+    padding: 0.45rem 1rem;
+    background-color: var(--color-primario-suave);
+    color: var(--color-primario);
+    border-radius: var(--radio-pequeno);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.file-picker-btn:hover {
+    background-color: var(--color-primario);
+    color: var(--color-texto-blanco);
+}
+
+.file-picker-name {
+    font-size: 13px;
+    color: var(--color-texto-etiquetas);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.document-form .form-msg {
+    width: 100%;
+    margin: 0;
+}
+
+.detalle-lista-documentos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.document-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-fondo-tarjeta);
+    border-radius: var(--radio-pequeno);
+}
+
+.document-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+    flex: 1;
+}
+
+.document-info strong {
+    font-size: 14px;
+    color: var(--color-texto-principal);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.document-info small {
+    font-size: 12px;
+    color: var(--color-texto-etiquetas);
+}
+
+.document-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
 a {
   text-decoration: none;
   color: var(--color-texto-principal);

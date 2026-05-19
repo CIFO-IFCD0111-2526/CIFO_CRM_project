@@ -119,16 +119,24 @@
 }
 
 #filtroAnyCurso {
-  padding: 8px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0.55rem 2.5rem 0.55rem 1.2rem;
+  font-family: var(--fuente-cuerpo);
   font-size: 14px;
+  font-weight: 600;
   color: var(--color-texto-blanco);
-  border: 1px solid var(--color-borde);
+  border: none;
   border-radius: var(--radio-pequeno);
   background-color: var(--color-primario);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='white' d='M6 9L1 4h10z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 #filtroAnyCurso:hover {
-  border-color: var(--color-primario-hover);
-  color: var(--color-texto-blanco);
   background-color: var(--color-primario-hover);
 }
