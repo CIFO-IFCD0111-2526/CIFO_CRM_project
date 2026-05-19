@@ -105,10 +105,10 @@ function renderDocuments(form, documentos) {
         <li class="document-item">
 
           <div class="document-info">
-            <strong>${doc.nombre_original}</strong>
+            <strong>${escapeHtml(doc.nombre_original)}</strong>
 
             <small>
-              ${doc.mime_type}
+              ${escapeHtml(doc.mime_type)}
               ·
               ${formatBytes(doc.tamano)}
             </small>
@@ -207,4 +207,11 @@ function formatBytes(bytes) {
     " " +
     sizes[i]
   );
+}
+
+function escapeHtml(str) {
+  if (str == null) return "";
+  const div = document.createElement("div");
+  div.textContent = String(str);
+  return div.innerHTML;
 }

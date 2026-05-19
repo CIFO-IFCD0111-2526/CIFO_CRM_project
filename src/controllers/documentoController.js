@@ -15,12 +15,35 @@ const upload = multer({
     limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-const uploadMiddleware = upload.single("archivo");
+const uploadMiddleware = (req, res, next) => {
+    upload.single("archivo")(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            const error = err.code === "LIMIT_FILE_SIZE"
+                ? "El fitxer supera el límit de 10MB"
+                : `Error pujant fitxer: ${err.message}`;
+            return res.status(400).json({ ok: false, error });
+        }
+        if (err) return res.status(400).json({ ok: false, error: err.message });
+        next();
+    });
+};
+
+const MODELOS_ENTIDAD = { Alumno, Curso, Profesor };
 
 // Post: /:entidadTipo/:entidadId
 const uploadDocument = async (req, res, next) => {
     try {
         const { entidadTipo, entidadId } = req.params;
+
+        const Modelo = MODELOS_ENTIDAD[entidadTipo];
+        const entidad = await Modelo.findByPk(entidadId);
+        if (!entidad) {
+            return res.status(404).json({
+                ok: false,
+                error: "L'entitat no existeix",
+            });
+        }
+
         const existe = await Documento.findOne({
             where: {
                 entidad_tipo: entidadTipo,
