@@ -9,18 +9,20 @@
     </div>
     <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
-  <div class="header-actions">
-    <a href="/alumnos/export.csv" class="btn btn-secundario">
-      Exportar
-    </a>
-  
-    <button type="button" class="btn btn-secundario" id="btnImportarCsv">
-      Importar
-    </button>
-  
+  <div class="header-actions header-actions-stack">
     <a href="/alumnos/nuevo" class="btn btn-primario">
-      Nou alumne
+      <i class="fa-solid fa-plus"></i> Nou alumne
     </a>
+
+    <div class="header-actions-row">
+      <button type="button" class="btn btn-secundario" id="btnImportarCsv">
+        <i class="fa-solid fa-file-import"></i> Importar
+      </button>
+
+      <a href="/alumnos/export.csv" class="btn btn-secundario">
+        <i class="fa-solid fa-file-export"></i> Exportar
+      </a>
+    </div>
   </div>
 </div>
 

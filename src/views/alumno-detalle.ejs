@@ -233,11 +233,16 @@
   <section class="detalle-card detalle-full">
     <h2 class="detalle-card-title">Documents</h2>
 
-    <form class="document-form" data-entidad-tipo="Alumno" data-entidad-id="<%= alumno.id %>">
-      <input type="file" name="archivo" required />
+    <form class="document-form" data-entidad-tipo="Alumno" data-entidad-id="<%= alumno.id %>" novalidate>
+      <div class="file-picker">
+        <label for="archivo-alumno-<%= alumno.id %>" class="file-picker-btn">Tria un fitxer</label>
+        <span class="file-picker-name">Cap fitxer seleccionat</span>
+        <input type="file" id="archivo-alumno-<%= alumno.id %>" name="archivo" accept=".pdf,.jpg,.jpeg,.png,.docx" hidden />
+      </div>
       <button type="submit" class="btn btn-secundario">
         Pujar document
       </button>
+      <div class="form-msg form-full" aria-live="polite"></div>
     </form>
 
     <ul class="detalle-lista-documentos">
