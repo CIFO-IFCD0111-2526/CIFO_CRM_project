@@ -74,7 +74,7 @@ const getById = (req, res) => {
         titulo: "Busqueda de cursos per ID",
         usuario: req.session.usuario,
         css: "cursos.css",
-        js: "cursos.js",
+        js: ["cursos.js","documento.js"],
         paginaActual: "cursos",
         curso: req.curso
     });
