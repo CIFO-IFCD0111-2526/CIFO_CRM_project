@@ -229,18 +229,19 @@
   </div>
 </form>
 
+<div class="detalle-grid form-group">
+  <section class="detalle-card detalle-full">
+    <h2 class="detalle-card-title">Documents</h2>
 
-    <section class="detalle-card detalle-full">
-        <h2 class="detalle-card-title">Documents</h2>
-      
-        <form class="document-form" data-entidad-tipo="Alumno" data-entidad-id="<%= alumno.id %>">
-          <input type="file" name="archivo" required />
-          <button type="submit" class="btn btn-secundario">
-            Pujar document
-          </button>
-        </form>
+    <form class="document-form" data-entidad-tipo="Alumno" data-entidad-id="<%= alumno.id %>">
+      <input type="file" name="archivo" required />
+      <button type="submit" class="btn btn-secundario">
+        Pujar document
+      </button>
+    </form>
 
-        <ul id="listaDocumentos" class="detalle-lista-documentos">
-          <p class="detalle-empty">Encara no hi ha documents.</p>
-        </ul>
-      </section>
+    <ul class="detalle-lista-documentos">
+      <p class="detalle-empty">Encara no hi ha documents.</p>
+    </ul>
+  </section>
+</div>
