@@ -107,7 +107,7 @@ const aprovarUsuario = async (req, res, next) => {
 };
 
 // GET /usuarios/pendents
-const getPendents =async (req, res, next) => {
+const getPendents = async (req, res, next) => {
     try {
         console.log("PENDENTS");
         const page = Math.max(1, parseInt(req.query.page) || 1);
@@ -143,7 +143,7 @@ const getPendents =async (req, res, next) => {
 };
 
 // DELETE /usuarios/:id
-const rebutjarUsuario =async (req, res, next) => {
+const rebutjarUsuario = async (req, res, next) => {
     try {
         const usuario = req.usuario;
         await usuario.destroy();

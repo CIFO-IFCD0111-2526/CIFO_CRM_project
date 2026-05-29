@@ -1,15 +1,14 @@
 <div class="page-header">
   <div>
-    <h1 class="page-title">Alumnes</h1>
-    <p class="page-subtitle">Llistat d'alumnes registrats al centre</p>
+    <h1 class="page-title">Usuaris pendents d'activació</h1>
+    <p class="page-subtitle">Llistat d'usuaris que han solicitat l'activació del perfil</p>
   </div>
   <div class="buscador-wrapper">
     <div class="buscador">
-      <input type="text" id="busquedaAlumno" placeholder="Buscar alumne..." autocomplete="off" />
+      <input type="text" id="busquedaAlumno" placeholder="Buscar usuari..." autocomplete="off" />
     </div>
     <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
-  <a href="/alumnos/nuevo" class="btn btn-primario">Nou alumne</a>
 </div>
 
 <% if (pagination && pagination.totalItems > 0) { %>
@@ -18,40 +17,35 @@
       <thead>
         <tr>
           <th>Cognoms, Nom</th>
-          <th>DNI</th>
           <th>Email</th>
-          <th>Telèfon</th>
-          <th>Nivell d'estudis</th>
           <th>Tipus</th>
-          <th>Data d'alta</th>
+          <th>Nivell d'accés</th>
+          <th>Data de la petició</th>
           <th class="col-accions">Accions</th>
         </tr>
       </thead>
       <tbody>
-        <% alumnos.forEach(alumno => { %>
+        <% usuarios.forEach(alumno => { %>
           <tr>
             <td>
-              <a class="alumno-nombre" href="/alumnos/<%= alumno.id %>">
-                <%= alumno.apellidos %>, <%= alumno.nombre %>
+              <a class="alumno-nombre" href="/usuarios/<%= usuarios.id %>">
+                <%= usuarios.apellidos %>, <%= usuarios.nombre %>
               </a>
             </td>
-            <td><%= alumno.dni || '—' %></td>
-            <td><%= alumno.email || '—' %></td>
-            <td><%= alumno.telefono || '—' %></td>
-            <td><%= alumno.nivel_estudios || '—' %></td>
+            <td><%= usuarios.email || '—' %></td>
+            <td><%= usuarios.nivel_acceso || '—' %></td>
             <td>
-              <span class="badge badge-<%= alumno.tipo %>">
-                <% if (alumno.tipo === 'actual') { %>Actual<% } %>
-                <% if (alumno.tipo === 'antiguo') { %>Antic<% } %>
-                <% if (alumno.tipo === 'futuro') { %>Futur<% } %>
+              <span class="badge badge-<%= usuarios.nivel_acceso %>">
+                <% if (usuarios.nivel_acceso === 'lector') { %>Lector<% } %>
+                <% if (usuarios.nivel_acceso === 'editor') { %>Editor<% } %>
               </span>
             </td>
             <td class="col-fecha">
-              <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+              <%= usuarios.createdAt ? new Date(usuarios.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
             </td>
             <td class="col-accions">
               <div class="acciones">
-                <a href="/alumnos/<%= alumno.id %>" class="btn btn-secundario btn-sm">Editar</a>
+                <a href="/usuarios/<%= usuarios.id %>" class="btn btn-secundario btn-sm">Aprovar</a>
               </div>
             </td>
           </tr>

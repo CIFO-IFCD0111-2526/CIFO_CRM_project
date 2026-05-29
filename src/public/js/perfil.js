@@ -1,5 +1,6 @@
 const form = document.getElementById("perfilPasswordForm");
 const msg = document.getElementById("perfilPasswordMsg");
+const usuarisActivacio = document.getElementById("usuarisActivacio");
 
 const showMsg = (text, isError = true) => {
     if (!msg) return;
@@ -55,4 +56,27 @@ form?.addEventListener("submit", async (e) => {
             message: "No s'ha pogut canviar la contrasenya.",
         });
     }
+});
+
+usuarisActivacio.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    try {
+        const res = await fetch("/usuarios/pendents", {});
+        const json = await res.json();
+
+        if (!json.ok) {
+            return showMsg(json.error || "Error desconegut");
+        }
+
+        window.location.href = json.redirect;
+    } catch (err) {
+        await window.showModal({
+            type: "error",
+            title: "Error",
+            message: "Error de servidor.",
+        });
+    }
+
+    window.location.href = json.redirect;
 });
