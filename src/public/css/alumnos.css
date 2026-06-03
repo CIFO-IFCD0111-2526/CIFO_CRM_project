@@ -30,8 +30,8 @@
   transition: background-color 0.3s ease;
 } */
 #btnCancelarMatricula {
-  color: var(--color-danger);
-  border-color: var(--color-danger);
+    color: var(--color-danger);
+    border-color: var(--color-danger);
 }
 
 #busquedaAlumno {
@@ -45,7 +45,6 @@
 .page-header .buscador-wrapper {
   max-width: 600px;
 }
-
 .card-header-cursos {
   display: flex;
   align-items: center;
@@ -53,28 +52,23 @@
   gap: 1rem;
   margin-bottom: 1rem;
 }
-
 .header-actions {
   display: flex;
   gap: 0.5rem;
   align-items: center;
 }
-
 .header-actions-stack {
   flex-direction: column;
   align-items: stretch;
 }
-
-.header-actions-stack>.btn-primario {
+.header-actions-stack > .btn-primario {
   justify-content: center;
   text-align: center;
 }
-
 .header-actions-row {
   display: flex;
   gap: 0.5rem;
 }
-
 .matricula-box {
   margin-top: 1rem;
   padding: 1rem;
@@ -82,7 +76,6 @@
   border-radius: var(--radio-grande);
   background: var(--color-fondo-pagina);
 }
-
 .matricula-box input {
   width: 100%;
   padding: 0.6rem 0.9rem;

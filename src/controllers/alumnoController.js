@@ -169,9 +169,6 @@ const searchAlumno = async (req, res, next) => {
     // Si el tipus és vàlid, l'afegim al filtre
     if (tiposValidos.includes(tipo)) {
         where.tipo = tipo;
-
-        console.log("TIPO RECIBIDO:", tipo);
-        console.log("WHERE:", where);
     }
     try {
         const alumnos = await Alumno.findAll({
