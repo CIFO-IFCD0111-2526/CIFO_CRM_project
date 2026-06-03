@@ -41,12 +41,22 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const editingId = form.dataset.editingId;
+        const url = editingId ? `/anotaciones/${editingId}` : "/anotaciones";
+        const method = editingId ? "PUT" : "POST";
         try {
-            const res = await fetch("/anotaciones", {
-                method: "POST",
+            const res = await fetch(url, {
+                method,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ contenido }),
             });
+
+            // try {
+            //     const res = await fetch("/anotaciones", {
+            //         method: "POST",
+            //         headers: { "Content-Type": "application/json" },
+            //         body: JSON.stringify({ contenido }),
+            //     });
 
             const data = await res.json();
 
@@ -65,4 +75,43 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     });
+
+    document.querySelectorAll(".btn-editar").forEach(btn => {
+        btn.addEventListener("click", e => {
+            const item = e.target.closest(".anotacion-item");
+            const id = item.dataset.id;
+            const text = item.querySelector(".anotacio-text").textContent.trim();
+
+            // Posem el text al textarea principal
+            textarea.value = text;
+            textarea.focus();
+
+            // Guardem l'ID que s'està editant
+            form.dataset.editingId = id;
+
+            // Canviem el text del botó
+            document.querySelector("#btnAfegirAnotacio").textContent = "Guardar canvis";
+        });
+    });
+
+    document.querySelectorAll(".btn-eliminar").forEach(btn => {
+        btn.addEventListener("click", async e => {
+            const item = e.target.closest(".anotacion-item");
+            const id = item.dataset.id;
+
+            if (!confirm("Vols eliminar aquesta anotació?")) return;
+
+            const res = await fetch(`/anotaciones/${id}`, { method: "DELETE" });
+            const data = await res.json();
+
+            if (data.ok) {
+                location.reload();
+            } else {
+                showMsg("No s'ha pogut eliminar l'anotació.");
+            }
+        });
+    });
 });
+
+
+
