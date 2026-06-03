@@ -9,6 +9,14 @@
     </div>
     <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
+
+  <div class="filtroTipoAlumno">
+    <button class="<%= !tipo ? 'active' : '' %>" data-tipo="">Tots els tipus</button>
+    <button class="<%= tipo === 'actual' ? 'active' : '' %>" data-tipo="actual">Actual</button>
+    <button class="<%= tipo === 'antiguo' ? 'active' : '' %>" data-tipo="antiguo">Antic</button>
+    <button class="<%= tipo === 'futuro' ? 'active' : '' %>" data-tipo="futuro">Futur</button>
+  </div>
+
   <div class="header-actions header-actions-stack">
     <a href="/alumnos/nuevo" class="btn btn-primario">
       <i class="fa-solid fa-plus"></i> Nou alumne

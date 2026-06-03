@@ -43,7 +43,7 @@
 }
 
 .page-header .buscador-wrapper {
-  max-width: 400px;
+  max-width: 600px;
 }
 .card-header-cursos {
   display: flex;
@@ -155,4 +155,55 @@
   gap: 0.75rem;
 
   margin-top: 1rem;
+}
+
+.filtroTipoAlumno {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filtroTipoAlumno button {
+  border: 2px solid transparent;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.filtroTipoAlumno button[data-tipo=""] {
+  background: var(--badge-antiguo-bg);
+  color: var(--badge-antiguo-color);
+}
+
+.filtroTipoAlumno button[data-tipo="actual"] {
+  background: var(--badge-actual-bg);
+  color: var(--badge-actual-color);
+}
+
+.filtroTipoAlumno button[data-tipo="antiguo"] {
+  background: var(--badge-antiguo-bg);
+  color: var(--badge-antiguo-color);
+}
+
+.filtroTipoAlumno button[data-tipo="futuro"] {
+  background: var(--badge-futuro-bg);
+  color: var(--badge-futuro-color);
+}
+
+.filtroTipoAlumno button.active {
+  border: 2px solid var(--color-primario);
+  box-shadow: 0 0 0 2px var(--color-primario-suave);
+  transform: translateY(-1px);
+}
+
+.filtroTipoAlumno button:hover {
+  opacity: 0.9;
+}
+
+.filtroTipoAlumno button:hover:not(.active) {
+  opacity: 0.85;
 }
