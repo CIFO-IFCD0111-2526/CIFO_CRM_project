@@ -23,7 +23,16 @@ const getAll = async (req, res, next) => {
         const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 10));
         const offset = (page - 1) * limit;
 
+        const tipo = (req.query.tipo || "").trim().toLowerCase();
+
+        const where = {};
+
+        if (["actual", "antiguo", "futuro"].includes(tipo)) {
+            where.tipo = tipo;
+        }
+
         const { count, rows: alumnos } = await Alumno.findAndCountAll({
+            where,
             order: [["created_at", "DESC"]],
             limit,
             offset,
@@ -38,6 +47,7 @@ const getAll = async (req, res, next) => {
             js: "alumnos.js",
             paginaActual: "alumnos",
             alumnos,
+            tipo,
             pagination: {
                 currentPage: page,
                 totalPages,
@@ -159,6 +169,9 @@ const searchAlumno = async (req, res, next) => {
     // Si el tipus és vàlid, l'afegim al filtre
     if (tiposValidos.includes(tipo)) {
         where.tipo = tipo;
+
+        console.log("TIPO RECIBIDO:", tipo);
+        console.log("WHERE:", where);
     }
     try {
         const alumnos = await Alumno.findAll({
@@ -448,4 +461,4 @@ const createAlumnoFromCsv = async (data, usuarioId, dnisExistentes) => {
     return { alumno };
 };
 
-module.exports = { getAll, renderNewAlumno, createAlumno, getById, deleteAlumno, searchAlumno, updateAlumno, exportCsv, importCsv, upload};
+module.exports = { getAll, renderNewAlumno, createAlumno, getById, deleteAlumno, searchAlumno, updateAlumno, exportCsv, importCsv, upload };

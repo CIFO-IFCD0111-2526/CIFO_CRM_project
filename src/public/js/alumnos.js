@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
       form.querySelector('[name="cesion_material"]')?.checked || false;
     data.accion_difusion =
       form.querySelector('[name="accion_difusion"]')?.checked || false;
-      
+
     const errors = [];
 
     if (!data.nombre) {
@@ -449,7 +449,10 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("busquedaAlumno");
   const dropdown = document.getElementById("dropdownResultados");
-  if (input && dropdown) initBuscador(input, dropdown);
+
+  if (input && dropdown) {
+    initBuscador(input, dropdown);
+  }
 });
 
 function initBuscador(input, dropdown) {
@@ -457,6 +460,7 @@ function initBuscador(input, dropdown) {
 
   input.addEventListener("input", () => {
     const query = input.value.trim();
+
     if (query.length < 2) {
       cerrarDropdown();
       return;
@@ -512,6 +516,40 @@ function initBuscador(input, dropdown) {
   });
 }
 
+// Filtrar por tipo de alumno (actual, antiguo, futuro)
+
+document.addEventListener("DOMContentLoaded", () => {
+  const filtroButtons = document.querySelectorAll(".filtroTipoAlumno button");
+
+  if (!filtroButtons.length) return;
+
+  filtroButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      filtroButtons.forEach(btn =>
+        btn.classList.remove("active")
+      );
+
+      button.classList.add("active");
+
+      const tipo = button.dataset.tipo;
+
+      const url = new URL(window.location.href);
+
+      if (tipo) {
+        url.searchParams.set("tipo", tipo);
+      } else {
+        url.searchParams.delete("tipo");
+      }
+
+      url.searchParams.set("page", 1);
+
+      window.location.href = url.toString();
+    });
+
+  });
+});
 
 // Matricular alumnos en curso 
 document.addEventListener("DOMContentLoaded", () => {
