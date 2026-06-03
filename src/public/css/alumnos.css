@@ -30,8 +30,8 @@
   transition: background-color 0.3s ease;
 } */
 #btnCancelarMatricula {
-    color: var(--color-danger);
-    border-color: var(--color-danger);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
 }
 
 #busquedaAlumno {
@@ -43,8 +43,9 @@
 }
 
 .page-header .buscador-wrapper {
-  max-width: 400px;
+  max-width: 600px;
 }
+
 .card-header-cursos {
   display: flex;
   align-items: center;
@@ -52,23 +53,28 @@
   gap: 1rem;
   margin-bottom: 1rem;
 }
+
 .header-actions {
   display: flex;
   gap: 0.5rem;
   align-items: center;
 }
+
 .header-actions-stack {
   flex-direction: column;
   align-items: stretch;
 }
-.header-actions-stack > .btn-primario {
+
+.header-actions-stack>.btn-primario {
   justify-content: center;
   text-align: center;
 }
+
 .header-actions-row {
   display: flex;
   gap: 0.5rem;
 }
+
 .matricula-box {
   margin-top: 1rem;
   padding: 1rem;
@@ -76,6 +82,7 @@
   border-radius: var(--radio-grande);
   background: var(--color-fondo-pagina);
 }
+
 .matricula-box input {
   width: 100%;
   padding: 0.6rem 0.9rem;
@@ -155,4 +162,55 @@
   gap: 0.75rem;
 
   margin-top: 1rem;
+}
+
+.filtroTipoAlumno {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filtroTipoAlumno button {
+  border: 2px solid transparent;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.filtroTipoAlumno button[data-tipo=""] {
+  background: var(--badge-antiguo-bg);
+  color: var(--badge-antiguo-color);
+}
+
+.filtroTipoAlumno button[data-tipo="actual"] {
+  background: var(--badge-actual-bg);
+  color: var(--badge-actual-color);
+}
+
+.filtroTipoAlumno button[data-tipo="antiguo"] {
+  background: var(--badge-antiguo-bg);
+  color: var(--badge-antiguo-color);
+}
+
+.filtroTipoAlumno button[data-tipo="futuro"] {
+  background: var(--badge-futuro-bg);
+  color: var(--badge-futuro-color);
+}
+
+.filtroTipoAlumno button.active {
+  border: 2px solid var(--color-primario);
+  box-shadow: 0 0 0 2px var(--color-primario-suave);
+  transform: translateY(-1px);
+}
+
+.filtroTipoAlumno button:hover {
+  opacity: 0.9;
+}
+
+.filtroTipoAlumno button:hover:not(.active) {
+  opacity: 0.85;
 }
