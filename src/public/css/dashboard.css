@@ -159,6 +159,20 @@
   color: var(--color-texto-principal);
 }
 
+.anotacion-visualitzador {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 1;
+}
+
+.anotacion-accions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
 /* EMPTY STATE específico */
 .mostra-notes .empty-state {
   margin-top: 10px;

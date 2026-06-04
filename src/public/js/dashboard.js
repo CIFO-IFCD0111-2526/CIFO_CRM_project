@@ -41,9 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const editingId = form.dataset.editingId;
+        const url = editingId ? `/anotaciones/${editingId}` : "/anotaciones";
+        const method = editingId ? "PUT" : "POST";
         try {
-            const res = await fetch("/anotaciones", {
-                method: "POST",
+            const res = await fetch(url, {
+                method,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ contenido }),
             });
@@ -51,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await res.json();
 
             if (!res.ok || !data.ok) {
-                showMsg(data.error || "Error al crear l'anotació");
+                showMsg(data.error || "No s'ha pogut desar l'anotació");
                 setError(textarea);
                 return;
             }
@@ -64,5 +67,51 @@ document.addEventListener("DOMContentLoaded", () => {
                 message: "Error de connexió amb el servidor",
             });
         }
+    });
+
+    document.querySelectorAll(".btn-editar").forEach(btn => {
+        btn.addEventListener("click", e => {
+            const item = e.target.closest(".anotacion-item");
+            const id = item.dataset.id;
+            const text = item.querySelector(".anotacion-texto").textContent.trim();
+
+            textarea.value = text;
+            textarea.focus();
+            form.dataset.editingId = id;
+            document.querySelector("#btnAfegirAnotacio").textContent = "Guardar canvis";
+        });
+    });
+
+    document.querySelectorAll(".btn-eliminar").forEach(btn => {
+        btn.addEventListener("click", async e => {
+            const item = e.target.closest(".anotacion-item");
+            const id = item.dataset.id;
+
+            const ok = await window.showConfirm({
+                title: "Eliminar anotació",
+                message: "Segur que vols eliminar aquesta anotació?",
+                confirmText: "Eliminar",
+                cancelText: "Cancel·lar",
+            });
+
+            if (ok !== true) return;
+
+            try {
+                const res = await fetch(`/anotaciones/${id}`, { method: "DELETE" });
+                const data = await res.json();
+
+                if (!res.ok || !data.ok) {
+                    throw new Error(data.error || "No s'ha pogut eliminar l'anotació");
+                }
+
+                location.reload();
+            } catch (error) {
+                await window.showModal({
+                    type: "error",
+                    title: "Error",
+                    message: "No s'ha pogut eliminar l'anotació",
+                });
+            }
+        });
     });
 });

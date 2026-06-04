@@ -170,7 +170,7 @@
       rows="3"
     ></textarea>
 
-    
+
   </form>
 </section>
 
@@ -186,11 +186,17 @@
 
     <ul class="anotaciones-list">
       <% anotaciones.forEach(a=> { %>
-        <li class="anotacion-item">
+        <li class="anotacion-item" data-id="<%= a.id %>">
           <span class="anotacion-fecha">
             <%= a.createdAt ? new Date(a.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
           </span>
-          <span class="anotacion-texto"><%= a.contenido %></span>
+          <div class="anotacion-visualitzador">
+            <span class="anotacion-texto"><%= a.contenido %></span>
+            <div class="anotacion-accions">
+              <button class="btn btn-secundario btn-sm btn-editar">Editar</button>
+              <button class="btn btn-secundario btn-sm btn-eliminar">Eliminar</button>
+            </div>
+          </div>
         </li>
       <% }) %>
     </ul>
