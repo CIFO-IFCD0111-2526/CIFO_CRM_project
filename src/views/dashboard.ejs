@@ -128,13 +128,11 @@
                 </td>
 
                 <td class="col-fecha">
-                  <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit' ,
-                    month: '2-digit' , year: 'numeric' }) : '—' %>
+                  <%= curso.fecha_inicio ? new Date(curso.fecha_inicio).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
                 </td>
 
                 <td class="col-fecha">
-                  <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit' ,
-                    month: '2-digit' , year: 'numeric' }) : '—' %>
+                  <%= curso.fecha_fin ? new Date(curso.fecha_fin).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
                 </td>
               </tr>
               <% }) %>
@@ -165,7 +163,12 @@
       <button id="btnAfegirAnotacio" type="submit" class="btn btn-primario">Afegir</button>
     </div>
     <div id="anotacionMsg" class="form-msg" aria-live="polite"></div>
-    <textarea name="contenido" id="contenidoAnotacio" placeholder="Escriu una anotació..." rows="3"></textarea>
+    <textarea
+      name="contenido"
+      id="contenidoAnotacio"
+      placeholder="Escriu una anotació..."
+      rows="3"
+    ></textarea>
 
 
   </form>
@@ -185,19 +188,17 @@
       <% anotaciones.forEach(a=> { %>
         <li class="anotacion-item" data-id="<%= a.id %>">
           <span class="anotacion-fecha">
-            <%= a.createdAt ? new Date(a.createdAt).toLocaleDateString('ca-ES', { day: '2-digit' , month: '2-digit' ,
-              year: 'numeric' }) : '—' %>
+            <%= a.createdAt ? new Date(a.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
           </span>
-          <!-- EDITAR/ELIMINAR -->
-          <div class="visualitzador">
-            <span class="anotacio-text">
-              <%= a.contenido %>
-            </span>
-            <button class="btn btn-secundario btn-editar">Editar</button>
-            <button class="btn btn-secundario btn-eliminar">Eliminar</button>
+          <div class="anotacion-visualitzador">
+            <span class="anotacion-texto"><%= a.contenido %></span>
+            <div class="anotacion-accions">
+              <button class="btn btn-secundario btn-sm btn-editar">Editar</button>
+              <button class="btn btn-secundario btn-sm btn-eliminar">Eliminar</button>
+            </div>
           </div>
         </li>
-        <% }) %>
+      <% }) %>
     </ul>
 
     <% } else { %>
