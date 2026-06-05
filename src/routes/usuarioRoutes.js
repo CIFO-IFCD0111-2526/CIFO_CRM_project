@@ -12,7 +12,7 @@ router.get("/", usuarioController.getPerfil);
 router.put("/password", usuarioController.changePassword);
 router.put("/:id/aprovar",
     requireAdmin,
-    loadResource(Usuario, { redirectTo: "/dashboard" }),
+    loadResource(Usuario, { redirectTo: null }),  //"/dashboard"
     usuarioController.aprovarUsuario
 );
 

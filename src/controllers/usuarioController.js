@@ -1,7 +1,7 @@
 const { Usuario } = require("../models");
 const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
-const db = require("../config/database"); // Assegura't que la ruta a la teva config de DB és correcta
+const db = require("../config/database"); 
 const { handleControllerError } = require("../middlewares/errorHandler");
 const { sendMail } = require("../config/mailer.js");
 

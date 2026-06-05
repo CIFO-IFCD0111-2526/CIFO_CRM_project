@@ -58,25 +58,7 @@ form?.addEventListener("submit", async (e) => {
     }
 });
 
-usuarisActivacio.addEventListener("click", async (e) => {
+usuarisActivacio?.addEventListener("click", (e) => {
     e.preventDefault();
-
-    try {
-        const res = await fetch("/usuarios/pendents", {});
-        const json = await res.json();
-
-        if (!json.ok) {
-            return showMsg(json.error || "Error desconegut");
-        }
-
-        window.location.href = json.redirect;
-    } catch (err) {
-        await window.showModal({
-            type: "error",
-            title: "Error",
-            message: "Error de servidor.",
-        });
-    }
-
-    window.location.href = json.redirect;
+    window.location.href = "/usuarios/pendents";
 });

@@ -1,7 +1,7 @@
 <div class="page-header">
   <div>
     <h1 class="page-title">Usuaris pendents d'activació</h1>
-    <p class="page-subtitle">Llistat d'usuaris que han solicitat l'activació del perfil</p>
+    <p class="page-subtitle">Llistat d'usuaris que han sol·licitat l'activació del perfil</p>
   </div>
   <div class="buscador-wrapper">
     <div class="buscador">
@@ -16,36 +16,33 @@
     <table id="alumnosTable">
       <thead>
         <tr>
-          <th>Cognoms, Nom</th>
+          <th>Nom</th>
+          <th>Cognoms</th>
           <th>Email</th>
-          <th>Tipus</th>
-          <th>Nivell d'accés</th>
-          <th>Data de la petició</th>
+          <th>Data de registre</th>
           <th class="col-accions">Accions</th>
         </tr>
       </thead>
       <tbody>
-        <% usuarios.forEach(alumno => { %>
+        <% usuarios.forEach(usuarioItem => { %>
           <tr>
             <td>
-              <a class="alumno-nombre" href="/usuarios/<%= usuarios.id %>">
-                <%= usuarios.apellidos %>, <%= usuarios.nombre %>
+              <a class="alumno-nombre" href="/usuarios/<%= usuarioItem.id %>">
+                <%= usuarioItem.nombre %>
               </a>
             </td>
-            <td><%= usuarios.email || '—' %></td>
-            <td><%= usuarios.nivel_acceso || '—' %></td>
-            <td>
-              <span class="badge badge-<%= usuarios.nivel_acceso %>">
-                <% if (usuarios.nivel_acceso === 'lector') { %>Lector<% } %>
-                <% if (usuarios.nivel_acceso === 'editor') { %>Editor<% } %>
-              </span>
-            </td>
+            <td><%= usuarioItem.apellidos || '—' %></td>
+            <td><%= usuarioItem.email || '—' %></td>
             <td class="col-fecha">
-              <%= usuarios.createdAt ? new Date(usuarios.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
+              <%= usuarioItem.createdAt
+                ? new Date(usuarioItem.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                : '—'
+              %>
             </td>
             <td class="col-accions">
               <div class="acciones">
-                <a href="/usuarios/<%= usuarios.id %>" class="btn btn-secundario btn-sm">Aprovar</a>
+                <button class="btn btn-secundario" onclick="aprovarUsuario('<%= usuarioItem.id %>')">Aprovar</button>
+                <button class="btn btn-secundario" onclick="rebutjarUsuario('<%= usuarioItem.id %>')">Rebutjar</button>
               </div>
             </td>
           </tr>
@@ -65,7 +62,7 @@
 
         <span class="pagination-info">
           Pàgina <%= pagination.currentPage %> de <%= pagination.totalPages %>
-          (<%= pagination.totalItems %> alumnes)
+          (<%= pagination.totalItems %> usuaris)
         </span>
 
         <% if (pagination.currentPage < pagination.totalPages) { %>
@@ -79,7 +76,6 @@
 
 <% } else { %>
   <div class="empty-state">
-    <p>No hi ha alumnes registrats.</p>
-    <a href="/alumnos/nuevo" class="btn btn-primario">Crear el primer alumne</a>
+    <p>No hi ha usuaris pendents.</p>
   </div>
 <% } %>
