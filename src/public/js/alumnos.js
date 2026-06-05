@@ -880,3 +880,215 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// Crear comentarios en vista detalle alumno
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const form = document.querySelector("#comentarioForm");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const alumnoId = form.dataset.alumnoId;
+    const texto = document.querySelector("#comentarioTexto")?.value.trim();
+
+    if (!texto) return;
+
+    try {
+
+      const res = await fetch(
+        `/alumnos/${alumnoId}/comentarios`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ texto }),
+        }
+      );
+
+      const json = await res.json();
+
+      if (!res.ok || !json.ok) {
+
+        await window.showModal({
+          type: "error",
+          title: "Error",
+          message: json.error || "No s'ha pogut crear el comentari",
+        });
+
+        return;
+      }
+
+      window.location.reload();
+
+    } catch (err) {
+
+      console.error(err);
+
+      await window.showModal({
+        type: "error",
+        title: "Error",
+        message: "Error de connexió amb el servidor",
+      });
+
+    }
+
+  });
+
+});
+
+// Eliminar comentario
+document.addEventListener("click", async (e) => {
+
+  const btn = e.target.closest(".btn-eliminar-comentario");
+  if (!btn) return;
+
+  const comentarioId = btn.dataset.id;
+
+  const ok = await window.showConfirm({
+    title: "Eliminar comentari",
+    message: "Segur que vols eliminar aquest comentari?",
+    confirmText: "Eliminar",
+    cancelText: "Cancel·lar",
+  });
+
+  if (!ok) return;
+
+  try {
+
+    const res = await fetch(
+      `/comentarios/${comentarioId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const json = await res.json();
+
+    if (!res.ok || !json.ok) {
+
+      await window.showModal({
+        type: "error",
+        title: "Error",
+        message: json.error || "No s'ha pogut eliminar el comentari",
+      });
+
+      return;
+    }
+
+    window.location.reload();
+
+  } catch (err) {
+
+    console.error(err);
+
+    await window.showModal({
+      type: "error",
+      title: "Error",
+      message: "Error de connexió amb el servidor",
+    });
+
+  }
+
+});
+
+// Activar edición de comentario
+document.addEventListener("click", (e) => {
+
+  const btn = e.target.closest(".btn-editar-comentario");
+  if (!btn) return;
+
+  const card = btn.closest(".comentario-item");
+  if (!card) return;
+
+  card
+    .querySelectorAll(".view-mode")
+    .forEach(el => el.classList.add("hidden"));
+
+  card
+    .querySelectorAll(".edit-mode")
+    .forEach(el => el.classList.remove("hidden"));
+
+});
+
+// Cancelar edición comentario
+document.addEventListener("click", (e) => {
+
+  const btn = e.target.closest(".btn-cancelar-comentario");
+  if (!btn) return;
+
+  const card = btn.closest(".comentario-item");
+  if (!card) return;
+
+  card
+    .querySelectorAll(".view-mode")
+    .forEach(el => el.classList.remove("hidden"));
+
+  card
+    .querySelectorAll(".edit-mode")
+    .forEach(el => el.classList.add("hidden"));
+
+});
+
+// Guardar comentario
+document.addEventListener("click", async (e) => {
+
+  const btn = e.target.closest(".btn-guardar-comentario");
+  if (!btn) return;
+
+  const comentarioId = btn.dataset.id;
+
+  const card = btn.closest(".comentario-item");
+
+  const texto = card
+    ?.querySelector(".comentario-edit-texto")
+    ?.value
+    .trim();
+
+  if (!texto) return;
+
+  try {
+
+    const res = await fetch(
+      `/comentarios/${comentarioId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ texto }),
+      }
+    );
+
+    const json = await res.json();
+
+    if (!res.ok || !json.ok) {
+
+      await window.showModal({
+        type: "error",
+        title: "Error",
+        message: json.error || "No s'ha pogut actualitzar el comentari",
+      });
+
+      return;
+    }
+
+    window.location.reload();
+
+  } catch (err) {
+
+    console.error(err);
+
+    await window.showModal({
+      type: "error",
+      title: "Error",
+      message: "Error de connexió amb el servidor",
+    });
+
+  }
+
+});

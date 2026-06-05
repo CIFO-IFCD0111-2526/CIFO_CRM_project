@@ -5,7 +5,9 @@ const { Comentario } = require("../models");
 
 const controller = require("../controllers/comentarioController");
 
-const router = Router();
+const router = Router({
+    mergeParams: true,
+});
 
 // Todas las rutas requieren autenticación
 router.use(authPage);

@@ -5,7 +5,7 @@ const controller = require("../controllers/alumnoController");
 
 const router = Router();
 
-const { Alumno, Curso } = require("../models");
+const { Alumno, Curso, Comentario, Usuario } = require("../models");
 const { loadResource } = require("../middlewares/loadResource.js");
 
 // Todas las rutas de alumnos requieren autenticación
@@ -28,13 +28,19 @@ router.post(
 router.get("/:id",
     loadResource(Alumno, {
         redirectTo: "/alumnos",
-        include: [{
-            model: Curso,
-            through: { attributes: ["estat", "createdAt"] }
-        }]
+        include: [
+            {
+                model: Curso,
+                through: { attributes: ["estat", "createdAt"] }
+            },
+            {
+                model: Comentario,
+                include: [Usuario]
+            }]
     }),
     controller.getById
 );
+
 router.put("/:id",
     loadResource(Alumno, { notFoundMessage: "L'alumne no existeix." }),
     controller.updateAlumno

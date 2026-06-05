@@ -2,6 +2,7 @@ const { Comentario } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
 // POST /alumnos/:alumnoId/comentarios
+
 const create = async (req, res, next) => {
     try {
         const { texto } = req.body;
