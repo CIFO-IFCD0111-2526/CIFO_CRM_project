@@ -207,3 +207,39 @@
 .filtroTipoAlumno button:hover:not(.active) {
   opacity: 0.85;
 }
+
+.comentario-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  background: white;
+  border: 1px solid #d9d9e3;
+  border-radius: 12px;
+
+  padding: 1rem;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.comentario-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.comentario-info {
+  flex: 1;
+}
+
+.comentario-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.comentario-fecha {
+  color: #666;
+  font-size: 0.9rem;
+}
