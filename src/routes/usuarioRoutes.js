@@ -25,6 +25,7 @@ router.get(
 router.delete(
   "/:id",
   requireAdmin,
+  loadResource(Usuario, { redirectTo: null }),
   usuarioController.rebutjarUsuario,
 );
 

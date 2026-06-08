@@ -116,7 +116,7 @@ const getPendents = async (req, res, next) => {
 
         const { count, rows: usuarios } = await Usuario.findAndCountAll({
             where: { activo: false },
-            order: [["created_at", "DESC"]],
+            order: [["createdAt", "DESC"]],
             limit,
             offset,
         });
