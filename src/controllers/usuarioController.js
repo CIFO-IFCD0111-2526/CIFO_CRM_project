@@ -67,6 +67,16 @@ const changePassword = async (req, res, next) => {
 const aprovarUsuario = async (req, res, next) => {
     try {
         const usuario = req.usuario;
+        const { nivel_acceso } = req.body;
+
+        const rolesValidos = ["admin", "editor", "lector"];
+
+        if (!rolesValidos.includes(nivel_acceso)) {
+            return res.status(400).json({
+                ok: false,
+                error: "Rol no vàlid",
+            });
+        }
 
         if (usuario.activo) {
             return res.status(400).json({
@@ -76,6 +86,7 @@ const aprovarUsuario = async (req, res, next) => {
         }
 
         usuario.activo = true;
+        usuario.nivel_acceso = nivel_acceso;
 
         await usuario.save();
 

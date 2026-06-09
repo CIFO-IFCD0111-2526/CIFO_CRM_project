@@ -1,6 +1,17 @@
 async function aprovarUsuario(id) {
   try {
-    const res = await fetch(`/usuarios/${id}/aprovar`, { method: "PUT" });
+    const nivel_acceso = document.getElementById(`rol-${id}`).value;
+
+    const res = await fetch(`/usuarios/${id}/aprovar`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        nivel_acceso,
+      }),
+    });
+
     const json = await res.json();
 
     if (!res.ok || !json.ok) {

@@ -35,8 +35,19 @@
             </td>
             <td class="col-accions">
               <div class="acciones">
-                <button class="btn btn-secundario" onclick="aprovarUsuario('<%= usuarioItem.id %>')">Aprovar</button>
-                <button class="btn btn-secundario" onclick="rebutjarUsuario('<%= usuarioItem.id %>')">Rebutjar</button>
+                <select id="rol-<%= usuarioItem.id %>">
+                  <option value="lector">Lector</option>
+                  <option value="editor">Editor</option>
+                  <option value="admin">Admin</option>
+                </select>
+              
+                <button class="btn btn-secundario" onclick="aprovarUsuario('<%= usuarioItem.id %>')">
+                  Aprovar
+                </button>
+              
+                <button class="btn btn-secundario" onclick="rebutjarUsuario('<%= usuarioItem.id %>')">
+                  Rebutjar
+                </button>
               </div>
             </td>
           </tr>
