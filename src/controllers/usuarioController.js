@@ -1,7 +1,7 @@
 const { Usuario } = require("../models");
 const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
-const db = require("../config/database"); // Assegura't que la ruta a la teva config de DB és correcta
+const db = require("../config/database"); 
 const { handleControllerError } = require("../middlewares/errorHandler");
 const { sendMail } = require("../config/mailer.js");
 
@@ -99,11 +99,81 @@ const aprovarUsuario = async (req, res, next) => {
             console.error("Error enviant correu aprovació:", mailError);
         }
 
-        return res.json({ ok: true });
+        req.session.flash = {
+            type: "success",
+            title: "Usuari aprovat",
+            message: `L'usuari: ${usuario.nombre} ${usuario.apellidos} s'ha aprovat correctament.`,
+            keepModal: true,
+        };
+
+        return res.json({ ok: true, redirect: "/admin" });
 
     } catch (error) {
         return handleControllerError(error, res, next);
     }
 };
 
-module.exports = { getPerfil, changePassword, aprovarUsuario };
+// GET /admin
+const getPendents = async (req, res, next) => {
+    try {
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 10));
+        const offset = (page - 1) * limit;
+
+        const { count, rows: usuarios } = await Usuario.findAndCountAll({
+            where: { activo: false },
+            order: [["createdAt", "DESC"]],
+            limit,
+            offset,
+        });
+
+        const totalPages = Math.ceil(count / limit);
+
+        res.render("usuarios-pendents", {
+            titulo: "Usuaris pendents d'activació",
+            usuario: req.session.usuario,
+            css: "usuarios.css",
+            js: "usuarios.js",
+            paginaActual: "admin",
+            usuarios,
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalItems: count,
+                limit,
+            }
+        });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+// DELETE /usuarios/:id
+const rebutjarUsuario = async (req, res, next) => {
+    try {
+        const usuario = req.usuario;
+
+        // Només es poden rebutjar usuaris pendents (no activats).
+        if (usuario.activo) {
+            return res.status(400).json({
+                ok: false,
+                error: "Només es poden rebutjar usuaris pendents d'activació.",
+            });
+        }
+
+        await usuario.destroy();
+
+        req.session.flash = {
+            type: "success",
+            title: "Usuari eliminat",
+            message: `L'usuari: ${usuario.nombre} ${usuario.apellidos} s'ha eliminat correctament.`,
+            keepModal: true,
+        };
+
+        return res.json({ ok: true, redirect: "/admin" });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+module.exports = { getPerfil, changePassword, aprovarUsuario, getPendents, rebutjarUsuario };

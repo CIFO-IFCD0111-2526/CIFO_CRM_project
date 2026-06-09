@@ -1,0 +1,75 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Usuaris pendents d'activació</h1>
+    <p class="page-subtitle">Llistat d'usuaris que han sol·licitat l'activació del perfil</p>
+  </div>
+</div>
+
+<% if (pagination && pagination.totalItems > 0) { %>
+  <div class="tabla-container">
+    <table id="alumnosTable">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Cognoms</th>
+          <th>Email</th>
+          <th>Data de registre</th>
+          <th class="col-accions">Accions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% usuarios.forEach(usuarioItem => { %>
+          <tr>
+            <td>
+              <a class="alumno-nombre" href="/usuarios/<%= usuarioItem.id %>">
+                <%= usuarioItem.nombre %>
+              </a>
+            </td>
+            <td><%= usuarioItem.apellidos || '—' %></td>
+            <td><%= usuarioItem.email || '—' %></td>
+            <td class="col-fecha">
+              <%= usuarioItem.createdAt
+                ? new Date(usuarioItem.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                : '—'
+              %>
+            </td>
+            <td class="col-accions">
+              <div class="acciones">
+                <button class="btn btn-secundario" onclick="aprovarUsuario('<%= usuarioItem.id %>')">Aprovar</button>
+                <button class="btn btn-secundario" onclick="rebutjarUsuario('<%= usuarioItem.id %>')">Rebutjar</button>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <% if (pagination.totalPages > 1) { %>
+    <div class="pagination-wrapper">
+      <div class="pagination" aria-label="Paginació">
+        <% if (pagination.currentPage > 1) { %>
+          <a href="?page=<%= pagination.currentPage - 1 %>&limit=<%= pagination.limit %>" class="btn btn-secundario btn-sm">
+            ← Anterior
+          </a>
+        <% } %>
+
+        <span class="pagination-info">
+          Pàgina <%= pagination.currentPage %> de <%= pagination.totalPages %>
+          (<%= pagination.totalItems %> usuaris)
+        </span>
+
+        <% if (pagination.currentPage < pagination.totalPages) { %>
+          <a href="?page=<%= pagination.currentPage + 1 %>&limit=<%= pagination.limit %>" class="btn btn-secundario btn-sm">
+            Següent →
+          </a>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+
+<% } else { %>
+  <div class="empty-state">
+    <p>No hi ha usuaris pendents.</p>
+  </div>
+<% } %>
