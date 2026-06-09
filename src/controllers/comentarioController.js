@@ -30,6 +30,12 @@ const create = async (req, res, next) => {
             texto: texto.trim(),
         });
 
+        req.session.flash = {
+            type: "success",
+            title: "Comentari afegit",
+            message: "El comentari s'ha afegit correctament.",
+        };
+
         return res.json({
             ok: true,
             comentario,
@@ -55,6 +61,12 @@ const update = async (req, res, next) => {
             texto: texto.trim(),
         });
 
+        req.session.flash = {
+            type: "success",
+            title: "Comentari actualitzat",
+            message: "El comentari s'ha actualitzat correctament.",
+        };
+
         return res.json({
             ok: true,
             comentario: req.comentario,
@@ -68,6 +80,12 @@ const update = async (req, res, next) => {
 const destroy = async (req, res, next) => {
     try {
         await req.comentario.destroy();
+
+        req.session.flash = {
+            type: "success",
+            title: "Comentari eliminat",
+            message: "El comentari s'ha eliminat correctament.",
+        };
 
         return res.json({
             ok: true,
