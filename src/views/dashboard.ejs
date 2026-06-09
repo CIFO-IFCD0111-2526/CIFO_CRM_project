@@ -9,6 +9,12 @@
       Resum de l'activitat:
     </p>
   </div>
+
+  <% if (usuario.nivel_acceso === 'admin') { %>
+    <a href="/admin" class="btn btn-primario">
+      <i class="fa-solid fa-gear"></i> Administració
+    </a>
+  <% } %>
 </div>
 
 <div class="dashboard-grid">

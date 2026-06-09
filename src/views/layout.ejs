@@ -49,14 +49,14 @@
                     <a href="/profesores" class="<% if (locals.paginaActual === 'profesores') { %>active<% } %>">
                         <i class="fa-solid fa-chalkboard-user"></i> Professors
                     </a>
-                    <% if (usuario.nivel_acceso === 'admin') { %>
-                        <a href="/usuarios" class="<% if (locals.paginaActual === 'usuarios') { %>active<% } %>">
-                            <i class="fa-solid fa-gear"></i> Administració
-                        </a>
-                    <% } %>
                 </div>
 
                 <div class="nav-bottom">
+                    <% if (usuario.nivel_acceso === 'admin') { %>
+                        <a href="/admin" class="btn btn-primario nav-admin <% if (locals.paginaActual === 'admin') { %>active<% } %>">
+                            <i class="fa-solid fa-gear"></i> Administració
+                        </a>
+                    <% } %>
                     <button type="button" class="btn-logout" id="btnLogout">
                         <i class="fa-solid fa-right-from-bracket"></i> Tancar sessió
                     </button>

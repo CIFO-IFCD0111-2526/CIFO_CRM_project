@@ -8,12 +8,19 @@ const router = Router();
 
 router.use(authPage);
 
-router.get("/", usuarioController.getPerfil);
-router.put("/password", usuarioController.changePassword);
-router.put("/:id/aprovar",
-    requireAdmin,
-    loadResource(Usuario, { redirectTo: "/dashboard" }),
-    usuarioController.aprovarUsuario
+// Accions sobre usuaris (només admin)
+router.put(
+  "/:id/aprovar",
+  requireAdmin,
+  loadResource(Usuario, { redirectTo: null }),
+  usuarioController.aprovarUsuario
+);
+
+router.delete(
+  "/:id",
+  requireAdmin,
+  loadResource(Usuario, { redirectTo: null }),
+  usuarioController.rebutjarUsuario
 );
 
 module.exports = router;
