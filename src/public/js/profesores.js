@@ -73,20 +73,29 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const res = await fetch(url, {
-      method: metodo,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch(url, {
+        method: metodo,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    const json = await res.json();
+      const json = await res.json();
 
-    if (!json.ok) {
-      showMsg(json.error);
-      return;
+      if (!res.ok || !json.ok) {
+        showMsg(json.error);
+        return;
+      }
+
+      window.location.href = json.redirect;
+    } catch (err) {
+      console.error(err);
+      await window.showModal({
+        type: "error",
+        title: "Error",
+        message: "Error de connexió amb el servidor",
+      });
     }
-
-    window.location.href = json.redirect;
   });
 });
 

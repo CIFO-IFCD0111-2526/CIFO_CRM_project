@@ -77,19 +77,32 @@ async function initDocuments() {
         const json = await res.json();
 
         if (!res.ok || !json.ok) {
-          showMsg(json.error || "Error al pujar document");
+          await window.showModal({
+            type: "error",
+            title: "Error",
+            message: json.error || "No s'ha pogut pujar el document",
+          });
           return;
         }
 
-        showMsg("Document pujat correctament", false);
         form.reset();
         if (nameSpan) nameSpan.textContent = "Cap fitxer seleccionat";
 
         await loadDocuments(form, entidadTipo, entidadId);
 
+        await window.showModal({
+          type: "success",
+          title: "Document pujat",
+          message: "El document s'ha pujat correctament.",
+        });
+
       } catch (err) {
         console.error(err);
-        showMsg("Error de connexió");
+        await window.showModal({
+          type: "error",
+          title: "Error",
+          message: "Error de connexió amb el servidor",
+        });
       }
     });
   }
