@@ -8,13 +8,7 @@ const router = Router();
 
 router.use(authPage);
 
-// Administració d'usuaris (només admin)
-router.get(
-  "/pendents",
-  requireAdmin,
-  usuarioController.getPendents
-);
-
+// Accions sobre usuaris (només admin)
 router.put(
   "/:id/aprovar",
   requireAdmin,

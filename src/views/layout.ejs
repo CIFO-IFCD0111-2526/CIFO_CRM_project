@@ -53,7 +53,7 @@
 
                 <div class="nav-bottom">
                     <% if (usuario.nivel_acceso === 'admin') { %>
-                        <a href="/usuarios/pendents" class="btn btn-primario nav-admin">
+                        <a href="/admin" class="btn btn-primario nav-admin <% if (locals.paginaActual === 'admin') { %>active<% } %>">
                             <i class="fa-solid fa-gear"></i> Administració
                         </a>
                     <% } %>

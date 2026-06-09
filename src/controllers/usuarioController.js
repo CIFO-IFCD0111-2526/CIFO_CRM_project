@@ -106,14 +106,14 @@ const aprovarUsuario = async (req, res, next) => {
             keepModal: true,
         };
 
-        return res.json({ ok: true, redirect: "/usuarios/pendents" });
+        return res.json({ ok: true, redirect: "/admin" });
 
     } catch (error) {
         return handleControllerError(error, res, next);
     }
 };
 
-// GET /usuarios/pendents
+// GET /admin
 const getPendents = async (req, res, next) => {
     try {
         const page = Math.max(1, parseInt(req.query.page) || 1);
@@ -134,7 +134,7 @@ const getPendents = async (req, res, next) => {
             usuario: req.session.usuario,
             css: "usuarios.css",
             js: "usuarios.js",
-            paginaActual: "usuarios-pendents",
+            paginaActual: "admin",
             usuarios,
             pagination: {
                 currentPage: page,
@@ -170,7 +170,7 @@ const rebutjarUsuario = async (req, res, next) => {
             keepModal: true,
         };
 
-        return res.json({ ok: true, redirect: "/usuarios/pendents" });
+        return res.json({ ok: true, redirect: "/admin" });
     } catch (error) {
         return handleControllerError(error, res, next);
     }

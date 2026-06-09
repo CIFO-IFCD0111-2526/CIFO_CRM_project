@@ -7,7 +7,7 @@ async function aprovarUsuario(id) {
       throw new Error(json.error || "Error aprovant l'usuari");
     }
 
-    window.location.href = json.redirect || "/usuarios/pendents";
+    window.location.href = json.redirect || "/admin";
   } catch (error) {
     console.error("Error aprovant usuari:", error);
     await window.showModal({
@@ -36,7 +36,7 @@ async function rebutjarUsuario(id) {
       throw new Error(json.error || "Error rebutjant l'usuari");
     }
 
-    window.location.href = json.redirect || "/usuarios/pendents";
+    window.location.href = json.redirect || "/admin";
   } catch (error) {
     console.error("Error rebutjant usuari:", error);
     await window.showModal({

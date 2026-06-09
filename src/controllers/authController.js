@@ -141,8 +141,8 @@ const register = async (req, res, next) => {
           (${nuevoUsuario.email})
         </p>
         <p>
-          <a href="${process.env.URL_BASE}/usuarios/pendents">
-            ${process.env.URL_BASE}/usuarios/pendents
+          <a href="${process.env.URL_BASE}/admin">
+            ${process.env.URL_BASE}/admin
           </a>
         </p>
       `,

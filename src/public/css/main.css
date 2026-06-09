@@ -130,12 +130,19 @@ nav {
 }
 
 /* Enllaç d'administració amb estil de botó (igual que al dashboard).
-   Cal sobreescriure els estils base de .nav-bottom a (color/padding/font). */
-.nav-bottom a.nav-admin {
+   Manté sempre el fons morat sòlid, també quan és la pàgina activa
+   (sobreescriu el fons suau de .nav-bottom a.active). */
+.nav-bottom a.nav-admin,
+.nav-bottom a.nav-admin.active {
+    background-color: var(--color-primario);
     padding: 0.55rem 1.2rem;
     color: var(--color-texto-blanco);
     font-size: 14px;
     font-weight: 600;
+}
+
+.nav-bottom a.nav-admin.active i {
+    color: var(--color-texto-blanco);
 }
 
 .nav-bottom a.nav-admin i {
