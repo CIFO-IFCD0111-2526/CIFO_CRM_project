@@ -10,6 +10,7 @@ const perfilRoutes = require("./perfilRoutes");
 const adminRoutes = require("./adminRoutes");
 const anotacionRoutes = require("./anotacionRoutes");
 const documentoRoutes =require("./documentoRoutes");
+const comentarioRoutes = require("./comentarioRoutes");
 
 router.use("/", authRoutes, dashboardRoutes);
 
@@ -22,6 +23,8 @@ router.use("/usuarios", usuarioRoutes);
 router.use("/perfil", perfilRoutes);
 router.use("/anotaciones", anotacionRoutes);
 router.use("/documentos",documentoRoutes);
+router.use("/alumnos/:alumnoId/comentarios", comentarioRoutes);
+router.use("/comentarios", comentarioRoutes);
 
 router.get("/", (req, res) => {
   if (req.session.usuario) return res.redirect("/dashboard");

@@ -9,6 +9,7 @@
   const closeBtn = overlay.querySelector(".modal-close");
   const confirmBtn = overlay.querySelector(".modal-confirm");
   const cancelBtn = overlay.querySelector(".modal-cancel");
+  const actionsEl = overlay.querySelector(".modal-actions");
 
   const ICONS = {
     success: '<i class="fa-solid fa-circle-check"></i>',
@@ -34,6 +35,7 @@
   };
 
   const openModal = ({ type = "success", title = "", message = "" } = {}) => {
+    if (actionsEl) actionsEl.style.display = "none";
     card.classList.remove("is-success", "is-error", "is-confirm");
     overlay.classList.remove("is-confirm");
     card.classList.add(type === "error" ? "is-error" : "is-success");
@@ -51,6 +53,7 @@
     confirmText = "Confirmar",
     cancelText = "Cancel·lar",
   } = {}) => {
+    if (actionsEl) actionsEl.style.display = "flex";
     card.classList.remove("is-success", "is-error");
     card.classList.add("is-confirm");
     overlay.classList.add("is-confirm");

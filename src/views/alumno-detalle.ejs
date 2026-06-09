@@ -231,6 +231,104 @@
 
 <div class="detalle-grid form-group">
   <section class="detalle-card detalle-full">
+
+    <h2 class="detalle-card-title">Comentaris</h2>
+
+    <form id="comentarioForm" data-alumno-id="<%= alumno.id %>">
+
+      <textarea id="comentarioTexto" name="texto" rows="3" placeholder="Escriu un comentari..." required></textarea>
+
+      <button type="submit" class="btn btn-secundario">
+        Afegir comentari
+      </button>
+
+    </form>
+
+    <div id="ComentariMsg" class="form-msg form-full" aria-live="polite"></div>
+
+    <div id="comentariosLista">
+
+      <% if (alumno.Comentarios?.length) { %>
+
+        <% alumno.Comentarios.forEach(comentario=> { %>
+
+          <article class="comentario-item" data-id="<%= comentario.id %>">
+
+            <div class="comentario-info">
+
+              <div class="comentario-header">
+
+                <div class="comentario-autor">
+                  <strong>
+                    <%= comentario.Usuario?.nombre %>
+                      <%= comentario.Usuario?.apellidos %>
+                  </strong>
+                </div>
+
+                <span class="comentario-fecha">
+                  <%= new Date(comentario.createdAt) .toLocaleDateString("ca-ES") %>
+                </span>
+
+              </div>
+
+              <div class="comentario-body">
+
+                <p class="view-mode">
+                  <%= comentario.texto %>
+                </p>
+
+                <textarea class="edit-mode hidden comentario-edit-texto"><%= comentario.texto %></textarea>
+
+              </div>
+            </div>
+
+            <% if (comentario.usuario_id===usuario.id) { %>
+
+              <div class="comentario-actions">
+
+                <button type="button" class="btn btn-secundario btn-editar-comentario view-mode"
+                  data-id="<%= comentario.id %>">
+                  Editar
+                </button>
+
+                <button type="button" class="btn btn-danger btn-eliminar-comentario view-mode"
+                  data-id="<%= comentario.id %>">
+                  Eliminar
+                </button>
+
+                <button type="button" class="btn btn-secundario btn-guardar-comentario edit-mode hidden"
+                  data-id="<%= comentario.id %>">
+                  Guardar
+                </button>
+
+                <button type="button" class="btn btn-secundario btn-cancelar-comentario edit-mode hidden"
+                  data-id="<%= comentario.id %>">
+                  Cancel·lar
+                </button>
+
+              </div>
+
+              <% } %>
+
+          </article>
+
+          <% }) %>
+
+            <% } else { %>
+
+              <p class="detalle-empty">
+                Encara no hi ha comentaris.
+              </p>
+
+              <% } %>
+
+    </div>
+
+  </section>
+</div>
+
+<div class="detalle-grid form-group">
+  <section class="detalle-card detalle-full">
     <h2 class="detalle-card-title">Documents</h2>
 
     <form class="document-form" data-entidad-tipo="Alumno" data-entidad-id="<%= alumno.id %>" novalidate>
