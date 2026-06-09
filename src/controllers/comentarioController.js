@@ -1,4 +1,4 @@
-const { Comentario } = require("../models");
+const { Comentario, Alumno } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
 
 // POST /alumnos/:alumnoId/comentarios
@@ -11,6 +11,16 @@ const create = async (req, res, next) => {
             return res.status(400).json({
                 ok: false,
                 error: "El comentari és obligatori.",
+            });
+        }
+
+        // Comprovem que l'alumne existeix abans de crear el comentari
+        // (evita comentaris orfes amb un alumno_id inexistent).
+        const alumno = await Alumno.findByPk(req.params.alumnoId);
+        if (!alumno) {
+            return res.status(404).json({
+                ok: false,
+                error: "L'alumne no existeix.",
             });
         }
 
