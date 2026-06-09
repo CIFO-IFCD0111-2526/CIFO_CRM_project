@@ -6,6 +6,17 @@
 
 #alumnosTable {
   min-width: 960px;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Amb table-layout:fixed els amples no canvien segons el contingut.
+   Evitem que el text llarg desbordi tallant-lo amb el·lipsi. */
+#alumnosTable th,
+#alumnosTable td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #alumnosTable .alumno-nombre {
