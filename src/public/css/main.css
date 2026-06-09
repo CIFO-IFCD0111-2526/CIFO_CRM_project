@@ -117,14 +117,34 @@ nav {
     color: var(--color-texto-blanco);
 }
 
-.nav-links a.active {
+.nav-links a.active,
+.nav-bottom a.active {
     background-color: var(--color-primario-suave);
     color: var(--color-primario);
     font-weight: 700;
 }
 
-.nav-links a.active i {
+.nav-links a.active i,
+.nav-bottom a.active i {
     color: var(--color-primario);
+}
+
+/* Enllaç d'administració amb estil de botó (igual que al dashboard).
+   Cal sobreescriure els estils base de .nav-bottom a (color/padding/font). */
+.nav-bottom a.nav-admin {
+    padding: 0.55rem 1.2rem;
+    color: var(--color-texto-blanco);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.nav-bottom a.nav-admin i {
+    color: var(--color-texto-blanco);
+}
+
+.nav-bottom a.nav-admin:hover {
+    background-color: var(--color-primario-hover);
+    color: var(--color-texto-blanco);
 }
 
 .nav-bottom {

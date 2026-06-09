@@ -1,44 +1,48 @@
 async function aprovarUsuario(id) {
   try {
-    const response = await fetch(`/usuarios/${id}/aprovar`, {
-      method: "PUT"
-    });
+    const res = await fetch(`/usuarios/${id}/aprovar`, { method: "PUT" });
+    const json = await res.json();
 
-    const json = await response.json();   // ← AIXÒ ERA EL QUE FALTAVA
-
-    if (json.redirect) {
-      window.location.href = json.redirect;
-      return;
+    if (!res.ok || !json.ok) {
+      throw new Error(json.error || "Error aprovant l'usuari");
     }
 
-    window.location.reload();
-
+    window.location.href = json.redirect || "/usuarios/pendents";
   } catch (error) {
     console.error("Error aprovant usuari:", error);
-    alert("Error del servidor en aprovar l'usuari");
+    await window.showModal({
+      type: "error",
+      title: "Error",
+      message: "No s'ha pogut aprovar l'usuari",
+    });
   }
 }
 
 async function rebutjarUsuario(id) {
-  const ok = window.confirm("Segur que vols rebutjar aquest usuari?");
-  if (!ok) return;
+  const ok = await window.showConfirm({
+    title: "Rebutjar usuari",
+    message: "Segur que vols rebutjar aquest usuari? Aquesta acció no es pot desfer.",
+    confirmText: "Rebutjar",
+    cancelText: "Cancel·lar",
+  });
+
+  if (ok !== true) return;
 
   try {
-    const response = await fetch(`/usuarios/${id}`, {
-      method: "DELETE"
-    });
+    const res = await fetch(`/usuarios/${id}`, { method: "DELETE" });
+    const json = await res.json();
 
-    const json = await response.json();   
-
-    if (json.redirect) {
-      window.location.href = json.redirect;
-      return;
+    if (!res.ok || !json.ok) {
+      throw new Error(json.error || "Error rebutjant l'usuari");
     }
 
-    window.location.reload();
-
+    window.location.href = json.redirect || "/usuarios/pendents";
   } catch (error) {
     console.error("Error rebutjant usuari:", error);
-    alert("Error del servidor en rebutjar l'usuari");
+    await window.showModal({
+      type: "error",
+      title: "Error",
+      message: "No s'ha pogut rebutjar l'usuari",
+    });
   }
 }

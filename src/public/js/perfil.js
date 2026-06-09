@@ -1,6 +1,5 @@
 const form = document.getElementById("perfilPasswordForm");
 const msg = document.getElementById("perfilPasswordMsg");
-const usuarisActivacio = document.getElementById("usuarisActivacio");
 
 const showMsg = (text, isError = true) => {
     if (!msg) return;
@@ -56,9 +55,4 @@ form?.addEventListener("submit", async (e) => {
             message: "No s'ha pogut canviar la contrasenya.",
         });
     }
-});
-
-usuarisActivacio?.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.location.href = "/usuarios/pendents";
 });

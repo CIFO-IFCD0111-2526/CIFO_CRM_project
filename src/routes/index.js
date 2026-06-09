@@ -6,6 +6,7 @@ const alumnoRoutes = require("./alumnoRoutes");
 const cursoRoutes = require("./cursoRoutes");
 const profesorRoutes = require("./profesorRoutes");
 const usuarioRoutes = require("./usuarioRoutes");
+const perfilRoutes = require("./perfilRoutes");
 const anotacionRoutes = require("./anotacionRoutes");
 const documentoRoutes =require("./documentoRoutes");
 
@@ -16,7 +17,7 @@ router.use("/alumnos", alumnoRoutes);
 router.use("/cursos", cursoRoutes);
 router.use("/profesores", profesorRoutes);
 router.use("/usuarios", usuarioRoutes);
-router.use("/perfil", usuarioRoutes);
+router.use("/perfil", perfilRoutes);
 router.use("/anotaciones", anotacionRoutes);
 router.use("/documentos",documentoRoutes);
 

@@ -99,7 +99,14 @@ const aprovarUsuario = async (req, res, next) => {
             console.error("Error enviant correu aprovació:", mailError);
         }
 
-        return res.json({ ok: true });
+        req.session.flash = {
+            type: "success",
+            title: "Usuari aprovat",
+            message: `L'usuari: ${usuario.nombre} ${usuario.apellidos} s'ha aprovat correctament.`,
+            keepModal: true,
+        };
+
+        return res.json({ ok: true, redirect: "/usuarios/pendents" });
 
     } catch (error) {
         return handleControllerError(error, res, next);
@@ -109,7 +116,6 @@ const aprovarUsuario = async (req, res, next) => {
 // GET /usuarios/pendents
 const getPendents = async (req, res, next) => {
     try {
-        console.log("PENDENTS");
         const page = Math.max(1, parseInt(req.query.page) || 1);
         const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 10));
         const offset = (page - 1) * limit;
@@ -146,6 +152,15 @@ const getPendents = async (req, res, next) => {
 const rebutjarUsuario = async (req, res, next) => {
     try {
         const usuario = req.usuario;
+
+        // Només es poden rebutjar usuaris pendents (no activats).
+        if (usuario.activo) {
+            return res.status(400).json({
+                ok: false,
+                error: "Només es poden rebutjar usuaris pendents d'activació.",
+            });
+        }
+
         await usuario.destroy();
 
         req.session.flash = {

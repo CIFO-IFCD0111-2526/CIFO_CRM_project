@@ -8,25 +8,25 @@ const router = Router();
 
 router.use(authPage);
 
-router.get("/", usuarioController.getPerfil);
-router.put("/password", usuarioController.changePassword);
-router.put("/:id/aprovar",
-    requireAdmin,
-    loadResource(Usuario, { redirectTo: null }),  //"/dashboard"
-    usuarioController.aprovarUsuario
+// Administració d'usuaris (només admin)
+router.get(
+  "/pendents",
+  requireAdmin,
+  usuarioController.getPendents
 );
 
-router.get(
-  "/pendents",  
+router.put(
+  "/:id/aprovar",
   requireAdmin,
-  usuarioController.getPendents,
+  loadResource(Usuario, { redirectTo: null }),
+  usuarioController.aprovarUsuario
 );
 
 router.delete(
   "/:id",
   requireAdmin,
   loadResource(Usuario, { redirectTo: null }),
-  usuarioController.rebutjarUsuario,
+  usuarioController.rebutjarUsuario
 );
 
 module.exports = router;
