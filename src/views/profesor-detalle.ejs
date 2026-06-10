@@ -17,12 +17,16 @@
       </h1>
     </div>
 
-    <div class="acciones">
-      <a href="#" id="btnEditar" class="btn btn-secundario">Editar</a>
-      <button type="submit" id="btnGuardar" class="btn btn-secundario edit-mode hidden">Guardar</button>
-      <button type="button" id="btnCancelar" class="btn btn-secundario edit-mode hidden">Cancel·lar</button>
-      <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= profesor.id %>">Eliminar</button>
-    </div>
+    <% if (usuario.nivel_acceso !=="lector" ) { %>
+    
+      <div class="acciones">
+        <a href="#" id="btnEditar" class="btn btn-secundario">Editar</a>
+        <button type="submit" id="btnGuardar" class="btn btn-secundario edit-mode hidden">Guardar</button>
+        <button type="button" id="btnCancelar" class="btn btn-secundario edit-mode hidden">Cancel·lar</button>
+        <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= profesor.id %>">Eliminar</button>
+      </div>
+
+      <% } %>
   </div>
 
   <div class="detalle-grid form-group">

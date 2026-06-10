@@ -34,14 +34,16 @@
           required />
       </p>
     </div>
-
-    <div class="acciones">
-      <a href="#" id="btnEditar" class="btn btn-secundario">Editar</a>
-      <button type="submit" id="btnGuardar" class="btn btn-secundario edit-mode hidden">Guardar</button>
-      <button type="button" id="btnCancelar" class="btn btn-secundario edit-mode hidden">Cancel·lar</button>
-      <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= curso.id %>"
-        data-nombre="<%= curso.nombre %>">Eliminar</button>
-    </div>
+    <% if (usuario.nivel_acceso !=="lector" ) { %>
+    
+      <div class="acciones">
+        <a href="#" id="btnEditar" class="btn btn-secundario">Editar</a>
+        <button type="submit" id="btnGuardar" class="btn btn-secundario edit-mode hidden">Guardar</button>
+        <button type="button" id="btnCancelar" class="btn btn-secundario edit-mode hidden">Cancel·lar</button>
+        <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= curso.id %>"
+          data-nombre="<%= curso.nombre %>">Eliminar</button>
+      </div>
+      <% } %>
   </div>
 
   <div class="detalle-grid form-group">
@@ -98,6 +100,8 @@
 
     <section class="detalle-card">
       <h2 class="detalle-card-title">Professors</h2>
+
+      <% if (usuario.nivel_acceso !== "lector") { %>
       <div class="header-actions">
         <button type="button" id="btnMostrarProfesores" class="btn btn-secundario js-open-matricula">
           Assignar professor
@@ -106,11 +110,15 @@
           Cancel·lar
         </button>
       </div>
+      <% } %>
       <% if (curso.Profesors && curso.Profesors.length > 0) { %>
         <ul class="detalle-cursos">
           <% curso.Profesors.forEach(prof => { %>
             <li>
               <span class="curso-nombre"><%= prof.nombre %> <%= prof.apellidos %></span>
+
+              <% if (usuario.nivel_acceso !== "lector") { %>
+
               <button
                 type="button"
                 class="btn btn-danger btn-sm btn-desasignar-profesor"
@@ -121,6 +129,7 @@
               >
                 Donar de baixa
               </button>
+              <% } %>
             </li>
           <% }) %>
         </ul>

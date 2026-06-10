@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 const profesorController = require("../controllers/profesorController");
-const { authPage } = require("../middlewares/auth");
+const { authPage, requireEditor } = require("../middlewares/auth");
 const { loadResource } = require("../middlewares/loadResource.js");
 const { Profesor, Curso } = require("../models");
 
@@ -15,9 +15,9 @@ router.use(authPage);
 // Ruta para buscar profesores por nombre o apellido
 router.get("/buscar", profesorController.searchProfesor);
 
-router.get("/nuevo", profesorController.renderNewProfesor);
+router.get("/nuevo", requireEditor, profesorController.renderNewProfesor);
 router.get("/", profesorController.getAll);
-router.post("/", profesorController.createProfesor);
+router.post("/", requireEditor, profesorController.createProfesor);
 
 router.get("/buscar-disponibles", profesorController.getAvailable);
 
@@ -33,14 +33,17 @@ router.get("/:id",
     profesorController.getById
 );
 router.get("/:id/editar",
+    requireEditor,
     loadResource(Profesor, { redirectTo: "/profesores" }),
     profesorController.getEditForm
 );
 router.put("/:id",
+    requireEditor,
     loadResource(Profesor, { redirectTo: "/profesores" }),
     profesorController.updateProfesor
 );
 router.delete("/:id",
+    requireEditor,
     loadResource(Profesor),
     profesorController.deleteProfesor
 );
