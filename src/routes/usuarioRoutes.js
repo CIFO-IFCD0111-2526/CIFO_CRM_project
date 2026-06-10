@@ -16,6 +16,13 @@ router.put(
   usuarioController.aprovarUsuario
 );
 
+router.put(
+  "/:id/rol",
+  requireAdmin,
+  loadResource(Usuario, { redirectTo: null }),
+  usuarioController.actualitzarRolUsuario
+);
+
 router.delete(
   "/:id",
   requireAdmin,

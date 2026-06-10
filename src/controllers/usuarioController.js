@@ -138,6 +138,11 @@ const getPendents = async (req, res, next) => {
             offset,
         });
 
+        const usuariosActivos = await Usuario.findAll({
+            where: { activo: true },
+            order: [["nombre", "ASC"]],
+        });
+
         const totalPages = Math.ceil(count / limit);
 
         res.render("usuarios-pendents", {
@@ -147,6 +152,7 @@ const getPendents = async (req, res, next) => {
             js: "usuarios.js",
             paginaActual: "admin",
             usuarios,
+            usuariosActivos,
             pagination: {
                 currentPage: page,
                 totalPages,
@@ -154,6 +160,34 @@ const getPendents = async (req, res, next) => {
                 limit,
             }
         });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+// PUT /usuarios/:id/rol
+const actualitzarRolUsuario = async (req, res, next) => {
+    try {
+        const usuario = req.usuario;
+        const { nivel_acceso } = req.body;
+
+        const rolesValidos = ["admin", "editor", "lector"];
+
+        if (!rolesValidos.includes(nivel_acceso)) {
+            return res.status(400).json({
+                ok: false,
+                error: "Rol no vàlid",
+            });
+        }
+
+        usuario.nivel_acceso = nivel_acceso;
+
+        await usuario.save();
+
+        return res.json({
+            ok: true,
+        });
+
     } catch (error) {
         return handleControllerError(error, res, next);
     }
@@ -187,4 +221,4 @@ const rebutjarUsuario = async (req, res, next) => {
     }
 };
 
-module.exports = { getPerfil, changePassword, aprovarUsuario, getPendents, rebutjarUsuario };
+module.exports = { getPerfil, changePassword, aprovarUsuario, getPendents, rebutjarUsuario, actualitzarRolUsuario };
