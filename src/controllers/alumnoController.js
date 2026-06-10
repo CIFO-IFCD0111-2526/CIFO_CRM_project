@@ -309,14 +309,14 @@ const updateAlumno = async (req, res, next) => {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-// Capçaleres exportació interna CRM (no modificar)
+// Capçaleres exportació interna CRM 
 const CSV_HEADERS = [
     "nombre", "apellidos", "dni", "telefono", "email",
     "nivel_estudios", "tipo", "derechos_imagen", "cesion_material", "accion_difusion",
 ];
 
-// Capçaleres del Excel del centre — han de coincidir amb el fitxer real
-// La validació ignora accents, per tant "TELEFON" i "TELÈFON" són equivalents
+// Capçaleres del Excel del centre donats com exemple. 
+
 const EXCEL_HEADERS = [
     "CURS", "NUM GIA", "DATA INICI", "DATA FI", "DNI",
     "NOM", "COGNOMS", "CORREU ELECTRONIC", "TELEFON",
@@ -384,7 +384,7 @@ const dateEuToMysql = (val) => {
 // "Sí"/"Si" → true, resta → false
 const siNo = (val) => /^s[íi]$/i.test(String(val || "").trim());
 
-// Tradueix fila Excel → camps DB
+// Tradueix fila Excel → camps DB --> Adaptació de les columnes del excel a les taules de la DB
 // Les claus de row[] usen EXCEL_HEADERS per a la validació, però el mapping és manual per a més control i robustesa davant accents
 const parseExcelRow = (row) => {
     const baixa    = String(row["BAIXA"] || "").trim();
