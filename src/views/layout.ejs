@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="/css/responsive.css">
     <% if (locals.css) { %>
         <link rel="stylesheet" href="/css/<%= css %>">
     <% } %>
@@ -16,6 +17,7 @@
     <% } %>
     <script src="/js/main.js" defer></script>
     <script src="/js/modal.js" defer></script>
+    <script src="/js/responsive.js" defer></script>
     <% if (locals.js) { %>
         <% if (Array.isArray(js)) { %>
             <% js.forEach(file=> { %>
@@ -29,12 +31,23 @@
 <body>
     <div class="app-container">
         <% if (typeof usuario !== 'undefined' && usuario) { %>
-            <nav>
+            <div id="navOverlay" class="nav-overlay"></div>
+            <nav id="mainNav">
                 <div class="nav-logo">
                     <a href="/dashboard">
                         <img src="/images/logo.webp" alt="CIFO La Violeta">
                     </a>
                 </div>
+
+                <a href="/perfil" class="topbar-user nav-user">
+                    <div class="topbar-avatar">
+                        <%= usuario.nombre.charAt(0) %><%= usuario.apellidos.charAt(0) %>
+                    </div>
+                    <div class="topbar-info">
+                        <span class="topbar-nombre"><%= usuario.nombre %></span>
+                        <span class="topbar-rol"><%= usuario.nivel_acceso %></span>
+                    </div>
+                </a>
 
                 <div class="nav-links">
                     <a href="/dashboard" class="<% if (locals.paginaActual === 'dashboard') { %>active<% } %>">
@@ -67,6 +80,9 @@
         <div class="main-wrapper <%= (typeof usuario !== 'undefined' && usuario) ? 'with-nav' : '' %>">
             <% if (typeof usuario !== 'undefined' && usuario) { %>
                 <header class="topbar">
+                    <button type="button" class="nav-toggle" id="navToggle" aria-label="Obrir menú" aria-expanded="false">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
                     <div class="topbar-right">
                         <a href="/perfil" class="topbar-user">
                             <div class="topbar-avatar">
