@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { authPage } = require("../middlewares/auth.js");
+const { authPage, requireEditor } = require("../middlewares/auth.js");
 
 const controller = require("../controllers/alumnoController");
 
@@ -15,12 +15,13 @@ router.use(authPage);
 router.get("/buscar", controller.searchAlumno);
 
 router.get("/", controller.getAll);
-router.get("/nuevo", controller.renderNewAlumno);
-router.post("/", controller.createAlumno);
-router.get("/export.csv", controller.exportCsv);
+router.get("/nuevo", requireEditor, controller.renderNewAlumno);
+router.post("/", requireEditor, controller.createAlumno);
+router.get("/export.csv", requireEditor, controller.exportCsv);
 
 router.post(
     "/import.csv",
+    requireEditor,
     controller.upload.single("archivo"),
     controller.importCsv
 );
@@ -42,10 +43,12 @@ router.get("/:id",
 );
 
 router.put("/:id",
+    requireEditor,
     loadResource(Alumno, { notFoundMessage: "L'alumne no existeix." }),
     controller.updateAlumno
 );
 router.delete("/:id",
+    requireEditor,
     loadResource(Alumno),
     controller.deleteAlumno
 );

@@ -5,17 +5,23 @@
   </div>
 
   <div class="header-actions header-actions-row">
-    <a href="/alumnos/nuevo" class="btn btn-primario">
-      <i class="fa-solid fa-plus"></i> Nou alumne
-    </a>
+    <% if (usuario.nivel_acceso !=="lector" ) { %>
+      <a href="/alumnos/nuevo" class="btn btn-primario">
+        <i class="fa-solid fa-plus"></i> Nou alumne
+      </a>
+      <% } %>
 
-    <button type="button" class="btn btn-secundario" id="btnImportarCsv">
-      <i class="fa-solid fa-file-import"></i> Importar
-    </button>
-
-    <a href="/alumnos/export.csv" class="btn btn-secundario">
-      <i class="fa-solid fa-file-export"></i> Exportar
-    </a>
+    <% if (usuario.nivel_acceso !=="lector" ) { %>
+    
+      <button type="button" class="btn btn-secundario" id="btnImportarCsv">
+        <i class="fa-solid fa-file-import"></i> Importar
+      </button>
+    
+      <a href="/alumnos/export.csv" class="btn btn-secundario">
+        <i class="fa-solid fa-file-export"></i> Exportar
+      </a>
+    
+      <% } %>
   </div>
 </div>
 
@@ -74,7 +80,11 @@
             </td>
             <td class="col-accions">
               <div class="acciones">
-                <a href="/alumnos/<%= alumno.id %>" class="btn btn-secundario btn-sm">Editar</a>
+                <% if (usuario.nivel_acceso !=="lector" ) { %>
+                  <a href="/alumnos/<%= alumno.id %>" class="btn btn-secundario btn-sm">
+                    Editar
+                  </a>
+                  <% } %>
               </div>
             </td>
           </tr>
