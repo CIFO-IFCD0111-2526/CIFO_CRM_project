@@ -842,31 +842,11 @@ document.addEventListener("DOMContentLoaded", () => {
       await window.showModal({
         type: modalType,
         title: "Importació completada",
-        message: `
-          <p><strong>Creats:</strong> ${json.creados}</p>
-          <p><strong>Errors:</strong> ${json.errores.length}</p>
-
-          ${json.errores.length
-            ? `
-            <hr>
-            <ul style="text-align:left">
-              ${json.errores.map(err => `
-                <li>
-                  <strong>Fila ${err.fila}:</strong>
-                  ${err.error}
-                </li>
-              `).join("")}
-            </ul>
-            `
-            : ""
-          }
-        `,
+        message: json.errores.length ===0
+            ? `${json.creados} alumnes importats correctament.`
+            : `${json.creados}  amb ${json.errores.length} errors.`,
+           
       });
-
-      modal.classList.add("hidden");
-      form.reset();
-
-      window.location.reload();
 
     } catch (err) {
 
