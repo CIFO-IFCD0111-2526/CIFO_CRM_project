@@ -2,6 +2,7 @@ const ExcelJS = require("exceljs");
 const { Op } = require("sequelize");
 const { Alumno, Curso, CursoAlumno } = require("../models");
 const { handleControllerError } = require("../middlewares/errorHandler");
+const { validDniCifNie, isValidEmail } = require("../utils/validadores");
 const multer = require("multer");
 
 const upload = multer({
@@ -215,14 +216,25 @@ const importCsv = async (req, res, next) => {
                 const values = rows[i];
                 if (values.every(v => !v)) continue;
 
-                // Construïm l'objecte usant les posicions (robust davant accents)
+                // Construïm l'objecte usant les posicions (robust davant accents).
+                // trim() per celda: el camí Excel ja retalla espais, així el CSV queda igual.
                 const row = {};
-                EXCEL_HEADERS.forEach((h, idx) => { row[h] = values[idx] || ""; });
+                EXCEL_HEADERS.forEach((h, idx) => { row[h] = String(values[idx] || "").trim(); });
 
                 const { curso, alumno, curso_alumno } = parseExcelRow(row);
 
                 if (!alumno.dni || !alumno.nombre || !alumno.apellidos) {
                     errores.push({ fila: i + 1, error: "Falten camps obligatoris: DNI, NOM o COGNOMS" });
+                    continue;
+                }
+
+                if (!validDniCifNie(alumno.dni)) {
+                    errores.push({ fila: i + 1, error: `DNI/NIE amb format invàlid: ${alumno.dni}` });
+                    continue;
+                }
+
+                if (alumno.email && !isValidEmail(alumno.email)) {
+                    errores.push({ fila: i + 1, error: `Email amb format invàlid: ${alumno.email}` });
                     continue;
                 }
 
@@ -387,14 +399,12 @@ const siNo = (val) => /^s[íi]$/i.test(String(val || "").trim());
 // Tradueix fila Excel → camps DB --> Adaptació de les columnes del excel a les taules de la DB
 // Les claus de row[] usen EXCEL_HEADERS per a la validació, però el mapping és manual per a més control i robustesa davant accents
 const parseExcelRow = (row) => {
-    const baixa    = String(row["BAIXA"] || "").trim();
-    const baixaLow = baixa.toLowerCase();
+    const baixaLow = String(row["BAIXA"] || "").trim().toLowerCase();
 
     return {
         curso: {
             nombre:       row["CURS"],
             codigo_curso: row["NUM GIA"],
-            codigo:       row["NUM GIA"],
             fecha_inicio: dateEuToMysql(row["DATA INICI"]),
             fecha_fin:    dateEuToMysql(row["DATA FI"]),
         },
@@ -407,8 +417,6 @@ const parseExcelRow = (row) => {
             cesion_material: siNo(row["CESSIO MATERIAL DIDACTIC"]),
             derechos_imagen: siNo(row["DRETS D'IMATES"]),
             accion_difusion: siNo(row["REBRE INFORMACIO"]),
-            comentarios: (baixaLow && baixaLow !== "no" && !/^s[íi]$/.test(baixaLow))
-                ? baixa : null,
         },
         curso_alumno: {
             estat: (!baixaLow || baixaLow === "no") ? 1 : 0,
