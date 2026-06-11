@@ -118,13 +118,22 @@
           <td>
             <%= usuarioItem.email %>
           </td>
-          <% if (usuarioItem.id === usuario.id) { %>
-            <%# El propi admin no es pot canviar el rol (evita quedar-se sense admins) %>
+          <% if (usuarioItem.id===usuario.id) { %>
             <td>
-              <span class="badge badge-actual"><%= usuarioItem.nivel_acceso %></span>
+              <select class="select-rol" disabled>
+                <option selected>
+                  <%= usuarioItem.nivel_acceso.charAt(0).toUpperCase() + usuarioItem.nivel_acceso.slice(1) %>
+                </option>
+              </select>
             </td>
-            <td>—</td>
-          <% } else { %>
+          
+            <td>
+              <span class="badge badge-actual badge-protegit">
+                Protegit
+              </span>
+            </td>
+          
+            <% } else { %>
             <td>
               <select class="select-rol" id="rol-activo-<%= usuarioItem.id %>">
                 <option value="lector" <%=usuarioItem.nivel_acceso==="lector" ? "selected" : "" %>>
