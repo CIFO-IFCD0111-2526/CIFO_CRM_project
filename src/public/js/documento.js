@@ -147,6 +147,9 @@ function renderDocuments(form, documentos) {
     return;
   }
 
+  // El rol lector només pot veure i descarregar: sense botó d'eliminar.
+  const potEditar = form.dataset.potEditar === "true";
+
   lista.innerHTML = documentos
     .map((doc) => {
       return `
@@ -171,12 +174,14 @@ function renderDocuments(form, documentos) {
               Descarregar
             </a>
 
+            ${potEditar ? `
             <button
               class="btn btn-danger btn-delete-document"
               data-id="${doc.id}"
             >
               Eliminar
             </button>
+            ` : ""}
 
           </div>
 

@@ -67,6 +67,16 @@ const changePassword = async (req, res, next) => {
 const aprovarUsuario = async (req, res, next) => {
     try {
         const usuario = req.usuario;
+        const { nivel_acceso } = req.body;
+
+        const rolesValidos = ["admin", "editor", "lector"];
+
+        if (!rolesValidos.includes(nivel_acceso)) {
+            return res.status(400).json({
+                ok: false,
+                error: "Rol no vàlid",
+            });
+        }
 
         if (usuario.activo) {
             return res.status(400).json({
@@ -76,6 +86,7 @@ const aprovarUsuario = async (req, res, next) => {
         }
 
         usuario.activo = true;
+        usuario.nivel_acceso = nivel_acceso;
 
         await usuario.save();
 
@@ -127,6 +138,11 @@ const getPendents = async (req, res, next) => {
             offset,
         });
 
+        const usuariosActivos = await Usuario.findAll({
+            where: { activo: true },
+            order: [["nombre", "ASC"]],
+        });
+
         const totalPages = Math.ceil(count / limit);
 
         res.render("usuarios-pendents", {
@@ -136,6 +152,7 @@ const getPendents = async (req, res, next) => {
             js: "usuarios.js",
             paginaActual: "admin",
             usuarios,
+            usuariosActivos,
             pagination: {
                 currentPage: page,
                 totalPages,
@@ -143,6 +160,44 @@ const getPendents = async (req, res, next) => {
                 limit,
             }
         });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
+
+// PUT /usuarios/:id/rol
+const actualitzarRolUsuario = async (req, res, next) => {
+    try {
+        const usuario = req.usuario;
+        const { nivel_acceso } = req.body;
+
+        // Un admin no pot canviar-se el seu propi rol. Com que només els
+        // admins arriben aquí, això garanteix que sempre queda com a mínim
+        // un admin al sistema (evita quedar-se sense administradors).
+        if (usuario.id === req.session.usuario.id) {
+            return res.status(400).json({
+                ok: false,
+                error: "No pots canviar el teu propi rol.",
+            });
+        }
+
+        const rolesValidos = ["admin", "editor", "lector"];
+
+        if (!rolesValidos.includes(nivel_acceso)) {
+            return res.status(400).json({
+                ok: false,
+                error: "Rol no vàlid",
+            });
+        }
+
+        usuario.nivel_acceso = nivel_acceso;
+
+        await usuario.save();
+
+        return res.json({
+            ok: true,
+        });
+
     } catch (error) {
         return handleControllerError(error, res, next);
     }
@@ -176,4 +231,4 @@ const rebutjarUsuario = async (req, res, next) => {
     }
 };
 
-module.exports = { getPerfil, changePassword, aprovarUsuario, getPendents, rebutjarUsuario };
+module.exports = { getPerfil, changePassword, aprovarUsuario, getPendents, rebutjarUsuario, actualitzarRolUsuario };

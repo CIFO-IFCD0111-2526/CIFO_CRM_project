@@ -32,8 +32,10 @@
 
     <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
-  <a href="/cursos/nuevo" class="btn btn-primario">Nou curs</a>
-</div>
+  <% if (usuario.nivel_acceso !=="lector" ) { %>
+    <a href="/cursos/nuevo" class="btn btn-primario">Nou curs</a>
+    <% } %>
+      </div>
 <% if (cursos && cursos.length> 0) { %>
   <div class="tabla-container">
     <table id="cursosTable">
@@ -75,7 +77,9 @@
             </td>
             <td class="col-accions">
               <div class="acciones">
-                <a href="/cursos/<%= curso.id %>" class="btn btn-secundario btn-sm">Editar</a>
+                <% if (usuario.nivel_acceso !=="lector" ) { %>
+                  <a href="/cursos/<%= curso.id %>" class="btn btn-secundario btn-sm">Editar</a>
+                  <% } %>
               </div>
             </td>
           </tr>

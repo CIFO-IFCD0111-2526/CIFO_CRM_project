@@ -24,4 +24,18 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-module.exports = { authPage, redirectIfLogged, requireAdmin };
+function requireEditor(req, res, next) {
+  if (
+    req.session.usuario.nivel_acceso !== "admin" &&
+    req.session.usuario.nivel_acceso !== "editor"
+  ) {
+    return res.status(403).json({
+      ok: false,
+      error: "Cal ser editor o admin",
+    });
+  }
+
+  next();
+}
+
+module.exports = { authPage, redirectIfLogged, requireAdmin, requireEditor };

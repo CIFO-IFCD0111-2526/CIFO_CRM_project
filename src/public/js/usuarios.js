@@ -1,6 +1,17 @@
 async function aprovarUsuario(id) {
   try {
-    const res = await fetch(`/usuarios/${id}/aprovar`, { method: "PUT" });
+    const nivel_acceso = document.getElementById(`rol-${id}`).value;
+
+    const res = await fetch(`/usuarios/${id}/aprovar`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        nivel_acceso,
+      }),
+    });
+
     const json = await res.json();
 
     if (!res.ok || !json.ok) {
@@ -43,6 +54,43 @@ async function rebutjarUsuario(id) {
       type: "error",
       title: "Error",
       message: "No s'ha pogut rebutjar l'usuari",
+    });
+  }
+}
+
+async function actualitzarRol(id) {
+  try {
+    const nivel_acceso = document.getElementById(`rol-activo-${id}`).value;
+
+    const res = await fetch(`/usuarios/${id}/rol`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nivel_acceso,
+      }),
+    });
+
+    const json = await res.json();
+
+    if (!res.ok || !json.ok) {
+      throw new Error(json.error || "Error actualitzant rol");
+    }
+
+    await window.showModal({
+      type: "success",
+      title: "Rol actualitzat",
+      message: "El rol de l'usuari s'ha actualitzat correctament.",
+    });
+
+  } catch (error) {
+    console.error("Error actualitzant rol:", error);
+
+    await window.showModal({
+      type: "error",
+      title: "Error",
+      message: "No s'ha pogut actualitzar el rol.",
     });
   }
 }
