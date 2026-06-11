@@ -85,8 +85,6 @@
   </div>
 <% } %>
 
-<hr style="margin: 3rem 0;">
-
 <div class="page-header">
   <div>
     <h1 class="page-title">Usuaris actius</h1>
@@ -120,26 +118,34 @@
           <td>
             <%= usuarioItem.email %>
           </td>
-          <td>
-            <select class="select-rol" id="rol-activo-<%= usuarioItem.id %>">
-              <option value="lector" <%=usuarioItem.nivel_acceso==="lector" ? "selected" : "" %>>
-                Lector
-              </option>
+          <% if (usuarioItem.id === usuario.id) { %>
+            <%# El propi admin no es pot canviar el rol (evita quedar-se sense admins) %>
+            <td>
+              <span class="badge badge-actual"><%= usuarioItem.nivel_acceso %></span>
+            </td>
+            <td>—</td>
+          <% } else { %>
+            <td>
+              <select class="select-rol" id="rol-activo-<%= usuarioItem.id %>">
+                <option value="lector" <%=usuarioItem.nivel_acceso==="lector" ? "selected" : "" %>>
+                  Lector
+                </option>
 
-              <option value="editor" <%=usuarioItem.nivel_acceso==="editor" ? "selected" : "" %>>
-                Editor
-              </option>
+                <option value="editor" <%=usuarioItem.nivel_acceso==="editor" ? "selected" : "" %>>
+                  Editor
+                </option>
 
-              <option value="admin" <%=usuarioItem.nivel_acceso==="admin" ? "selected" : "" %>>
-                Admin
-              </option>
-            </select>
-          </td>
-          <td>
-            <button class="btn btn-secundario" onclick="actualitzarRol('<%= usuarioItem.id %>')">
-              Guardar
-            </button>
-          </td>
+                <option value="admin" <%=usuarioItem.nivel_acceso==="admin" ? "selected" : "" %>>
+                  Admin
+                </option>
+              </select>
+            </td>
+            <td>
+              <button class="btn btn-secundario" onclick="actualitzarRol('<%= usuarioItem.id %>')">
+                Guardar
+              </button>
+            </td>
+          <% } %>
         </tr>
         <% }) %>
     </tbody>

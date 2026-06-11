@@ -171,6 +171,16 @@ const actualitzarRolUsuario = async (req, res, next) => {
         const usuario = req.usuario;
         const { nivel_acceso } = req.body;
 
+        // Un admin no pot canviar-se el seu propi rol. Com que només els
+        // admins arriben aquí, això garanteix que sempre queda com a mínim
+        // un admin al sistema (evita quedar-se sense administradors).
+        if (usuario.id === req.session.usuario.id) {
+            return res.status(400).json({
+                ok: false,
+                error: "No pots canviar el teu propi rol.",
+            });
+        }
+
         const rolesValidos = ["admin", "editor", "lector"];
 
         if (!rolesValidos.includes(nivel_acceso)) {

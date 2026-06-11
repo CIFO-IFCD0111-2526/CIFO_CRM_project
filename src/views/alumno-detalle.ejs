@@ -169,18 +169,20 @@
       
     <section class="detalle-card detalle-full">
       <h2 class="detalle-card-title">Cursos</h2>
-      <div class="card-header-cursos">
-        <div class="header-actions">
+      <% if (usuario.nivel_acceso !== "lector") { %>
+        <div class="card-header-cursos">
+          <div class="header-actions">
 
-          <button type="button" id="btnMostrarBuscador" class="btn btn-secundario js-open-matricula">
-            Matricular en un curs
-          </button>
-          <button type="button" id="btnCancelarMatricula" class="btn btn-secundario cancelar-btn hidden">
-            Cancel·lar
-          </button>
+            <button type="button" id="btnMostrarBuscador" class="btn btn-secundario js-open-matricula">
+              Matricular en un curs
+            </button>
+            <button type="button" id="btnCancelarMatricula" class="btn btn-secundario cancelar-btn hidden">
+              Cancel·lar
+            </button>
 
+          </div>
         </div>
-      </div>
+      <% } %>
 
       <ul class="detalle-cursos" id="listaCursos">
         <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
@@ -202,10 +204,12 @@
                 <%= new Date(curso.curso_alumno.createdAt).toLocaleDateString("ca-ES") %>
               </span>
 
-              <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
-                data-alumno-id="<%= alumno.id %>">
-                Dar de baixa
-              </button>
+              <% if (usuario.nivel_acceso !== "lector") { %>
+                <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
+                  data-alumno-id="<%= alumno.id %>">
+                  Dar de baixa
+                </button>
+              <% } %>
 
             </li>
             <% }) %>
@@ -237,17 +241,19 @@
 
     <h2 class="detalle-card-title">Comentaris</h2>
 
-    <form id="comentarioForm" data-alumno-id="<%= alumno.id %>">
+    <% if (usuario.nivel_acceso !== "lector") { %>
+      <form id="comentarioForm" data-alumno-id="<%= alumno.id %>">
 
-      <textarea id="comentarioTexto" name="texto" rows="3" placeholder="Escriu un comentari..." required></textarea>
+        <textarea id="comentarioTexto" name="texto" rows="3" placeholder="Escriu un comentari..." required></textarea>
 
-      <button type="submit" class="btn btn-secundario">
-        Afegir comentari
-      </button>
+        <button type="submit" class="btn btn-secundario">
+          Afegir comentari
+        </button>
 
-    </form>
+      </form>
 
-    <div id="ComentariMsg" class="form-msg form-full" aria-live="polite"></div>
+      <div id="ComentariMsg" class="form-msg form-full" aria-live="polite"></div>
+    <% } %>
 
     <div id="comentariosLista">
 
@@ -285,7 +291,7 @@
               </div>
             </div>
 
-            <% if (comentario.usuario_id===usuario.id) { %>
+            <% if (usuario.nivel_acceso !== "lector" && comentario.usuario_id === usuario.id) { %>
 
               <div class="comentario-actions">
 
@@ -334,16 +340,21 @@
   <section class="detalle-card detalle-full">
     <h2 class="detalle-card-title">Documents</h2>
 
-    <form class="document-form" data-entidad-tipo="Alumno" data-entidad-id="<%= alumno.id %>" novalidate>
-      <div class="file-picker">
-        <label for="archivo-alumno-<%= alumno.id %>" class="file-picker-btn">Tria un fitxer</label>
-        <span class="file-picker-name">Cap fitxer seleccionat</span>
-        <input type="file" id="archivo-alumno-<%= alumno.id %>" name="archivo" accept=".pdf,.jpg,.jpeg,.png,.docx" hidden />
-      </div>
-      <button type="submit" class="btn btn-secundario">
-        Pujar document
-      </button>
-      <div class="form-msg form-full" aria-live="polite"></div>
+    <%# El form es manté sempre (documento.js carrega la llista a partir d'ell),
+        però el lector no veu els controls de pujada ni el botó d'eliminar. %>
+    <form class="document-form" data-entidad-tipo="Alumno" data-entidad-id="<%= alumno.id %>"
+      data-pot-editar="<%= usuario.nivel_acceso !== 'lector' %>" novalidate>
+      <% if (usuario.nivel_acceso !== "lector") { %>
+        <div class="file-picker">
+          <label for="archivo-alumno-<%= alumno.id %>" class="file-picker-btn">Tria un fitxer</label>
+          <span class="file-picker-name">Cap fitxer seleccionat</span>
+          <input type="file" id="archivo-alumno-<%= alumno.id %>" name="archivo" accept=".pdf,.jpg,.jpeg,.png,.docx" hidden />
+        </div>
+        <button type="submit" class="btn btn-secundario">
+          Pujar document
+        </button>
+        <div class="form-msg form-full" aria-live="polite"></div>
+      <% } %>
     </form>
 
     <ul class="detalle-lista-documentos">

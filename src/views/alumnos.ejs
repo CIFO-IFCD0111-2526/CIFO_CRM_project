@@ -4,25 +4,21 @@
     <p class="page-subtitle">Llistat d'alumnes registrats al centre</p>
   </div>
 
-  <div class="header-actions header-actions-row">
-    <% if (usuario.nivel_acceso !=="lector" ) { %>
+  <% if (usuario.nivel_acceso !== "lector") { %>
+    <div class="header-actions header-actions-row">
       <a href="/alumnos/nuevo" class="btn btn-primario">
         <i class="fa-solid fa-plus"></i> Nou alumne
       </a>
-      <% } %>
 
-    <% if (usuario.nivel_acceso !=="lector" ) { %>
-    
       <button type="button" class="btn btn-secundario" id="btnImportarCsv">
         <i class="fa-solid fa-file-import"></i> Importar
       </button>
-    
+
       <a href="/alumnos/export.csv" class="btn btn-secundario">
         <i class="fa-solid fa-file-export"></i> Exportar
       </a>
-    
-      <% } %>
-  </div>
+    </div>
+  <% } %>
 </div>
 
 <div class="alumnos-toolbar">
