@@ -791,72 +791,113 @@ document.addEventListener("click", async (e) => {
 
 });
 
-// Import CSV
+// Import CSV/Excel d'alumnes
 document.addEventListener("DOMContentLoaded", () => {
 
   const btnImportar = document.querySelector("#btnImportarCsv");
   const modal = document.querySelector("#importModal");
   const cerrarModal = document.querySelector("#cerrarImportModal");
   const form = document.querySelector("#importForm");
+  const btnEnviar = document.querySelector("#btnEnviarImport");
+  const resultat = document.querySelector("#importResultat");
 
   if (!btnImportar || !modal || !form) return;
 
+  // Si s'ha importat alguna cosa, en tancar el modal recarreguem
+  // perquè la llista mostri els alumnes nous.
+  let calRecarregar = false;
+
+  // Els errors per fila vénen del backend i es pinten amb innerHTML:
+  // escapem el text per evitar injectar HTML (p. ex. un DNI amb '<').
+  const escapa = (s) => String(s ?? "")
+    .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+  const netejaResultat = () => {
+    if (!resultat) return;
+    resultat.innerHTML = "";
+    resultat.classList.add("hidden");
+  };
+
   btnImportar.addEventListener("click", () => {
+    netejaResultat();
     modal.classList.remove("hidden");
   });
 
   cerrarModal?.addEventListener("click", () => {
     modal.classList.add("hidden");
     form.reset();
+    netejaResultat();
+    if (calRecarregar) window.location.reload();
   });
 
   form.addEventListener("submit", async (e) => {
-
     e.preventDefault();
+    netejaResultat();
 
-    const formData = new FormData(form);
+    // Feedback de "processant": botó deshabilitat amb text informatiu,
+    // així l'usuari sap que l'arxiu s'està treballant i no torna a clicar.
+    const textOriginal = btnEnviar.textContent;
+    btnEnviar.disabled = true;
+    btnEnviar.textContent = "Processant arxiu...";
+    cerrarModal.disabled = true;
 
     try {
-
       const res = await fetch("/alumnos/import.csv", {
         method: "POST",
-        body: formData,
+        body: new FormData(form),
       });
 
       const json = await res.json();
 
-      if (!json.ok) {
+      if (!res.ok || !json.ok) {
         await window.showModal({
           type: "error",
           title: "Error",
-          message: json.error || "Error important CSV",
+          message: json.error || "Error important l'arxiu",
         });
-
         return;
       }
 
-      const modalType = json.creados === 0
-        ? "error"
-        : (json.errores.length ? "warning" : "success");
+      if (json.creados > 0) calRecarregar = true;
 
-      await window.showModal({
-        type: modalType,
-        title: "Importació completada",
-        message: json.errores.length ===0
-            ? `${json.creados} alumnes importats correctament.`
-            : `${json.creados}  amb ${json.errores.length} errors.`,
-           
-      });
+      // Tot correcte → modal d'èxit global, tanquem i recarreguem.
+      if (json.errores.length === 0) {
+        modal.classList.add("hidden");
+        form.reset();
+        await window.showModal({
+          type: "success",
+          title: "Importació completada",
+          message: `${json.creados} alumnes importats correctament.`,
+        });
+        window.location.reload();
+        return;
+      }
+
+      // Hi ha errors → resum + detall per fila DINS del modal d'importació
+      // (el modal global només mostra text pla; aquí podem llistar files).
+      resultat.innerHTML = `
+        <p><strong>Importats:</strong> ${json.creados} ·
+           <strong>Errors:</strong> ${json.errores.length}</p>
+        <ul class="import-errors">
+          ${json.errores.map(err =>
+            `<li><strong>Fila ${escapa(err.fila)}:</strong> ${escapa(err.error)}</li>`
+          ).join("")}
+        </ul>
+      `;
+      resultat.classList.remove("hidden");
 
     } catch (err) {
-
       console.error(err);
-
       await window.showModal({
         type: "error",
         title: "Error",
-        message: "Error de connexió",
+        message: "Error de connexió amb el servidor",
       });
+    } finally {
+      // Restaurem els botons passi el que passi.
+      btnEnviar.disabled = false;
+      btnEnviar.textContent = textOriginal;
+      cerrarModal.disabled = false;
     }
   });
 });
