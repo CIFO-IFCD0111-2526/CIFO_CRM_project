@@ -260,6 +260,7 @@ const importCsv = async (req, res, next) => {
                     });
                     alumnoId = alumnoCreat.id;
                     dnisMap.set(alumno.dni, alumnoId);
+                    creados++
                 }
 
                 // 3. Relació curs-alumne
@@ -268,7 +269,6 @@ const importCsv = async (req, res, next) => {
                     defaults: { ...curso_alumno, ultimo_id_modif: req.session.usuario.id },
                 });
 
-                creados++;
             } catch (err) {
                 errores.push({ fila: i + 1, error: err.errors?.[0]?.message || err.message });
             }

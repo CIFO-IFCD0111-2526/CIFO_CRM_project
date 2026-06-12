@@ -835,16 +835,22 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const modalType = json.creados === 0
-        ? "error"
-        : (json.errores.length ? "warning" : "success");
+      const modalType = json.creados === 0 && json.errores.length === 0
+        ? "warning"
+        : json.creados === 0 ? "error" : "success";
+
+      const modalMessage = modalType === "warning"
+        ? "Alumnes registrats en el sistema. Cap canvi a realitzar."
+        :  modalType === "error"
+        ? "No s´ha importat cap alumne. Revisa el format de l'arxiu i torna-ho a provar."
+        : `${json.creados} alumnes importats correctament. `;
 
       await window.showModal({
         type: modalType,
         title: "Importació completada",
-        message: json.errores.length ===0
-            ? `${json.creados} alumnes importats correctament.`
-            : `${json.creados}  amb ${json.errores.length} errors.`,
+        message: modalMessage, //json.errores.length ===0
+            // ? `${json.creados} alumnes importats correctament.`
+            // : `${json.creados}  amb ${json.errores.length} errors.`,
            
       });
 
