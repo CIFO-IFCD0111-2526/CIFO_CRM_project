@@ -217,9 +217,11 @@ const importCsv = async (req, res, next) => {
                 if (values.every(v => !v)) continue;
 
                 // Construïm l'objecte usant les posicions (robust davant accents).
-                // trim() per celda: el camí Excel ja retalla espais, així el CSV queda igual.
                 const row = {};
-                EXCEL_HEADERS.forEach((h, idx) => { row[h] = String(values[idx] || "").trim(); });
+                EXCEL_HEADERS.forEach((h, idx) => {
+                    const v = values[idx];
+                    row[h] = v instanceof Date ? v : String(v || "").trim();
+                });
 
                 const { curso, alumno, curso_alumno } = parseExcelRow(row);
 
@@ -243,7 +245,7 @@ const importCsv = async (req, res, next) => {
                 if (!cursoId) {
                     const [cursoCreat] = await Curso.findOrCreate({
                         where: { codigo_curso: curso.codigo_curso },
-                        defaults: { ...curso, ultimo_id_modif: req.session.usuario.id },
+                        defaults: { ...curso },
                     });
                     cursoId = cursoCreat.id;
                     cursosMap.set(curso.codigo_curso, cursoId);
@@ -266,7 +268,7 @@ const importCsv = async (req, res, next) => {
                 // 3. Relació curs-alumne
                 await CursoAlumno.findOrCreate({
                     where: { alumno_id: alumnoId, curso_id: cursoId },
-                    defaults: { ...curso_alumno, ultimo_id_modif: req.session.usuario.id },
+                    defaults: { ...curso_alumno },
                 });
 
             } catch (err) {
@@ -374,6 +376,7 @@ const fileToRows = async (buffer, filename) => {
             rows.push(
                 row.values.slice(1).map(cell => {
                     if (cell == null) return "";
+                    if (cell instanceof Date) return cell;
                     if (typeof cell === "object" && cell.text) return String(cell.text).trim();
                     return String(cell).trim();
                 })
@@ -386,9 +389,15 @@ const fileToRows = async (buffer, filename) => {
         .map(line => parseCsvLine(line));
 };
 
-// DD/MM/YYYY → YYYY-MM-DD -- parser del format europeu al format MySQL, retorna null si no és vàlid o està buit
+// Data "DD/MM/YYYY" o Date → YYYY-MM-DD, null si buit o invàlid
 const dateEuToMysql = (val) => {
     if (!val) return null;
+    if (val instanceof Date && !isNaN(val)) {
+        const y = val.getFullYear();
+        const m = String(val.getMonth() + 1).padStart(2, "0");
+        const d = String(val.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+    }
     const [d, m, y] = String(val).split("/");
     return (d && m && y) ? `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}` : null;
 };
