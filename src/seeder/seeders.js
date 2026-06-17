@@ -1,6 +1,8 @@
+const bcrypt = require("bcrypt");
 const Alumno = require("../models/Alumno.js");
 const Curso = require("../models/Curso.js");
 const Profesor = require("../models/Profesor.js");
+const Usuario = require("../models/Usuario.js");
 
 async function seedAlumnos() {
   try {
@@ -314,5 +316,47 @@ async function seedProfesores() { // 2. Nueva función de seed
   }
 }
 
-// 3. Exportar la nueva función
-module.exports = { seedAlumnos, seedCursos, seedProfesores };
+async function seedUsuarios() {
+  try {
+    const total = await Usuario.count();
+
+    if (total > 0) {
+      console.log("Els usuaris ja existeixen. Seed cancel·lat.");
+      return;
+    }
+
+    console.log("Inserint usuaris de prova...");
+
+    const usuarios = [
+      {
+        nombre: "Admin",
+        apellidos: "CIFO",
+        email: "admin@test.com",
+        password: bcrypt.hashSync("admin1234", 10),
+        nivel_acceso: "admin",
+      },
+      {
+        nombre: "Editor",
+        apellidos: "CIFO",
+        email: "editor@test.com",
+        password: bcrypt.hashSync("editor1234", 10),
+        nivel_acceso: "editor",
+      },
+      {
+        nombre: "Lector",
+        apellidos: "CIFO",
+        email: "lector@test.com",
+        password: bcrypt.hashSync("lector1234", 10),
+        nivel_acceso: "lector",
+      },
+    ];
+
+    await Usuario.bulkCreate(usuarios);
+    console.log("3 usuaris inserits correctament (admin/editor/lector, contrasenya: <rol>1234)");
+
+  } catch (error) {
+    console.error("Error inserint usuaris:", error.message);
+  }
+}
+
+module.exports = { seedAlumnos, seedCursos, seedProfesores, seedUsuarios };
