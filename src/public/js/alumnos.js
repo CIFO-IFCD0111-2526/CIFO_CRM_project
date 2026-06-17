@@ -199,19 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!json.ok) {
       console.log("Errors rebuts del backend:", json.error);
 
-      // CONTROL DE ERRORES ANTERIOR, HACÍA REFERENCIA A UN SPAN QUE NO EXISTE.
-      // // Netejar errors anteriors
-      // document
-      //   .querySelectorAll(".error-msg")
-      //   .forEach((e) => (e.textContent = ""));
-
-      // // Mostrar errors nous
-      // for (const camp in json.errores) {
-      //   const span = document.querySelector(`#error-${camp}`);
-      //   if (span) span.textContent = json.errores[camp];
-      // }
-
-      showMsg(json.error);
+           showMsg(json.error);
 
       return;
     }
@@ -389,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.disabled = false;
       return;
     }
-    // ─────────────────────────────────────────────────────────────  
+   
     const id = form.dataset.id;
 
     try {
@@ -836,7 +824,7 @@ document.addEventListener("DOMContentLoaded", () => {
         message: modalMessage,
       });
 
-      await new Promise(r => setTimeout(r, 3000));
+      await new Promise(r => setTimeout(r, 2500));
       const importarAltre = await window.showConfirm({
         title: "Nova importació",
         message: "Vols importar un altre arxiu?",
