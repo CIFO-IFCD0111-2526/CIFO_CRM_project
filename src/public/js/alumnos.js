@@ -826,15 +826,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const modalMessage = modalType === "warning"
         ? "Alumnes registrats en el sistema. Cap canvi a realitzar."
-        :  modalType === "error"
-        ? "No s´ha importat cap alumne. Revisa el format de l'arxiu i torna-ho a provar."
-        : `${json.creados} alumnes importats correctament. `;
+        : modalType === "error"
+          ? "No s´ha importat cap alumne. Revisa el format de l'arxiu i torna-ho a provar."
+          : `${json.creados} alumnes importats correctament. `;
 
       await window.showModal({
         type: modalType,
         title: "Importació completada",
-        message: modalMessage,            
+        message: modalMessage,
       });
+
+      await new Promise(r => setTimeout(r, 3000));
+      const importarAltre = await window.showConfirm({
+        title: "Nova importació",
+        message: "Vols importar un altre arxiu?",
+        confirmText: "Sí",
+        cancelText: "No",
+      });
+
+      if (importarAltre) {
+
+        form.reset();
+        netejaResultat();
+
+      } else {
+
+        modal.classList.add("hidden");
+        form.reset();
+        window.location.reload();
+
+      }
 
     } catch (err) {
       console.error(err);
