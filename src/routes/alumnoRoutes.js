@@ -16,12 +16,12 @@ router.get("/buscar", controller.searchAlumno);
 
 router.get("/", controller.getAll);
 router.get("/nuevo", requireAdmin, controller.renderNewAlumno);
-router.post("/", requireAdmin, controller.createAlumno);
+router.post("/", requireEditor, controller.createAlumno);
 router.get("/export.csv", requireAdmin, controller.exportCsv);
 
 router.post(
     "/import.csv",
-    requireAdmin,
+    requireEditor,
     controller.upload.single("archivo"),
     controller.importCsv
 );
