@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!json.ok) {
       console.log("Errors rebuts del backend:", json.error);
 
-           showMsg(json.error);
+      showMsg(json.error);
 
       return;
     }
@@ -377,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.disabled = false;
       return;
     }
-   
+
     const id = form.dataset.id;
 
     try {
@@ -817,6 +817,16 @@ document.addEventListener("DOMContentLoaded", () => {
         : modalType === "error"
           ? "No s´ha importat cap alumne. Revisa el format de l'arxiu i torna-ho a provar."
           : `${json.creados} alumnes importats correctament. `;
+
+      if (json.errores?.length) {
+        resultat.innerHTML = `
+    <p>${json.creados} importats, ${json.errores.length} amb errors:</p>
+    <ul>
+      ${json.errores.map(e => `<li>Fila ${escapa(e.fila)}: ${escapa(e.error)}</li>`).join("")}
+    </ul>`;
+        resultat.classList.remove("hidden");
+      }
+
 
       await window.showModal({
         type: modalType,
