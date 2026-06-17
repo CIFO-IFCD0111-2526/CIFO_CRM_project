@@ -14,9 +14,11 @@
         <i class="fa-solid fa-file-import"></i> Importar
       </button>
 
-      <a href="/alumnos/export.csv" class="btn btn-secundario">
-        <i class="fa-solid fa-file-export"></i> Exportar
-      </a>
+      <% if (usuario.nivel_acceso === "admin") { %>
+        <a href="/alumnos/export.csv" class="btn btn-secundario">
+          <i class="fa-solid fa-file-export"></i> Exportar
+        </a>
+      <% } %>
     </div>
   <% } %>
 </div>
