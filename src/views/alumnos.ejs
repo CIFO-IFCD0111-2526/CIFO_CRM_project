@@ -124,10 +124,10 @@
     <h2>Importar alumnes</h2>
 
     <form id="importForm">
-      <input type="file" name="archivo" id="archivoCsv" accept=".csv" required />
+      <input type="file" name="archivo" id="archivoCsv" accept=".csv,.xlsx,.xls" required />
 
       <div class="modal-actions">
-        <button type="submit" class="btn btn-primario">
+        <button type="submit" class="btn btn-primario" id="btnEnviarImport">
           Importar
         </button>
 
@@ -136,5 +136,10 @@
         </button>
       </div>
     </form>
+
+    <%# Resultat de la importació: resum + detall d'errors per fila.
+        Va dins del modal d'importació perquè aquí sí podem renderitzar HTML
+        (el modal global de showModal només accepta text pla). %>
+    <div id="importResultat" class="import-resultat hidden" aria-live="polite"></div>
   </div>
 </div>
