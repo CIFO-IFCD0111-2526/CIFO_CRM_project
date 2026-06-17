@@ -15,7 +15,7 @@ router.use(authPage);
 router.get("/buscar", controller.searchAlumno);
 
 router.get("/", controller.getAll);
-router.get("/nuevo", requireAdmin, controller.renderNewAlumno);
+router.get("/nuevo", requireEditor, controller.renderNewAlumno);
 router.post("/", requireEditor, controller.createAlumno);
 router.get("/export.csv", requireAdmin, controller.exportCsv);
 
@@ -43,12 +43,12 @@ router.get("/:id",
 );
 
 router.put("/:id",
-    requireAdmin,
+    requireEditor,
     loadResource(Alumno, { notFoundMessage: "L'alumne no existeix." }),
     controller.updateAlumno
 );
 router.delete("/:id",
-    requireAdmin,
+    requireEditor,
     loadResource(Alumno),
     controller.deleteAlumno
 );
