@@ -206,18 +206,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!json.ok) {
       console.log("Errors rebuts del backend:", json.error);
 
-      // CONTROL DE ERRORES ANTERIOR, HACÍA REFERENCIA A UN SPAN QUE NO EXISTE.
-      // // Netejar errors anteriors
-      // document
-      //   .querySelectorAll(".error-msg")
-      //   .forEach((e) => (e.textContent = ""));
-
-      // // Mostrar errors nous
-      // for (const camp in json.errores) {
-      //   const span = document.querySelector(`#error-${camp}`);
-      //   if (span) span.textContent = json.errores[camp];
-      // }
-
       showMsg(json.error);
 
       return;
@@ -405,7 +393,7 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.disabled = false;
       return;
     }
-    // ─────────────────────────────────────────────────────────────  
+
     const id = form.dataset.id;
 
     try {
@@ -864,15 +852,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const modalMessage = modalType === "warning"
         ? "Alumnes registrats en el sistema. Cap canvi a realitzar."
-        :  modalType === "error"
-        ? "No s´ha importat cap alumne. Revisa el format de l'arxiu i torna-ho a provar."
-        : `${json.creados} alumnes importats correctament. `;
+        : modalType === "error"
+          ? "No s´ha importat cap alumne. Revisa el format de l'arxiu i torna-ho a provar."
+          : `${json.creados} alumnes importats correctament. `;
+
+      if (json.errores?.length) {
+        resultat.innerHTML = `
+    <p>${json.creados} importats, ${json.errores.length} amb errors:</p>
+    <ul>
+      ${json.errores.map(e => `<li>Fila ${escapa(e.fila)}: ${escapa(e.error)}</li>`).join("")}
+    </ul>`;
+        resultat.classList.remove("hidden");
+      }
+
 
       await window.showModal({
         type: modalType,
         title: "Importació completada",
-        message: modalMessage,            
+        message: modalMessage,
       });
+
+      await new Promise(r => setTimeout(r, 2500));
+      const importarAltre = await window.showConfirm({
+        title: "Nova importació",
+        message: "Vols importar un altre arxiu?",
+        confirmText: "Sí",
+        cancelText: "No",
+      });
+
+      if (importarAltre) {
+
+        form.reset();
+        netejaResultat();
+
+      } else {
+
+        modal.classList.add("hidden");
+        form.reset();
+        window.location.reload();
+
+      }
 
     } catch (err) {
       console.error(err);
