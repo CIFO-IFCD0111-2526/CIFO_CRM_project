@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { authPage, requireEditor } = require("../middlewares/auth.js");
+const { authPage, requireEditor, requireAdmin } = require("../middlewares/auth.js");
 
 const controller = require("../controllers/alumnoController");
 
@@ -17,7 +17,7 @@ router.get("/buscar", controller.searchAlumno);
 router.get("/", controller.getAll);
 router.get("/nuevo", requireEditor, controller.renderNewAlumno);
 router.post("/", requireEditor, controller.createAlumno);
-router.get("/export.csv", requireEditor, controller.exportCsv);
+router.get("/export.csv", requireAdmin, controller.exportCsv);
 
 router.post(
     "/import.csv",
