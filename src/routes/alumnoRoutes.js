@@ -32,7 +32,7 @@ router.get("/:id",
         include: [
             {
                 model: Curso,
-                through: { attributes: ["estat", "createdAt"] }
+                through: { attributes: ["estat", "createdAt", "apte", "fecha_baixa"] }
             },
             {
                 model: Comentario,

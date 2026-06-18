@@ -34,6 +34,14 @@ const CursoAlumno = sequelize.define('curso_alumno', {   // És el nom que fa se
     type: DataTypes.BOOLEAN,
     defaultValue: false,      // false = pendent, true = aprovada/feta
     allowNull: false
+  },
+  apte: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true           // null = encara no avaluat
+  },
+  fecha_baixa: {
+    type: DataTypes.DATE,
+    allowNull: true           // null = sense baixa
   }
 }, {
   tableName: 'curso_alumno',  // És el nom a la base de dades SQL ( string ) 

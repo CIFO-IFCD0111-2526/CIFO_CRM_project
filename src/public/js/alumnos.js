@@ -726,9 +726,9 @@ document.addEventListener("click", async (e) => {
     || "aquest curs";
 
   const ok = await window.showConfirm({
-    title: "Confirmar baixa",
-    message: `Segur que vols donar de baixa aquest curs de l'alumne?`,
-    confirmText: "Dar de baixa",
+    title: "Eliminar curs",
+    message: `Segur que vols eliminar aquest curs de l'alumne?`,
+    confirmText: "Eliminar",
     cancelText: "Cancel·lar",
   });
 
@@ -750,7 +750,7 @@ document.addEventListener("click", async (e) => {
       await window.showModal({
         type: "error",
         title: "Error",
-        message: json.error || "No s'ha pogut donar de baixa el curs",
+        message: json.error || "No s'ha pogut eliminar el curs",
       });
 
       return;
@@ -761,7 +761,7 @@ document.addEventListener("click", async (e) => {
 
     await window.showModal({
       type: "success",
-      title: "Baixa correcta",
+      title: "Curs eliminat",
       message: `El curs s'ha eliminat de l'alumne correctament.`,
     });
 
@@ -777,6 +777,52 @@ document.addEventListener("click", async (e) => {
 
   }
 
+});
+// Handler nou per desar apte/baixa de la matrícula escrutant els canvis al llistat
+document.getElementById('listaCursos')?.addEventListener('change', async function(e) {
+  if (!e.target.matches('.js-update-matricula')) return;
+
+  const input = e.target;
+  const cursoId = input.dataset.cursoId;
+  const alumnoId = input.dataset.alumnoId;
+  const li = input.closest(".alumno-curso-item");
+
+  const dataToSend = {};
+  if (input.classList.contains('select-apte')) {
+    dataToSend.apte = input.value;
+  } else if (input.classList.contains('input-baixa')) {
+    dataToSend.fecha_baixa = input.value;
+  }
+
+  try {
+    const res = await fetch(`/cursos/${cursoId}/alumnos/${alumnoId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dataToSend)
+    });
+
+    const json = await res.json();
+
+    if (!res.ok || !json.ok) {
+      await window.showModal({
+        type: "error",
+        title: "Error",
+        message: json.error || "No s'ha pogut actualitzar la matrícula",
+      });
+      return;
+    }
+
+    // Refresquem per pintar els nous badges generats pel servidor (EJS)
+    window.location.reload();
+
+  } catch (err) {
+    console.error(err);
+    await window.showModal({
+      type: "error",
+      title: "Error",
+      message: "Error de connexió amb el servidor",
+    });
+  }
 });
 
 // Import CSV/Excel d'alumnes
