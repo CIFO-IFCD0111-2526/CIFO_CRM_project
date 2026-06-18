@@ -22,9 +22,9 @@ const getAll = async (req, res, next) => {
         const page  = Math.max(1, parseInt(req.query.page)  || 1);
         const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 10));
         const offset = (page - 1) * limit;
-        const tipo = (req.query.tipo || "").trim().toLowerCase();
+        
         const where = {};
-        if (["actual", "antiguo", "futuro"].includes(tipo)) where.tipo = tipo;
+        
 
         const { count, rows: alumnos } = await Alumno.findAndCountAll({
             where, order: [["created_at", "DESC"]], limit, offset,
@@ -36,7 +36,7 @@ const getAll = async (req, res, next) => {
             css: "alumnos.css",
             js: "alumnos.js",
             paginaActual: "alumnos",
-            alumnos, tipo,
+            alumnos,
             pagination: {
                 currentPage: page,
                 totalPages: Math.ceil(count / limit),
@@ -62,10 +62,10 @@ const renderNewAlumno = async (req, res) => {
 
 // POST /alumnos
 const createAlumno = async (req, res, next) => {
-    const { nombre, apellidos, dni, telefono, email, nivel_estudios, tipo,
+    const { nombre, apellidos, dni, telefono, email, nivel_estudios,
             derechos_imagen, cesion_material, accion_difusion } = req.body;
 
-    if (!nombre || !apellidos || !dni || !tipo) {
+    if (!nombre || !apellidos || !dni) {
         return res.status(400).json({ error: "Tots els camps són obligatoris." });
     }
 
@@ -78,7 +78,6 @@ const createAlumno = async (req, res, next) => {
             telefono: telefono || null,
             email: email || null,
             nivel_estudios: nivel_estudios || null,
-            tipo,
             derechos_imagen: derechos_imagen === "true" || derechos_imagen === true,
             cesion_material: cesion_material === "true" || cesion_material === true,
             accion_difusion: accion_difusion === "true" || accion_difusion === true,
@@ -128,7 +127,6 @@ const deleteAlumno = async (req, res, next) => {
 // GET /alumnos/search
 const searchAlumno = async (req, res, next) => {
     const q    = (req.query.q    || "").trim();
-    const tipo = (req.query.tipo || "").trim().toLowerCase();
     if (q.length < 2) return res.json([]);
 
     const where = {
@@ -138,13 +136,13 @@ const searchAlumno = async (req, res, next) => {
             { dni:      { [Op.like]: `%${q}%` } },
         ],
     };
-    if (["actual", "antiguo", "futuro"].includes(tipo)) where.tipo = tipo;
+    
 
     try {
         const alumnos = await Alumno.findAll({
             where, limit: 10,
             order: [["apellidos", "ASC"]],
-            attributes: ["id", "nombre", "apellidos", "dni", "tipo"],
+            attributes: ["id", "nombre", "apellidos", "dni"],
         });
         return res.json(alumnos);
     } catch (error) {
@@ -161,7 +159,7 @@ const exportCsv = async (req, res, next) => {
                 escapeCsvValue(a.nombre),    escapeCsvValue(a.apellidos),
                 escapeCsvValue(a.dni),       escapeCsvValue(a.telefono),
                 escapeCsvValue(a.email),     escapeCsvValue(a.nivel_estudios),
-                escapeCsvValue(a.tipo),      escapeCsvValue(a.derechos_imagen),
+                escapeCsvValue(a.derechos_imagen),
                 escapeCsvValue(a.cesion_material), escapeCsvValue(a.accion_difusion),
             ].join(",")
         );
@@ -256,7 +254,6 @@ const importCsv = async (req, res, next) => {
                 if (!alumnoId) {
                     const alumnoCreat = await Alumno.create({
                         ...alumno,
-                        tipo: "actual",
                         nivel_estudios: null,
                         ultimo_id_modif: req.session.usuario.id,
                     });
@@ -287,9 +284,9 @@ const updateAlumno = async (req, res, next) => {
     try {
         const alumno = req.alumno;
         const { nombre, apellidos, dni, telefono, email, nivel_estudios,
-                tipo, derechos_imagen, cesion_material, accion_difusion } = req.body;
+                derechos_imagen, cesion_material, accion_difusion } = req.body;
 
-        if (!nombre || !apellidos || !dni || !tipo) {
+        if (!nombre || !apellidos || !dni) {
             return res.status(400).json({ ok: false, mensaje: "Tots el camps són obligatoris" });
         }
 
@@ -303,7 +300,6 @@ const updateAlumno = async (req, res, next) => {
             telefono: telefono || null,
             email: email || null,
             nivel_estudios: nivel_estudios || null,
-            tipo,
             derechos_imagen: derechos_imagen === "true" || derechos_imagen === true,
             cesion_material: cesion_material === "true" || cesion_material === true,
             accion_difusion: accion_difusion === "true" || accion_difusion === true,
@@ -326,7 +322,7 @@ const updateAlumno = async (req, res, next) => {
 // Capçaleres exportació interna CRM 
 const CSV_HEADERS = [
     "nombre", "apellidos", "dni", "telefono", "email",
-    "nivel_estudios", "tipo", "derechos_imagen", "cesion_material", "accion_difusion",
+    "nivel_estudios", "derechos_imagen", "cesion_material", "accion_difusion",
 ];
 
 // Capçaleres del Excel del centre donats com exemple. 
