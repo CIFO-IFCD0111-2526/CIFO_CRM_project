@@ -101,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const RegAlDni = document.querySelector("#RegAlDni");
   const RegAlTelefono = document.querySelector("#RegAlTelefono");
   const RegAlEmail = document.querySelector("#RegAlEmail");
-  const RegAltipo = document.querySelector("#RegAltipo");
 
   // Netejem els errors de la pàgina
 
@@ -115,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
       RegAlDni,
       RegAlTelefono,
       RegAlEmail,
-      RegAltipo,
     ].forEach((input) => {
       input.addEventListener("input", () => {
         clearError(input);
@@ -182,11 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
         valTelMail = true;
       };
     } while (valTelMail === false);
-
-    if (!data.tipo) {
-      errors.push("És obligatori escollir un tipus.");
-      setError(RegAltipo);
-    }
 
     if (errors.length > 0) {
       showMsg(errors.join("<br>"));
@@ -336,7 +329,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const errors = [];
     const nombreInput = form.querySelector('[name="nombre"]');
     const apellidosInput = form.querySelector('[name="apellidos"]');
-    const tipoInput = form.querySelector('[name="tipo"]');
     const dniInput = form.querySelector('[name="dni"]');
     const emailInput = form.querySelector('[name="email"]');
     const telInput = form.querySelector('[name="telefono"]');
@@ -355,14 +347,6 @@ document.addEventListener("DOMContentLoaded", () => {
       setError(apellidosInput);
     } else {
       clearError(apellidosInput);
-    }
-
-    // Tipo
-    if (!data.tipo) {
-      errors.push("És obligatori escollir un tipus.");
-      setError(tipoInput);
-    } else {
-      clearError(tipoInput);
     }
 
     if (!data.dni) {
@@ -499,28 +483,6 @@ function initBuscador(input, dropdown) {
     }
   });
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const filtroButtons = document.querySelectorAll(".filtroTipoAlumno button");
-  if (!filtroButtons.length) return;
-
-  filtroButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      filtroButtons.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-
-      const tipo = button.dataset.tipo;
-      const url = new URL(window.location.href);
-      if (tipo) {
-        url.searchParams.set("tipo", tipo);
-      } else {
-        url.searchParams.delete("tipo");
-      }
-      url.searchParams.set("page", 1);
-      window.location.href = url.toString();
-    });
-  });
-});
 
 // Matricular alumnos en curso 
 document.addEventListener("DOMContentLoaded", () => {

@@ -33,7 +33,6 @@
           <thead>
             <tr>
               <th>Cognoms, Nom</th>
-              <th>Tipus</th>
               <th>Data d'alta</th>
             </tr>
           </thead>
@@ -46,24 +45,6 @@
                   <a class="alumno-nombre" href="/alumnos/<%= alumno.id %>">
                     <%= alumno.apellidos %>, <%= alumno.nombre %>
                   </a>
-                </td>
-
-                <td>
-                  <span class="badge badge-<%= alumno.tipo %>">
-
-                    <% if (alumno.tipo==='actual' ) { %>
-                      Actual
-                      <% } %>
-
-                        <% if (alumno.tipo==='antiguo' ) { %>
-                          Antic
-                          <% } %>
-
-                            <% if (alumno.tipo==='futuro' ) { %>
-                              Futur
-                              <% } %>
-
-                  </span>
                 </td>
 
                 <td class="col-fecha">

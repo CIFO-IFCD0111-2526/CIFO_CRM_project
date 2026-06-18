@@ -20,21 +20,8 @@
           <input type="text" name="apellidos" value="<%= alumno.apellidos %>" placeholder="Cognoms" required />
         </div>
       </h1>
-
-      <p class="page-subtitle form-group">
-        <!-- modo vista -->
-        <span class="view-mode badge badge-<%= alumno.tipo %>">
-          <% if (alumno.tipo==='actual' ) { %>Actual<% } %>
-              <% if (alumno.tipo==='antiguo' ) { %>Antic<% } %>
-                  <% if (alumno.tipo==='futuro' ) { %>Futur<% } %>
-        </span>
-
-        <!-- Modo edición -->
-        <select name="tipo" class="edit-mode hidden form-group" required>
-          <option value="actual" <%=alumno.tipo==='actual' ? 'selected' : '' %>>Actual</option>
-          <option value="antiguo" <%=alumno.tipo==='antiguo' ? 'selected' : '' %>>Antic</option>
-          <option value="futuro" <%=alumno.tipo==='futuro' ? 'selected' : '' %>>Futur</option>
-        </select>
+      <!-- eliminar sino aporta nada visualmente -->
+      <p class="page-subtitle form-group"> 
       </p>
     </div>
 
