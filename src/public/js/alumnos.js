@@ -187,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Enviem al backend
+    window.showLoader();
     const res = await fetch("/alumnos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -198,6 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Si hi ha errors → mostrar-los
     if (!json.ok) {
       console.log("Errors rebuts del backend:", json.error);
+      window.hideLoader();
 
       showMsg(json.error);
 
@@ -205,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Si tot va bé → redirigir a /alumnos
-
+    window.hideLoader();
     window.location.href = json.redirect;
   });
 });
@@ -227,6 +229,8 @@ document.addEventListener("click", async (e) => {
 
   if (!ok) return;
 
+  window.showLoader();
+
   try {
     const res = await fetch(`/alumnos/${id}`, { method: "DELETE" });
     const json = await res.json();
@@ -238,6 +242,8 @@ document.addEventListener("click", async (e) => {
       title: "Error",
       message: "No s'ha pogut eliminar l'alumne.",
     });
+  } finally {
+    window.hideLoader();
   }
 });
 
@@ -380,6 +386,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const id = form.dataset.id;
 
+    window.showLoader();
+
     try {
       const res = await fetch(`/alumnos/${id}`, {
         method: "PUT",
@@ -413,7 +421,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       submitBtn.disabled = false;
-    }
+    } finally {
+      window.hideLoader();
+    } 
   });
 });
 
@@ -531,6 +541,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!ok) return;
 
+    window.showLoader();
+
     try {
       const res = await fetch(`/cursos/${curso.id}/alumnos`, {
         method: "POST",
@@ -587,7 +599,9 @@ document.addEventListener("DOMContentLoaded", () => {
         title: "Error",
         message: "Error de connexió amb el servidor",
       });
-    }
+    } finally {
+      window.hideLoader();
+    }   
   });
 
 });
@@ -695,6 +709,7 @@ document.addEventListener("click", async (e) => {
   });
 
   if (!ok) return;
+  window.showLoader();
 
   try {
 
@@ -737,7 +752,9 @@ document.addEventListener("click", async (e) => {
       message: "Error de connexió amb el servidor",
     });
 
-  }
+  } finally {
+    window.hideLoader();
+  } 
 
 });
 
@@ -887,6 +904,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!texto) return;
 
+    window.showLoader();
+
     try {
 
       const res = await fetch(
@@ -925,7 +944,11 @@ document.addEventListener("DOMContentLoaded", () => {
         message: "Error de connexió amb el servidor",
       });
 
-    }
+    } finally {
+
+      window.hideLoader();
+
+    } 
 
   });
 
@@ -947,6 +970,7 @@ document.addEventListener("click", async (e) => {
   });
 
   if (!ok) return;
+  window.showLoader();
 
   try {
 
@@ -981,6 +1005,10 @@ document.addEventListener("click", async (e) => {
       title: "Error",
       message: "Error de connexió amb el servidor",
     });
+
+  } finally {
+
+    window.hideLoader();
 
   }
 
@@ -1041,6 +1069,8 @@ document.addEventListener("click", async (e) => {
 
   if (!texto) return;
 
+  window.showLoader();
+
   try {
 
     const res = await fetch(
@@ -1079,6 +1109,8 @@ document.addEventListener("click", async (e) => {
       message: "Error de connexió amb el servidor",
     });
 
+  } finally {
+    window.hideLoader();
   }
 
 });
