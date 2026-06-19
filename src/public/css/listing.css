@@ -108,8 +108,16 @@ main {
         margin-right: 1rem;
     }
 
-    .page-header {
-        padding: 1.5rem 1rem 1rem;
+   .page-header {
+       padding: 1.5rem 1rem 1rem;
+       flex-direction: column;
+       align-items: stretch;
+   }
+
+    .buscador-wrapper {
+        width: 100%;
+        max-width: none;
+        align-items: stretch;
     }
 
     /* detalle */

@@ -151,3 +151,14 @@
 #filtroAnyCurso:hover {
   background-color: var(--color-primario-hover);
 }
+
+@media (max-width: 640px) {
+  .buscador-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #filtroAnyCurso {
+    width: 100%;
+  }
+}
