@@ -34,14 +34,16 @@
           required />
       </p>
     </div>
-
-    <div class="acciones">
-      <a href="#" id="btnEditar" class="btn btn-secundario">Editar</a>
-      <button type="submit" id="btnGuardar" class="btn btn-secundario edit-mode hidden">Guardar</button>
-      <button type="button" id="btnCancelar" class="btn btn-secundario edit-mode hidden">Cancel·lar</button>
-      <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= curso.id %>"
-        data-nombre="<%= curso.nombre %>">Eliminar</button>
-    </div>
+    <% if (usuario.nivel_acceso !=="lector" ) { %>
+    
+      <div class="acciones">
+        <a href="#" id="btnEditar" class="btn btn-secundario">Editar</a>
+        <button type="submit" id="btnGuardar" class="btn btn-secundario edit-mode hidden">Guardar</button>
+        <button type="button" id="btnCancelar" class="btn btn-secundario edit-mode hidden">Cancel·lar</button>
+        <button type="button" class="btn btn-danger btn-eliminar" data-id="<%= curso.id %>"
+          data-nombre="<%= curso.nombre %>">Eliminar</button>
+      </div>
+      <% } %>
   </div>
 
   <div class="detalle-grid form-group">
@@ -98,6 +100,8 @@
 
     <section class="detalle-card">
       <h2 class="detalle-card-title">Professors</h2>
+
+      <% if (usuario.nivel_acceso !== "lector") { %>
       <div class="header-actions">
         <button type="button" id="btnMostrarProfesores" class="btn btn-secundario js-open-matricula">
           Assignar professor
@@ -106,11 +110,15 @@
           Cancel·lar
         </button>
       </div>
+      <% } %>
       <% if (curso.Profesors && curso.Profesors.length > 0) { %>
         <ul class="detalle-cursos">
           <% curso.Profesors.forEach(prof => { %>
             <li>
               <span class="curso-nombre"><%= prof.nombre %> <%= prof.apellidos %></span>
+
+              <% if (usuario.nivel_acceso !== "lector") { %>
+
               <button
                 type="button"
                 class="btn btn-danger btn-sm btn-desasignar-profesor"
@@ -121,6 +129,7 @@
               >
                 Donar de baixa
               </button>
+              <% } %>
             </li>
           <% }) %>
         </ul>
@@ -139,16 +148,18 @@
 
     <section class="detalle-card detalle-full">
       <h2 class="detalle-card-title">Alumnes</h2>
-      <div class="card-header-alumnos">
-        <div class="header-actions">
-          <button type="button" id="btnMostrarBuscador" class="btn btn-secundario js-open-matricula">
-            Inscriure alumne
-          </button>
-          <button type="button" id="btnCancelarMatricula" class="btn btn-secundario cancelar-btn hidden">
-            Cancel·lar
-          </button>
+      <% if (usuario.nivel_acceso !== "lector") { %>
+        <div class="card-header-alumnos">
+          <div class="header-actions">
+            <button type="button" id="btnMostrarBuscador" class="btn btn-secundario js-open-matricula">
+              Inscriure alumne
+            </button>
+            <button type="button" id="btnCancelarMatricula" class="btn btn-secundario cancelar-btn hidden">
+              Cancel·lar
+            </button>
+          </div>
         </div>
-      </div>
+      <% } %>
       <ul class="detalle-cursos" id="listaAlumnosCurso">
         <% if (curso.Alumnos && curso.Alumnos.length> 0) { %>
           <% curso.Alumnos.forEach(al=> { %>
@@ -157,10 +168,12 @@
                 <%= al.nombre %>
                   <%= al.apellidos %></a>
               </span>
-              <button type="button" class="btn btn-danger btn-sm btn-desmatricular" data-curso-id="<%= curso.id %>"
-                data-alumno-id="<%= al.id %>">
-                Dar de baixa
-              </button>
+              <% if (usuario.nivel_acceso !== "lector") { %>
+                <button type="button" class="btn btn-danger btn-sm btn-desmatricular" data-curso-id="<%= curso.id %>"
+                  data-alumno-id="<%= al.id %>">
+                  Dar de baixa
+                </button>
+              <% } %>
             </li>
             <% }) %>
               <% } else { %>
@@ -184,16 +197,21 @@
   <section class="detalle-card detalle-full">
     <h2 class="detalle-card-title">Documents</h2>
 
-    <form class="document-form" data-entidad-tipo="Curso" data-entidad-id="<%= curso.id %>" novalidate>
-      <div class="file-picker">
-        <label for="archivo-curso-<%= curso.id %>" class="file-picker-btn">Tria un fitxer</label>
-        <span class="file-picker-name">Cap fitxer seleccionat</span>
-        <input type="file" id="archivo-curso-<%= curso.id %>" name="archivo" accept=".pdf,.jpg,.jpeg,.png,.docx" hidden />
-      </div>
-      <button type="submit" class="btn btn-secundario">
-        Pujar document
-      </button>
-      <div class="form-msg form-full" aria-live="polite"></div>
+    <%# El form es manté sempre (documento.js carrega la llista a partir d'ell),
+        però el lector no veu els controls de pujada ni el botó d'eliminar. %>
+    <form class="document-form" data-entidad-tipo="Curso" data-entidad-id="<%= curso.id %>"
+      data-pot-editar="<%= usuario.nivel_acceso !== 'lector' %>" novalidate>
+      <% if (usuario.nivel_acceso !== "lector") { %>
+        <div class="file-picker">
+          <label for="archivo-curso-<%= curso.id %>" class="file-picker-btn">Tria un fitxer</label>
+          <span class="file-picker-name">Cap fitxer seleccionat</span>
+          <input type="file" id="archivo-curso-<%= curso.id %>" name="archivo" accept=".pdf,.jpg,.jpeg,.png,.docx" hidden />
+        </div>
+        <button type="submit" class="btn btn-secundario">
+          Pujar document
+        </button>
+        <div class="form-msg form-full" aria-live="polite"></div>
+      <% } %>
     </form>
 
     <ul class="detalle-lista-documentos">

@@ -111,6 +111,7 @@ async function startServer() {
     await seeder.seedAlumnos();
     await seeder.seedCursos();
     await seeder.seedProfesores();
+    await seeder.seedUsuarios();
     server.listen(PORT, () => {
       console.log(`Servidor en http://localhost:${PORT}`);
       if (process.env.MOTD) console.log(`\x1b[33m ${process.env.MOTD} \x1b[0m`);

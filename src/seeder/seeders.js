@@ -1,6 +1,8 @@
+const bcrypt = require("bcrypt");
 const Alumno = require("../models/Alumno.js");
 const Curso = require("../models/Curso.js");
 const Profesor = require("../models/Profesor.js");
+const Usuario = require("../models/Usuario.js");
 
 async function seedAlumnos() {
   try {
@@ -22,7 +24,6 @@ async function seedAlumnos() {
         telefono: "600111111",
         email: "carlos@test.com",
         nivel_estudios: "2",
-        tipo: "actual",
         derechos_imagen: true,
         cesion_material: false,
       },
@@ -33,7 +34,6 @@ async function seedAlumnos() {
         telefono: "600222222",
         email: "laura@test.com",
         nivel_estudios: "5",
-        tipo: "futuro",
       },
       {
         nombre: "David",
@@ -42,7 +42,6 @@ async function seedAlumnos() {
         telefono: "600333333",
         email: "david@test.com",
         nivel_estudios: "4",
-        tipo: "actual",
       },
       {
         nombre: "Ana",
@@ -51,7 +50,6 @@ async function seedAlumnos() {
         telefono: "600444444",
         email: "ana@test.com",
         nivel_estudios: "6",
-        tipo: "antiguo",
       },
       {
         nombre: "Mario",
@@ -60,7 +58,6 @@ async function seedAlumnos() {
         telefono: "600555555",
         email: "mario@test.com",
         nivel_estudios: "2",
-        tipo: "actual",
       },
       {
         nombre: "Sara",
@@ -69,7 +66,6 @@ async function seedAlumnos() {
         telefono: "600666666",
         email: "sara@test.com",
         nivel_estudios: "4",
-        tipo: "futuro",
       },
       {
         nombre: "Javier",
@@ -78,7 +74,6 @@ async function seedAlumnos() {
         telefono: "600777777",
         email: "javier@test.com",
         nivel_estudios: "2",
-        tipo: "actual",
       },
       {
         nombre: "Lucía",
@@ -87,7 +82,6 @@ async function seedAlumnos() {
         telefono: "600888888",
         email: "lucia@test.com",
         nivel_estudios: "5",
-        tipo: "actual",
       },
       {
         nombre: "Pablo",
@@ -96,7 +90,6 @@ async function seedAlumnos() {
         telefono: "600999999",
         email: "pablo@test.com",
         nivel_estudios: "4",
-        tipo: "antiguo",
       },
       {
         nombre: "Elena",
@@ -105,7 +98,6 @@ async function seedAlumnos() {
         telefono: "600101010",
         email: "elena@test.com",
         nivel_estudios: "6",
-        tipo: "actual",
       },
       {
         nombre: "Raúl",
@@ -114,7 +106,6 @@ async function seedAlumnos() {
         telefono: "600121212",
         email: "raul@test.com",
         nivel_estudios: "3",
-        tipo: "actual",
       },
       {
         nombre: "Claudia",
@@ -123,7 +114,6 @@ async function seedAlumnos() {
         telefono: "600131313",
         email: "claudia@test.com",
         nivel_estudios: "5",
-        tipo: "futuro",
       },
       {
         nombre: "Iván",
@@ -132,7 +122,6 @@ async function seedAlumnos() {
         telefono: "600141414",
         email: "ivan@test.com",
         nivel_estudios: "1",
-        tipo: "actual",
       },
       {
         nombre: "Patricia",
@@ -141,7 +130,6 @@ async function seedAlumnos() {
         telefono: "600151515",
         email: "patricia@test.com",
         nivel_estudios: "6",
-        tipo: "antiguo",
       },
       {
         nombre: "Hugo",
@@ -150,7 +138,6 @@ async function seedAlumnos() {
         telefono: "600161616",
         email: "hugo@test.com",
         nivel_estudios: "2",
-        tipo: "actual",
       },
       {
         nombre: "Marta",
@@ -159,7 +146,6 @@ async function seedAlumnos() {
         telefono: "600171717",
         email: "marta@test.com",
         nivel_estudios: "4",
-        tipo: "futuro",
       },
       {
         nombre: "Diego",
@@ -168,7 +154,6 @@ async function seedAlumnos() {
         telefono: "600181818",
         email: "diego@test.com",
         nivel_estudios: "3",
-        tipo: "actual",
       },
       {
         nombre: "Nuria",
@@ -177,7 +162,6 @@ async function seedAlumnos() {
         telefono: "600191919",
         email: "nuria@test.com",
         nivel_estudios: "5",
-        tipo: "actual",
       },
       {
         nombre: "Adrián",
@@ -186,7 +170,6 @@ async function seedAlumnos() {
         telefono: "600202020",
         email: "adrian@test.com",
         nivel_estudios: "1",
-        tipo: "antiguo",
       },
       {
         nombre: "Cristina",
@@ -195,7 +178,6 @@ async function seedAlumnos() {
         telefono: "600212121",
         email: "cristina@test.com",
         nivel_estudios: "6",
-        tipo: "actual",
       }
     ];
 
@@ -314,5 +296,47 @@ async function seedProfesores() { // 2. Nueva función de seed
   }
 }
 
-// 3. Exportar la nueva función
-module.exports = { seedAlumnos, seedCursos, seedProfesores };
+async function seedUsuarios() {
+  try {
+    const total = await Usuario.count();
+
+    if (total > 0) {
+      console.log("Els usuaris ja existeixen. Seed cancel·lat.");
+      return;
+    }
+
+    console.log("Inserint usuaris de prova...");
+
+    const usuarios = [
+      {
+        nombre: "Admin",
+        apellidos: "CIFO",
+        email: "admin@test.com",
+        password: bcrypt.hashSync("admin1234", 10),
+        nivel_acceso: "admin",
+      },
+      {
+        nombre: "Editor",
+        apellidos: "CIFO",
+        email: "editor@test.com",
+        password: bcrypt.hashSync("editor1234", 10),
+        nivel_acceso: "editor",
+      },
+      {
+        nombre: "Lector",
+        apellidos: "CIFO",
+        email: "lector@test.com",
+        password: bcrypt.hashSync("lector1234", 10),
+        nivel_acceso: "lector",
+      },
+    ];
+
+    await Usuario.bulkCreate(usuarios);
+    console.log("3 usuaris inserits correctament (admin/editor/lector, contrasenya: <rol>1234)");
+
+  } catch (error) {
+    console.error("Error inserint usuaris:", error.message);
+  }
+}
+
+module.exports = { seedAlumnos, seedCursos, seedProfesores, seedUsuarios };

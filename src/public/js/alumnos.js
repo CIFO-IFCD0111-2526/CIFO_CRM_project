@@ -101,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const RegAlDni = document.querySelector("#RegAlDni");
   const RegAlTelefono = document.querySelector("#RegAlTelefono");
   const RegAlEmail = document.querySelector("#RegAlEmail");
-  const RegAltipo = document.querySelector("#RegAltipo");
 
   // Netejem els errors de la pàgina
 
@@ -115,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
       RegAlDni,
       RegAlTelefono,
       RegAlEmail,
-      RegAltipo,
     ].forEach((input) => {
       input.addEventListener("input", () => {
         clearError(input);
@@ -183,11 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
       };
     } while (valTelMail === false);
 
-    if (!data.tipo) {
-      errors.push("És obligatori escollir un tipus.");
-      setError(RegAltipo);
-    }
-
     if (errors.length > 0) {
       showMsg(errors.join("<br>"));
       return;
@@ -205,18 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Si hi ha errors → mostrar-los
     if (!json.ok) {
       console.log("Errors rebuts del backend:", json.error);
-
-      // CONTROL DE ERRORES ANTERIOR, HACÍA REFERENCIA A UN SPAN QUE NO EXISTE.
-      // // Netejar errors anteriors
-      // document
-      //   .querySelectorAll(".error-msg")
-      //   .forEach((e) => (e.textContent = ""));
-
-      // // Mostrar errors nous
-      // for (const camp in json.errores) {
-      //   const span = document.querySelector(`#error-${camp}`);
-      //   if (span) span.textContent = json.errores[camp];
-      // }
 
       showMsg(json.error);
 
@@ -348,7 +329,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const errors = [];
     const nombreInput = form.querySelector('[name="nombre"]');
     const apellidosInput = form.querySelector('[name="apellidos"]');
-    const tipoInput = form.querySelector('[name="tipo"]');
     const dniInput = form.querySelector('[name="dni"]');
     const emailInput = form.querySelector('[name="email"]');
     const telInput = form.querySelector('[name="telefono"]');
@@ -367,14 +347,6 @@ document.addEventListener("DOMContentLoaded", () => {
       setError(apellidosInput);
     } else {
       clearError(apellidosInput);
-    }
-
-    // Tipo
-    if (!data.tipo) {
-      errors.push("És obligatori escollir un tipus.");
-      setError(tipoInput);
-    } else {
-      clearError(tipoInput);
     }
 
     if (!data.dni) {
@@ -405,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.disabled = false;
       return;
     }
-    // ─────────────────────────────────────────────────────────────  
+
     const id = form.dataset.id;
 
     try {
@@ -511,28 +483,6 @@ function initBuscador(input, dropdown) {
     }
   });
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const filtroButtons = document.querySelectorAll(".filtroTipoAlumno button");
-  if (!filtroButtons.length) return;
-
-  filtroButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      filtroButtons.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-
-      const tipo = button.dataset.tipo;
-      const url = new URL(window.location.href);
-      if (tipo) {
-        url.searchParams.set("tipo", tipo);
-      } else {
-        url.searchParams.delete("tipo");
-      }
-      url.searchParams.set("page", 1);
-      window.location.href = url.toString();
-    });
-  });
-});
 
 // Matricular alumnos en curso 
 document.addEventListener("DOMContentLoaded", () => {
@@ -791,92 +741,132 @@ document.addEventListener("click", async (e) => {
 
 });
 
-// Import CSV
+// Import CSV/Excel d'alumnes
 document.addEventListener("DOMContentLoaded", () => {
 
   const btnImportar = document.querySelector("#btnImportarCsv");
   const modal = document.querySelector("#importModal");
   const cerrarModal = document.querySelector("#cerrarImportModal");
   const form = document.querySelector("#importForm");
+  const btnEnviar = document.querySelector("#btnEnviarImport");
+  const resultat = document.querySelector("#importResultat");
 
   if (!btnImportar || !modal || !form) return;
 
+  // Si s'ha importat alguna cosa, en tancar el modal recarreguem
+  // perquè la llista mostri els alumnes nous.
+  let calRecarregar = false;
+
+  // Els errors per fila vénen del backend i es pinten amb innerHTML:
+  // escapem el text per evitar injectar HTML (p. ex. un DNI amb '<').
+  const escapa = (s) => String(s ?? "")
+    .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+  const netejaResultat = () => {
+    if (!resultat) return;
+    resultat.innerHTML = "";
+    resultat.classList.add("hidden");
+  };
+
   btnImportar.addEventListener("click", () => {
+    netejaResultat();
     modal.classList.remove("hidden");
   });
 
   cerrarModal?.addEventListener("click", () => {
     modal.classList.add("hidden");
     form.reset();
+    netejaResultat();
+    if (calRecarregar) window.location.reload();
   });
 
   form.addEventListener("submit", async (e) => {
-
     e.preventDefault();
+    netejaResultat();
 
-    const formData = new FormData(form);
+    // Feedback de "processant": botó deshabilitat amb text informatiu,
+    // així l'usuari sap que l'arxiu s'està treballant i no torna a clicar.
+    const textOriginal = btnEnviar.textContent;
+    btnEnviar.disabled = true;
+    btnEnviar.textContent = "Processant arxiu...";
+    cerrarModal.disabled = true;
 
     try {
-
       const res = await fetch("/alumnos/import.csv", {
         method: "POST",
-        body: formData,
+        body: new FormData(form),
       });
 
       const json = await res.json();
 
-      if (!json.ok) {
+      if (!res.ok || !json.ok) {
         await window.showModal({
           type: "error",
           title: "Error",
-          message: json.error || "Error important CSV",
+          message: json.error || "Error important l'arxiu",
         });
-
         return;
       }
 
-      const modalType = json.creados === 0
-        ? "error"
-        : (json.errores.length ? "warning" : "success");
+      const modalType = json.creados === 0 && json.errores.length === 0
+        ? "warning"
+        : json.creados === 0 ? "error" : "success";
+
+      const modalMessage = modalType === "warning"
+        ? "Alumnes registrats en el sistema. Cap canvi a realitzar."
+        : modalType === "error"
+          ? "No s´ha importat cap alumne. Revisa el format de l'arxiu i torna-ho a provar."
+          : `${json.creados} alumnes importats correctament. `;
+
+      if (json.errores?.length) {
+        resultat.innerHTML = `
+    <p>${json.creados} importats, ${json.errores.length} amb errors:</p>
+    <ul>
+      ${json.errores.map(e => `<li>Fila ${escapa(e.fila)}: ${escapa(e.error)}</li>`).join("")}
+    </ul>`;
+        resultat.classList.remove("hidden");
+      }
+
 
       await window.showModal({
         type: modalType,
         title: "Importació completada",
-        message: `
-          <p><strong>Creats:</strong> ${json.creados}</p>
-          <p><strong>Errors:</strong> ${json.errores.length}</p>
-
-          ${json.errores.length
-            ? `
-            <hr>
-            <ul style="text-align:left">
-              ${json.errores.map(err => `
-                <li>
-                  <strong>Fila ${err.fila}:</strong>
-                  ${err.error}
-                </li>
-              `).join("")}
-            </ul>
-            `
-            : ""
-          }
-        `,
+        message: modalMessage,
       });
 
-      modal.classList.add("hidden");
-      form.reset();
+      await new Promise(r => setTimeout(r, 2500));
+      const importarAltre = await window.showConfirm({
+        title: "Nova importació",
+        message: "Vols importar un altre arxiu?",
+        confirmText: "Sí",
+        cancelText: "No",
+      });
 
-      window.location.reload();
+      if (importarAltre) {
+
+        form.reset();
+        netejaResultat();
+
+      } else {
+
+        modal.classList.add("hidden");
+        form.reset();
+        window.location.reload();
+
+      }
 
     } catch (err) {
-
       console.error(err);
-
       await window.showModal({
         type: "error",
         title: "Error",
-        message: "Error de connexió",
+        message: "Error de connexió amb el servidor",
       });
+    } finally {
+      // Restaurem els botons passi el que passi.
+      btnEnviar.disabled = false;
+      btnEnviar.textContent = textOriginal;
+      cerrarModal.disabled = false;
     }
   });
 });

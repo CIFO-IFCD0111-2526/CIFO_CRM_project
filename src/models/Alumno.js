@@ -65,16 +65,6 @@ const Alumno = sequelize.define(
       allowNull: true,
     },
 
-    tipo: {
-      type: DataTypes.ENUM("actual", "antiguo", "futuro"),
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          msg: "El tipus és obligatori",
-        },
-      },
-    },
-
     derechos_imagen: {
       type: DataTypes.BOOLEAN,
       allowNull: true,

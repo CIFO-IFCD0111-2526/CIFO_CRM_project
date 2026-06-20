@@ -9,7 +9,9 @@
     </div>
     <div id="dropdownResultados" class="dropdown hidden"></div>
   </div>
-  <a href="/profesores/nuevo" class="btn btn-primario">Nou professor</a>
+  <% if (usuario.nivel_acceso !=="lector" ) { %>
+    <a href="/profesores/nuevo" class="btn btn-primario">Nou professor</a>
+    <% } %>
 </div>
 
 <% if (profesores && profesores.length> 0) { %>
@@ -51,9 +53,12 @@
 
             <td class="col-accions">
               <div class="acciones">
-                <a href="/profesores/<%= profesor.id %>" class="btn btn-secundario btn-sm">
-                  Editar
-                </a>
+            
+                <% if (usuario.nivel_acceso !=="lector" ) { %>
+                  <a href="/profesores/<%= profesor.id %>" class="btn btn-secundario btn-sm">
+                    Editar
+                  </a>
+                  <% } %>
               </div>
             </td>
           </tr>

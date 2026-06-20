@@ -21,6 +21,7 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^16.6.1",
     "ejs": "^3.1.10",
+    "exceljs": "^4.4.0",
     "express": "^4.21.2",
     "express-ejs-layouts": "^2.5.1",
     "express-mysql-session": "^3.0.3",

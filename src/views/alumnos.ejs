@@ -4,19 +4,23 @@
     <p class="page-subtitle">Llistat d'alumnes registrats al centre</p>
   </div>
 
-  <div class="header-actions header-actions-row">
-    <a href="/alumnos/nuevo" class="btn btn-primario">
-      <i class="fa-solid fa-plus"></i> Nou alumne
-    </a>
+  <% if (usuario.nivel_acceso !== "lector") { %>
+    <div class="header-actions header-actions-row">
+      <a href="/alumnos/nuevo" class="btn btn-primario">
+        <i class="fa-solid fa-plus"></i> Nou alumne
+      </a>
 
-    <button type="button" class="btn btn-secundario" id="btnImportarCsv">
-      <i class="fa-solid fa-file-import"></i> Importar
-    </button>
+      <button type="button" class="btn btn-secundario" id="btnImportarCsv">
+        <i class="fa-solid fa-file-import"></i> Importar
+      </button>
 
-    <a href="/alumnos/export.csv" class="btn btn-secundario">
-      <i class="fa-solid fa-file-export"></i> Exportar
-    </a>
-  </div>
+      <% if (usuario.nivel_acceso === "admin") { %>
+        <a href="/alumnos/export.csv" class="btn btn-secundario">
+          <i class="fa-solid fa-file-export"></i> Exportar
+        </a>
+      <% } %>
+    </div>
+  <% } %>
 </div>
 
 <div class="alumnos-toolbar">
@@ -25,13 +29,6 @@
       <input type="text" id="busquedaAlumno" placeholder="Buscar alumne..." autocomplete="off" />
     </div>
     <div id="dropdownResultados" class="dropdown hidden"></div>
-  </div>
-
-  <div class="filtroTipoAlumno">
-    <button class="<%= !tipo ? 'active' : '' %>" data-tipo="">Tots els tipus</button>
-    <button class="<%= tipo === 'actual' ? 'active' : '' %>" data-tipo="actual">Actual</button>
-    <button class="<%= tipo === 'antiguo' ? 'active' : '' %>" data-tipo="antiguo">Antic</button>
-    <button class="<%= tipo === 'futuro' ? 'active' : '' %>" data-tipo="futuro">Futur</button>
   </div>
 </div>
 
@@ -45,7 +42,6 @@
           <th>Email</th>
           <th>Telèfon</th>
           <th>Nivell d'estudis</th>
-          <th>Tipus</th>
           <th>Data d'alta</th>
           <th class="col-accions">Accions</th>
         </tr>
@@ -62,19 +58,17 @@
             <td><%= alumno.email || '—' %></td>
             <td><%= alumno.telefono || '—' %></td>
             <td><%= alumno.nivel_estudios || '—' %></td>
-            <td>
-              <span class="badge badge-<%= alumno.tipo %>">
-                <% if (alumno.tipo === 'actual') { %>Actual<% } %>
-                <% if (alumno.tipo === 'antiguo') { %>Antic<% } %>
-                <% if (alumno.tipo === 'futuro') { %>Futur<% } %>
-              </span>
-            </td>
+           
             <td class="col-fecha">
               <%= alumno.createdAt ? new Date(alumno.createdAt).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—' %>
             </td>
             <td class="col-accions">
               <div class="acciones">
-                <a href="/alumnos/<%= alumno.id %>" class="btn btn-secundario btn-sm">Editar</a>
+                <% if (usuario.nivel_acceso !=="lector" ) { %>
+                  <a href="/alumnos/<%= alumno.id %>" class="btn btn-secundario btn-sm">
+                    Editar
+                  </a>
+                  <% } %>
               </div>
             </td>
           </tr>
@@ -118,10 +112,10 @@
     <h2>Importar alumnes</h2>
 
     <form id="importForm">
-      <input type="file" name="archivo" id="archivoCsv" accept=".csv" required />
+      <input type="file" name="archivo" id="archivoCsv" accept=".csv,.xlsx,.xls" required />
 
       <div class="modal-actions">
-        <button type="submit" class="btn btn-primario">
+        <button type="submit" class="btn btn-primario" id="btnEnviarImport">
           Importar
         </button>
 
@@ -130,5 +124,10 @@
         </button>
       </div>
     </form>
+
+    <%# Resultat de la importació: resum + detall d'errors per fila.
+        Va dins del modal d'importació perquè aquí sí podem renderitzar HTML
+        (el modal global de showModal només accepta text pla). %>
+    <div id="importResultat" class="import-resultat hidden" aria-live="polite"></div>
   </div>
 </div>

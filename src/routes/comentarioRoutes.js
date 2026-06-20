@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { authPage } = require("../middlewares/auth");
+const { authPage, requireEditor } = require("../middlewares/auth");
 const { loadResource } = require("../middlewares/loadResource.js");
 const { Comentario } = require("../models");
 
@@ -9,8 +9,10 @@ const router = Router({
     mergeParams: true,
 });
 
-// Todas las rutas requieren autenticación
+// Todas las rutas requieren autenticación.
+// Totes les rutes de comentaris són d'escriptura: el rol lector no hi té accés.
 router.use(authPage);
+router.use(requireEditor);
 
 router.post("/", controller.create);
 

@@ -9,7 +9,7 @@ const dashboardPrint = async (req, res, next) => {
     const alumnos = await Alumno.findAll({
       order: [["created_at", "DESC"]],
       limit: 5,
-      attributes: ["id", "nombre", "apellidos", "tipo", "created_at"],
+      attributes: ["id", "nombre", "apellidos", "created_at"],
     });
 
     const cursos = await Curso.findAll({
