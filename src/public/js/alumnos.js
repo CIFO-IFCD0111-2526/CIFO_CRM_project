@@ -785,7 +785,6 @@ document.getElementById('listaCursos')?.addEventListener('change', async functio
   const input = e.target;
   const cursoId = input.dataset.cursoId;
   const alumnoId = input.dataset.alumnoId;
-  const li = input.closest(".alumno-curso-item");
 
   const dataToSend = {};
   if (input.classList.contains('select-apte')) {
@@ -812,8 +811,23 @@ document.getElementById('listaCursos')?.addEventListener('change', async functio
       return;
     }
 
-    // Refresquem per pintar els nous badges generats pel servidor (EJS)
-    window.location.reload();
+    // Actualitzem només la fila afectada al DOM (sense recarregar tota la pàgina).
+    // Reproduïm el mateix HTML que genera la vista (alumno-detalle.ejs).
+    if (input.classList.contains('select-apte')) {
+      const apte = input.value === 'true';
+      const span = input.closest('.curso-apte-status');
+      if (span) {
+        span.innerHTML =
+          `<span class="badge ${apte ? 'badge-success' : 'badge-danger'}">` +
+          `${apte ? 'Sí' : 'No'} (Apte)</span>`;
+      }
+    } else if (input.classList.contains('input-baixa')) {
+      const span = input.closest('.curso-baixa-status');
+      if (span && input.value) {
+        const fecha = new Date(input.value).toLocaleDateString("ca-ES");
+        span.textContent = `Baixa: ${fecha}`;
+      }
+    }
 
   } catch (err) {
     console.error(err);
