@@ -44,6 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const editingId = form.dataset.editingId;
         const url = editingId ? `/anotaciones/${editingId}` : "/anotaciones";
         const method = editingId ? "PUT" : "POST";
+
+        window.showLoader();
         try {
             const res = await fetch(url, {
                 method,
@@ -66,6 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 title: "Error",
                 message: "Error de connexió amb el servidor",
             });
+        } finally {
+            window.hideLoader();    
         }
     });
 
@@ -96,6 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (ok !== true) return;
 
+            window.showLoader();
+
             try {
                 const res = await fetch(`/anotaciones/${id}`, { method: "DELETE" });
                 const data = await res.json();
@@ -111,6 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     title: "Error",
                     message: "No s'ha pogut eliminar l'anotació",
                 });
+            } finally {
+                window.hideLoader();    
             }
         });
     });

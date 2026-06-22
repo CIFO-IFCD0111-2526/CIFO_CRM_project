@@ -74,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    window.showLoader();
+
     try {
       const res = await fetch("/login", {
         method: "POST",
@@ -95,32 +97,16 @@ document.addEventListener("DOMContentLoaded", () => {
           title: "Error d'inici de sessió",
           message: `${data.error}` || "No s'ha pogut iniciar sessió.",
         });
-        //showMsg(data.error || "No s'ha pogut iniciar sessió.");
-      };
-
-      // if (data.ok) {
-      //   window.showModal?.({
-      //     type: "success",
-      //     title: "Sessió iniciada",
-      //     message: "Accedint al panell...",
-      //   });
-      //   setTimeout(() => { window.location.href = data.redirect; }, 2000);
-      // } else if (res.status >= 500) {
-      //   window.showModal?.({
-      //     type: "error",
-      //     title: "Error del servidor",
-      //     message: "Torna-ho a provar d'aquí uns minuts.",
-      //   });
-      // } else {
-      //   showMsg(data.error || "No s'ha pogut iniciar sessió.");
-      // }
+      }
     } catch (error) {
       window.showModal?.({
         type: "error",
         title: "Error de connexió",
         message: `${data.error}` || "No s'ha pogut iniciar sessió.",
       });
-    }
+    } finally {
+      window.hideLoader();
+    } 
   });
 
   [emailInput, passwordInput].forEach((input) => {
@@ -209,6 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    window.showLoader();
     try {
       const res = await fetch("/register", {
         method: "POST",
@@ -232,31 +219,15 @@ document.addEventListener("DOMContentLoaded", () => {
           title: "Error de connexió",
           message: `${data.error}` || "No s'ha pogut crear compte.",
         });
-        //showMsg(data.error || "No s'ha pogut iniciar sessió.");
       }
-      /*
-      if (data.ok) {
-        window.showModal?.({
-          type: "success",
-          title: "Compte creat",
-          message: "Benvingut/da! Entrant al panell...",
-        });
-        setTimeout(() => { window.location.href = data.redirect; }, 2000);
-      } else if (response.status >= 500) {
-        window.showModal?.({
-          type: "error",
-          title: "Error del servidor",
-          message: "Torna-ho a provar d'aquí uns minuts.",
-        });
-      } else {
-        showMsg(data.error || "Error en el registre.");
-      } */
     } catch (error) {
       window.showModal?.({
         type: "error",
         title: "Error de connexió",
         message: "No s'ha pogut contactar amb el servidor.",
       });
+    } finally {
+      window.hideLoader();
     }
   });
 

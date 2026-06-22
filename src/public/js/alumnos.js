@@ -188,7 +188,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Enviem al backend
     window.showLoader();
-    const res = await fetch("/alumnos", {
+
+    try {
+        const res = await fetch("/alumnos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -199,7 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Si hi ha errors → mostrar-los
     if (!json.ok) {
       console.log("Errors rebuts del backend:", json.error);
-      window.hideLoader();
 
       showMsg(json.error);
 
@@ -207,9 +208,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Si tot va bé → redirigir a /alumnos
-    window.hideLoader();
     window.location.href = json.redirect;
-  });
+  } catch (err) {
+    console.error(err);
+
+    await window.showModal({
+      type: "error",
+      title: "Error",
+      message: "No s´ha pogut crear l'alumne.",
+    });
+  } finally {
+    window.hideLoader();
+  } 
+    })
 });
 
 document.addEventListener("click", async (e) => {

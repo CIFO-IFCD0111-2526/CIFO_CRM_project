@@ -35,6 +35,7 @@ form?.addEventListener("submit", async (e) => {
         return showMsg("Les contrasenyes no coincideixen.");
     }
 
+    window.showLoader();
     try {
         const res = await fetch("/perfil/password", {
             method: "PUT",
@@ -54,5 +55,7 @@ form?.addEventListener("submit", async (e) => {
             title: "Error",
             message: "No s'ha pogut canviar la contrasenya.",
         });
+    } finally {
+        window.hideLoader();
     }
 });
