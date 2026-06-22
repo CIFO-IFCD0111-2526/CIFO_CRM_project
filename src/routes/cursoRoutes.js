@@ -34,6 +34,7 @@ router.post("/:id/alumnos",
     controller.addAlumnoToCurso
 );
 router.delete("/:cursoId/alumnos/:alumnoId", requireEditor, controller.deleteAlumnoFromCurso);
+router.put("/:cursoId/alumnos/:alumnoId", requireEditor, controller.updateAlumnoMatricula);
 router.post('/:id/profesores', requireEditor, controller.asignarProfesor);
 router.delete('/:id/profesores/:profesorId', requireEditor, controller.desasignarProfesor);
 

@@ -1,4 +1,4 @@
-const { Curso, Alumno,CursoAlumno, Profesor } = require("../models");
+const { Curso, Alumno, CursoAlumno, Profesor } = require("../models");
 const { Op } = require("sequelize");
 const { handleControllerError } = require("../middlewares/errorHandler");
 const { ValidationError, UniqueConstraintError } = require("sequelize");
@@ -74,7 +74,7 @@ const getById = (req, res) => {
         titulo: "Busqueda de cursos per ID",
         usuario: req.session.usuario,
         css: "cursos.css",
-        js: ["cursos.js","documento.js"],
+        js: ["cursos.js", "documento.js"],
         paginaActual: "cursos",
         curso: req.curso
     });
@@ -95,7 +95,7 @@ const renderNewCurso = (req, res) => {
 
 const createCurso = async (req, res, next) => {
     try {
-        const { codigo_curso,codigo_accion_formativa, nombre, fecha_inicio, fecha_fin, nivel } = req.body;
+        const { codigo_curso, codigo_accion_formativa, nombre, fecha_inicio, fecha_fin, nivel } = req.body;
 
         let errores = [];
 
@@ -159,7 +159,7 @@ const searchCurso = async (req, res, next) => {
             where,
             limit: 10,
             order: [["codigo_accion_formativa", "DESC"]],
-            attributes: ["id", "codigo_curso","codigo_accion_formativa", "nombre", "fecha_inicio", "fecha_fin"]
+            attributes: ["id", "codigo_curso", "codigo_accion_formativa", "nombre", "fecha_inicio", "fecha_fin"]
         });
 
         return res.json(cursos);
@@ -192,7 +192,7 @@ const deleteCurso = async (req, res, next) => {
 const updateCurso = async (req, res, next) => {
     try {
         const curso = req.curso;
-        const { codigo_curso,codigo_accion_formativa, nombre, fecha_inicio, fecha_fin, nivel } = req.body;
+        const { codigo_curso, codigo_accion_formativa, nombre, fecha_inicio, fecha_fin, nivel } = req.body;
 
         if (!codigo_curso || !nombre || !codigo_accion_formativa) {
             return res.status(400).json({ ok: false, mensaje: "Tots els camps són obligatoris" });
@@ -273,6 +273,36 @@ const deleteAlumnoFromCurso = async (req, res, next) => {
         return handleControllerError(error, res, next);
     }
 };
+// PUT /cursos/:cursoId/alumnos/:alumnoId
+const updateAlumnoMatricula = async (req, res, next) => {
+    try {
+        const { cursoId, alumnoId } = req.params;
+        const { apte, fecha_baixa } = req.body;
+
+        // Busquem si la matrícula existeix primer
+        const matricula = await CursoAlumno.findOne({
+            where: { curso_id: cursoId, alumno_id: alumnoId }
+        });
+
+        if (!matricula) {
+            return res.status(404).json({ ok: false, error: "La matrícula no existeix" });
+        }
+
+        // Capa adicional per gestionar els valors de possibles nuls o buits
+        const updatedFields = {
+            // Si el camp es buit o 'null' en format text, ho guardem com a null
+            apte: (apte === undefined || apte === '') ? null : (apte === 'true' || apte === true),
+            fecha_baixa: (fecha_baixa === '' || fecha_baixa === undefined) ? null : fecha_baixa
+        };
+
+        // Actualitzem la fila de la matrícula.
+        await matricula.update(updatedFields);
+
+        return res.json({ ok: true, msg: "Matrícula actualitzada correctament" });
+    } catch (error) {
+        return handleControllerError(error, res, next);
+    }
+};
 // POST /cursos/:id/profesores
 const asignarProfesor = async (req, res, next) => {
     try {
@@ -343,4 +373,4 @@ const desasignarProfesor = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, getById, createCurso, renderNewCurso, searchCurso, deleteCurso, updateCurso, asignarProfesor, desasignarProfesor, addAlumnoToCurso, deleteAlumnoFromCurso };
+module.exports = { getAll, getById, createCurso, renderNewCurso, searchCurso, deleteCurso, updateCurso, asignarProfesor, desasignarProfesor, addAlumnoToCurso, deleteAlumnoFromCurso, updateAlumnoMatricula };

@@ -155,7 +155,7 @@
       <div id="AlDetMsg" class="form-msg form-full" aria-live="polite"></div>
       
     <section class="detalle-card detalle-full">
-      <h2 class="detalle-card-title">Cursos</h2>
+      <h2 class="detalle-card-title">Cursos / Historial</h2>
       <% if (usuario.nivel_acceso !== "lector") { %>
         <div class="card-header-cursos">
           <div class="header-actions">
@@ -173,7 +173,25 @@
 
       <ul class="detalle-cursos" id="listaCursos">
         <% if (alumno.Cursos && alumno.Cursos.length> 0) { %>
+          <% const avui = new Date();
+          avui.setHours(0, 0, 0, 0); 
+          %>
           <% alumno.Cursos.forEach(curso=> { %>
+             <%
+             const fInicio = new Date(curso.fecha_inicio);
+            const fFin = new Date(curso.fecha_fin);
+            
+            let estatClass = 'curso-estat-futur';
+            let estatText = 'Preinscripció';
+
+            if (avui >= fInicio && avui <= fFin) {
+              estatClass = 'curso-estat-present';
+              estatText = 'Curs actiu';
+            } else if (avui > fFin) {
+              estatClass = 'curso-estat-passat';
+              estatText = 'Curs finalitzat';
+            } 
+            %>
             <li class="alumno-curso-item">
 
               <span class="curso-codigo">
@@ -185,16 +203,45 @@
                   <%= curso.nombre %>
                 </a>
               </span>
+              <span class="curso-badge-estat <%= estatClass %>">
+                <%= estatText %>
+              </span>
+
 
               <span class="curso-fecha">
                 Matrícula:
                 <%= new Date(curso.curso_alumno.createdAt).toLocaleDateString("ca-ES") %>
               </span>
 
+              <span class="curso-apte-status">
+                <% if (curso.curso_alumno.apte !== null) { %>
+                  <span class="badge <%= curso.curso_alumno.apte ? 'badge-success' : 'badge-danger' %>">
+                    <%= curso.curso_alumno.apte ? 'Sí' : 'No' %> (Apte)
+                  </span>
+                <% } else if (usuario.nivel_acceso !== "lector") { %>
+                  <select class="select-apte js-update-matricula" data-curso-id="<%= curso.id %>" data-alumno-id="<%= alumno.id %>">
+                    <option value=""selected disabled>Avaluar</option>
+                    <option value="true">Apte</option> 
+                    <option value="false">No apte</option>
+                  </select>
+                <% } else { %> 
+                  <span class="text-muted">Sense avaluar</span> 
+                <% } %>
+              </span>
+
+              <span class="curso-baixa-status">
+                <% if (curso.curso_alumno.fecha_baixa !== null) { %>
+                  Baixa: <%= new Date(curso.curso_alumno.fecha_baixa).toLocaleDateString("ca-ES") %>
+                <% } else if (usuario.nivel_acceso !== "lector") { %>
+                  <input type="date" class="input-baixa js-update-matricula" data-curso-id="<%= curso.id %>" data-alumno-id="<%= alumno.id %>" />
+                <% }  %>
+                </span>
+                
+
               <% if (usuario.nivel_acceso !== "lector") { %>
                 <button type="button" class="btn btn-danger btn-desmatricular" data-curso-id="<%= curso.id %>"
                   data-alumno-id="<%= alumno.id %>">
-                  Dar de baixa
+                  Eliminar curs
                 </button>
               <% } %>
 
