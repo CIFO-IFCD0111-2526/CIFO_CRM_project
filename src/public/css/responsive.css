@@ -1,0 +1,111 @@
+/* =====================================================================
+   responsive.css
+   ---------------------------------------------------------------------
+   Estils del menú lateral en versió mòbil/tauleta.
+
+   Idea general:
+   - En escriptori (> 768px) el sidebar és sempre visible (definit a main.css)
+     i el botó hamburguesa està amagat.
+   - En mòbil (<= 768px) el sidebar s'amaga fora de pantalla i apareix el
+     botó hamburguesa. En obrir-lo, el sidebar llisca des de l'esquerra
+     i una capa fosca (overlay) tapa la resta del contingut.
+
+   El comportament (obrir/tancar amb la classe .is-open) el gestiona
+   responsive.js.
+   ===================================================================== */
+
+/* Botó hamburguesa de la topbar.
+   Amagat per defecte; només es mostra dins la media query de mòbil. */
+.nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--color-texto-nav);
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Capa fosca que apareix darrere del menú quan està obert en mòbil.
+   Amagada per defecte; es mostra quan responsive.js li posa .is-open. */
+.nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 15;
+}
+
+.nav-overlay.is-open {
+    display: block;
+}
+
+/* En reduir la finestra, el contingut ample (taules amb min-width) feia
+   que la pàgina tingués scroll horizontal i la topbar (sticky) quedés
+   tapada/desplaçada. Permetem que el wrapper encongeixi (min-width:0,
+   que flexbox no posa per defecte) i evitem el scroll horizontal de pàgina;
+   les taules ja tenen el seu propi scroll dins de .tabla-container. */
+.main-wrapper {
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+/* Transició perquè el sidebar llisqui suau en obrir/tancar. */
+nav {
+    transition: transform 0.25s ease;
+}
+
+/* L'accés al perfil dins del menú lateral només es mostra en mòbil.
+   A escriptori el perfil viu a la topbar, així que aquí l'amaguem. */
+.nav-user {
+    display: none;
+    margin-bottom: 0.5rem;
+}
+
+/* ---- Mòbil i tauleta (<= 768px) ---- */
+@media (max-width: 768px) {
+    /* El sidebar surt de la pantalla cap a l'esquerra i es posa per
+       damunt del contingut (z-index alt). */
+    nav {
+        transform: translateX(-100%);
+        z-index: 20;
+    }
+
+    /* Quan responsive.js afegeix .is-open, el sidebar torna a la vista. */
+    nav.is-open {
+        transform: translateX(0);
+    }
+
+    /* El contingut deixa d'apartar-se per al sidebar (ocupa tot l'ample). */
+    .main-wrapper.with-nav {
+        margin-left: 0;
+    }
+
+    /* Es mostra el botó hamburguesa. */
+    .nav-toggle {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    /* En mòbil, el perfil s'amaga de la topbar i apareix dins del menú. */
+    .topbar-right {
+        display: none;
+    }
+
+    .nav-user {
+        display: flex;
+    }
+
+    /* Amb el perfil fora de la topbar, l'hamburguesa queda sol a l'esquerra. */
+    .topbar {
+        justify-content: flex-start;
+    }
+}
+
+
+@media (max-width: 1400px) {
+  /* dashboard  */
+  .dashboard-grid {
+    display: block;
+  }
+}

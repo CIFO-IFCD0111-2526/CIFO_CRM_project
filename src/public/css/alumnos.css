@@ -231,3 +231,11 @@
   color: var(--color-danger);
   font-size: 13px;
 }
+
+@media (max-width: 640px) {
+
+  .header-actions-row {
+    flex-wrap: wrap;
+  }
+}
+
