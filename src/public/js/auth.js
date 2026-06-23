@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.showModal?.({
         type: "error",
         title: "Error de connexió",
-        message: `${data.error}` || "No s'ha pogut iniciar sessió.",
+        message: "No s'ha pogut contactar amb el servidor.",
       });
     } finally {
       window.hideLoader();
