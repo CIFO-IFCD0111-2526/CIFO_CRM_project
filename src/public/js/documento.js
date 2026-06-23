@@ -65,6 +65,8 @@ async function initDocuments() {
 
       const formData = new FormData(form);
 
+      window.showLoader();
+
       try {
         const res = await fetch(
           `/documentos/${entidadTipo}/${entidadId}`,
@@ -103,7 +105,9 @@ async function initDocuments() {
           title: "Error",
           message: "Error de connexió amb el servidor",
         });
-      }
+      } finally {
+        window.hideLoader();
+      } 
     });
   }
 }
@@ -212,6 +216,8 @@ function bindDeleteEvents(form) {
 
       if (confirmed !== true) return;
 
+      window.showLoader();
+
       try {
         const res = await fetch(`/documentos/${id}`, {
           method: "DELETE",
@@ -241,7 +247,9 @@ function bindDeleteEvents(form) {
           title: "Error",
           message: "No s'ha pogut eliminar",
         });
-      }
+      } finally {
+        window.hideLoader();
+      } 
     });
   });
 }

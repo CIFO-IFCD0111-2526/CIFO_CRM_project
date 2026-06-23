@@ -82,6 +82,10 @@
     if (e.key === "Escape" && overlay.classList.contains("is-open")) closeModal(false);
   });
 
+  const loaderOverlay = document.getElementById("appLoader");
+  window.showLoader = () => loaderOverlay?.classList.add("is-open");
+  window.hideLoader = () => loaderOverlay?.classList.remove("is-open");
+
   window.showModal = openModal;
   window.showConfirm = openConfirm;
   window.closeModal = closeModal;

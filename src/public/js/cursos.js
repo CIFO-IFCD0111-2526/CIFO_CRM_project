@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cursoMsg.classList.remove("error-msg");
     };
 
-    [nombre, codigo,codigoAccionFormativa, fechaInicio, fechaFin].forEach((input) => {
+    [nombre, codigo, codigoAccionFormativa, fechaInicio, fechaFin].forEach((input) => {
         if (!input) return;
         input.addEventListener("input", () => clearError(input));
     });
@@ -73,6 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        window.showLoader();
+
         try {
             const res = await fetch("/cursos", {
                 method: "POST",
@@ -102,6 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 title: "Error",
                 message: "No s'ha pogut desar el curs.",
             });
+        } finally {
+            window.hideLoader();
         }
     });
 });
@@ -127,6 +131,8 @@ document.addEventListener("click", async (e) => {
 
     if (!ok) return;
 
+    window.showLoader();
+
     try {
         const res = await fetch(`/cursos/${id}`, { method: "DELETE" });
         const json = await res.json();
@@ -138,6 +144,8 @@ document.addEventListener("click", async (e) => {
             title: "Error",
             message: "No s'ha pogut eliminar el curs. Torna-ho a intentar més tard."
         });
+    } finally {
+        window.hideLoader();
     }
 });
 
@@ -337,6 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (submitBtn) submitBtn.disabled = false;
             return;
         }
+        window.showLoader();
 
         try {
             const res = await fetch(`/cursos/${form.dataset.id}`, {
@@ -370,6 +379,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 title: "Error",
                 message: "No s'ha pogut desar el curs.",
             });
+        } finally {
+            window.hideLoader();
         }
     });
 });
@@ -421,6 +432,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!ok) return;
         const cursoId = document.querySelector("#cursoForm").dataset.id;
 
+        window.showLoader();
+
         try {
 
             const res = await fetch(`/cursos/${cursoId}/alumnos`, {
@@ -436,15 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const json = await res.json();
 
             if (!res.ok || !json.ok) {
-
-                await window.showModal({
-                    type: "error",
-                    title: "Error",
-                    message: json.error || "No s'ha pogut inscriure l'alumne",
-                });
-
-                return;
-
+                throw new Error(json.error || "No s'ha pogut inscriure l'alumne");
             }
 
 
@@ -485,6 +490,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 message: "Error de connexió amb el servidor",
             });
 
+        } finally {
+            window.hideLoader();
         }
     });
 
@@ -630,6 +637,8 @@ document.addEventListener("click", async (e) => {
 
     if (!ok) return;
 
+    window.showLoader();
+
     try {
 
         const res = await fetch(
@@ -642,16 +651,9 @@ document.addEventListener("click", async (e) => {
         const json = await res.json();
 
         if (!res.ok || !json.ok) {
-
-            await window.showModal({
-                type: "error",
-                title: "Error",
-                message: json.error || "No s'ha pogut donar de baixa l'alumne",
-            });
-
-            return;
-
+            throw new Error(json.error || "No s'ha pogut donar de baixa l'alumne");
         }
+        
         li.remove();
 
         await window.showModal({
@@ -670,6 +672,8 @@ document.addEventListener("click", async (e) => {
             message: "Error de connexió amb el servidor",
         });
 
+    } finally {
+        window.hideLoader();
     }
 
 });
@@ -749,6 +753,7 @@ document.addEventListener("DOMContentLoaded", () => {
             cancelText: "Cancel·lar",
         });
         if (!ok) return;
+        window.showLoader();
         try {
             const res = await fetch(`/cursos/${cursoId}/profesores`, {
                 method: "POST",
@@ -757,14 +762,20 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             const json = await res.json();
             if (!res.ok || !json.ok) {
-                return window.showModal({ type: "error", title: "Error", message: json.error || "No s'ha pogut assignar el profesor" });
+                throw new Error(json.error || "No s'ha pogut assignar el profesor");
             }
             window.location.href = json.redirect;
         } catch (err) {
-            window.showModal({ type: "error", title: "Error", message: "Error de connexió amb el servidor" });
+            await window.showModal({
+                type: "error",
+                title: "Error",
+                message: "Error de connexió amb el servidor",
+            });
+        } finally {
+            window.hideLoader();
         }
-    }
-});
+    }   
+    });
 
 // Desasignar profesor (vista detalle)
 document.addEventListener("click", async (e) => {
@@ -783,15 +794,22 @@ document.addEventListener("click", async (e) => {
         cancelText: "Cancel·lar",
     });
     if (!ok) return;
+    window.showLoader();
 
     try {
         const res = await fetch(`/cursos/${cursoId}/profesores/${profesorId}`, { method: "DELETE" });
         const json = await res.json();
         if (!res.ok || !json.ok) {
-            return window.showModal({ type: "error", title: "Error", message: json.error || "No s'ha pogut desassignar el profesor" });
+            throw new Error(json.error || "No s'ha pogut desassignar el profesor");
         }
         window.location.href = json.redirect;
     } catch (err) {
-        window.showModal({ type: "error", title: "Error", message: "Error de connexió amb el servidor" });
+        await window.showModal({
+            type: "error",
+            title: "Error",
+            message: "Error de connexió amb el servidor"
+        });
+    } finally {
+        window.hideLoader();
     }
 });

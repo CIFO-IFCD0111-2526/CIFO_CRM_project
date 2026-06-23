@@ -187,7 +187,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Enviem al backend
-    const res = await fetch("/alumnos", {
+    window.showLoader();
+
+    try {
+        const res = await fetch("/alumnos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -205,9 +208,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Si tot va bé → redirigir a /alumnos
-
     window.location.href = json.redirect;
-  });
+  } catch (err) {
+    console.error(err);
+
+    await window.showModal({
+      type: "error",
+      title: "Error",
+      message: "No s´ha pogut crear l'alumne.",
+    });
+  } finally {
+    window.hideLoader();
+  } 
+    })
 });
 
 document.addEventListener("click", async (e) => {
@@ -227,6 +240,8 @@ document.addEventListener("click", async (e) => {
 
   if (!ok) return;
 
+  window.showLoader();
+
   try {
     const res = await fetch(`/alumnos/${id}`, { method: "DELETE" });
     const json = await res.json();
@@ -238,6 +253,8 @@ document.addEventListener("click", async (e) => {
       title: "Error",
       message: "No s'ha pogut eliminar l'alumne.",
     });
+  } finally {
+    window.hideLoader();
   }
 });
 
@@ -380,6 +397,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const id = form.dataset.id;
 
+    window.showLoader();
+
     try {
       const res = await fetch(`/alumnos/${id}`, {
         method: "PUT",
@@ -413,7 +432,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       submitBtn.disabled = false;
-    }
+    } finally {
+      window.hideLoader();
+    } 
   });
 });
 
@@ -531,6 +552,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!ok) return;
 
+    window.showLoader();
+
     try {
       const res = await fetch(`/cursos/${curso.id}/alumnos`, {
         method: "POST",
@@ -587,7 +610,9 @@ document.addEventListener("DOMContentLoaded", () => {
         title: "Error",
         message: "Error de connexió amb el servidor",
       });
-    }
+    } finally {
+      window.hideLoader();
+    }   
   });
 
 });
@@ -695,6 +720,7 @@ document.addEventListener("click", async (e) => {
   });
 
   if (!ok) return;
+  window.showLoader();
 
   try {
 
@@ -737,7 +763,9 @@ document.addEventListener("click", async (e) => {
       message: "Error de connexió amb el servidor",
     });
 
-  }
+  } finally {
+    window.hideLoader();
+  } 
 
 });
 // Handler nou per desar apte/baixa de la matrícula escrutant els canvis al llistat
@@ -947,6 +975,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!texto) return;
 
+    window.showLoader();
+
     try {
 
       const res = await fetch(
@@ -985,7 +1015,11 @@ document.addEventListener("DOMContentLoaded", () => {
         message: "Error de connexió amb el servidor",
       });
 
-    }
+    } finally {
+
+      window.hideLoader();
+
+    } 
 
   });
 
@@ -1007,6 +1041,7 @@ document.addEventListener("click", async (e) => {
   });
 
   if (!ok) return;
+  window.showLoader();
 
   try {
 
@@ -1041,6 +1076,10 @@ document.addEventListener("click", async (e) => {
       title: "Error",
       message: "Error de connexió amb el servidor",
     });
+
+  } finally {
+
+    window.hideLoader();
 
   }
 
@@ -1101,6 +1140,8 @@ document.addEventListener("click", async (e) => {
 
   if (!texto) return;
 
+  window.showLoader();
+
   try {
 
     const res = await fetch(
@@ -1139,6 +1180,8 @@ document.addEventListener("click", async (e) => {
       message: "Error de connexió amb el servidor",
     });
 
+  } finally {
+    window.hideLoader();
   }
 
 });

@@ -1,4 +1,6 @@
 async function aprovarUsuario(id) {
+
+  window.showLoader();
   try {
     const nivel_acceso = document.getElementById(`rol-${id}`).value;
 
@@ -26,6 +28,8 @@ async function aprovarUsuario(id) {
       title: "Error",
       message: "No s'ha pogut aprovar l'usuari",
     });
+  } finally {
+    window.hideLoader();
   }
 }
 
@@ -38,6 +42,8 @@ async function rebutjarUsuario(id) {
   });
 
   if (ok !== true) return;
+
+  window.showLoader();
 
   try {
     const res = await fetch(`/usuarios/${id}`, { method: "DELETE" });
@@ -55,10 +61,14 @@ async function rebutjarUsuario(id) {
       title: "Error",
       message: "No s'ha pogut rebutjar l'usuari",
     });
+  } finally {
+    window.hideLoader();
   }
 }
 
 async function actualitzarRol(id) {
+
+  window.showLoader();
   try {
     const nivel_acceso = document.getElementById(`rol-activo-${id}`).value;
 
@@ -92,5 +102,7 @@ async function actualitzarRol(id) {
       title: "Error",
       message: "No s'ha pogut actualitzar el rol.",
     });
+  } finally {
+    window.hideLoader();  
   }
 }

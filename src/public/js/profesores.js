@@ -73,6 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    window.showLoader();
+
     try {
       const res = await fetch(url, {
         method: metodo,
@@ -95,6 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
         title: "Error",
         message: "Error de connexió amb el servidor",
       });
+    } finally {
+      window.hideLoader();  
     }
   });
 });
@@ -203,6 +207,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    window.showLoader();
+
     try {
       const res = await fetch(`/profesores/${form.dataset.id}`, {
         method: "PUT",
@@ -227,7 +233,9 @@ document.addEventListener("DOMContentLoaded", () => {
         title: "Error",
         message: "No s'ha pogut desar el professor.",
       });
-    }
+    } finally {
+      window.hideLoader();  
+    } 
   });
 });
 
@@ -249,6 +257,8 @@ document.addEventListener("click", async (e) => {
 
   if (!ok) return;
 
+  window.showLoader();
+
   try {
     const res = await fetch(`/profesores/${id}`, { method: "DELETE" });
     const json = await res.json();
@@ -260,7 +270,9 @@ document.addEventListener("click", async (e) => {
       title: "Error",
       message: "No s'ha pogut eliminar el professor.",
     });
-  }
+  } finally {
+    window.hideLoader();
+  } 
 });
 
 // Buscador d'profesores amb autocompletar

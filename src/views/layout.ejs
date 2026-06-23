@@ -29,6 +29,10 @@
                             <% } %>
 </head>
 <body>
+    <div id="appLoader" class="loader-overlay" aria-hidden="true">
+        <div class="loader-spinner"></div>
+    </div>
+    
     <div class="app-container">
         <% if (typeof usuario !== 'undefined' && usuario) { %>
             <div id="navOverlay" class="nav-overlay"></div>
