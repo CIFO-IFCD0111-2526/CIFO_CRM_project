@@ -285,6 +285,11 @@ CIFO_CRM_project/
 │           ├── ufs.js
 │           ├── profesores.js
 │           └── usuarios.js
+├── tests/
+│    ├── middlewares/
+│    │   └── validacionDocumento.test.js
+│    └── utils/
+│        └── validadores.test.js
 ├── docs/
 │   ├── Briefing.md
 │   └── Esquema v1.excalidraw
@@ -385,3 +390,64 @@ git checkout hash-del-commit -- archivo.js
 2. ¿Existe el archivo `.env`? (copiarlo de `.env.example`)
 3. ¿Se han instalado las dependencias? (`npm install`)
 4. ¿El puerto 3000 está libre?
+
+### Testing
+
+El projecte utilitza el framework natiu de Node.js (`node:test`) per executar els tests.
+
+Executar tots els tests:
+
+```bash
+npm test
+```
+
+Els tests es troben a la carpeta:
+
+```txt
+tests/
+├── middlewares/
+└── utils/
+```
+
+#### Elecció del framework
+
+S'han valorat tres opcions: `node:test`, Jest i Vitest.
+
+Finalment s'ha escollit `node:test` perquè:
+
+- Forma part de Node.js i no requereix dependències addicionals.
+- No necessita configuració inicial.
+- És fàcil d'entendre per a tot l'equip.
+- És suficient per a tests unitaris i middlewares senzills.
+- Permet començar a introduir testing al projecte amb la mínima complexitat.
+
+Jest i Vitest ofereixen funcionalitats més avançades, però actualment afegeixen complexitat innecessària per a les necessitats del projecte.
+
+#### Tests implementats
+
+S'han afegit exemples de tests unitaris sobre:
+
+- `src/utils/validadores.js`
+  - `validDniCifNie`
+  - `isValidEmail`
+
+- `src/middlewares/validacionDocumento.js`
+  - Tipus d'entitat no vàlid
+  - Absència de fitxer
+  - MIME no permès
+  - Fitxer superior a 10 MB
+  - Cas correcte (`next()`)
+
+Actualment el projecte disposa de 15 tests que passen correctament amb `npm test`.
+
+#### Treball futur
+
+Com a següent pas es recomana incorporar tests d'integració amb `supertest` per validar rutes d'Express i fluxos complets de l'aplicació.
+
+Per evitar dependències amb la base de dades de desenvolupament, es podria utilitzar SQLite en memòria o una base de dades específica per a testing.
+
+Alguns candidats inicials serien:
+- Login i autenticació d'usuaris.
+- Control d'accés a rutes protegides.
+- Alta d'alumnes.
+- Pujada de documents.
