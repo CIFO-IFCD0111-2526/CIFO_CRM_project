@@ -12,9 +12,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
   app:
-    build: .
+    image: ghcr.io/cifo-ifcd0111-2526/cifo_crm_project:latest
     restart: unless-stopped
     depends_on:
       db:
