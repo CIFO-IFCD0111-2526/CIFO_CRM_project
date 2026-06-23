@@ -442,12 +442,8 @@ Actualment el projecte disposa de 15 tests que passen correctament amb `npm test
 
 #### Treball futur
 
-Com a següent pas es recomana incorporar tests d'integració amb `supertest` per validar rutes d'Express i fluxos complets de l'aplicació.
-
 Per evitar dependències amb la base de dades de desenvolupament, es podria utilitzar SQLite en memòria o una base de dades específica per a testing.
 
-Alguns candidats inicials serien:
-- Login i autenticació d'usuaris.
-- Control d'accés a rutes protegides.
-- Alta d'alumnes.
-- Pujada de documents.
+Validació principal i redirecció del login en els casos d´inici de sessió, registre, login o tipus d´usuari
+- Login i autenticació d'usuaris.'src/tests/middlewares/auth.test.js'
+ordre pel test: npm test --tests/middlewares/auth.test.js.
